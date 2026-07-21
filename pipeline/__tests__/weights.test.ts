@@ -16,6 +16,16 @@ describe('logMinMaxNormalize', () => {
     expect(m.get('A')).toBe(1);
     expect(m.get('B')).toBe(1);
   });
+  it('throws loudly on zero value', () => {
+    expect(() => logMinMaxNormalize(new Map([['A', 0], ['B', 100]]))).toThrow(
+      'logMinMaxNormalize: non-positive value for A: 0'
+    );
+  });
+  it('throws loudly on negative value', () => {
+    expect(() => logMinMaxNormalize(new Map([['X', -5], ['Y', 10]]))).toThrow(
+      'logMinMaxNormalize: non-positive value for X: -5'
+    );
+  });
 });
 
 describe('computeWeights', () => {
@@ -50,5 +60,10 @@ describe('computeWeights', () => {
     expect(byIso.BBB.normalized.arrivals).toBeCloseTo(1);
     expect(byIso.AAA.normalized.arrivals).toBeCloseTo(0);
     expect(byIso.AAA.normalized.gdp).toBeNull();
+  });
+
+  it('throws loudly when a country has zero available signals', () => {
+    const signals = new Map([['AAA', sig({ hdi: 0.8 })], ['ZZZ', sig({})]]);
+    expect(() => computeWeights(signals, names)).toThrow('computeWeights: country ZZZ has zero available signals');
   });
 });

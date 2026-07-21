@@ -1,6 +1,13 @@
 import type { DestinationWeight, RawSignals } from './types.ts';
 
 export function logMinMaxNormalize(values: Map<string, number>): Map<string, number> {
+  // Validate no non-positive values
+  for (const [k, v] of values) {
+    if (v <= 0) {
+      throw new Error(`logMinMaxNormalize: non-positive value for ${k}: ${v}`);
+    }
+  }
+
   const logs = new Map([...values].map(([k, v]) => [k, Math.log(v)]));
   const nums = [...logs.values()];
   const min = Math.min(...nums);
@@ -28,6 +35,9 @@ export function computeWeights(signals: Map<string, RawSignals>, names: Map<stri
       hdi: s.hdi, // already 0..1
     };
     const available = Object.values(normalized).filter((v): v is number => v !== null);
+    if (available.length === 0) {
+      throw new Error(`computeWeights: country ${iso3} has zero available signals`);
+    }
     out.push({
       iso3,
       name: names.get(iso3) ?? iso3,
