@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import weightsData from '../data/weights.json';
+import { flagEmoji } from '../lib/format.ts';
+const pct = (v: number | null) => (v === null ? '—' : v.toFixed(2));
+---
+<Base title="Destination weights — Pyatkov Index" description="How much each destination is worth in the Pyatkov Index, and why.">
+  <h1>Destination weights</h1>
+  <p class="lede">
+    Each destination's weight is the mean of its available normalized signals: log-scaled GDP,
+    log-scaled tourist arrivals, HDI, and log-scaled migrant stock. This table is the entire
+    "secret sauce" — nothing is hidden.
+  </p>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Destination</th><th>Weight</th><th>GDP</th><th>Arrivals</th><th>HDI</th><th>Migrants</th><th>Signals</th></tr>
+    </thead>
+    <tbody>
+      {weightsData.destinations.map((d, i) => (
+        <tr>
+          <td>{i + 1}</td>
+          <td>{flagEmoji(d.iso2)} {d.name}</td>
+          <td>{d.weight.toFixed(3)}</td>
+          <td>{pct(d.normalized.gdp)}</td>
+          <td>{pct(d.normalized.arrivals)}</td>
+          <td>{pct(d.normalized.hdi)}</td>
+          <td>{pct(d.normalized.migrants)}</td>
+          <td>{d.signalsUsed}/4</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Base>
