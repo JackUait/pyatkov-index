@@ -35,8 +35,9 @@ import rankings from '../data/rankings.json';
 
   <h2>The score</h2>
   <p>
-    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code> over all destinations
-    except the passport's own country. It reads as "percent of the world's destination value this
+    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code>, where the numerator is
+    summed over all destinations except the passport's own country, while the denominator Σ weight(d)
+    is summed over all destinations, including it. It reads as "percent of the world's destination value this
     passport can reach." The Δ column compares against an equal-weight ranking computed with the same
     graded credits but every destination worth 1.
   </p>

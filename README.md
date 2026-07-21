@@ -48,9 +48,10 @@ The passport score is the credit-weighted share of total destination value:
 score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)
 ```
 
-summed over every destination except the passport's own country. It reads as "percent
-of the world's destination value this passport can reach." The **equal-weight** ranking
-used for the Δ column applies the same graded credits but sets every `weight(d) = 1`.
+where the numerator is summed over every destination except the passport's own country,
+while the denominator `Σ weight(d)` is summed over every destination, including it. It reads
+as "percent of the world's destination value this passport can reach." The **equal-weight**
+ranking used for the Δ column applies the same graded credits but sets every `weight(d) = 1`.
 
 ## Repo layout
 
