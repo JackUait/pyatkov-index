@@ -127,7 +127,7 @@ sources or the overrides, so new destinations can never be silently dropped.
 ## Deployment
 
 `.github/workflows/deploy.yml` builds and publishes the site to GitHub Pages on every
-push to `master`. It runs the tests, runs the pipeline, builds the site with the
+push to `main`. It runs the tests, runs the pipeline, builds the site with the
 repository name as the base path, and deploys the `site/dist/` artifact. Enable Pages
 for the repository (Settings → Pages → Source: GitHub Actions) before the first run.
 
