@@ -46,21 +46,35 @@ const base = import.meta.env.BASE_URL;
       for (const r of rows) (r as HTMLElement).hidden = !r.dataset.name!.includes(q);
     });
 
+    const DEFAULT_ASC: Record<string, boolean> = {
+      rank: true,
+      equalrank: true,
+      name: true,
+      score: false,
+      delta: false,
+    };
+
+    const headers = [...document.querySelectorAll('th[data-sort]')] as HTMLElement[];
     let sortKey = 'rank';
     let asc = true;
-    document.querySelectorAll('th[data-sort]').forEach((th) => {
+
+    headers.forEach((th) => {
       th.addEventListener('click', () => {
-        const key = (th as HTMLElement).dataset.sort!;
-        asc = key === sortKey ? !asc : key === 'name';
+        const key = th.dataset.sort!;
+        const lowerKey = key.toLowerCase();
+        asc = key === sortKey ? !asc : DEFAULT_ASC[lowerKey];
         sortKey = key;
         const val = (r: Element) =>
-          key === 'name' ? r.getAttribute('data-name')! : parseFloat(r.getAttribute(`data-${key.toLowerCase()}`)!);
+          key === 'name' ? r.getAttribute('data-name')! : parseFloat(r.getAttribute(`data-${lowerKey}`)!);
         rows
           .sort((a, b) => {
             const [x, y] = [val(a), val(b)];
             return (x < y ? -1 : x > y ? 1 : 0) * (asc ? 1 : -1);
           })
           .forEach((r) => tbody.appendChild(r));
+
+        headers.forEach((h) => h.removeAttribute('aria-sort'));
+        th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
       });
     });
   </script>
