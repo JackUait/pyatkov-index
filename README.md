@@ -79,21 +79,22 @@ site/                Astro static site
 The flow is three steps: fetch raw data, run the pipeline, build the site.
 
 ```bash
-npm install
-npm run fetch-data                 # download fresh source snapshots into data/raw/
-npm run pipeline                   # parse + score, write JSON into site/src/data/
-cd site && npm install && npm run build   # static build into site/dist/
+yarn install
+yarn fetch-data                    # download fresh source snapshots into data/raw/
+yarn pipeline                      # parse + score, write JSON into site/src/data/
+cd site && yarn install && yarn build   # static build into site/dist/
 ```
 
-`npm run pipeline` prints a summary (top 5 passports, biggest risers and fallers) and
-runs sanity checks that fail the build rather than publish nonsense. `npm run typecheck`
-type-checks the whole repo, and `npm test` (Vitest) runs the pipeline unit tests.
+`yarn pipeline` prints a summary (top 5 passports, biggest risers and fallers) and
+runs sanity checks that fail the build rather than publish nonsense. `yarn typecheck`
+type-checks the whole repo, and `yarn test` (Vitest) runs the pipeline unit tests.
+`yarn serve` (from the repo root) serves the built site locally.
 
 ### Refreshing data snapshots
 
 `data/raw/` is committed so the site is reproducible without network access. To pull the
-latest figures, re-run `npm run fetch-data` (it overwrites the raw snapshots in place),
-then re-run `npm run pipeline` to regenerate the JSON, then rebuild the site. The
+latest figures, re-run `yarn fetch-data` (it overwrites the raw snapshots in place),
+then re-run `yarn pipeline` to regenerate the JSON, then rebuild the site. The
 generated `rankings.json` records a `generatedAt` date so every snapshot is dated.
 
 ### Manual overrides

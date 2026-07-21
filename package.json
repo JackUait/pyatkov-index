@@ -2,9 +2,11 @@
   "name": "pyatkov-index",
   "private": true,
   "type": "module",
+  "packageManager": "yarn@4.17.1",
   "scripts": {
     "fetch-data": "tsx pipeline/fetch.ts",
     "pipeline": "tsx pipeline/build.ts",
+    "serve": "cd site && yarn serve",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

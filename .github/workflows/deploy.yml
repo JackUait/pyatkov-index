@@ -17,10 +17,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      - run: npm ci
-      - run: npm test
-      - run: npm run pipeline
-      - run: npm ci && npm run build
+      - run: corepack enable
+      - run: yarn install --immutable
+      - run: yarn test
+      - run: yarn pipeline
+      - run: yarn install --immutable && yarn build
         working-directory: site
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
