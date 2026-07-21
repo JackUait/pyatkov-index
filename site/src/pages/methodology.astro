@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import rankings from '../data/rankings.json';
+---
+<Base title="Methodology — Pyatkov Index" description="The formula, data sources, and snapshot dates behind the Pyatkov Index.">
+  <h1>Methodology</h1>
+
+  <h2>The idea</h2>
+  <p>
+    Classic passport indexes count destinations: visa-free access to a micronation is worth exactly as much
+    as visa-free access to the United States. The Pyatkov Index weights every destination by how valuable
+    access to it actually is, so weak destinations fade toward zero and strong destinations dominate.
+  </p>
+
+  <h2>Destination weights</h2>
+  <p>Each of the {rankings.totalDestinations} destinations gets a weight from four signals:</p>
+  <ul>
+    <li><strong>GDP</strong> (World Bank, current US$) — log-scaled, min–max normalized to 0–1</li>
+    <li><strong>International tourist arrivals</strong> (UNWTO via World Bank) — log-scaled, normalized</li>
+    <li><strong>HDI</strong> (UNDP) — already 0–1, used directly</li>
+    <li><strong>International migrant stock</strong> (via World Bank) — log-scaled, normalized</li>
+  </ul>
+  <p>
+    Weight = the mean of the signals that exist for that destination (microstates often miss some).
+    Log scaling matters: GDP spans five orders of magnitude, and without it only the US and China would count.
+  </p>
+
+  <h2>Access credit</h2>
+  <ul>
+    <li>Visa-free / freedom of movement — <strong>1.0</strong></li>
+    <li>Visa on arrival / eTA — <strong>0.8</strong></li>
+    <li>eVisa — <strong>0.5</strong></li>
+    <li>Visa required / no admission — <strong>0</strong></li>
+  </ul>
+
+  <h2>The score</h2>
+  <p>
+    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code> over all destinations
+    except the passport's own country. It reads as "percent of the world's destination value this
+    passport can reach." The Δ column compares against an equal-weight ranking computed with the same
+    graded credits but every destination worth 1.
+  </p>
+
+  <h2>Sources & snapshot</h2>
+  <p>
+    Visa matrix: the open <a href="https://github.com/ilyankou/passport-index-dataset">passport-index-dataset</a>
+    (PassportIndex.org data). Economic and social signals: World Bank API and UNDP HDR downloads.
+    A few destinations absent from those sources (e.g. Taiwan) use hand-researched values documented in the
+    repository. Data snapshot: {rankings.generatedAt}. All raw data and code are in the repo — the entire
+    index is reproducible with one command.
+  </p>
+</Base>
