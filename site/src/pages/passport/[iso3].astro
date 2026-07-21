@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import rankings from '../../data/rankings.json';
+import weightsData from '../../data/weights.json';
+import matrix from '../../data/matrix.json';
+import { deltaLabel, flagEmoji, fmt } from '../../lib/format.ts';
+
+export function getStaticPaths() {
+  return rankings.passports.map((p) => ({ params: { iso3: p.iso3.toLowerCase() }, props: { passport: p } }));
+}
+
+const { passport: p } = Astro.props;
+const access = (matrix as Record<string, Record<string, string>>)[p.iso3];
+const CREDIT: Record<string, number> = { 'visa-free': 1.0, 'visa-on-arrival': 0.8, 'e-visa': 0.5, 'visa-required': 0 };
+const LABEL: Record<string, string> = { 'visa-free': 'Visa-free', 'visa-on-arrival': 'Visa on arrival / eTA', 'e-visa': 'eVisa', 'visa-required': 'Visa required' };
+
+const dests = weightsData.destinations
+  .filter((d) => d.iso3 !== p.iso3)
+  .map((d) => ({ ...d, category: access[d.iso3], contribution: CREDIT[access[d.iso3]] * d.weight }));
+const reachable = dests.filter((d) => d.category !== 'visa-required');
+const topReachable = [...reachable].sort((a, b) => b.contribution - a.contribution).slice(0, 15);
+const topMissing = dests.filter((d) => d.category === 'visa-required').slice(0, 15); // already weight-desc
+const totalWeight = weightsData.destinations.reduce((a, d) => a + d.weight, 0);
+const tierContribution = Object.keys(LABEL).map((cat) => ({
+  cat,
+  points: (100 * dests.filter((d) => d.category === cat).reduce((a, d) => a + d.contribution, 0)) / totalWeight,
+  count: p.counts[cat as keyof typeof p.counts],
+}));
+---
+<Base title={`${p.name} passport — Pyatkov Index`} description={`${p.name}: rank ${p.rank}, score ${fmt(p.score)} on the weighted passport index.`}>
+  <h1>{flagEmoji(p.iso2)} {p.name}</h1>
+  <dl class="stats">
+    <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
+    <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
+    <div><dt>Equal-weight rank</dt><dd>#{p.equalRank}</dd></div>
+    <div><dt>Δ from weighting</dt><dd>{deltaLabel(p.delta)}</dd></div>
+  </dl>
+
+  <h2>Where the score comes from</h2>
+  <table>
+    <thead><tr><th>Access tier</th><th>Destinations</th><th>Points</th></tr></thead>
+    <tbody>
+      {tierContribution.map((t) => (
+        <tr><td>{LABEL[t.cat]}</td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>Most valuable destinations reachable</h2>
+  <ol>
+    {topReachable.map((d) => (
+      <li>{flagEmoji(d.iso2)} {d.name} <span class="meta">{LABEL[d.category]} · weight {d.weight.toFixed(3)}</span></li>
+    ))}
+  </ol>
+
+  <h2>Most valuable destinations missing</h2>
+  {topMissing.length === 0 ? <p>None — this passport reaches every weighted destination.</p> : (
+    <ol>
+      {topMissing.map((d) => (
+        <li>{flagEmoji(d.iso2)} {d.name} <span class="meta">weight {d.weight.toFixed(3)}</span></li>
+      ))}
+    </ol>
+  )}
+</Base>
