@@ -1,0 +1,17 @@
+{
+  "name": "pyatkov-index",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch-data": "tsx pipeline/fetch.ts",
+    "pipeline": "tsx pipeline/build.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

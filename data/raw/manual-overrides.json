@@ -1,0 +1,11 @@
+{
+  "TWN": {
+    "name": "Taiwan",
+    "iso2": "TW",
+    "gdp": 756590000000,
+    "arrivals": 6487000,
+    "hdi": 0.926,
+    "migrants": 936000,
+    "source": "GDP: IMF WEO 2023; arrivals: Taiwan Tourism Administration 2023; HDI: DGBAS national calculation 2022; migrants: NIA foreign residents 2023"
+  }
+}
