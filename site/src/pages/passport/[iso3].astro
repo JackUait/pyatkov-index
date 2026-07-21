@@ -33,11 +33,12 @@ const tierContribution = Object.keys(LABEL).map((cat) => ({
     <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
     <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
     <div><dt>Equal-weight rank</dt><dd>#{p.equalRank}</dd></div>
-    <div><dt>Δ from weighting</dt><dd>{deltaLabel(p.delta)}</dd></div>
+    <div><dt>Δ from weighting</dt><dd class={p.delta > 0 ? 'up' : p.delta < 0 ? 'down' : ''}>{deltaLabel(p.delta)}</dd></div>
   </dl>
 
   <h2>Where the score comes from</h2>
-  <table>
+  <div class="table-scroll">
+  <table class="tier-table">
     <thead><tr><th>Access tier</th><th>Destinations</th><th>Points</th></tr></thead>
     <tbody>
       {tierContribution.map((t) => (
@@ -45,6 +46,7 @@ const tierContribution = Object.keys(LABEL).map((cat) => ({
       ))}
     </tbody>
   </table>
+  </div>
 
   <h2>Most valuable destinations reachable</h2>
   <ol>

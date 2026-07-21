@@ -11,7 +11,8 @@ const pct = (v: number | null) => (v === null ? '—' : v.toFixed(2));
     log-scaled tourist arrivals, HDI, and log-scaled migrant stock. This table is the entire
     "secret sauce" — nothing is hidden.
   </p>
-  <table>
+  <div class="table-scroll">
+  <table class="weights-table">
     <thead>
       <tr><th>#</th><th>Destination</th><th>Weight</th><th>GDP</th><th>Arrivals</th><th>HDI</th><th>Migrants</th><th>Signals</th></tr>
     </thead>
@@ -30,4 +31,5 @@ const pct = (v: number | null) => (v === null ? '—' : v.toFixed(2));
       ))}
     </tbody>
   </table>
+  </div>
 </Base>
