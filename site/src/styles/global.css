@@ -10,7 +10,7 @@
   --surface-alt: #f0efeb;
   --ink: #1b1b18;
   --ink-soft: #57564f;
-  --ink-faint: #8a897f;
+  --ink-faint: #6d6c60;
   --line: #e4e2dc;
   --line-strong: #cbc9c0;
   --accent: #14507a;
@@ -36,7 +36,7 @@
     --surface-alt: #212320;
     --ink: #ecebe6;
     --ink-soft: #a6a59c;
-    --ink-faint: #74736b;
+    --ink-faint: #908f86;
     --line: #2c2e2a;
     --line-strong: #3c3e39;
     --accent: #74b3e6;
@@ -68,6 +68,15 @@ body {
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Keyboard focus ring — links, nav, and sortable headers share one treatment.
+   :focus-visible only, so mouse clicks don't get a lingering outline. */
+a:focus-visible,
+th[data-sort]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
 
 /* ---- Masthead ---- */
 header {
@@ -183,7 +192,7 @@ li { margin: 0.3rem 0; }
   border-radius: 7px;
 }
 #filter::placeholder { color: var(--ink-faint); }
-#filter:focus {
+#filter:focus-visible {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
@@ -348,8 +357,4 @@ main > ol li .meta { margin-left: auto; }
 @media (max-width: 520px) {
   header nav { gap: 0.9rem; font-size: 0.8rem; }
   main > ol li { padding-left: 2.4rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior: auto; }
 }
