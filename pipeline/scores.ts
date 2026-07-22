@@ -3,7 +3,7 @@ import type { AccessCategory, DestinationWeight, PassportRow, VisaMatrix } from 
 
 // Graded credits in an EXACT integer domain (tenths) for equal-weight ranking, so
 // mathematically-tied passports compare equal instead of being split by float 1-ulp drift (B1).
-const CREDIT_TENTHS: Record<AccessCategory, number> = {
+export const CREDIT_TENTHS: Record<AccessCategory, number> = {
   'visa-free': 10,
   'visa-on-arrival': 8,
   'e-visa': 5,

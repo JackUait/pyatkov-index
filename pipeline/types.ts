@@ -31,3 +31,15 @@ export interface PassportRow {
   delta: number; // equalRank - rank; positive = rises under weighting
   counts: Record<AccessCategory, number>;
 }
+
+export interface DestinationOpenness {
+  iso3: string;
+  name: string;
+  score: number; // 0..100 — credit-weighted share of the world's population that can enter
+  rank: number;
+  equalScore: number; // 0..100 — every passport counts one
+  equalRank: number;
+  delta: number; // equalRank - rank; positive = population weighting lifts it
+  counts: Record<AccessCategory, number>;
+  points: Record<AccessCategory, number>; // per-tier contribution; sums to score
+}
