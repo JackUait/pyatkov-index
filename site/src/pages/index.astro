@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
-import { deltaLabel, displayName, flagEmoji, fmt, formatBuiltDate, searchIndex } from '../lib/format.ts';
+import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex } from '../lib/format.ts';
 const base = import.meta.env.BASE_URL;
 // B9: the pipeline now emits an honest build date (builtAt) plus per-signal
 // vintages. Fall back to the legacy generatedAt field for pre-regen data.
@@ -34,8 +34,8 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
 
   <p class="table-intro">
     Every passport is scored 0 to 100 by the share of the world's destination value it can reach.
-    Destinations are weighted by GDP, tourism arrivals, HDI, and migrant stock, and the Δ column
-    shows how far weighting moves each passport versus counting every destination equally.
+    Destinations are weighted by GDP, tourism arrivals, HDI, and migrant stock, so reaching a handful
+    of strong destinations counts for more than reaching dozens of weak ones.
   </p>
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
@@ -50,18 +50,14 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
         <th scope="col" data-sort="rank" aria-sort="ascending" tabindex="0">#</th>
         <th scope="col" data-sort="name" tabindex="0">Passport</th>
         <th scope="col" data-sort="score" tabindex="0">Score</th>
-        <th scope="col" data-sort="delta" tabindex="0">Δ vs count</th>
-        <th scope="col" data-sort="equalRank" tabindex="0">Count rank</th>
       </tr>
     </thead>
     <tbody>
       {rankings.passports.map((p) => (
-        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score} data-delta={p.delta} data-equalrank={p.equalRank}>
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score}>
           <td>{p.rank}</td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}>{flagEmoji(p.iso2)} {displayName(p.iso3, p.name)}</a></td>
           <td class="score-cell" style={`--w:${p.score}%`}>{fmt(p.score)}<span class="bar" aria-hidden="true"></span></td>
-          <td class={p.delta > 0 ? 'up' : p.delta < 0 ? 'down' : ''}>{deltaLabel(p.delta)}</td>
-          <td>{p.equalRank}</td>
         </tr>
       ))}
     </tbody>
@@ -78,7 +74,7 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
       filter: '#filter',
       noResults: '#no-results',
       initialSort: 'rank',
-      defaultAsc: { rank: true, equalrank: true, name: true, score: false, delta: false },
+      defaultAsc: { rank: true, name: true, score: false },
     });
   </script>
 </Base>

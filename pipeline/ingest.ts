@@ -1,9 +1,13 @@
 import type { AccessCategory, VisaMatrix } from './types.ts';
 
 export const CREDIT: Record<AccessCategory, number> = {
+  // BINARY ladder: what counts is whether entry is decided AT THE BORDER or requires
+  // permission BEFORE departure. Visa-on-arrival/eTA needs nothing to board, so it is
+  // worth as much as visa-free; an eVisa is an application that can be refused and must
+  // clear before you fly, so it scores as no access at all.
   'visa-free': 1.0,
-  'visa-on-arrival': 0.8,
-  'e-visa': 0.5,
+  'visa-on-arrival': 1.0,
+  'e-visa': 0,
   'visa-required': 0,
 };
 

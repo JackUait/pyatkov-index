@@ -29,7 +29,7 @@ describe('categorize', () => {
 
 describe('CREDIT', () => {
   it('matches the spec exactly', () => {
-    expect(CREDIT).toEqual({ 'visa-free': 1.0, 'visa-on-arrival': 0.8, 'e-visa': 0.5, 'visa-required': 0 });
+    expect(CREDIT).toEqual({ 'visa-free': 1.0, 'visa-on-arrival': 1.0, 'e-visa': 0, 'visa-required': 0 });
   });
 });
 

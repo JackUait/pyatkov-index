@@ -74,10 +74,16 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
   <h2>Access credit</h2>
   <ul class="credit-list">
     <li><span class="tag tag-visa-free">Visa-free / freedom of movement</span> <span class="credit">1.0</span></li>
-    <li><span class="tag tag-visa-on-arrival">Visa on arrival / eTA</span> <span class="credit">0.8</span></li>
-    <li><span class="tag tag-e-visa">eVisa</span> <span class="credit">0.5</span></li>
+    <li><span class="tag tag-visa-on-arrival">Visa on arrival / eTA</span> <span class="credit">1.0</span></li>
+    <li><span class="tag tag-e-visa">eVisa</span> <span class="credit">0</span></li>
     <li><span class="tag tag-visa-required">Visa required / no admission</span> <span class="credit">0</span></li>
   </ul>
+  <p>
+    The test is binary: is entry decided <em>at the border</em>, or does it require permission <em>before
+    departure</em>? Visa on arrival and eTA need nothing to board a plane, so they count as fully open. An
+    eVisa is an application that can be refused and must clear before you fly — a booking constraint, not
+    freedom of movement — so it earns nothing.
+  </p>
 
   <h2>The score</h2>
   <div class="formula-card">
@@ -91,7 +97,7 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
     destination) rank higher than they would if their own weight were thrown away. Because numerator and
     denominator cover the same full pool, a passport with full visa-free access still scores exactly 100, and
     the score reads as "percent of the world's destination value this passport can reach". The <strong>Count
-    rank</strong> is the ranking you get from the same graded credits over the same full set of destinations
+    rank</strong> is the ranking you get from the same binary credits over the same full set of destinations
     but with every destination worth 1, a plain "how many places can you go" count. The <strong>Δ vs
     count</strong> column is the gap between the two, so a passport that reaches disproportionately valuable
     destinations rises and one skewed toward low-value destinations falls.
@@ -101,22 +107,25 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
   <p>
     The index also runs backwards. Where a passport score asks how much of the world's destination
     <em>value</em> a passport opens, an <a href={`${import.meta.env.BASE_URL}openness/`}>openness score</a>
-    asks how much of the world's <em>people</em> a destination lets in:
+    asks how much of the world's <em>people</em> a destination lets in from outside:
   </p>
-  <p><code>openness(d) = 100 × Σ credit(p, d) × population(p) / Σ population(p)</code></p>
+  <p><code>openness(d) = 100 × Σ<sub>p ≠ d</sub> credit(p, d) × population(p) / Σ<sub>p ≠ d</sub> population(p)</code></p>
   <p>
-    Both sums run over every one of the {rankings.totalDestinations} passports, including the destination's
-    own — a country always admits its own citizens, at full credit. Because numerator and denominator cover
-    the same pool, a destination open to every passport scores exactly 100, and the number reads as a
-    percentage: the share of the world's people who can arrive without applying for a visa first, with the
-    same graded credit the passport score uses.
+    Both sums run over the {rankings.totalDestinations - 1} <em>foreign</em> passports, excluding the
+    destination's own. This is the one place the openness rating deliberately departs from the passport
+    score, which counts a country's own destination value toward itself. Every country admits its own
+    citizens, so including them would measure nothing except population size — handing large countries free
+    points for a policy they all share. Because numerator and denominator cover the same foreign pool, a
+    destination open to every foreign passport scores exactly 100 and one that admits none scores exactly 0.
+    The number reads as a percentage: the share of the world's people outside its borders who can arrive
+    without applying for a visa first, on the same binary credit ladder the passport score uses.
   </p>
   <p>
     Population comes from the World Bank series <code>SP.POP.TOTL</code>, latest available per country. It is
     used only as this denominator: it is not one of the four destination-weight signals above, and adding it
-    moved no passport score. The <strong>&Delta;</strong> column on the openness table is the mirror of the
-    &Delta; on the rankings table — how far each destination moves once the passports it admits are weighted
-    by the people behind them instead of counted one apiece.
+    moved no passport score. Each destination's page carries a <strong>&Delta; from weighting</strong>, the
+    mirror of the &Delta; on the rankings table — how far that destination moves once the passports it
+    admits are weighted by the people behind them instead of counted one apiece.
   </p>
 
   <h2>Sources &amp; data vintages</h2>

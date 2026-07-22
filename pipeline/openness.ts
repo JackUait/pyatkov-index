@@ -19,10 +19,13 @@ const zeroed = (): Record<AccessCategory, number> => ({
  * destination let in?" — the credit-weighted share of the population holding a
  * passport that can enter without a prior visa.
  *
- * Self-inclusion mirrors computeScores exactly: a country always admits its own
- * citizens, so its own population is counted at credit 1.0 in the numerator, and
- * the denominator is the FULL population pool. A destination open to every
- * passport therefore scores exactly 100.
+ * The destination's own passport is excluded entirely — from the numerator, the
+ * denominator, and the counts. A country admitting its own citizens says nothing
+ * about how open it is to the world, and including it would hand large-population
+ * countries free points for a policy every country shares. The pool is therefore
+ * the FOREIGN population only, and it differs per destination. A destination that
+ * admits every foreign passport visa-free scores exactly 100; one that admits
+ * none scores exactly 0.
  *
  * equalScore is the same sum with every passport counting one — the naive
  * "how many countries can enter" reading. delta = equalRank - rank is how far
@@ -56,19 +59,16 @@ export function computeOpenness(
       counts[cat] += 1;
     }
 
-    // Self-inclusion: own citizens are always admitted (credit 1.0).
-    points['visa-free'] += CREDIT['visa-free'] * populations.get(dest)!;
-    equalTenths += CREDIT_TENTHS['visa-free'];
-    counts['visa-free'] += 1;
-
-    for (const t of TIERS) points[t] = (100 * points[t]) / totalPop;
+    // The destination's own passport is not part of the pool it is measured against.
+    const foreignPop = totalPop - populations.get(dest)!;
+    for (const t of TIERS) points[t] = (100 * points[t]) / foreignPop;
     const score = TIERS.reduce((a, t) => a + points[t], 0);
 
     return {
       iso3: dest,
       name: names.get(dest) ?? dest,
       score,
-      equalScore: (100 * equalTenths) / (10 * n),
+      equalScore: (100 * equalTenths) / (10 * (n - 1)),
       equalTenths,
       counts,
       points,

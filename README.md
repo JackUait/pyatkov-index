@@ -10,8 +10,8 @@ small islands, and here it does.
 
 Each destination earns a weight from four public signals: GDP, international arrivals,
 HDI, and international migrant stock. Every passport is then scored 0-100 by the share of
-the reachable world's total destination *value* it can reach, with partial credit for
-softer access tiers (visa on arrival, eVisa). "The world" here means the 199 sovereign-state
+the reachable world's total destination *value* it can reach, counting visa on arrival and
+eTA as fully open and eVisas as closed. "The world" here means the 199 sovereign-state
 and SAR destinations in the upstream matrix; dependent territories with their own visa
 regimes (Puerto Rico, Gibraltar, the Faroes, and ~17 others) are out of scope, inherited
 from the upstream dataset, so the "share of the world's value" is measured over that
@@ -57,14 +57,19 @@ Germany, Japan, and the United States alone outweighs access to the fifty weakes
 destinations by about 1.9×, which is exactly the claim in the opening paragraph made true
 on the numbers.
 
-Access to each destination earns graded credit:
+Access to each destination earns credit on a binary test — is entry decided **at the
+border**, or does it require permission **before departure**?
 
 | Access tier | Credit |
 | --- | --- |
 | Visa-free / freedom of movement | 1.0 |
-| Visa on arrival / eTA | 0.8 |
-| eVisa | 0.5 |
+| Visa on arrival / eTA | 1.0 |
+| eVisa | 0 |
 | Visa required / no admission | 0 |
+
+Visa on arrival needs nothing to board a plane, so it counts as fully open. An eVisa is an
+application that can be refused and must clear before you fly — a booking constraint, not
+freedom of movement — so it counts as no access at all.
 
 The passport score is the credit-weighted share of reachable destination value:
 
@@ -79,7 +84,7 @@ would if their own weight were discarded — the United States, as the single mo
 destination, gains the most. Because numerator and denominator cover the same full pool, a
 passport with full visa-free access still scores exactly 100, and the number reads as
 "percent of the world's destination value this passport can reach." The **Count rank**
-used for the Δ column applies the same graded credits over that same full set of
+used for the Δ column applies the same binary credits over that same full set of
 destinations but sets every `weight(d) = 1` — a plain destination count — so the weighted
 score and its count-based baseline are directly comparable.
 
@@ -87,24 +92,28 @@ score and its count-based baseline are directly comparable.
 
 The same machinery runs backwards. A passport score asks how much of the world's destination
 value a passport opens; an **openness** score asks how much of the world's *people* a
-destination lets in:
+destination lets in from outside:
 
 ```
-openness(d) = 100 × Σ credit(p, d) × population(p) / Σ population(p)
+openness(d) = 100 × Σ[p ≠ d] credit(p, d) × population(p) / Σ[p ≠ d] population(p)
 ```
 
-Both sums run over all 199 passports **including the destination's own**, which always admits
-its own citizens at full credit — the same self-inclusion the passport score uses, so a
-destination open to every passport scores exactly 100 and the number reads as a plain
-percentage. Credits are the same graded tiers. Population is the World Bank series
+Both sums run over the 198 **foreign** passports, **excluding the destination's own**. This is
+the one place the openness rating departs from the passport score, which does count a country's
+own destination value toward itself: every country admits its own citizens, so including them
+would measure nothing but population size and hand large countries free points for a universal
+policy. Because numerator and denominator cover the same foreign pool, a destination open to
+every foreign passport scores exactly 100 and one that admits none scores exactly 0, so the
+number reads as a plain percentage. Credits are the same binary ladder the passport score
+uses. Population is the World Bank series
 `SP.POP.TOTL`, latest available per country, used *only* as this denominator: it is not a
 destination-weight signal, and adding it moved no passport score.
 
 Alongside it sits the naive reading — every passport counted as one, regardless of how many
 people hold it — and the gap between the two is the argument again, pointed the other way. A
 destination open to fifty small countries but closed to India and China is not open. The
-biggest population-weighting fall is **Nicaragua**: count rank #42, openness rank #105
-(Δ −63).
+biggest population-weighting fall is **Kosovo**: count rank #39, openness rank #92
+(Δ −53).
 
 ## Repo layout
 

@@ -488,8 +488,6 @@ th[aria-sort] { color: var(--color-ink); }
 /* Numeric cells: tabular figures, right-aligned */
 .rank-table td:nth-child(1), .rank-table th:nth-child(1),
 .rank-table td:nth-child(3), .rank-table th:nth-child(3),
-.rank-table td:nth-child(4), .rank-table th:nth-child(4),
-.rank-table td:nth-child(5), .rank-table th:nth-child(5),
 .weights-table td:nth-child(1), .weights-table th:nth-child(1),
 .weights-table td:nth-child(n+3), .weights-table th:nth-child(n+3),
 .tier-table td:nth-child(2), .tier-table th:nth-child(2),
@@ -499,8 +497,7 @@ th[aria-sort] { color: var(--color-ink); }
   font-variant-numeric: tabular-nums;
 }
 
-.rank-table td:nth-child(1),
-.rank-table td:nth-child(5) { color: var(--color-stone); }
+.rank-table td:nth-child(1) { color: var(--color-stone); }
 
 /* Per-destination access table: passport rank + score are the numeric columns. */
 .access-table td:nth-child(3), .access-table th:nth-child(3),

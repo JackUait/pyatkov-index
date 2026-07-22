@@ -121,7 +121,12 @@ describe('README claims match the real data + the current pipeline (docs subsyst
 describe('README openness claims match the shipped openness data', () => {
   const openness = JSON.parse(
     readFileSync(join(REPO, 'site', 'src', 'data', 'openness.json'), 'utf8'),
-  ) as { destinations: Array<{ iso3: string; name: string; rank: number; equalRank: number; delta: number }> };
+  ) as {
+    destinations: Array<{
+      iso3: string; name: string; rank: number; equalRank: number; delta: number;
+      counts: Record<string, number>;
+    }>;
+  };
 
   it('names the real biggest population-weighting fall, with its real ranks', () => {
     const claim = /biggest population-weighting fall is \*\*(.+?)\*\*: count rank #(\d+), openness rank #(\d+)\s*\n?\s*\(Δ −(\d+)\)/.exec(README);
@@ -134,8 +139,19 @@ describe('README openness claims match the shipped openness data', () => {
     expect(worst.delta).toBeLessThan(0);
   });
 
-  it('states the self-inclusion and denominator rules the pipeline actually implements', () => {
+  it('states the self-exclusion and denominator rules the pipeline actually implements', () => {
     expect(README).toContain('SP.POP.TOTL');
-    expect(README).toMatch(/including the destination's own/);
+    expect(README).toMatch(/excluding the destination's own/);
+  });
+
+  it('ships data that actually excludes each destination from its own pool', () => {
+    const n = openness.destinations.length;
+    // Every destination is rated over the OTHER n-1 passports, never itself.
+    for (const d of openness.destinations) {
+      const rated = Object.values(d.counts).reduce((a, b) => a + b, 0);
+      expect(rated, `${d.iso3} should be rated over ${n - 1} foreign passports`).toBe(n - 1);
+    }
+    // ...and the README says so with the same number.
+    expect(README).toContain(`the ${n - 1} **foreign** passports`);
   });
 });

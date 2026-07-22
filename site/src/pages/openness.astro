@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import openness from '../data/openness.json';
-import { deltaLabel, displayName, flagEmoji, fmt, searchIndex } from '../lib/format.ts';
+import { displayName, flagEmoji, fmt, searchIndex } from '../lib/format.ts';
 const base = import.meta.env.BASE_URL;
 const dests = openness.destinations;
 const mostOpen = dests[0];
@@ -11,8 +11,8 @@ const leastOpen = dests[dests.length - 1];
   <section class="hero">
     <h1>Who gets <span class="pill-word">in</span></h1>
     <p class="tagline">
-      The index run backwards: every destination scored by the share of the world's people who can
-      enter it without applying for a visa first.
+      The index run backwards: every destination scored by the share of the world's people, outside
+      its own borders, who can enter it without applying for a visa first.
     </p>
   </section>
 
@@ -23,10 +23,10 @@ const leastOpen = dests[dests.length - 1];
   </section>
 
   <p class="table-intro">
-    Each destination scores 0 to 100 by the credit-weighted share of the world's population holding a
-    passport that can enter it: full credit for visa-free, 0.8 for visa on arrival, 0.5 for an eVisa,
-    nothing for visa required. The Δ column shows how far weighting by population moves a destination
-    against a plain count of the passports it admits. Pick any destination to see exactly which
+    Each destination scores 0 to 100 by the credit-weighted share of the world's foreign population
+    holding a passport that can enter it: full credit for visa-free and visa on arrival, nothing for an
+    eVisa or a visa requirement. A destination's own citizens are left out entirely — every
+    country admits them, so they measure nothing. Pick any destination to see exactly which
     passports get which access.
   </p>
 
@@ -43,18 +43,14 @@ const leastOpen = dests[dests.length - 1];
         <th scope="col" data-sort="rank" aria-sort="ascending" tabindex="0">#</th>
         <th scope="col" data-sort="name" tabindex="0">Destination</th>
         <th scope="col" data-sort="score" tabindex="0">Openness</th>
-        <th scope="col" data-sort="delta" tabindex="0">Δ vs count</th>
-        <th scope="col" data-sort="equalRank" tabindex="0">Count rank</th>
       </tr>
     </thead>
     <tbody>
       {dests.map((d) => (
-        <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score} data-delta={d.delta} data-equalrank={d.equalRank}>
+        <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score}>
           <td>{d.rank}</td>
           <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</a></td>
           <td class="score-cell" style={`--w:${d.score}%`}>{fmt(d.score)}<span class="bar" aria-hidden="true"></span></td>
-          <td class={d.delta > 0 ? 'up' : d.delta < 0 ? 'down' : ''}>{deltaLabel(d.delta)}</td>
-          <td>{d.equalRank}</td>
         </tr>
       ))}
     </tbody>
@@ -71,7 +67,7 @@ const leastOpen = dests[dests.length - 1];
       filter: '#filter',
       noResults: '#no-results',
       initialSort: 'rank',
-      defaultAsc: { rank: true, equalrank: true, name: true, score: false, delta: false },
+      defaultAsc: { rank: true, name: true, score: false },
     });
   </script>
 </Base>

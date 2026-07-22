@@ -15,23 +15,22 @@ const csv = [
 const matrix = parseVisaMatrix(csv);
 const names = new Map([['AAA', 'Aland'], ['BBB', 'Beeland'], ['CCC', 'Ceeland']]);
 // Deliberately lopsided: BBB holds most of the world's people.
-const pops = new Map([['AAA', 10], ['BBB', 80], ['CCC', 10]]);
-const total = 100;
+const pops = new Map([['AAA', 10], ['BBB', 80], ['CCC', 30]]);
 const byIso = (rows: ReturnType<typeof computeOpenness>) =>
   Object.fromEntries(rows.map((r) => [r.iso3, r]));
 
 describe('computeOpenness', () => {
-  it('scores the credit-weighted population share, counting the destination itself as visa-free', () => {
+  it('scores the credit-weighted share of FOREIGN population, excluding the destination itself', () => {
     const o = byIso(computeOpenness(matrix, pops, names));
-    // Who can enter AAA: BBB visa-free (80), CCC e-visa (0.5 x 10), AAA itself (10).
-    expect(o.AAA.score).toBeCloseTo((100 * (1.0 * 80 + 0.5 * 10 + 1.0 * 10)) / total, 9); // 95
-    // Who can enter BBB: AAA visa-free (10), CCC visa-on-arrival (0.8 x 10), BBB itself (80).
-    expect(o.BBB.score).toBeCloseTo((100 * (1.0 * 10 + 0.8 * 10 + 1.0 * 80)) / total, 9); // 98
-    // Who can enter CCC: AAA visa-required (0), BBB visa-free (80), CCC itself (10).
-    expect(o.CCC.score).toBeCloseTo((100 * (0 * 10 + 1.0 * 80 + 1.0 * 10)) / total, 9); // 90
+    // Who can enter AAA: BBB visa-free (80), CCC e-visa (0 x 30). Pool excludes AAA's own 10.
+    expect(o.AAA.score).toBeCloseTo((100 * (1.0 * 80 + 0 * 30)) / 110, 9); // 72.73
+    // Who can enter BBB: AAA visa-free (10), CCC visa-on-arrival (1.0 x 30). Pool = 40.
+    expect(o.BBB.score).toBeCloseTo((100 * (1.0 * 10 + 1.0 * 30)) / 40, 9); // 100
+    // Who can enter CCC: AAA visa-required (0), BBB visa-free (80). Pool = 90.
+    expect(o.CCC.score).toBeCloseTo((100 * (0 * 10 + 1.0 * 80)) / 90, 9); // 88.89
   });
 
-  it('scores exactly 100 when every passport is visa-free', () => {
+  it('scores exactly 100 when every foreign passport is visa-free', () => {
     const openCsv = [
       'Passport,AAA,BBB',
       'AAA,-1,visa free',
@@ -42,41 +41,41 @@ describe('computeOpenness', () => {
     expect(o.BBB.score).toBeCloseTo(100, 9);
   });
 
-  it("floors at the destination's own population share when it admits no one else", () => {
+  it('scores exactly 0 when it admits no foreign passport', () => {
     const closedCsv = [
       'Passport,AAA,BBB',
       'AAA,-1,visa required',
       'BBB,visa required,-1',
     ].join('\n');
     const o = byIso(computeOpenness(parseVisaMatrix(closedCsv), new Map([['AAA', 3], ['BBB', 7]]), new Map()));
-    expect(o.AAA.score).toBeCloseTo(30, 9);
-    expect(o.BBB.score).toBeCloseTo(70, 9);
+    expect(o.AAA.score).toBe(0);
+    expect(o.BBB.score).toBe(0);
   });
 
-  it('computes the equal-weight baseline over every passport including self', () => {
+  it('computes the equal-weight baseline over the foreign passports only', () => {
     const o = byIso(computeOpenness(matrix, pops, names));
-    // AAA: free(1.0) + e-visa(0.5) + self(1.0) = 2.5 of 3
-    expect(o.AAA.equalScore).toBeCloseTo((100 * 2.5) / 3, 9);
-    // BBB: free(1.0) + voa(0.8) + self(1.0) = 2.8 of 3
-    expect(o.BBB.equalScore).toBeCloseTo((100 * 2.8) / 3, 9);
-    // CCC: required(0) + free(1.0) + self(1.0) = 2.0 of 3
-    expect(o.CCC.equalScore).toBeCloseTo((100 * 2) / 3, 9);
+    // AAA: free(1.0) + e-visa(0) = 1.0 of 2
+    expect(o.AAA.equalScore).toBeCloseTo((100 * 1) / 2, 9);
+    // BBB: free(1.0) + voa(1.0) = 2.0 of 2
+    expect(o.BBB.equalScore).toBeCloseTo(100, 9);
+    // CCC: required(0) + free(1.0) = 1.0 of 2
+    expect(o.CCC.equalScore).toBeCloseTo((100 * 1) / 2, 9);
   });
 
   it('ranks densely and sets delta = equalRank - rank', () => {
     const rows = computeOpenness(matrix, pops, names);
     const o = byIso(rows);
-    // weighted: BBB 98 > AAA 95 > CCC 90
-    expect([o.BBB.rank, o.AAA.rank, o.CCC.rank]).toEqual([1, 2, 3]);
-    // equal:    BBB 93.3 > AAA 83.3 > CCC 66.7
-    expect([o.BBB.equalRank, o.AAA.equalRank, o.CCC.equalRank]).toEqual([1, 2, 3]);
+    // weighted: BBB 100 > CCC 88.9 > AAA 72.7 (AAA's only foreign admission is a dead eVisa)
+    expect([o.BBB.rank, o.CCC.rank, o.AAA.rank]).toEqual([1, 2, 3]);
+    // equal:    BBB 100 > {AAA, CCC} 50 — tied, both admit one of two foreign passports
+    expect([o.BBB.equalRank, o.AAA.equalRank, o.CCC.equalRank]).toEqual([1, 2, 2]);
     for (const r of rows) expect(r.delta).toBe(r.equalRank - r.rank);
-    // returned sorted by rank
-    expect(rows.map((r) => r.iso3)).toEqual(['BBB', 'AAA', 'CCC']);
+    // returned sorted by rank, then name
+    expect(rows.map((r) => r.iso3)).toEqual(['BBB', 'CCC', 'AAA']);
   });
 
   it('gives tied destinations the same rank with no gap after (dense ranking)', () => {
-    // AAA and BBB are both visa-free to everyone; CCC admits no one but itself.
+    // AAA and BBB are both visa-free to everyone; CCC admits no one.
     const tieCsv = [
       'Passport,AAA,BBB,CCC',
       'AAA,-1,visa free,visa required',
@@ -89,13 +88,13 @@ describe('computeOpenness', () => {
     expect(o.CCC.rank).toBe(2); // next distinct score takes the NEXT integer, not 3
   });
 
-  it('counts every passport exactly once, with self in the visa-free tier', () => {
+  it('counts every foreign passport exactly once and never the destination itself', () => {
     const o = byIso(computeOpenness(matrix, pops, names));
-    expect(o.AAA.counts).toEqual({ 'visa-free': 2, 'visa-on-arrival': 0, 'e-visa': 1, 'visa-required': 0 });
-    expect(o.CCC.counts).toEqual({ 'visa-free': 2, 'visa-on-arrival': 0, 'e-visa': 0, 'visa-required': 1 });
+    expect(o.AAA.counts).toEqual({ 'visa-free': 1, 'visa-on-arrival': 0, 'e-visa': 1, 'visa-required': 0 });
+    expect(o.CCC.counts).toEqual({ 'visa-free': 1, 'visa-on-arrival': 0, 'e-visa': 0, 'visa-required': 1 });
     for (const r of Object.values(o)) {
       const sum = Object.values(r.counts).reduce((a, b) => a + b, 0);
-      expect(sum).toBe(3);
+      expect(sum).toBe(2); // 3 countries, minus the destination itself
     }
   });
 
@@ -106,8 +105,8 @@ describe('computeOpenness', () => {
       expect(sum).toBeCloseTo(r.score, 9);
     }
     const o = byIso(rows);
-    expect(o.AAA.points['visa-free']).toBeCloseTo((100 * (80 + 10)) / total, 9); // BBB + self
-    expect(o.AAA.points['e-visa']).toBeCloseTo((100 * 0.5 * 10) / total, 9);
+    expect(o.AAA.points['visa-free']).toBeCloseTo((100 * 80) / 110, 9); // BBB only, no self
+    expect(o.AAA.points['e-visa']).toBe(0); // eVisa carries no credit under the binary ladder
     expect(o.AAA.points['visa-required']).toBe(0);
   });
 

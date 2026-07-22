@@ -1,12 +1,13 @@
 import { CREDIT } from './ingest.ts';
 import type { AccessCategory, DestinationWeight, PassportRow, VisaMatrix } from './types.ts';
 
-// Graded credits in an EXACT integer domain (tenths) for equal-weight ranking, so
+// The same credits in an EXACT integer domain (tenths) for equal-weight ranking, so
 // mathematically-tied passports compare equal instead of being split by float 1-ulp drift (B1).
+// Must stay in lockstep with CREDIT (ingest.ts) — see the binary-ladder note there.
 export const CREDIT_TENTHS: Record<AccessCategory, number> = {
   'visa-free': 10,
-  'visa-on-arrival': 8,
-  'e-visa': 5,
+  'visa-on-arrival': 10,
+  'e-visa': 0,
   'visa-required': 0,
 };
 
