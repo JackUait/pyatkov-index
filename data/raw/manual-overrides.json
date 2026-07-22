@@ -6,7 +6,8 @@
     "arrivals": 6487000,
     "hdi": 0.925,
     "migrants": 841627,
-    "source": "GDP: IMF World Economic Outlook (Oct 2025), 2024 nominal current US$ (Taiwan Province of China; ~US$801.5bn); arrivals: Taiwan Tourism Administration 2023; HDI: DGBAS national calculation (UNDP methodology), 2022 value 0.925; migrants: NIA foreign residents (ARC holders), year-end Dec 2023 (841,627)."
+    "population": 23400000,
+    "source": "GDP: IMF World Economic Outlook (Oct 2025), 2024 nominal current US$ (Taiwan Province of China; ~US$801.5bn); arrivals: Taiwan Tourism Administration 2023; HDI: DGBAS national calculation (UNDP methodology), 2022 value 0.925; migrants: NIA foreign residents (ARC holders), year-end Dec 2023 (841,627). Population: Taiwan is absent from the World Bank series SP.POP.TOTL; ~23.4 million per Ministry of the Interior household registration statistics (2025)."
   },
   "PRK": {
     "name": "North Korea",
@@ -20,6 +21,7 @@
     "iso2": "VA",
     "gdp": 1430000000,
     "arrivals": 7000000,
-    "source": "GDP: PROXY (Vatican/Holy See has no national-accounts GDP). Holy See 2024 consolidated total operating income of EUR 1.23bn (~US$1.43bn), used as a clearly-labeled revenue proxy for economic output — Secretariat for the Economy, Holy See Consolidated Financial Statements 2024 (published 26 Nov 2025). Arrivals: ~7 million Vatican Museums/tourist visitors, pre-pandemic-recovery level. HDI/migrant stock: not computed by UNDP/World Bank for the Holy See (population ~880, not a UN member state)."
+    "population": 882,
+    "source": "Population: the Holy See is absent from the World Bank series SP.POP.TOTL; ~882 residents (Vatican City State resident population, 2023). GDP: PROXY (Vatican/Holy See has no national-accounts GDP). Holy See 2024 consolidated total operating income of EUR 1.23bn (~US$1.43bn), used as a clearly-labeled revenue proxy for economic output — Secretariat for the Economy, Holy See Consolidated Financial Statements 2024 (published 26 Nov 2025). Arrivals: ~7 million Vatican Museums/tourist visitors, pre-pandemic-recovery level. HDI/migrant stock: not computed by UNDP/World Bank for the Holy See (population ~880, not a UN member state)."
   }
 }

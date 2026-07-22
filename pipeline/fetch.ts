@@ -15,6 +15,10 @@ export const WB_LATEST = (indicator: string) =>
 export const WB_ARRIVALS =
   'https://api.worldbank.org/v2/country/all/indicator/ST.INT.ARVL?format=json&per_page=20000&date=2017:2019';
 
+// Population: the openness rating's denominator. SP.POP.TOTL is TOTAL population —
+// deliberately not SM.POP.TOTL (international migrant stock), which is a weight signal.
+export const WB_POPULATION_SERIES = 'SP.POP.TOTL';
+
 // D1: maintained successor of the archived ilyankou dataset (default branch `main`).
 export const MATRIX_URL =
   'https://raw.githubusercontent.com/imorte/passport-index-data/main/passport-index-matrix-iso3.csv';
@@ -51,6 +55,7 @@ async function main(): Promise<void> {
   const gdpBody = await save('gdp.json', WB_LATEST('NY.GDP.MKTP.CD'));
   await save('arrivals.json', WB_ARRIVALS); // D2
   await save('migrants.json', WB_LATEST('SM.POP.TOTL'));
+  await save('population.json', WB_LATEST(WB_POPULATION_SERIES)); // openness denominator
   await save('hdi.csv', HDI_URL, 'latin1'); // D4 + B4
 
   // countries.json: iso3 -> { name, iso2 } from the World Bank GDP response.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { WB_LATEST, WB_ARRIVALS, MATRIX_URL, HDI_URL, decodeLatin1 } from '../fetch.ts';
+import { WB_LATEST, WB_ARRIVALS, WB_POPULATION_SERIES, MATRIX_URL, HDI_URL, decodeLatin1 } from '../fetch.ts';
 
 describe('World Bank URL builders', () => {
   it('WB_LATEST pins latest-per-country (mrnev=1) for GDP/migrants', () => {
@@ -16,6 +16,16 @@ describe('World Bank URL builders', () => {
     // guard against reintroducing COVID-only vintages
     expect(WB_ARRIVALS).not.toContain('date=2020');
     expect(WB_ARRIVALS).not.toContain('date=2021');
+  });
+
+  it('population uses the total-population series, latest per country, never the migrant-stock series', () => {
+    const url = WB_LATEST(WB_POPULATION_SERIES);
+    expect(WB_POPULATION_SERIES).toBe('SP.POP.TOTL');
+    // SM.POP.TOTL is international migrant stock and is already used as a weight
+    // signal; confusing the two would silently corrupt the openness denominator.
+    expect(WB_POPULATION_SERIES).not.toBe('SM.POP.TOTL');
+    expect(url).toContain('/indicator/SP.POP.TOTL');
+    expect(url).toContain('mrnev=1');
   });
 });
 
