@@ -44,7 +44,7 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
     <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   </div>
   <div class="table-scroll">
-  <table id="rankings">
+  <table id="rankings" class="rank-table">
     <thead>
       <tr>
         <th scope="col" data-sort="rank" aria-sort="ascending" tabindex="0">#</th>
@@ -71,65 +71,14 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
   </div>
 
   <script>
-    const input = document.getElementById('filter') as HTMLInputElement;
-    const tbody = document.querySelector('#rankings tbody')!;
-    const rows = [...tbody.querySelectorAll('tr')];
+    import { initSortableTable } from '../lib/table-ui.ts';
 
-    const noResults = document.getElementById('no-results')!;
-    input.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      // B8: match the full search blob (display name + iso3/iso2 + aliases),
-      // so "Palestine", "Turkey", "South Korea", "kor", etc. all resolve.
-      let visible = 0;
-      for (const r of rows) {
-        const hide = !r.dataset.search!.includes(q);
-        (r as HTMLElement).hidden = hide;
-        if (!hide) visible++;
-      }
-      noResults.hidden = visible > 0;
-    });
-
-    const DEFAULT_ASC: Record<string, boolean> = {
-      rank: true,
-      equalrank: true,
-      name: true,
-      score: false,
-      delta: false,
-    };
-
-    const headers = [...document.querySelectorAll('th[data-sort]')] as HTMLElement[];
-    let sortKey = 'rank';
-    let asc = true;
-
-    headers.forEach((th) => {
-      th.addEventListener('click', () => {
-        const key = th.dataset.sort!;
-        const lowerKey = key.toLowerCase();
-        asc = key === sortKey ? !asc : DEFAULT_ASC[lowerKey];
-        sortKey = key;
-        const val = (r: Element) =>
-          key === 'name' ? r.getAttribute('data-name')! : parseFloat(r.getAttribute(`data-${lowerKey}`)!);
-        rows
-          .sort((a, b) => {
-            const [x, y] = [val(a), val(b)];
-            return (x < y ? -1 : x > y ? 1 : 0) * (asc ? 1 : -1);
-          })
-          .forEach((r) => tbody.appendChild(r));
-
-        headers.forEach((h) => h.removeAttribute('aria-sort'));
-        th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
-      });
-    });
-
-    // Keyboard operability: Enter/Space on a focused header triggers the same
-    // click handler above. Additive only — does not touch the sort logic.
-    headers.forEach((th) => {
-      th.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          th.click();
-        }
-      });
+    initSortableTable({
+      table: '#rankings',
+      filter: '#filter',
+      noResults: '#no-results',
+      initialSort: 'rank',
+      defaultAsc: { rank: true, equalrank: true, name: true, score: false, delta: false },
     });
   </script>
 </Base>

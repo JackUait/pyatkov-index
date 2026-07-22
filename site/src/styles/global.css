@@ -486,10 +486,10 @@ th[aria-sort='descending']::after { content: '\2193'; color: var(--color-ink); }
 th[aria-sort] { color: var(--color-ink); }
 
 /* Numeric cells: tabular figures, right-aligned */
-#rankings td:nth-child(1), #rankings th:nth-child(1),
-#rankings td:nth-child(3), #rankings th:nth-child(3),
-#rankings td:nth-child(4), #rankings th:nth-child(4),
-#rankings td:nth-child(5), #rankings th:nth-child(5),
+.rank-table td:nth-child(1), .rank-table th:nth-child(1),
+.rank-table td:nth-child(3), .rank-table th:nth-child(3),
+.rank-table td:nth-child(4), .rank-table th:nth-child(4),
+.rank-table td:nth-child(5), .rank-table th:nth-child(5),
 .weights-table td:nth-child(1), .weights-table th:nth-child(1),
 .weights-table td:nth-child(n+3), .weights-table th:nth-child(n+3),
 .tier-table td:nth-child(2), .tier-table th:nth-child(2),
@@ -499,12 +499,20 @@ th[aria-sort] { color: var(--color-ink); }
   font-variant-numeric: tabular-nums;
 }
 
-#rankings td:nth-child(1),
-#rankings td:nth-child(5) { color: var(--color-stone); }
+.rank-table td:nth-child(1),
+.rank-table td:nth-child(5) { color: var(--color-stone); }
+
+/* Per-destination access table: passport rank + score are the numeric columns. */
+.access-table td:nth-child(3), .access-table th:nth-child(3),
+.access-table td:nth-child(4), .access-table th:nth-child(4) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.access-table td:nth-child(3) { color: var(--color-stone); }
 
 /* Score cell: the value, grounded by a thin magnitude bar in marigold, the
    warm accent the reference reserves for callouts. */
-#rankings td.score-cell {
+.rank-table td.score-cell {
   min-width: 136px;
   font-weight: 600;
 }
@@ -781,7 +789,7 @@ footer {
      yields, cells tighten, and the score bar narrows. */
   #rankings th:nth-child(5), #rankings td:nth-child(5) { display: none; }
   #rankings td:nth-child(2) { white-space: normal; }
-  #rankings td.score-cell { min-width: 76px; }
+  .rank-table td.score-cell { min-width: 76px; }
   thead th, tbody td, tfoot th, tfoot td { padding-left: 10px; padding-right: 10px; }
 }
 
