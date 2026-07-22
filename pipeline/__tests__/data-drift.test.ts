@@ -79,3 +79,9 @@ describe('B3 process gate is wired into package.json + CI', () => {
     expect(pkg.scripts['typecheck-all']).toMatch(/tsc --noEmit.*cd site.*yarn typecheck/s);
   });
 });
+
+describe('DATA_FILES covers every generated file', () => {
+  it('includes openness.json so a corrupted openness rating cannot ship stale', () => {
+    expect(DATA_FILES).toContain('openness.json');
+  });
+});

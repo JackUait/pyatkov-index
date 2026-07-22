@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { buildMetadata, hdiLatestYear, sanityGuards, wbYearSummary } from '../build.ts';
+import { buildMetadata, hdiLatestYear, opennessGuards, sanityGuards, wbYearSummary } from '../build.ts';
 import { parseVisaMatrix } from '../ingest.ts';
 import { loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from '../signals.ts';
 import { computeWeights } from '../weights.ts';
@@ -113,6 +113,7 @@ describe('buildMetadata (B9 — honest labels + per-signal vintages)', () => {
     totalDestinations: matrix.countries.length,
     gdpBody,
     migrantsBody,
+    populationBody: read('population.json'),
     hdiCsv,
     arrivalsByIso,
   });
@@ -124,7 +125,11 @@ describe('buildMetadata (B9 — honest labels + per-signal vintages)', () => {
   });
 
   it('discloses a per-signal vintage for every signal', () => {
-    expect(Object.keys(meta.vintages).sort()).toEqual(['arrivals', 'gdp', 'hdi', 'matrix', 'migrants']);
+    expect(Object.keys(meta.vintages).sort()).toEqual(['arrivals', 'gdp', 'hdi', 'matrix', 'migrants', 'population']);
+    // Population is the openness denominator, not a weight signal: SP.POP.TOTL,
+    // never SM.POP.TOTL (which is the migrant-stock weight signal).
+    expect(meta.vintages.population.series).toBe('SP.POP.TOTL');
+    expect(meta.vintages.migrants.series).toBe('SM.POP.TOTL');
     // HDI comes from the HDR 2025 file, whose latest composite column is hdi_2023.
     expect(meta.vintages.hdi.year).toBe(2023);
     // Arrivals are a single pre-COVID year per country, preferring 2019.
@@ -161,5 +166,45 @@ describe('hdiLatestYear (HDR column-year disclosure)', () => {
   it('reads the latest hdi_<year> column from the HDR header', () => {
     const csv = 'iso3,country,hdi_2021,hdi_2022,hdi_2023,hdi_m_2023\nXXX,Foo,0.5,0.6,0.7,0.7\n';
     expect(hdiLatestYear(csv)).toBe(2023);
+  });
+});
+
+describe('opennessGuards', () => {
+  const d = (iso3: string, score: number) => ({
+    iso3,
+    name: iso3,
+    score,
+    rank: 1,
+    equalScore: score,
+    equalRank: 1,
+    delta: 0,
+    counts: { 'visa-free': 1, 'visa-on-arrival': 0, 'e-visa': 0, 'visa-required': 0 },
+    points: { 'visa-free': score, 'visa-on-arrival': 0, 'e-visa': 0, 'visa-required': 0 },
+  });
+  // A pool that satisfies face validity: TUR near the top, PRK at the bottom.
+  const ok = [d('TUR', 90), ...Array.from({ length: 20 }, (_, i) => d(`X${i}`, 80 - i)), d('PRK', 5)];
+
+  it('accepts a face-valid pool', () => {
+    expect(() => opennessGuards(ok)).not.toThrow();
+  });
+
+  it('throws on a score outside [0, 100]', () => {
+    expect(() => opennessGuards([...ok, d('ZZZ', 101)])).toThrow(/out of range/);
+  });
+
+  it('throws when the per-tier points do not sum to the score', () => {
+    const broken = d('YYY', 50);
+    broken.points['visa-free'] = 10;
+    expect(() => opennessGuards([...ok, broken])).toThrow(/points/);
+  });
+
+  it('throws when no broadly-open destination reaches the top of the ranking', () => {
+    const noneOpen = ok.map((r) => (r.iso3 === 'TUR' ? d('QQQ', 90) : r));
+    expect(() => opennessGuards(noneOpen)).toThrow(/most open/);
+  });
+
+  it('throws when North Korea is not in the least-open quartile', () => {
+    const prkOnTop = [d('PRK', 99), ...ok.filter((r) => r.iso3 !== 'PRK')];
+    expect(() => opennessGuards(prkOnTop)).toThrow(/PRK/);
   });
 });

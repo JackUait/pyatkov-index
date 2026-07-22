@@ -2,10 +2,11 @@ import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseVisaMatrix } from './ingest.ts';
-import { loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from './signals.ts';
+import { loadPopulations, loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from './signals.ts';
 import { computeWeights } from './weights.ts';
 import { computeScores } from './scores.ts';
-import type { DestinationWeight, PassportRow } from './types.ts';
+import { computeOpenness } from './openness.ts';
+import type { DestinationOpenness, DestinationWeight, PassportRow } from './types.ts';
 
 const RAW = join(import.meta.dirname, '..', 'data', 'raw');
 const OUT = join(import.meta.dirname, '..', 'site', 'src', 'data');
@@ -72,6 +73,53 @@ export function sanityGuards(weights: DestinationWeight[], rows: PassportRow[], 
 }
 
 // ---------------------------------------------------------------------------
+// Openness guards. Same contract as sanityGuards: throw rather than publish.
+// Face validity is asserted against MEMBERSHIP in generous candidate lists, not
+// exact positions, so an upstream data refresh that reshuffles neighbours does
+// not fail the build while a formula corruption still does.
+// ---------------------------------------------------------------------------
+
+// Destinations that admit most of the world with no prior visa (visa-free, visa
+// on arrival, or eVisa). At least one must rank in the top 15.
+const BROADLY_OPEN = [
+  'TUR', 'MYS', 'IDN', 'THA', 'RWA', 'ETH', 'KEN', 'TZA', 'UGA', 'MDV', 'QAT',
+  'ALB', 'GEO', 'ARM', 'CPV', 'JOR', 'EGY', 'LKA', 'NPL', 'KHM', 'LAO', 'BOL',
+];
+
+export function opennessGuards(openness: DestinationOpenness[]): void {
+  // 1. Bounded credit-share: finite and within [0, 100].
+  for (const d of openness) {
+    if (!Number.isFinite(d.score) || d.score < 0 || d.score > 100) {
+      throw new Error(`openness out of range for ${d.iso3}: ${d.score}`);
+    }
+  }
+
+  // 2. The per-tier split must reconstruct the score exactly (float tolerance).
+  for (const d of openness) {
+    const sum = Object.values(d.points).reduce((a, b) => a + b, 0);
+    if (Math.abs(sum - d.score) > 1e-9) {
+      throw new Error(`openness points for ${d.iso3} sum to ${sum}, not the score ${d.score}`);
+    }
+  }
+
+  // 3. Face validity, open end: at least one broadly-visa-free destination must
+  //    rank in the top 15. If none does, the inversion or the credits are wrong.
+  const top15 = openness.slice(0, 15).map((d) => d.iso3);
+  if (!BROADLY_OPEN.some((c) => top15.includes(c))) {
+    throw new Error(`most open destinations look wrong: ${top15.join(', ')}`);
+  }
+
+  // 4. Face validity, closed end: North Korea admits essentially no one and must
+  //    sit in the least-open quartile.
+  const prkIdx = openness.findIndex((d) => d.iso3 === 'PRK');
+  if (prkIdx === -1 || prkIdx < Math.floor(openness.length * 0.75)) {
+    throw new Error(
+      `PRK openness rank ${prkIdx === -1 ? 'absent' : prkIdx + 1} of ${openness.length} — openness looks broken`,
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Vintage disclosure (B9). The pipeline run date is a BUILD date, not the data
 // vintage; publish each signal's own observation year(s) instead of one label.
 // ---------------------------------------------------------------------------
@@ -80,6 +128,7 @@ export interface SignalVintages {
   gdp: { series: string; label: string; selection: string; years: string; modalYear: number };
   arrivals: { series: string; label: string; window: string; preferredYear: number; yearsUsed: string };
   migrants: { series: string; label: string; selection: string; years: string; modalYear: number };
+  population: { series: string; label: string; selection: string; years: string; modalYear: number };
   hdi: { source: string; year: number };
 }
 
@@ -118,11 +167,13 @@ export function buildMetadata(opts: {
   totalDestinations: number;
   gdpBody: string;
   migrantsBody: string;
+  populationBody: string;
   hdiCsv: string;
   arrivalsByIso: Map<string, { value: number; year: number }>;
 }): BuildMetadata {
   const gdp = wbYearSummary(opts.gdpBody);
   const migrants = wbYearSummary(opts.migrantsBody);
+  const population = wbYearSummary(opts.populationBody);
   const arrivalYears = [...opts.arrivalsByIso.values()].map((a) => a.year);
   const arrMin = Math.min(...arrivalYears);
   const arrMax = Math.max(...arrivalYears);
@@ -157,6 +208,13 @@ export function buildMetadata(opts: {
         selection: 'latest available per country',
         years: migrants.min === migrants.max ? `${migrants.min}` : `${migrants.min}–${migrants.max}`,
         modalYear: migrants.modal,
+      },
+      population: {
+        series: 'SP.POP.TOTL',
+        label: 'Population, total',
+        selection: 'latest available per country',
+        years: population.min === population.max ? `${population.min}` : `${population.min}–${population.max}`,
+        modalYear: population.modal,
       },
       hdi: {
         source: 'UNDP Human Development Report 2025',
@@ -208,10 +266,17 @@ function main(): void {
   const weights = computeWeights(signals, names);
   const rows = computeScores(matrix, weights, names);
 
+  // The openness rating: the same matrix inverted, weighted by the people behind
+  // each passport instead of the value of each destination.
+  const populationBody = read('population.json');
+  const populations = loadPopulations(matrix.countries, parseWorldBankJson(populationBody), overrides);
+  const openness = computeOpenness(matrix, populations, names);
+
   // Fail the build rather than publish nonsense.
   sanityGuards(weights, rows, matrix.countries.length);
+  opennessGuards(openness);
 
-  const meta = buildMetadata({ totalDestinations: matrix.countries.length, gdpBody, migrantsBody, hdiCsv, arrivalsByIso });
+  const meta = buildMetadata({ totalDestinations: matrix.countries.length, gdpBody, migrantsBody, populationBody, hdiCsv, arrivalsByIso });
 
   mkdirSync(OUT, { recursive: true });
   const withIso2 = <T extends { iso3: string }>(r: T) => ({ ...r, iso2: countries[r.iso3].iso2 });
@@ -227,11 +292,13 @@ function main(): void {
   const matrixOut: Record<string, Record<string, string>> = {};
   for (const [p, row] of matrix.access) matrixOut[p] = Object.fromEntries(row);
   writeFileSync(join(OUT, 'matrix.json'), JSON.stringify(matrixOut));
+  writeFileSync(join(OUT, 'openness.json'), JSON.stringify({ destinations: openness.map(withIso2) }, null, 1));
 
   console.log(`${rows.length} passports scored over ${matrix.countries.length} destinations`);
   console.log('top 5:', rows.slice(0, 5).map((r) => `${r.iso3} ${r.score.toFixed(1)}`).join('  '));
   console.log('biggest risers:', [...rows].sort((a, b) => b.delta - a.delta).slice(0, 3).map((r) => `${r.iso3} +${r.delta}`).join('  '));
   console.log('biggest fallers:', [...rows].sort((a, b) => a.delta - b.delta).slice(0, 3).map((r) => `${r.iso3} ${r.delta}`).join('  '));
+  console.log('most open:', openness.slice(0, 5).map((d) => `${d.iso3} ${d.score.toFixed(1)}`).join('  '));
 }
 
 // Only run the pipeline side-effects when executed directly (not when imported by tests).

@@ -27,6 +27,13 @@
    "years": "2024",
    "modalYear": 2024
   },
+  "population": {
+   "series": "SP.POP.TOTL",
+   "label": "Population, total",
+   "selection": "latest available per country",
+   "years": "2025",
+   "modalYear": 2025
+  },
   "hdi": {
    "source": "UNDP Human Development Report 2025",
    "year": 2023

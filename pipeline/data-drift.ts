@@ -8,8 +8,8 @@
 // the network; the CLI wrapper is pipeline/check-data-drift.ts.
 // ---------------------------------------------------------------------------
 
-/** The three files `yarn pipeline` writes into site/src/data. */
-export const DATA_FILES = ['rankings.json', 'weights.json', 'matrix.json'] as const;
+/** The four files `yarn pipeline` writes into site/src/data. */
+export const DATA_FILES = ['rankings.json', 'weights.json', 'matrix.json', 'openness.json'] as const;
 
 /** Top-level metadata that is expected to change every build and is NOT drift. */
 const VOLATILE_KEYS = ['builtAt', 'generatedAt'] as const;
