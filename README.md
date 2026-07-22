@@ -15,8 +15,8 @@ eTA as fully open and eVisas as closed. "The world" here means the 199 sovereign
 and SAR destinations in the upstream matrix; dependent territories with their own visa
 regimes (Puerto Rico, Gibraltar, the Faroes, and ~17 others) are out of scope, inherited
 from the upstream dataset, so the "share of the world's value" is measured over that
-denominator rather than every visa-issuing entity on earth. The signature output is the **Δ vs count**
-column: how far each passport rises or falls versus its **Count rank** — a naive ranking that treats
+denominator rather than every visa-issuing entity on earth. Each passport's page also carries the
+**Δ from weighting**: how far it rises or falls versus its **Count rank** — a naive ranking that treats
 every destination as worth one, i.e. a plain "how many places can you go" count. That delta is the whole
 argument of the index made visible in a single number.
 
