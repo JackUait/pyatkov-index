@@ -10,6 +10,7 @@ const norm = (p: string) => p.replace(/\/+$/, '') || '/';
 const here = norm(Astro.url.pathname);
 const nav = [
   { href: base, label: 'Rankings' },
+  { href: `${base}openness/`, label: 'Openness' },
   { href: `${base}destinations/`, label: 'Destinations' },
   { href: `${base}methodology/`, label: 'Methodology' },
 ];
