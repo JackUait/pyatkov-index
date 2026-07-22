@@ -19,9 +19,17 @@ jobs:
         with: { node-version: 22 }
       - run: corepack enable
       - run: yarn install --immutable
+      - run: yarn install --immutable
+        working-directory: site
+      # Type-check the pipeline (tsc) AND the site (astro check) — B7.
+      - run: yarn typecheck-all
       - run: yarn test
+      # B3 (process-level): regenerate the published data and fail the build if
+      # the committed site/src/data/*.json has drifted from a fresh pipeline run
+      # (the build date aside), so stale/corrupt numbers can never ship.
       - run: yarn pipeline
-      - run: yarn install --immutable && yarn build
+      - run: yarn check-data-drift
+      - run: yarn build
         working-directory: site
         env:
           BASE_PATH: /${{ github.event.repository.name }}/

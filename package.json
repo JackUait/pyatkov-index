@@ -8,7 +8,10 @@
     "pipeline": "tsx pipeline/build.ts",
     "serve": "cd site && yarn serve",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "typecheck-all": "tsc --noEmit && cd site && yarn typecheck",
+    "check-data-drift": "tsx pipeline/check-data-drift.ts",
+    "verify": "yarn typecheck-all && yarn test && yarn pipeline && yarn check-data-drift"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

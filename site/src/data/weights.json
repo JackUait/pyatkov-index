@@ -3,18 +3,18 @@
   {
    "iso3": "USA",
    "name": "United States",
-   "weight": 0.9587560754746014,
+   "weight": 14.221210979097753,
    "signals": {
     "gdp": 30769700000000,
-    "arrivals": 45037000,
-    "hdi": 0.927,
+    "arrivals": 165478000,
+    "hdi": 0.938,
     "migrants": 52375047
    },
    "normalized": {
-    "gdp": 1,
-    "arrivals": 0.9080243018984057,
-    "migrants": 1,
-    "hdi": 0.927
+    "gdp": 2.741361070640054,
+    "arrivals": 2.0419997865934914,
+    "migrants": 2.415537404515795,
+    "hdi": 1.2962523975251175
    },
    "signalsUsed": 4,
    "iso2": "US"
@@ -22,18 +22,18 @@
   {
    "iso3": "FRA",
    "name": "France",
-   "weight": 0.9032278768208056,
+   "weight": 8.291202136996299,
    "signals": {
     "gdp": 3366315927447.33,
-    "arrivals": 117109000,
-    "hdi": 0.91,
+    "arrivals": 217877000,
+    "hdi": 0.92,
     "migrants": 9186757
    },
    "normalized": {
-    "gdp": 0.8447912625892934,
-    "arrivals": 1,
-    "migrants": 0.858120244693929,
-    "hdi": 0.91
+    "gdp": 1.7922434394383975,
+    "arrivals": 2.175183256587949,
+    "migrants": 1.6238351859366302,
+    "hdi": 1.1773620192476588
    },
    "signalsUsed": 4,
    "iso2": "FR"
@@ -41,56 +41,56 @@
   {
    "iso3": "DEU",
    "name": "Germany",
-   "weight": 0.8786489241832349,
+   "weight": 7.983205304354818,
    "signals": {
     "gdp": 5050922925047.05,
-    "arrivals": 12449000,
-    "hdi": 0.95,
+    "arrivals": 39563000,
+    "hdi": 0.959,
     "migrants": 16750084
    },
    "normalized": {
-    "gdp": 0.8732523887812307,
-    "arrivals": 0.7842655760568013,
-    "migrants": 0.9070777318949076,
-    "hdi": 0.95
+    "gdp": 1.9662861971031447,
+    "arrivals": 1.3492214439139207,
+    "migrants": 1.8970225138218604,
+    "hdi": 1.4349578388488202
    },
    "signalsUsed": 4,
    "iso2": "DE"
   },
   {
-   "iso3": "CAN",
-   "name": "Canada",
-   "weight": 0.8711905462880435,
+   "iso3": "GBR",
+   "name": "United Kingdom",
+   "weight": 7.206264485404907,
    "signals": {
-    "gdp": 2319899772425.92,
-    "arrivals": 32430000,
-    "hdi": 0.935,
-    "migrants": 8805839
+    "gdp": 4002587541846.01,
+    "arrivals": 40857000,
+    "hdi": 0.946,
+    "migrants": 11845479
    },
    "normalized": {
-    "gdp": 0.818676953527637,
-    "arrivals": 0.876416720156068,
-    "migrants": 0.8546685114684687,
-    "hdi": 0.935
+    "gdp": 1.8665022058910885,
+    "arrivals": 1.3648029479807244,
+    "migrants": 1.7394445689601108,
+    "hdi": 1.349092565648433
    },
    "signalsUsed": 4,
-   "iso2": "CA"
+   "iso2": "GB"
   },
   {
    "iso3": "ESP",
    "name": "Spain",
-   "weight": 0.8646831082310374,
+   "weight": 7.009192322664486,
    "signals": {
     "gdp": 1906453309985.88,
-    "arrivals": 36410000,
-    "hdi": 0.911,
+    "arrivals": 126170000,
+    "hdi": 0.918,
     "migrants": 8870527
    },
    "normalized": {
-    "gdp": 0.8049091063321512,
-    "arrivals": 0.887558236982058,
-    "migrants": 0.8552650896099404,
-    "hdi": 0.911
+    "gdp": 1.5483598907060314,
+    "arrivals": 1.9106969017127353,
+    "migrants": 1.607903155256812,
+    "hdi": 1.1641519772168298
    },
    "signalsUsed": 4,
    "iso2": "ES"
@@ -98,208 +98,208 @@
   {
    "iso3": "ITA",
    "name": "Italy",
-   "weight": 0.8636681097475752,
+   "weight": 6.6510671889028,
    "signals": {
     "gdp": 2551556954100.35,
-    "arrivals": 38419000,
-    "hdi": 0.906,
+    "arrivals": 95399000,
+    "hdi": 0.915,
     "migrants": 6553671
    },
    "normalized": {
-    "gdp": 0.825353255624122,
-    "arrivals": 0.8927275388307605,
-    "migrants": 0.8305916445354187,
-    "hdi": 0.906
+    "gdp": 1.673377997751014,
+    "arrivals": 1.775349477326634,
+    "migrants": 1.4702230389967432,
+    "hdi": 1.1443369141705866
    },
    "signalsUsed": 4,
    "iso2": "IT"
   },
   {
-   "iso3": "GBR",
-   "name": "United Kingdom",
-   "weight": 0.8622520898936451,
+   "iso3": "CAN",
+   "name": "Canada",
+   "weight": 6.112266580196225,
    "signals": {
-    "gdp": 4002587541846.01,
-    "arrivals": 11101000,
-    "hdi": 0.94,
-    "migrants": 11845479
+    "gdp": 2319899772425.92,
+    "arrivals": 32430000,
+    "hdi": 0.939,
+    "migrants": 8805839
    },
    "normalized": {
-    "gdp": 0.8569347619869458,
-    "arrivals": 0.7732351704893485,
-    "migrants": 0.878838427098286,
-    "hdi": 0.94
+    "gdp": 1.6325517135049485,
+    "arrivals": 1.252969207868485,
+    "migrants": 1.604574193791238,
+    "hdi": 1.302857418540532
    },
    "signalsUsed": 4,
-   "iso2": "GB"
-  },
-  {
-   "iso3": "SAU",
-   "name": "Saudi Arabia",
-   "weight": 0.8434213205348434,
-   "signals": {
-    "gdp": 1276942933333.33,
-    "arrivals": 20292000,
-    "hdi": 0.875,
-    "migrants": 13683841
-   },
-   "normalized": {
-    "gdp": 0.7767970392578413,
-    "arrivals": 0.8312905879570687,
-    "migrants": 0.8905976549244636,
-    "hdi": 0.875
-   },
-   "signalsUsed": 4,
-   "iso2": "SA"
+   "iso2": "CA"
   },
   {
    "iso3": "CHN",
    "name": "China",
-   "weight": 0.8359529871057534,
+   "weight": 6.094656945013994,
    "signals": {
     "gdp": 19498039388042.6,
-    "arrivals": 30402000,
-    "hdi": 0.788,
+    "arrivals": 162538000,
+    "hdi": 0.797,
     "migrants": 1638718
    },
    "normalized": {
-    "gdp": 0.9679990857900779,
-    "arrivals": 0.8702015150659448,
-    "migrants": 0.7176113475669909,
-    "hdi": 0.788
+    "gdp": 2.5456721397338127,
+    "arrivals": 2.033320867946644,
+    "migrants": 0.8397824833820428,
+    "hdi": 0.36494443435168616
    },
    "signalsUsed": 4,
    "iso2": "CN"
   },
   {
-   "iso3": "POL",
-   "name": "Poland",
-   "weight": 0.8346618714720779,
-   "signals": {
-    "gdp": 1035491784197.44,
-    "arrivals": 88515000,
-    "hdi": 0.881,
-    "migrants": 1739901
-   },
-   "normalized": {
-    "gdp": 0.7620953598584709,
-    "arrivals": 0.973057259493754,
-    "migrants": 0.7224948665360867,
-    "hdi": 0.881
-   },
-   "signalsUsed": 4,
-   "iso2": "PL"
-  },
-  {
-   "iso3": "TUR",
-   "name": "Turkiye",
-   "weight": 0.8231676534256053,
-   "signals": {
-    "gdp": 1597293229287,
-    "arrivals": 15971000,
-    "hdi": 0.855,
-    "migrants": 7083501
-   },
-   "normalized": {
-    "gdp": 0.7924982134522072,
-    "arrivals": 0.8082440206815252,
-    "migrants": 0.836928379568689,
-    "hdi": 0.855
-   },
-   "signalsUsed": 4,
-   "iso2": "TR"
-  },
-  {
-   "iso3": "CHE",
-   "name": "Switzerland",
-   "weight": 0.8173519611268649,
-   "signals": {
-    "gdp": 1043529899250.92,
-    "arrivals": 11818000,
-    "hdi": 0.967,
-    "migrants": 2773840
-   },
-   "normalized": {
-    "gdp": 0.7626377586759115,
-    "arrivals": 0.7792591397696552,
-    "migrants": 0.7605109460618928,
-    "hdi": 0.967
-   },
-   "signalsUsed": 4,
-   "iso2": "CH"
-  },
-  {
-   "iso3": "ARE",
-   "name": "United Arab Emirates",
-   "weight": 0.8115376528810121,
-   "signals": {
-    "gdp": 552324919095.872,
-    "arrivals": 8084000,
-    "hdi": 0.937,
-    "migrants": 8157000
-   },
-   "normalized": {
-    "gdp": 0.7180101029306895,
-    "arrivals": 0.7427105664689955,
-    "migrants": 0.8484299421243635,
-    "hdi": 0.937
-   },
-   "signalsUsed": 4,
-   "iso2": "AE"
-  },
-  {
    "iso3": "JPN",
    "name": "Japan",
-   "weight": 0.8098003553932067,
+   "weight": 5.645287272085469,
    "signals": {
     "gdp": 4435162999976.94,
-    "arrivals": 4115799.8046875,
-    "hdi": 0.92,
+    "arrivals": 31881000,
+    "hdi": 0.925,
     "migrants": 3409529
    },
    "normalized": {
-    "gdp": 0.8641331869361002,
-    "arrivals": 0.6777386327846098,
-    "migrants": 0.7773296018521171,
-    "hdi": 0.92
+    "gdp": 1.9105213258846059,
+    "arrivals": 1.2447031333332035,
+    "migrants": 1.1730158915255517,
+    "hdi": 1.2103871243247308
    },
    "signalsUsed": 4,
    "iso2": "JP"
   },
   {
-   "iso3": "MEX",
-   "name": "Mexico",
-   "weight": 0.806304412904176,
+   "iso3": "SAU",
+   "name": "Saudi Arabia",
+   "weight": 5.162830177965008,
    "signals": {
-    "gdp": 1832641364775.52,
-    "arrivals": 51128000,
-    "hdi": 0.781,
-    "migrants": 1726089
+    "gdp": 1276942933333.33,
+    "arrivals": 20292000,
+    "hdi": 0.9,
+    "migrants": 13683841
    },
    "normalized": {
-    "gdp": 0.8021393728390558,
-    "arrivals": 0.9202330424661688,
-    "migrants": 0.7218452363114791,
-    "hdi": 0.781
+    "gdp": 1.376451665983172,
+    "arrivals": 1.0259763044829482,
+    "migrants": 1.8050621529394395,
+    "hdi": 1.0452615989393703
    },
    "signalsUsed": 4,
-   "iso2": "MX"
+   "iso2": "SA"
+  },
+  {
+   "iso3": "TUR",
+   "name": "Turkiye",
+   "weight": 5.065855928245083,
+   "signals": {
+    "gdp": 1597293229287,
+    "arrivals": 51747000,
+    "hdi": 0.853,
+    "migrants": 7083501
+   },
+   "normalized": {
+    "gdp": 1.4724659851964477,
+    "arrivals": 1.479199753372989,
+    "migrants": 1.5055826093143394,
+    "hdi": 0.7348256112148928
+   },
+   "signalsUsed": 4,
+   "iso2": "TR"
+  },
+  {
+   "iso3": "AUS",
+   "name": "Australia",
+   "weight": 5.040057041624935,
+   "signals": {
+    "gdp": 1798518933689.21,
+    "arrivals": 9466000,
+    "hdi": 0.958,
+    "migrants": 8111404
+   },
+   "normalized": {
+    "gdp": 1.5233608709849404,
+    "arrivals": 0.6568091169329545,
+    "migrants": 1.5672128736149606,
+    "hdi": 1.4283528178334057
+   },
+   "signalsUsed": 4,
+   "iso2": "AU"
+  },
+  {
+   "iso3": "ARE",
+   "name": "United Arab Emirates",
+   "weight": 4.813578721763866,
+   "signals": {
+    "gdp": 552324919095.872,
+    "arrivals": 25282000,
+    "hdi": 0.94,
+    "migrants": 8157000
+   },
+   "normalized": {
+    "gdp": 1.0169634136898442,
+    "arrivals": 1.1324223879265845,
+    "migrants": 1.5697623971410881,
+    "hdi": 1.3094624395559464
+   },
+   "signalsUsed": 4,
+   "iso2": "AE"
+  },
+  {
+   "iso3": "POL",
+   "name": "Poland",
+   "weight": 4.737400320386866,
+   "signals": {
+    "gdp": 1035491784197.44,
+    "arrivals": 88515000,
+    "hdi": 0.906,
+    "migrants": 1739901
+   },
+   "normalized": {
+    "gdp": 1.286549361776591,
+    "arrivals": 1.7390892350019425,
+    "migrants": 0.8670329730235429,
+    "hdi": 1.0848917250318568
+   },
+   "signalsUsed": 4,
+   "iso2": "PL"
+  },
+  {
+   "iso3": "HKG",
+   "name": "Hong Kong SAR, China",
+   "weight": 4.706211589438105,
+   "signals": {
+    "gdp": 427310315921.993,
+    "arrivals": 55913000,
+    "hdi": 0.955,
+    "migrants": 3063318
+   },
+   "normalized": {
+    "gdp": 0.9068865816997271,
+    "arrivals": 1.516686994785374,
+    "migrants": 1.1243150716908832,
+    "hdi": 1.4085377547871627
+   },
+   "signalsUsed": 4,
+   "iso2": "HK"
   },
   {
    "iso3": "NLD",
    "name": "Netherlands",
-   "weight": 0.8059843921929,
+   "weight": 4.6727454631744045,
    "signals": {
     "gdp": 1332767651100.39,
-    "arrivals": 7265000,
-    "hdi": 0.946,
+    "arrivals": 20129000,
+    "hdi": 0.955,
     "migrants": 2956518
    },
    "normalized": {
-    "gdp": 0.7797984249968161,
-    "arrivals": 0.7324295984905645,
-    "migrants": 0.7657095452842194,
-    "hdi": 0.946
+    "gdp": 1.3948054530857639,
+    "arrivals": 1.0220716321950973,
+    "migrants": 1.108174896099713,
+    "hdi": 1.4085377547871627
    },
    "signalsUsed": 4,
    "iso2": "NL"
@@ -307,94 +307,189 @@
   {
    "iso3": "RUS",
    "name": "Russian Federation",
-   "weight": 0.8022393748352632,
+   "weight": 4.659754700435063,
    "signals": {
     "gdp": 2561310169358.74,
-    "arrivals": 6359000,
-    "hdi": 0.821,
+    "arrivals": 24419000,
+    "hdi": 0.832,
     "migrants": 7605774
    },
    "normalized": {
-    "gdp": 0.8256208673881356,
-    "arrivals": 0.719609761541124,
-    "migrants": 0.8427268704117934,
-    "hdi": 0.821
+    "gdp": 1.675014471623424,
+    "arrivals": 1.1156076150035343,
+    "migrants": 1.5379387270352463,
+    "hdi": 0.59612016989119
    },
    "signalsUsed": 4,
    "iso2": "RU"
   },
   {
+   "iso3": "KOR",
+   "name": "Korea, Rep.",
+   "weight": 4.303324286333704,
+   "signals": {
+    "gdp": 1872374961553.15,
+    "arrivals": 17503000,
+    "hdi": 0.937,
+    "migrants": 1811507
+   },
+   "normalized": {
+    "gdp": 1.5406231435696907,
+    "arrivals": 0.9543939439231097,
+    "migrants": 0.8853765403640161,
+    "hdi": 1.2896473765097038
+   },
+   "signalsUsed": 4,
+   "iso2": "KR"
+  },
+  {
+   "iso3": "CHE",
+   "name": "Switzerland",
+   "weight": 4.264305494473778,
+   "signals": {
+    "gdp": 1043529899250.92,
+    "arrivals": 11818000,
+    "hdi": 0.97,
+    "migrants": 2773840
+   },
+   "normalized": {
+    "gdp": 1.2898661871651877,
+    "arrivals": 0.7642483673459602,
+    "migrants": 1.0791662293668087,
+    "hdi": 1.5076130700183787
+   },
+   "signalsUsed": 4,
+   "iso2": "CH"
+  },
+  {
    "iso3": "AUT",
    "name": "Austria",
-   "weight": 0.7990901233943426,
+   "weight": 4.112617320552746,
    "signals": {
     "gdp": 579470021095.418,
-    "arrivals": 15091000,
-    "hdi": 0.926,
+    "arrivals": 31884000,
+    "hdi": 0.93,
     "migrants": 2327064
    },
    "normalized": {
-    "gdp": 0.7213754386534469,
-    "arrivals": 0.8027891180338663,
-    "migrants": 0.746195936890057,
-    "hdi": 0.926
+    "gdp": 1.037542792935291,
+    "arrivals": 1.2447486888078845,
+    "migrants": 0.9992871479864179,
+    "hdi": 1.2434122294018028
    },
    "signalsUsed": 4,
    "iso2": "AT"
   },
   {
-   "iso3": "AUS",
-   "name": "Australia",
-   "weight": 0.7986043886471554,
+   "iso3": "MEX",
+   "name": "Mexico",
+   "weight": 4.0708986480930065,
    "signals": {
-    "gdp": 1798518933689.21,
-    "arrivals": 1828000,
-    "hdi": 0.946,
-    "migrants": 8111404
+    "gdp": 1832641364775.52,
+    "arrivals": 97406000,
+    "hdi": 0.789,
+    "migrants": 1726089
    },
    "normalized": {
-    "gdp": 0.8008210289855072,
-    "arrivals": 0.5996234797278024,
-    "migrants": 0.8479730458753126,
-    "hdi": 0.946
+    "gdp": 1.5314226812687148,
+    "arrivals": 1.7854291505448718,
+    "migrants": 0.8634079760042821,
+    "hdi": 0.3121042662283708
    },
    "signalsUsed": 4,
-   "iso2": "AU"
+   "iso2": "MX"
   },
   {
-   "iso3": "THA",
-   "name": "Thailand",
-   "weight": 0.7980293045562711,
+   "iso3": "SGP",
+   "name": "Singapore",
+   "weight": 4.069866846765033,
    "signals": {
-    "gdp": 577009981112.015,
-    "arrivals": 39916000,
-    "hdi": 0.803,
-    "migrants": 3179399
+    "gdp": 603869516998.738,
+    "arrivals": 19116000,
+    "hdi": 0.946,
+    "migrants": 2841665
    },
    "normalized": {
-    "gdp": 0.7210770199327762,
-    "arrivals": 0.8964065943869145,
-    "migrants": 0.7716336039053938,
-    "hdi": 0.803
+    "gdp": 1.0552340332665455,
+    "arrivals": 0.9970725952994899,
+    "migrants": 1.090153711823239,
+    "hdi": 1.349092565648433
    },
    "signalsUsed": 4,
-   "iso2": "TH"
+   "iso2": "SG"
+  },
+  {
+   "iso3": "DNK",
+   "name": "Denmark",
+   "weight": 3.713433168292839,
+   "signals": {
+    "gdp": 462526660468.393,
+    "arrivals": 33093000,
+    "hdi": 0.962,
+    "migrants": 847475
+   },
+   "normalized": {
+    "gdp": 0.9408558323740035,
+    "arrivals": 1.2627671814156378,
+    "migrants": 0.5398659435354229,
+    "hdi": 1.4547729018950635
+   },
+   "signalsUsed": 4,
+   "iso2": "DK"
+  },
+  {
+   "iso3": "BEL",
+   "name": "Belgium",
+   "weight": 3.6808744235457787,
+   "signals": {
+    "gdp": 725466462859.646,
+    "arrivals": 9343000,
+    "hdi": 0.951,
+    "migrants": 2349032
+   },
+   "normalized": {
+    "gdp": 1.1339257159000358,
+    "arrivals": 0.6504770239863449,
+    "migrants": 1.0035606743442935,
+    "hdi": 1.382117670725505
+   },
+   "signalsUsed": 4,
+   "iso2": "BE"
+  },
+  {
+   "iso3": "SWE",
+   "name": "Sweden",
+   "weight": 3.5720900134508033,
+   "signals": {
+    "gdp": 668998664082.081,
+    "arrivals": 7616000,
+    "hdi": 0.959,
+    "migrants": 2272158
+   },
+   "normalized": {
+    "gdp": 1.0991676183159624,
+    "arrivals": 0.5515302129150763,
+    "migrants": 0.9884270896993806,
+    "hdi": 1.4349578388488202
+   },
+   "signalsUsed": 4,
+   "iso2": "SE"
   },
   {
    "iso3": "CZE",
    "name": "Czechia",
-   "weight": 0.7894489935653087,
+   "weight": 3.4459616513387714,
    "signals": {
     "gdp": 391026962800.475,
     "arrivals": 37202000,
-    "hdi": 0.895,
+    "hdi": 0.915,
     "migrants": 1025199
    },
    "normalized": {
-    "gdp": 0.6937851253587483,
-    "arrivals": 0.8896293835788381,
-    "migrants": 0.6793814653236487,
-    "hdi": 0.895
+    "gdp": 0.8688251470396058,
+    "arrivals": 1.3194313814614833,
+    "migrants": 0.6264561880076159,
+    "hdi": 1.1443369141705866
    },
    "signalsUsed": 4,
    "iso2": "CZ"
@@ -402,379 +497,512 @@
   {
    "iso3": "IRL",
    "name": "Ireland",
-   "weight": 0.788001741688011,
+   "weight": 3.417101222187254,
    "signals": {
     "gdp": 721701359046.313,
     "arrivals": 10951000,
-    "hdi": 0.95,
+    "hdi": 0.949,
     "migrants": 1216237
    },
    "normalized": {
-    "gdp": 0.7367719009055308,
-    "arrivals": 0.7719257851009605,
-    "migrants": 0.6933092807455521,
-    "hdi": 0.95
+    "gdp": 1.1316937668132316,
+    "arrivals": 0.7273602188012949,
+    "migrants": 0.7041746922839641,
+    "hdi": 1.3689076286946762
    },
    "signalsUsed": 4,
    "iso2": "IE"
   },
   {
-   "iso3": "DNK",
-   "name": "Denmark",
-   "weight": 0.7818447587726894,
+   "iso3": "THA",
+   "name": "Thailand",
+   "weight": 3.3850937257518163,
    "signals": {
-    "gdp": 462526660468.393,
-    "arrivals": 15595000,
-    "hdi": 0.952,
-    "migrants": 847475
+    "gdp": 577009981112.015,
+    "arrivals": 39916000,
+    "hdi": 0.798,
+    "migrants": 3179399
    },
    "normalized": {
-    "gdp": 0.7055642677516941,
-    "arrivals": 0.8059510085587357,
-    "migrants": 0.6638637587803279,
-    "hdi": 0.952
+    "gdp": 1.0357179313070453,
+    "arrivals": 1.3535220221438509,
+    "migrants": 1.1412316936904556,
+    "hdi": 0.37154945536710055
    },
    "signalsUsed": 4,
-   "iso2": "DK"
-  },
-  {
-   "iso3": "IND",
-   "name": "India",
-   "weight": 0.7811385219318784,
-   "signals": {
-    "gdp": 3956067115771.63,
-    "arrivals": 17914000,
-    "hdi": 0.644,
-    "migrants": 4796255
-   },
-   "normalized": {
-    "gdp": 0.8561147308547694,
-    "arrivals": 0.8192939498065341,
-    "migrants": 0.8051454070662099,
-    "hdi": 0.644
-   },
-   "signalsUsed": 4,
-   "iso2": "IN"
-  },
-  {
-   "iso3": "KOR",
-   "name": "Korea, Rep.",
-   "weight": 0.7722275510214476,
-   "signals": {
-    "gdp": 1872374961553.15,
-    "arrivals": 2519000,
-    "hdi": 0.929,
-    "migrants": 1811507
-   },
-   "normalized": {
-    "gdp": 0.8036439198945364,
-    "arrivals": 0.6304840947392631,
-    "migrants": 0.7257821894519902,
-    "hdi": 0.929
-   },
-   "signalsUsed": 4,
-   "iso2": "KR"
-  },
-  {
-   "iso3": "HKG",
-   "name": "Hong Kong SAR, China",
-   "weight": 0.7721575314017631,
-   "signals": {
-    "gdp": 427310315921.993,
-    "arrivals": 3569000,
-    "hdi": 0.956,
-    "migrants": 3063318
-   },
-   "normalized": {
-    "gdp": 0.7000092929681501,
-    "arrivals": 0.6640188309364329,
-    "migrants": 0.7686020017024695,
-    "hdi": 0.956
-   },
-   "signalsUsed": 4,
-   "iso2": "HK"
-  },
-  {
-   "iso3": "SGP",
-   "name": "Singapore",
-   "weight": 0.7685991958259958,
-   "signals": {
-    "gdp": 603869516998.738,
-    "arrivals": 2742000,
-    "hdi": 0.949,
-    "migrants": 2841665
-   },
-   "normalized": {
-    "gdp": 0.724268478446172,
-    "arrivals": 0.6386483087089481,
-    "migrants": 0.7624799961488633,
-    "hdi": 0.949
-   },
-   "signalsUsed": 4,
-   "iso2": "SG"
-  },
-  {
-   "iso3": "ISR",
-   "name": "Israel",
-   "weight": 0.7680470953961762,
-   "signals": {
-    "gdp": 610777842873.595,
-    "arrivals": 4905000,
-    "hdi": 0.915,
-    "migrants": 2091569
-   },
-   "normalized": {
-    "gdp": 0.7250663788019132,
-    "arrivals": 0.6946224782198395,
-    "migrants": 0.7374995245629525,
-    "hdi": 0.915
-   },
-   "signalsUsed": 4,
-   "iso2": "IL"
-  },
-  {
-   "iso3": "TWN",
-   "name": "Taiwan",
-   "weight": 0.7648933205899623,
-   "signals": {
-    "gdp": 756590000000,
-    "arrivals": 6487000,
-    "hdi": 0.926,
-    "migrants": 936000
-   },
-   "normalized": {
-    "gdp": 0.7400834106462383,
-    "arrivals": 0.7215278734529375,
-    "migrants": 0.6719619982606732,
-    "hdi": 0.926
-   },
-   "signalsUsed": 4,
-   "iso2": "TW"
-  },
-  {
-   "iso3": "BEL",
-   "name": "Belgium",
-   "weight": 0.7647587053185763,
-   "signals": {
-    "gdp": 725466462859.646,
-    "arrivals": 2584000,
-    "hdi": 0.942,
-    "migrants": 2349032
-   },
-   "normalized": {
-    "gdp": 0.7371368904372175,
-    "arrivals": 0.6329361417620541,
-    "migrants": 0.7469617890750332,
-    "hdi": 0.942
-   },
-   "signalsUsed": 4,
-   "iso2": "BE"
-  },
-  {
-   "iso3": "ARG",
-   "name": "Argentina",
-   "weight": 0.7620567039672366,
-   "signals": {
-    "gdp": 683097891618.597,
-    "arrivals": 7399000,
-    "hdi": 0.849,
-    "migrants": 1958039
-   },
-   "normalized": {
-    "gdp": 0.7329158498814903,
-    "arrivals": 0.7341886637516674,
-    "migrants": 0.7321223022357884,
-    "hdi": 0.849
-   },
-   "signalsUsed": 4,
-   "iso2": "AR"
-  },
-  {
-   "iso3": "SWE",
-   "name": "Sweden",
-   "weight": 0.7584723066053856,
-   "signals": {
-    "gdp": 668998664082.081,
-    "arrivals": 1957000,
-    "hdi": 0.952,
-    "migrants": 2272158
-   },
-   "normalized": {
-    "gdp": 0.7314529159081679,
-    "arrivals": 0.6061865882179153,
-    "migrants": 0.7442497222954589,
-    "hdi": 0.952
-   },
-   "signalsUsed": 4,
-   "iso2": "SE"
-  },
-  {
-   "iso3": "HUN",
-   "name": "Hungary",
-   "weight": 0.7583798906153116,
-   "signals": {
-    "gdp": 246490213513.054,
-    "arrivals": 31641000,
-    "hdi": 0.851,
-    "migrants": 689565
-   },
-   "normalized": {
-    "gdp": 0.6614168170607188,
-    "arrivals": 0.8740461382125843,
-    "migrants": 0.6470566071879434,
-    "hdi": 0.851
-   },
-   "signalsUsed": 4,
-   "iso2": "HU"
+   "iso2": "TH"
   },
   {
    "iso3": "GRC",
    "name": "Greece",
-   "weight": 0.750989608262568,
+   "weight": 3.358163393481124,
    "signals": {
     "gdp": 280635521324.441,
-    "arrivals": 7406000,
-    "hdi": 0.893,
+    "arrivals": 34005000,
+    "hdi": 0.908,
     "migrants": 1423964
    },
    "normalized": {
-    "gdp": 0.6705169287230108,
-    "arrivals": 0.7342796775370168,
-    "migrants": 0.7061618267902446,
-    "hdi": 0.893
+    "gdp": 0.7265376956907363,
+    "arrivals": 1.275928933159062,
+    "migrants": 0.7758930935176213,
+    "hdi": 1.0981017670626858
    },
    "signalsUsed": 4,
    "iso2": "GR"
   },
   {
-   "iso3": "BRA",
-   "name": "Brazil",
-   "weight": 0.7505302114616834,
-   "signals": {
-    "gdp": 2279920092492.13,
-    "arrivals": 6353000,
-    "hdi": 0.76,
-    "migrants": 1406299
-   },
-   "normalized": {
-    "gdp": 0.8174575967527457,
-    "arrivals": 0.7195189052686425,
-    "migrants": 0.705144343825346,
-    "hdi": 0.76
-   },
-   "signalsUsed": 4,
-   "iso2": "BR"
-  },
-  {
    "iso3": "MYS",
    "name": "Malaysia",
-   "weight": 0.7457526009212153,
+   "weight": 3.3107409590559804,
    "signals": {
     "gdp": 472193128644.597,
-    "arrivals": 4333000,
-    "hdi": 0.807,
+    "arrivals": 26101000,
+    "hdi": 0.819,
     "migrants": 3806514
    },
    "normalized": {
-    "gdp": 0.7070151201833236,
-    "arrivals": 0.6826883274590446,
-    "migrants": 0.7863069560424929,
-    "hdi": 0.807
+    "gdp": 0.949727946445053,
+    "arrivals": 1.147857255666831,
+    "migrants": 1.2231103621155173,
+    "hdi": 0.5102548966908026
    },
    "signalsUsed": 4,
    "iso2": "MY"
   },
   {
-   "iso3": "CHL",
-   "name": "Chile",
-   "weight": 0.7410893333968614,
+   "iso3": "IND",
+   "name": "India",
+   "weight": 3.258985809437065,
    "signals": {
-    "gdp": 357371159574.862,
-    "arrivals": 5431000,
-    "hdi": 0.86,
-    "migrants": 1538324
+    "gdp": 3956067115771.63,
+    "arrivals": 17914000,
+    "hdi": 0.685,
+    "migrants": 4796255
    },
    "normalized": {
-    "gdp": 0.6874720399896188,
-    "arrivals": 0.7044269927370044,
-    "migrants": 0.7124583008608226,
-    "hdi": 0.86
+    "gdp": 1.861487629916391,
+    "arrivals": 0.9656309659405968,
+    "migrants": 1.3282306693637036,
+    "hdi": -0.37481791937472786
    },
    "signalsUsed": 4,
-   "iso2": "CL"
-  },
-  {
-   "iso3": "HRV",
-   "name": "Croatia",
-   "weight": 0.7355519157916768,
-   "signals": {
-    "gdp": 105060182186.274,
-    "arrivals": 21608000,
-    "hdi": 0.878,
-    "migrants": 527831
-   },
-   "normalized": {
-    "gdp": 0.6015986729115371,
-    "arrivals": 0.8373384552130604,
-    "migrants": 0.6252705350421094,
-    "hdi": 0.878
-   },
-   "signalsUsed": 4,
-   "iso2": "HR"
+   "iso2": "IN"
   },
   {
    "iso3": "NOR",
    "name": "Norway",
-   "weight": 0.7333292041392971,
+   "weight": 3.0366702811765194,
    "signals": {
     "gdp": 530755719438.879,
-    "arrivals": 1397000,
-    "hdi": 0.966,
+    "arrivals": 5879000,
+    "hdi": 0.97,
     "migrants": 1012404
    },
    "normalized": {
-    "gdp": 0.7152159380376305,
-    "arrivals": 0.5737430858139422,
-    "migrants": 0.6783577927056162,
-    "hdi": 0.966
+    "gdp": 0.999876803691405,
+    "arrivals": 0.4262032878679413,
+    "migrants": 0.6207439996756962,
+    "hdi": 1.5076130700183787
    },
    "signalsUsed": 4,
    "iso2": "NO"
   },
   {
+   "iso3": "HUN",
+   "name": "Hungary",
+   "weight": 3.0098663691857817,
+   "signals": {
+    "gdp": 246490213513.054,
+    "arrivals": 61397000,
+    "hdi": 0.87,
+    "migrants": 689565
+   },
+   "normalized": {
+    "gdp": 0.6708895629330413,
+    "arrivals": 1.5619851756193526,
+    "migrants": 0.4460804758696381,
+    "hdi": 0.8471109684769379
+   },
+   "signalsUsed": 4,
+   "iso2": "HU"
+  },
+  {
+   "iso3": "ISR",
+   "name": "Israel",
+   "weight": 3.0042981444899866,
+   "signals": {
+    "gdp": 610777842873.595,
+    "arrivals": 4905000,
+    "hdi": 0.919,
+    "migrants": 2091569
+   },
+   "normalized": {
+    "gdp": 1.0601132772331527,
+    "arrivals": 0.33851009548764766,
+    "migrants": 0.9507603590996238,
+    "hdi": 1.1707569982322443
+   },
+   "signalsUsed": 4,
+   "iso2": "IL"
+  },
+  {
    "iso3": "PRT",
    "name": "Portugal",
-   "weight": 0.7315789441033037,
+   "weight": 2.906477265274925,
    "signals": {
     "gdp": 346639825141.821,
-    "arrivals": 4208000,
-    "hdi": 0.874,
+    "arrivals": 17283000,
+    "hdi": 0.89,
     "migrants": 1127184
    },
    "normalized": {
-    "gdp": 0.6853334412592292,
-    "arrivals": 0.6798709189737442,
-    "migrants": 0.6871114161802412,
-    "hdi": 0.874
+    "gdp": 0.8171422165163478,
+    "arrivals": 0.9482700781379076,
+    "migrants": 0.6695900320819186,
+    "hdi": 0.9792113887852262
    },
    "signalsUsed": 4,
    "iso2": "PT"
   },
   {
+   "iso3": "TWN",
+   "name": "Taiwan",
+   "weight": 2.8914545953204023,
+   "signals": {
+    "gdp": 801500000000,
+    "arrivals": 6487000,
+    "hdi": 0.925,
+    "migrants": 841627
+   },
+   "normalized": {
+    "gdp": 1.176678092481712,
+    "arrivals": 0.4738492766468901,
+    "migrants": 0.5367165327268122,
+    "hdi": 1.2103871243247308
+   },
+   "signalsUsed": 4,
+   "iso2": "TW"
+  },
+  {
+   "iso3": "ARG",
+   "name": "Argentina",
+   "weight": 2.876007596203557,
+   "signals": {
+    "gdp": 683097891618.597,
+    "arrivals": 7399000,
+    "hdi": 0.865,
+    "migrants": 1958039
+   },
+   "normalized": {
+    "gdp": 1.1081136122756328,
+    "arrivals": 0.5375354249830837,
+    "migrants": 0.9207549588434315,
+    "hdi": 0.8140858633998658
+   },
+   "signalsUsed": 4,
+   "iso2": "AR"
+  },
+  {
+   "iso3": "HRV",
+   "name": "Croatia",
+   "weight": 2.6788374441025744,
+   "signals": {
+    "gdp": 105060182186.274,
+    "arrivals": 60021000,
+    "hdi": 0.889,
+    "migrants": 527831
+   },
+   "normalized": {
+    "gdp": 0.3050953671622422,
+    "arrivals": 1.551011411075058,
+    "migrants": 0.32451216885660383,
+    "hdi": 0.9726063677698118
+   },
+   "signalsUsed": 4,
+   "iso2": "HR"
+  },
+  {
+   "iso3": "BRA",
+   "name": "Brazil",
+   "weight": 2.6772627021683575,
+   "signals": {
+    "gdp": 2279920092492.13,
+    "arrivals": 6353000,
+    "hdi": 0.786,
+    "migrants": 1406299
+   },
+   "normalized": {
+    "gdp": 1.6250952195402297,
+    "arrivals": 0.46374379011967587,
+    "migrants": 0.7702154440253515,
+    "hdi": 0.2922892031821276
+   },
+   "signalsUsed": 4,
+   "iso2": "BR"
+  },
+  {
+   "iso3": "IRN",
+   "name": "Iran, Islamic Rep.",
+   "weight": 2.618204644652067,
+   "signals": {
+    "gdp": 362682115433.364,
+    "arrivals": 9107000,
+    "hdi": 0.799,
+    "migrants": 3840654
+   },
+   "normalized": {
+    "gdp": 0.836547602554107,
+    "arrivals": 0.6380907407846715,
+    "migrants": 1.2271714450755768,
+    "hdi": 0.378154476382515
+   },
+   "signalsUsed": 4,
+   "iso2": "IR"
+  },
+  {
+   "iso3": "UKR",
+   "name": "Ukraine",
+   "weight": 2.590464626833402,
+   "signals": {
+    "gdp": 214233312784.397,
+    "arrivals": 13710000,
+    "hdi": 0.779,
+    "migrants": 5064173
+   },
+   "normalized": {
+    "gdp": 0.6107280667218173,
+    "arrivals": 0.8361441005120529,
+    "migrants": 1.3529529838032217,
+    "hdi": 0.24605405607422665
+   },
+   "signalsUsed": 4,
+   "iso2": "UA"
+  },
+  {
+   "iso3": "NZL",
+   "name": "New Zealand",
+   "weight": 2.563527079427607,
+   "signals": {
+    "gdp": 264057413739.965,
+    "arrivals": 3888000,
+    "hdi": 0.938,
+    "migrants": 1467989
+   },
+   "normalized": {
+    "gdp": 0.7004195336932264,
+    "arrivals": 0.22601503768074682,
+    "migrants": 0.789742073164925,
+    "hdi": 1.2962523975251175
+   },
+   "signalsUsed": 4,
+   "iso2": "NZ"
+  },
+  {
+   "iso3": "KWT",
+   "name": "Kuwait",
+   "weight": 2.534454608790906,
+   "signals": {
+    "gdp": 157209026926.418,
+    "arrivals": 8565000,
+    "hdi": 0.852,
+    "migrants": 3323191
+   },
+   "normalized": {
+    "gdp": 0.47797609452074025,
+    "arrivals": 0.6083842400530839,
+    "migrants": 1.1613501774189396,
+    "hdi": 0.7282205901994784
+   },
+   "signalsUsed": 4,
+   "iso2": "KW"
+  },
+  {
+   "iso3": "KAZ",
+   "name": "Kazakhstan",
+   "weight": 2.5132598204413545,
+   "signals": {
+    "gdp": 306239209650.024,
+    "arrivals": 8515000,
+    "hdi": 0.837,
+    "migrants": 2089797
+   },
+   "normalized": {
+    "gdp": 0.7639882396412216,
+    "arrivals": 0.6055496839067379,
+    "migrants": 0.9503748615244982,
+    "hdi": 0.6291452749682621
+   },
+   "signalsUsed": 4,
+   "iso2": "KZ"
+  },
+  {
+   "iso3": "CHL",
+   "name": "Chile",
+   "weight": 2.497577276852488,
+   "signals": {
+    "gdp": 357371159574.862,
+    "arrivals": 5431000,
+    "hdi": 0.878,
+    "migrants": 1538324
+   },
+   "normalized": {
+    "gdp": 0.8302199709968002,
+    "arrivals": 0.3878286412633536,
+    "migrants": 0.8110280039222026,
+    "hdi": 0.8999511366002532
+   },
+   "signalsUsed": 4,
+   "iso2": "CL"
+  },
+  {
+   "iso3": "ZAF",
+   "name": "South Africa",
+   "weight": 2.421504046321464,
+   "signals": {
+    "gdp": 427184325997.307,
+    "arrivals": 14797000,
+    "hdi": 0.741,
+    "migrants": 2631100
+   },
+   "normalized": {
+    "gdp": 0.9067600930019611,
+    "arrivals": 0.8730835424759198,
+    "migrants": 1.0551374393781874,
+    "hdi": -0.00493674251152121
+   },
+   "signalsUsed": 4,
+   "iso2": "ZA"
+  },
+  {
+   "iso3": "ROU",
+   "name": "Romania",
+   "weight": 2.4114990624486836,
+   "signals": {
+    "gdp": 428677977854.826,
+    "arrivals": 12815000,
+    "hdi": 0.845,
+    "migrants": 655579
+   },
+   "normalized": {
+    "gdp": 0.9082572631927135,
+    "arrivals": 0.803460174027145,
+    "migrants": 0.42309254926729317,
+    "hdi": 0.6819854430915775
+   },
+   "signalsUsed": 4,
+   "iso2": "RO"
+  },
+  {
+   "iso3": "COL",
+   "name": "Colombia",
+   "weight": 2.3005253633563543,
+   "signals": {
+    "gdp": 457410034202.523,
+    "arrivals": 4531000,
+    "hdi": 0.788,
+    "migrants": 3063518
+   },
+   "normalized": {
+    "gdp": 0.936084326337069,
+    "arrivals": 0.30011171292871064,
+    "migrants": 1.1243447657679169,
+    "hdi": 0.3054992452129564
+   },
+   "signalsUsed": 4,
+   "iso2": "CO"
+  },
+  {
+   "iso3": "FIN",
+   "name": "Finland",
+   "weight": 2.252925643714727,
+   "signals": {
+    "gdp": 317039368819.607,
+    "arrivals": 3290000,
+    "hdi": 0.948,
+    "migrants": 514432
+   },
+   "normalized": {
+    "gdp": 0.7788550113856914,
+    "arrivals": 0.14515997815075862,
+    "migrants": 0.3128173073343714,
+    "hdi": 1.3623026076792617
+   },
+   "signalsUsed": 4,
+   "iso2": "FI"
+  },
+  {
+   "iso3": "QAT",
+   "name": "Qatar",
+   "weight": 2.18661781843464,
+   "signals": {
+    "gdp": 215559615384.615,
+    "arrivals": 2136500,
+    "hdi": 0.886,
+    "migrants": 2337000
+   },
+   "normalized": {
+    "gdp": 0.6133754082972106,
+    "arrivals": -0.0638526076865161,
+    "migrants": 1.001225014370908,
+    "hdi": 0.9527913047235685
+   },
+   "signalsUsed": 4,
+   "iso2": "QA"
+  },
+  {
+   "iso3": "IDN",
+   "name": "Indonesia",
+   "weight": 2.1846385757614035,
+   "signals": {
+    "gdp": 1445642584163.81,
+    "arrivals": 16107000,
+    "hdi": 0.728,
+    "migrants": 445726
+   },
+   "normalized": {
+    "gdp": 1.4296765396115219,
+    "arrivals": 0.9141529663004547,
+    "migrants": 0.24761380040700035,
+    "hdi": -0.09080201571190863
+   },
+   "signalsUsed": 4,
+   "iso2": "ID"
+  },
+  {
+   "iso3": "PER",
+   "name": "Peru",
+   "weight": 2.1255780442565935,
+   "signals": {
+    "gdp": 334854659181.893,
+    "arrivals": 5275000,
+    "hdi": 0.794,
+    "migrants": 1837219
+   },
+   "normalized": {
+    "gdp": 0.8023053598523379,
+    "arrivals": 0.37371855125492665,
+    "migrants": 0.8917868334658697,
+    "hdi": 0.3451293713054429
+   },
+   "signalsUsed": 4,
+   "iso2": "PE"
+  },
+  {
    "iso3": "EGY",
    "name": "Egypt, Arab Rep.",
-   "weight": 0.7234122216373702,
+   "weight": 2.121327697437002,
    "signals": {
     "gdp": 365254630179.737,
     "arrivals": 13026000,
-    "hdi": 0.728,
+    "hdi": 0.754,
     "migrants": 1139820
    },
    "normalized": {
-    "gdp": 0.6890025726326868,
-    "arrivals": 0.7886262480359238,
-    "migrants": 0.6880200658808704,
-    "hdi": 0.728
+    "gdp": 0.839579337878457,
+    "arrivals": 0.8113666776924012,
+    "migrants": 0.6746603818463901,
+    "hdi": 0.08092853068886621
    },
    "signalsUsed": 4,
    "iso2": "EG"
@@ -782,303 +1010,37 @@
   {
    "iso3": "SVK",
    "name": "Slovak Republic",
-   "weight": 0.7183150250606627,
+   "weight": 2.100873294071756,
    "signals": {
     "gdp": 154530066506.895,
     "arrivals": 15299000,
-    "hdi": 0.855,
+    "hdi": 0.88,
     "migrants": 323991
    },
    "normalized": {
-    "gdp": 0.6286641621692197,
-    "arrivals": 0.8041066371748126,
-    "migrants": 0.5854893008986185,
-    "hdi": 0.855
+    "gdp": 0.470603659286224,
+    "arrivals": 0.8892359366990971,
+    "migrants": 0.10252918572221385,
+    "hdi": 0.913161178631082
    },
    "signalsUsed": 4,
    "iso2": "SK"
   },
   {
-   "iso3": "KWT",
-   "name": "Kuwait",
-   "weight": 0.7169597681196326,
-   "signals": {
-    "gdp": 157209026926.418,
-    "arrivals": 2161000,
-    "hdi": 0.847,
-    "migrants": 3323191
-   },
-   "normalized": {
-    "gdp": 0.629869772861482,
-    "arrivals": 0.6157302927185329,
-    "migrants": 0.7752390068985155,
-    "hdi": 0.847
-   },
-   "signalsUsed": 4,
-   "iso2": "KW"
-  },
-  {
-   "iso3": "ROU",
-   "name": "Romania",
-   "weight": 0.716770226315663,
-   "signals": {
-    "gdp": 428677977854.826,
-    "arrivals": 5023000,
-    "hdi": 0.827,
-    "migrants": 655579
-   },
-   "normalized": {
-    "gdp": 0.7002334398356456,
-    "arrivals": 0.696910489742923,
-    "migrants": 0.6429369756840835,
-    "hdi": 0.827
-   },
-   "signalsUsed": 4,
-   "iso2": "RO"
-  },
-  {
-   "iso3": "NZL",
-   "name": "New Zealand",
-   "weight": 0.7137672108410541,
-   "signals": {
-    "gdp": 264057413739.965,
-    "arrivals": 996000,
-    "hdi": 0.939,
-    "migrants": 1467989
-   },
-   "normalized": {
-    "gdp": 0.666245838592708,
-    "arrivals": 0.5411793233173667,
-    "migrants": 0.7086436814541416,
-    "hdi": 0.939
-   },
-   "signalsUsed": 4,
-   "iso2": "NZ"
-  },
-  {
-   "iso3": "UKR",
-   "name": "Ukraine",
-   "weight": 0.7134983700731535,
-   "signals": {
-    "gdp": 214233312784.397,
-    "arrivals": 3382000,
-    "hdi": 0.734,
-    "migrants": 5064173
-   },
-   "normalized": {
-    "gdp": 0.6515786373022615,
-    "arrivals": 0.6588389874032665,
-    "migrants": 0.8095758555870862,
-    "hdi": 0.734
-   },
-   "signalsUsed": 4,
-   "iso2": "UA"
-  },
-  {
-   "iso3": "ZAF",
-   "name": "South Africa",
-   "weight": 0.7113543049061776,
-   "signals": {
-    "gdp": 427184325997.307,
-    "arrivals": 3886600.09765625,
-    "hdi": 0.717,
-    "migrants": 2631100
-   },
-   "normalized": {
-    "gdp": 0.6999886083338839,
-    "arrivals": 0.6722238282835284,
-    "migrants": 0.7562047830072978,
-    "hdi": 0.717
-   },
-   "signalsUsed": 4,
-   "iso2": "ZA"
-  },
-  {
-   "iso3": "IRN",
-   "name": "Iran, Islamic Rep.",
-   "weight": 0.7098218420095916,
-   "signals": {
-    "gdp": 362682115433.364,
-    "arrivals": 1550000,
-    "hdi": 0.78,
-    "migrants": 3840654
-   },
-   "normalized": {
-    "gdp": 0.6885067944526313,
-    "arrivals": 0.5837458370177755,
-    "migrants": 0.78703473656796,
-    "hdi": 0.78
-   },
-   "signalsUsed": 4,
-   "iso2": "IR"
-  },
-  {
-   "iso3": "KAZ",
-   "name": "Kazakhstan",
-   "weight": 0.7065049657121555,
-   "signals": {
-    "gdp": 306239209650.024,
-    "arrivals": 2035000,
-    "hdi": 0.802,
-    "migrants": 2089797
-   },
-   "normalized": {
-    "gdp": 0.6766411976764174,
-    "arrivals": 0.6099482250457311,
-    "migrants": 0.7374304401264735,
-    "hdi": 0.802
-   },
-   "signalsUsed": 4,
-   "iso2": "KZ"
-  },
-  {
-   "iso3": "COL",
-   "name": "Colombia",
-   "weight": 0.7012663686155365,
-   "signals": {
-    "gdp": 457410034202.523,
-    "arrivals": 1396000,
-    "hdi": 0.758,
-    "migrants": 3063518
-   },
-   "normalized": {
-    "gdp": 0.7047839857263749,
-    "arrivals": 0.5736741656027374,
-    "migrants": 0.7686073231330336,
-    "hdi": 0.758
-   },
-   "signalsUsed": 4,
-   "iso2": "CO"
-  },
-  {
-   "iso3": "IDN",
-   "name": "Indonesia",
-   "weight": 0.696562331394255,
-   "signals": {
-    "gdp": 1445642584163.81,
-    "arrivals": 4053000,
-    "hdi": 0.713,
-    "migrants": 445726
-   },
-   "normalized": {
-    "gdp": 0.7855008765516882,
-    "arrivals": 0.6762587541059726,
-    "migrants": 0.6114896949193596,
-    "hdi": 0.713
-   },
-   "signalsUsed": 4,
-   "iso2": "ID"
-  },
-  {
-   "iso3": "FIN",
-   "name": "Finland",
-   "weight": 0.6938106986475042,
-   "signals": {
-    "gdp": 317039368819.607,
-    "arrivals": 896000,
-    "hdi": 0.942,
-    "migrants": 514432
-   },
-   "normalized": {
-    "gdp": 0.6790723535163009,
-    "arrivals": 0.5309957244494085,
-    "migrants": 0.6231747166243076,
-    "hdi": 0.942
-   },
-   "signalsUsed": 4,
-   "iso2": "FI"
-  },
-  {
-   "iso3": "UZB",
-   "name": "Uzbekistan",
-   "weight": 0.6916531789853094,
-   "signals": {
-    "gdp": 147038081129.405,
-    "arrivals": 6749000,
-    "hdi": 0.727,
-    "migrants": 1154963
-   },
-   "normalized": {
-    "gdp": 0.6251782038058632,
-    "arrivals": 0.7253386964848662,
-    "migrants": 0.6890958156505087,
-    "hdi": 0.727
-   },
-   "signalsUsed": 4,
-   "iso2": "UZ"
-  },
-  {
-   "iso3": "QAT",
-   "name": "Qatar",
-   "weight": 0.690755694723309,
-   "signals": {
-    "gdp": 215559615384.615,
-    "arrivals": 582000,
-    "hdi": 0.875,
-    "migrants": 2337000
-   },
-   "normalized": {
-    "gdp": 0.6520115557624226,
-    "arrivals": 0.48946800414150854,
-    "migrants": 0.7465432189893048,
-    "hdi": 0.875
-   },
-   "signalsUsed": 4,
-   "iso2": "QA"
-  },
-  {
-   "iso3": "BLR",
-   "name": "Belarus",
-   "weight": 0.685207208722199,
-   "signals": {
-    "gdp": 93397215864.198,
-    "arrivals": 3598000,
-    "hdi": 0.801,
-    "migrants": 1054604
-   },
-   "normalized": {
-    "gdp": 0.5933446851232659,
-    "arrivals": 0.6647977287423099,
-    "migrants": 0.68168642102322,
-    "hdi": 0.801
-   },
-   "signalsUsed": 4,
-   "iso2": "BY"
-  },
-  {
-   "iso3": "PER",
-   "name": "Peru",
-   "weight": 0.6810562025384477,
-   "signals": {
-    "gdp": 334854659181.893,
-    "arrivals": 1119000,
-    "hdi": 0.762,
-    "migrants": 1837219
-   },
-   "normalized": {
-    "gdp": 0.6829071774176767,
-    "arrivals": 0.5523866643677741,
-    "migrants": 0.7269309683683401,
-    "hdi": 0.762
-   },
-   "signalsUsed": 4,
-   "iso2": "PE"
-  },
-  {
    "iso3": "BHR",
    "name": "Bahrain",
-   "weight": 0.6757518619328939,
+   "weight": 2.0419134481473207,
    "signals": {
     "gdp": 48965725531.9149,
-    "arrivals": 1909000,
-    "hdi": 0.888,
+    "arrivals": 11061000,
+    "hdi": 0.899,
     "migrants": 840202
    },
    "normalized": {
-    "gdp": 0.5480497427801987,
-    "arrivals": 0.6037964708800253,
-    "migrants": 0.6631612340713519,
-    "hdi": 0.888
+    "gdp": -0.02236193045850932,
+    "arrivals": 0.7321990278207404,
+    "migrants": 0.5359457903782433,
+    "hdi": 1.038656577923956
    },
    "signalsUsed": 4,
    "iso2": "BH"
@@ -1086,18 +1048,18 @@
   {
    "iso3": "OMN",
    "name": "Oman",
-   "weight": 0.6740676834947008,
+   "weight": 2.02493566977836,
    "signals": {
     "gdp": 109604780696.23,
-    "arrivals": 869000,
-    "hdi": 0.819,
+    "arrivals": 3506000,
+    "hdi": 0.858,
     "migrants": 2283366
    },
    "normalized": {
-    "gdp": 0.6045691118037807,
-    "arrivals": 0.5280508251318743,
-    "migrants": 0.7446507970431482,
-    "hdi": 0.819
+    "gdp": 0.32325991106659274,
+    "arrivals": 0.17594563111891096,
+    "migrants": 0.9906651240607784,
+    "hdi": 0.7678507162919649
    },
    "signalsUsed": 4,
    "iso2": "OM"
@@ -1105,37 +1067,75 @@
   {
    "iso3": "VNM",
    "name": "Viet Nam",
-   "weight": 0.674036533324305,
+   "weight": 2.00183302637115,
    "signals": {
     "gdp": 514697215165.065,
-    "arrivals": 3837000,
-    "hdi": 0.726,
+    "arrivals": 18009000,
+    "hdi": 0.766,
     "migrants": 326418
    },
    "normalized": {
-    "gdp": 0.7130608940677429,
-    "arrivals": 0.670987635399497,
-    "migrants": 0.5860976038299802,
-    "hdi": 0.726
+    "gdp": 0.9866984848547355,
+    "arrivals": 0.968191636478565,
+    "migrants": 0.10592357260488301,
+    "hdi": 0.16018878287383922
    },
    "signalsUsed": 4,
    "iso2": "VN"
   },
   {
+   "iso3": "BLR",
+   "name": "Belarus",
+   "weight": 1.9900063060719597,
+   "signals": {
+    "gdp": 93397215864.198,
+    "arrivals": 11832000,
+    "hdi": 0.824,
+    "migrants": 1054604
+   },
+   "normalized": {
+    "gdp": 0.25462137021939363,
+    "arrivals": 0.7648215573744678,
+    "migrants": 0.6393180549959024,
+    "hdi": 0.5432800017678747
+   },
+   "signalsUsed": 4,
+   "iso2": "BY"
+  },
+  {
+   "iso3": "MAC",
+   "name": "Macao SAR, China",
+   "weight": 1.9309040675294082,
+   "signals": {
+    "gdp": 52061007670.169,
+    "arrivals": 39406000,
+    "hdi": null,
+    "migrants": 426862
+   },
+   "normalized": {
+    "gdp": 0.003930160365668599,
+    "arrivals": 1.347296379475562,
+    "migrants": 0.2279454329827719,
+    "hdi": null
+   },
+   "signalsUsed": 3,
+   "iso2": "MO"
+  },
+  {
    "iso3": "BGR",
    "name": "Bulgaria",
-   "weight": 0.6727197170491447,
+   "weight": 1.8338832652935717,
    "signals": {
     "gdp": 130777235529.606,
-    "arrivals": 4973000,
-    "hdi": 0.799,
+    "arrivals": 12552000,
+    "hdi": 0.845,
     "migrants": 299100
    },
    "normalized": {
-    "gdp": 0.6169575757719143,
-    "arrivals": 0.695947625861892,
-    "migrants": 0.5789736665627723,
-    "hdi": 0.799
+    "gdp": 0.3990166614391456,
+    "arrivals": 0.7934208635260993,
+    "migrants": 0.06617134067228456,
+    "hdi": 0.6819854430915775
    },
    "signalsUsed": 4,
    "iso2": "BG"
@@ -1143,607 +1143,721 @@
   {
    "iso3": "JOR",
    "name": "Jordan",
-   "weight": 0.668852832276778,
+   "weight": 1.8167704967964977,
    "signals": {
     "gdp": 61610052535.2113,
-    "arrivals": 1240000,
-    "hdi": 0.736,
+    "arrivals": 5361000,
+    "hdi": 0.754,
     "migrants": 5280168
    },
    "normalized": {
-    "gdp": 0.5641621647771491,
-    "arrivals": 0.5622689238280973,
-    "migrants": 0.8129802405018658,
-    "hdi": 0.736
+    "gdp": 0.07616721199692109,
+    "arrivals": 0.3815480015748461,
+    "migrants": 1.3719497679752415,
+    "hdi": 0.08092853068886621
    },
    "signalsUsed": 4,
    "iso2": "JO"
   },
   {
-   "iso3": "DOM",
-   "name": "Dominican Republic",
-   "weight": 0.6681621094268612,
-   "signals": {
-    "gdp": 127407463759.043,
-    "arrivals": 2748000,
-    "hdi": 0.766,
-    "migrants": 738667
-   },
-   "normalized": {
-    "gdp": 0.6151264590880909,
-    "arrivals": 0.6388586849038219,
-    "migrants": 0.6526632937155319,
-    "hdi": 0.766
-   },
-   "signalsUsed": 4,
-   "iso2": "DO"
-  },
-  {
-   "iso3": "CYP",
-   "name": "Cyprus",
-   "weight": 0.6669383256572259,
-   "signals": {
-    "gdp": 41225787247.3309,
-    "arrivals": 4117000,
-    "hdi": 0.907,
-    "migrants": 202062
-   },
-   "normalized": {
-    "gdp": 0.535980980406981,
-    "arrivals": 0.6777666949959634,
-    "migrants": 0.5470056272259594,
-    "hdi": 0.907
-   },
-   "signalsUsed": 4,
-   "iso2": "CY"
-  },
-  {
    "iso3": "SVN",
    "name": "Slovenia",
-   "weight": 0.6629473889644814,
+   "weight": 1.7795120667990414,
    "signals": {
     "gdp": 79648204979.3618,
-    "arrivals": 1216000,
-    "hdi": 0.926,
+    "arrivals": 4702000,
+    "hdi": 0.931,
     "migrants": 315122
    },
    "normalized": {
-    "gdp": 0.5821747899459251,
-    "arrivals": 0.5603878137054237,
-    "migrants": 0.5832269522065766,
-    "hdi": 0.926
+    "gdp": 0.1863162952065409,
+    "arrivals": 0.31804684682264567,
+    "migrants": 0.08990506979513603,
+    "hdi": 1.2500172504172173
    },
    "signalsUsed": 4,
    "iso2": "SI"
   },
   {
-   "iso3": "ECU",
-   "name": "Ecuador",
-   "weight": 0.6621779714379529,
+   "iso3": "DOM",
+   "name": "Dominican Republic",
+   "weight": 1.6688028659804433,
    "signals": {
-    "gdp": 130320560400,
-    "arrivals": 2108000,
-    "hdi": 0.765,
-    "migrants": 747749
+    "gdp": 127407463759.043,
+    "arrivals": 7550000,
+    "hdi": 0.776,
+    "migrants": 738667
    },
    "normalized": {
-    "gdp": 0.6167122032262723,
-    "arrivals": 0.6133403386950494,
-    "migrants": 0.6536593438304895,
-    "hdi": 0.765
+    "gdp": 0.38781919177089225,
+    "arrivals": 0.5473163800035864,
+    "migrants": 0.477366307686827,
+    "hdi": 0.2262389930279834
    },
    "signalsUsed": 4,
-   "iso2": "EC"
+   "iso2": "DO"
   },
   {
-   "iso3": "LVA",
-   "name": "Latvia",
-   "weight": 0.6585746961997863,
+   "iso3": "UZB",
+   "name": "Uzbekistan",
+   "weight": 1.6546190134893675,
    "signals": {
-    "gdp": 48618869160.3254,
-    "arrivals": 3204000,
-    "hdi": 0.879,
-    "migrants": 220471
+    "gdp": 147038081129.405,
+    "arrivals": 6749000,
+    "hdi": 0.74,
+    "migrants": 1154963
    },
    "normalized": {
-    "gdp": 0.5475510976136563,
-    "arrivals": 0.653635175727823,
-    "migrants": 0.5541125114576655,
-    "hdi": 0.879
+    "gdp": 0.449286660001954,
+    "arrivals": 0.49301843079667024,
+    "migrants": 0.6806631655234642,
+    "hdi": -0.011541763526935627
    },
    "signalsUsed": 4,
-   "iso2": "LV"
+   "iso2": "UZ"
   },
   {
    "iso3": "LTU",
    "name": "Lithuania",
-   "weight": 0.6575318411816664,
+   "weight": 1.6211412629709785,
    "signals": {
     "gdp": 95210150818.3512,
-    "arrivals": 2284000,
-    "hdi": 0.879,
+    "arrivals": 6150000,
+    "hdi": 0.895,
     "migrants": 175194
    },
    "normalized": {
-    "gdp": 0.5946932079978431,
-    "arrivals": 0.6210582624415025,
-    "migrants": 0.5353758942873197,
-    "hdi": 0.879
+    "gdp": 0.26286772836708716,
+    "arrivals": 0.4480212881443933,
+    "migrants": -0.17710827988474437,
+    "hdi": 1.0122364938622983
    },
    "signalsUsed": 4,
    "iso2": "LT"
   },
   {
-   "iso3": "NGA",
-   "name": "Nigeria",
-   "weight": 0.6568549345064466,
+   "iso3": "LVA",
+   "name": "Latvia",
+   "weight": 1.5832084313882082,
    "signals": {
-    "gdp": 290794361542.112,
-    "arrivals": 5265000,
-    "hdi": 0.548,
-    "migrants": 1403281
+    "gdp": 48618869160.3254,
+    "arrivals": 8342000,
+    "hdi": 0.889,
+    "migrants": 220471
    },
    "normalized": {
-    "gdp": 0.6730112265720156,
-    "arrivals": 0.7014392783183634,
-    "migrants": 0.7049692331354075,
-    "hdi": 0.548
+    "gdp": -0.02541119770450568,
+    "arrivals": 0.5956120555847672,
+    "migrants": -0.07255621500113311,
+    "hdi": 0.9726063677698118
    },
    "signalsUsed": 4,
-   "iso2": "NG"
-  },
-  {
-   "iso3": "URY",
-   "name": "Uruguay",
-   "weight": 0.651656254674522,
-   "signals": {
-    "gdp": 85347696277.6859,
-    "arrivals": 3480000,
-    "hdi": 0.83,
-    "migrants": 160064
-   },
-   "normalized": {
-    "gdp": 0.5870227288456553,
-    "arrivals": 0.661588289150124,
-    "migrants": 0.5280140007023085,
-    "hdi": 0.83
-   },
-   "signalsUsed": 4,
-   "iso2": "UY"
+   "iso2": "LV"
   },
   {
    "iso3": "CRI",
    "name": "Costa Rica",
-   "weight": 0.6500885942959502,
+   "weight": 1.5776435212941315,
    "signals": {
     "gdp": 102904921157.478,
-    "arrivals": 1146500,
-    "hdi": 0.806,
+    "arrivals": 3366000,
+    "hdi": 0.833,
     "migrants": 628404
    },
    "normalized": {
-    "gdp": 0.6001447334310757,
-    "arrivals": 0.5547233886735041,
-    "migrants": 0.6394862550792209,
-    "hdi": 0.806
+    "gdp": 0.2962043754653349,
+    "arrivals": 0.1562165588305106,
+    "migrants": 0.4038372076389328,
+    "hdi": 0.6027251909066045
    },
    "signalsUsed": 4,
    "iso2": "CR"
   },
   {
-   "iso3": "LUX",
-   "name": "Luxembourg",
-   "weight": 0.6489845509863468,
-   "signals": {
-    "gdp": 101157829491.107,
-    "arrivals": 525000,
-    "hdi": 0.927,
-    "migrants": 344309
-   },
-   "normalized": {
-    "gdp": 0.5989436202359224,
-    "arrivals": 0.47954760823725434,
-    "migrants": 0.5904469754722101,
-    "hdi": 0.927
-   },
-   "signalsUsed": 4,
-   "iso2": "LU"
-  },
-  {
    "iso3": "EST",
    "name": "Estonia",
-   "weight": 0.6459940819635692,
+   "weight": 1.535785619665092,
    "signals": {
     "gdp": 47030833798.5866,
-    "arrivals": 1695000,
-    "hdi": 0.899,
+    "arrivals": 6103000,
+    "hdi": 0.905,
     "migrants": 203046
    },
    "normalized": {
-    "gdp": 0.5452217311278085,
-    "arrivals": 0.5923530017719474,
-    "migrants": 0.5474015949545209,
-    "hdi": 0.899
+    "gdp": -0.0396555169234564,
+    "arrivals": 0.44430713985093345,
+    "migrants": -0.11000375269090049,
+    "hdi": 1.0782867040164426
    },
    "signalsUsed": 4,
    "iso2": "EE"
   },
   {
-   "iso3": "BGD",
-   "name": "Bangladesh",
-   "weight": 0.6429316857149651,
-   "signals": {
-    "gdp": 456319229255.578,
-    "arrivals": 323000,
-    "hdi": 0.67,
-    "migrants": 2906338
-   },
-   "normalized": {
-    "gdp": 0.7046165102808223,
-    "arrivals": 0.4327959844030697,
-    "migrants": 0.7643142481759683,
-    "hdi": 0.67
-   },
-   "signalsUsed": 4,
-   "iso2": "BD"
-  },
-  {
-   "iso3": "PAK",
-   "name": "Pakistan",
-   "weight": 0.6421848164379285,
-   "signals": {
-    "gdp": 407307214476.222,
-    "arrivals": 966000,
-    "hdi": 0.54,
-    "migrants": 4175958
-   },
-   "normalized": {
-    "gdp": 0.6966463896604662,
-    "arrivals": 0.538235758401702,
-    "migrants": 0.7938571176895456,
-    "hdi": 0.54
-   },
-   "signalsUsed": 4,
-   "iso2": "PK"
-  },
-  {
-   "iso3": "LBN",
-   "name": "Lebanon",
-   "weight": 0.6344503052583526,
-   "signals": {
-    "gdp": 25971643441.3408,
-    "arrivals": 1936000,
-    "hdi": 0.723,
-    "migrants": 1422583
-   },
-   "normalized": {
-    "gdp": 0.5035702746503496,
-    "arrivals": 0.6051482074871911,
-    "migrants": 0.7060827388958698,
-    "hdi": 0.723
-   },
-   "signalsUsed": 4,
-   "iso2": "LB"
-  },
-  {
-   "iso3": "PAN",
-   "name": "Panama",
-   "weight": 0.6319771102590644,
-   "signals": {
-    "gdp": 90462600000,
-    "arrivals": 647000,
-    "hdi": 0.82,
-    "migrants": 477749
-   },
-   "normalized": {
-    "gdp": 0.5911053314215212,
-    "arrivals": 0.4996582442652285,
-    "migrants": 0.6171448653495083,
-    "hdi": 0.82
-   },
-   "signalsUsed": 4,
-   "iso2": "PA"
-  },
-  {
    "iso3": "SRB",
    "name": "Serbia",
-   "weight": 0.629171075253756,
+   "weight": 1.4609571779684596,
    "signals": {
     "gdp": 99953324472.9042,
-    "arrivals": 446000,
-    "hdi": 0.805,
+    "arrivals": 1847000,
+    "hdi": 0.833,
     "migrants": 712550
    },
    "normalized": {
-    "gdp": 0.5981033886191888,
-    "arrivals": 0.4638517022809753,
-    "migrants": 0.6497292101148602,
-    "hdi": 0.805
+    "gdp": 0.2837213388486715,
+    "arrivals": -0.13434654708623928,
+    "migrants": 0.4609938485495991,
+    "hdi": 0.6027251909066045
    },
    "signalsUsed": 4,
    "iso2": "RS"
   },
   {
-   "iso3": "KEN",
-   "name": "Kenya",
-   "weight": 0.6270061261640247,
+   "iso3": "LUX",
+   "name": "Luxembourg",
+   "weight": 1.4539375326461776,
    "signals": {
-    "gdp": 135941278878.815,
-    "arrivals": 2049000,
-    "hdi": 0.601,
-    "migrants": 992536
+    "gdp": 101157829491.107,
+    "arrivals": 1041000,
+    "hdi": 0.922,
+    "migrants": 344309
    },
    "normalized": {
-    "gdp": 0.6196740923663797,
-    "arrivals": 0.6106080998105895,
-    "migrants": 0.6767423124791299,
-    "hdi": 0.601
+    "gdp": 0.28885944289512566,
+    "arrivals": -0.4119436442315921,
+    "migrants": 0.13019347052760277,
+    "hdi": 1.1905720612784876
    },
    "signalsUsed": 4,
-   "iso2": "KE"
+   "iso2": "LU"
   },
   {
-   "iso3": "MAC",
-   "name": "Macao SAR, China",
-   "weight": 0.6242214428804485,
+   "iso3": "CYP",
+   "name": "Cyprus",
+   "weight": 1.4443329378870349,
    "signals": {
-    "gdp": 52061007670.169,
-    "arrivals": 5897000,
-    "hdi": null,
-    "migrants": 426862
+    "gdp": 41225787247.3309,
+    "arrivals": 4117000,
+    "hdi": 0.913,
+    "migrants": 202062
    },
    "normalized": {
-    "gdp": 0.5523492754056138,
-    "arrivals": 0.7123500966484528,
-    "migrants": 0.6079649565872787,
-    "hdi": null
+    "gdp": -0.09616367220513078,
+    "arrivals": 0.25372234643013614,
+    "migrants": -0.11221328941100289,
+    "hdi": 1.1311268721397578
+   },
+   "signalsUsed": 4,
+   "iso2": "CY"
+  },
+  {
+   "iso3": "PAN",
+   "name": "Panama",
+   "weight": 1.4429947684882198,
+   "signals": {
+    "gdp": 90462600000,
+    "arrivals": 2494000,
+    "hdi": 0.839,
+    "migrants": 477749
+   },
+   "normalized": {
+    "gdp": 0.2409274885714917,
+    "arrivals": 0.011053111424036872,
+    "migrants": 0.2791701769057731,
+    "hdi": 0.642355316999091
+   },
+   "signalsUsed": 4,
+   "iso2": "PA"
+  },
+  {
+   "iso3": "PAK",
+   "name": "Pakistan",
+   "weight": 1.4222860668893906,
+   "signals": {
+    "gdp": 407307214476.222,
+    "arrivals": null,
+    "hdi": 0.544,
+    "migrants": 4175958
+   },
+   "normalized": {
+    "gdp": 0.8863220769263707,
+    "arrivals": null,
+    "migrants": 1.2652409656939347,
+    "hdi": -1.3061258825481599
    },
    "signalsUsed": 3,
-   "iso2": "MO"
+   "iso2": "PK"
   },
   {
-   "iso3": "KGZ",
-   "name": "Kyrgyz Republic",
-   "weight": 0.6216374406398704,
+   "iso3": "ECU",
+   "name": "Ecuador",
+   "weight": 1.3852985896964327,
    "signals": {
-    "gdp": 22623752095.4613,
-    "arrivals": 8508000,
-    "hdi": 0.701,
-    "migrants": 194816
+    "gdp": 130320560400,
+    "arrivals": 2108000,
+    "hdi": 0.777,
+    "migrants": 747749
    },
    "normalized": {
-    "gdp": 0.49389003488289973,
-    "arrivals": 0.7476307261427108,
-    "migrants": 0.544029001533871,
-    "hdi": 0.701
+    "gdp": 0.39751618270858685,
+    "arrivals": -0.07035430181448851,
+    "migrants": 0.482924359884809,
+    "hdi": 0.2328440140433978
    },
    "signalsUsed": 4,
-   "iso2": "KG"
+   "iso2": "EC"
   },
   {
    "iso3": "MLT",
    "name": "Malta",
-   "weight": 0.619725638458135,
+   "weight": 1.365903900585867,
    "signals": {
     "gdp": 27771821560.9411,
-    "arrivals": 718000,
-    "hdi": 0.915,
+    "arrivals": 3519000,
+    "hdi": 0.924,
     "migrants": 199466
    },
    "normalized": {
-    "gdp": 0.5082710953489559,
-    "arrivals": 0.5096798044461411,
-    "migrants": 0.5459516540374431,
-    "hdi": 0.915
+    "gdp": -0.265612511915418,
+    "arrivals": 0.17773747102579607,
+    "migrants": -0.1180945577418596,
+    "hdi": 1.2037821033093163
    },
    "signalsUsed": 4,
    "iso2": "MT"
   },
   {
-   "iso3": "MAR",
-   "name": "Morocco",
-   "weight": 0.6193114071984532,
+   "iso3": "URY",
+   "name": "Uruguay",
+   "weight": 1.351710374313418,
    "signals": {
-    "gdp": 182374250612.28,
-    "arrivals": 2802000,
-    "hdi": 0.698,
-    "migrants": 111069
+    "gdp": 85347696277.6859,
+    "arrivals": 3480000,
+    "hdi": 0.862,
+    "migrants": 160064
    },
    "normalized": {
-    "gdp": 0.6402850966914121,
-    "arrivals": 0.6407316599816935,
-    "migrants": 0.4982288721207073,
-    "hdi": 0.698
+    "gdp": 0.2159619476452095,
+    "arrivals": 0.17234193255149988,
+    "migrants": -0.2181883301824323,
+    "hdi": 0.7942708003536225
    },
    "signalsUsed": 4,
-   "iso2": "MA"
+   "iso2": "UY"
   },
   {
    "iso3": "PHL",
    "name": "Philippines",
-   "weight": 0.6193013571330863,
+   "weight": 1.3313919900204132,
    "signals": {
     "gdp": 487086123720.417,
-    "arrivals": 1483000,
-    "hdi": 0.71,
+    "arrivals": 8261000,
+    "hdi": 0.72,
     "migrants": 87212
    },
    "normalized": {
-    "gdp": 0.7091932976537181,
-    "arrivals": 0.5794928841779595,
-    "migrants": 0.4785192467006679,
-    "hdi": 0.71
+    "gdp": 0.9630477290521822,
+    "arrivals": 0.5908881241893049,
+    "migrants": -0.49437365674009753,
+    "hdi": -0.14364218383522398
    },
    "signalsUsed": 4,
    "iso2": "PH"
   },
   {
-   "iso3": "LBY",
-   "name": "Libya",
-   "weight": 0.6191273655357296,
-   "signals": {
-    "gdp": 48098909613.6316,
-    "arrivals": 760000,
-    "hdi": 0.746,
-    "migrants": 897751
-   },
-   "normalized": {
-    "gdp": 0.5467968936729216,
-    "arrivals": 0.5151513411087738,
-    "migrants": 0.6685612273612227,
-    "hdi": 0.746
-   },
-   "signalsUsed": 4,
-   "iso2": "LY"
-  },
-  {
-   "iso3": "DZA",
-   "name": "Algeria",
-   "weight": 0.618856757871505,
-   "signals": {
-    "gdp": 287031225987.736,
-    "arrivals": 591000,
-    "hdi": 0.745,
-    "migrants": 259458
-   },
-   "normalized": {
-    "gdp": 0.6720975750040006,
-    "arrivals": 0.4909449702729867,
-    "migrants": 0.5673844862090325,
-    "hdi": 0.745
-   },
-   "signalsUsed": 4,
-   "iso2": "DZ"
-  },
-  {
-   "iso3": "IRQ",
-   "name": "Iraq",
-   "weight": 0.6159291664482116,
-   "signals": {
-    "gdp": 254367293538.462,
-    "arrivals": 892000,
-    "hdi": 0.673,
-    "migrants": 370980
-   },
-   "normalized": {
-    "gdp": 0.6636233390073181,
-    "arrivals": 0.5305650880673034,
-    "migrants": 0.5965282387182251,
-    "hdi": 0.673
-   },
-   "signalsUsed": 4,
-   "iso2": "IQ"
-  },
-  {
-   "iso3": "VEN",
-   "name": "Venezuela, RB",
-   "weight": 0.6133533845063888,
-   "signals": {
-    "gdp": 99661244155.6306,
-    "arrivals": 429000,
-    "hdi": 0.699,
-    "migrants": 1263304
-   },
-   "normalized": {
-    "gdp": 0.5978981156625057,
-    "arrivals": 0.4601113454291789,
-    "migrants": 0.6964040769338704,
-    "hdi": 0.699
-   },
-   "signalsUsed": 4,
-   "iso2": "VE"
-  },
-  {
    "iso3": "ISL",
    "name": "Iceland",
-   "weight": 0.6128873253889603,
+   "weight": 1.3287046715095743,
    "signals": {
     "gdp": 38582528789.0033,
-    "arrivals": 488000,
-    "hdi": 0.959,
+    "arrivals": 2202000,
+    "hdi": 0.972,
     "migrants": 98818
    },
    "normalized": {
-    "gdp": 0.5313329203810815,
-    "arrivals": 0.4725135973479331,
-    "migrants": 0.4887027838268268,
-    "hdi": 0.959
+    "gdp": -0.12458704446536045,
+    "arrivals": -0.04923297763034175,
+    "migrants": -0.4375485732856557,
+    "hdi": 1.5208231120492077
    },
    "signalsUsed": 4,
    "iso2": "IS"
   },
   {
-   "iso3": "AZE",
-   "name": "Azerbaijan",
-   "weight": 0.6029499458420315,
+   "iso3": "DZA",
+   "name": "Algeria",
+   "weight": 1.3102293590596965,
    "signals": {
-    "gdp": 75937647058.8235,
-    "arrivals": 796000,
-    "hdi": 0.76,
-    "migrants": 218460
+    "gdp": 287031225987.736,
+    "arrivals": 2371000,
+    "hdi": 0.763,
+    "migrants": 259458
    },
    "normalized": {
-    "gdp": 0.5788284285476608,
-    "arrivals": 0.5196057279790918,
-    "migrants": 0.5533656268413736,
-    "hdi": 0.76
+    "gdp": 0.7362035126995485,
+    "arrivals": -0.013432813471468815,
+    "migrants": 0.0015026373905744688,
+    "hdi": 0.14037371982759597
    },
    "signalsUsed": 4,
-   "iso2": "AZ"
+   "iso2": "DZ"
+  },
+  {
+   "iso3": "MAR",
+   "name": "Morocco",
+   "weight": 1.268877368067209,
+   "signals": {
+    "gdp": 182374250612.28,
+    "arrivals": 13109000,
+    "hdi": 0.71,
+    "migrants": 111069
+   },
+   "normalized": {
+    "gdp": 0.5416668869759551,
+    "arrivals": 0.814441774081258,
+    "migrants": -0.3843921154078102,
+    "hdi": -0.20969239398936815
+   },
+   "signalsUsed": 4,
+   "iso2": "MA"
+  },
+  {
+   "iso3": "IRQ",
+   "name": "Iraq",
+   "weight": 1.2521883336688293,
+   "signals": {
+    "gdp": 254367293538.462,
+    "arrivals": null,
+    "hdi": 0.695,
+    "migrants": 370980
+   },
+   "normalized": {
+    "gdp": 0.684382674970987,
+    "arrivals": null,
+    "migrants": 0.16412748453296794,
+    "hdi": -0.3087677092205844
+   },
+   "signalsUsed": 3,
+   "iso2": "IQ"
+  },
+  {
+   "iso3": "BGD",
+   "name": "Bangladesh",
+   "weight": 1.2375799571368027,
+   "signals": {
+    "gdp": 456319229255.578,
+    "arrivals": 323000,
+    "hdi": 0.685,
+    "migrants": 2906338
+   },
+   "normalized": {
+    "gdp": 0.9350601965050818,
+    "arrivals": -0.9785262450663033,
+    "migrants": 1.1003890085797043,
+    "hdi": -0.37481791937472786
+   },
+   "signalsUsed": 4,
+   "iso2": "BD"
   },
   {
    "iso3": "GEO",
    "name": "Georgia",
-   "weight": 0.599757684931674,
+   "weight": 1.1985772832722565,
    "signals": {
     "gdp": 38143612855.1367,
-    "arrivals": 1513000,
-    "hdi": 0.814,
+    "arrivals": 7726000,
+    "hdi": 0.844,
     "migrants": 81582
    },
    "normalized": {
-    "gdp": 0.5305303851698245,
-    "arrivals": 0.5814204600358338,
-    "migrants": 0.4730798945210376,
-    "hdi": 0.814
+    "gdp": -0.12949463105727144,
+    "arrivals": 0.5584727759895204,
+    "migrants": -0.5247257473463779,
+    "hdi": 0.675380422076163
    },
    "signalsUsed": 4,
    "iso2": "GE"
   },
   {
+   "iso3": "LBY",
+   "name": "Libya",
+   "weight": 1.1808770687537642,
+   "signals": {
+    "gdp": 48098909613.6316,
+    "arrivals": null,
+    "hdi": 0.721,
+    "migrants": 897751
+   },
+   "normalized": {
+    "gdp": -0.030023233531966172,
+    "arrivals": null,
+    "migrants": 0.5660782547222983,
+    "hdi": -0.13703716281980954
+   },
+   "signalsUsed": 3,
+   "iso2": "LY"
+  },
+  {
+   "iso3": "AZE",
+   "name": "Azerbaijan",
+   "weight": 1.179542234800652,
+   "signals": {
+    "gdp": 75937647058.8235,
+    "arrivals": 3170000,
+    "hdi": 0.789,
+    "migrants": 218460
+   },
+   "normalized": {
+    "gdp": 0.16585294593606298,
+    "arrivals": 0.12717125352224812,
+    "migrants": -0.07672390056321542,
+    "hdi": 0.3121042662283708
+   },
+   "signalsUsed": 4,
+   "iso2": "AZ"
+  },
+  {
+   "iso3": "LBN",
+   "name": "Lebanon",
+   "weight": 1.146415897008794,
+   "signals": {
+    "gdp": 25971643441.3408,
+    "arrivals": 1936000,
+    "hdi": 0.752,
+    "migrants": 1422583
+   },
+   "normalized": {
+    "gdp": -0.29435852119683287,
+    "arrivals": -0.11156225731988566,
+    "migrants": 0.775451775717881,
+    "hdi": 0.06771848865803738
+   },
+   "signalsUsed": 4,
+   "iso2": "LB"
+  },
+  {
+   "iso3": "NGA",
+   "name": "Nigeria",
+   "weight": 1.1381563650777053,
+   "signals": {
+    "gdp": 290794361542.112,
+    "arrivals": null,
+    "hdi": 0.56,
+    "migrants": 1403281
+   },
+   "normalized": {
+    "gdp": 0.7417905874122522,
+    "arrivals": null,
+    "migrants": 0.769238310103588,
+    "hdi": -1.2004455463015293
+   },
+   "signalsUsed": 3,
+   "iso2": "NG"
+  },
+  {
    "iso3": "CIV",
    "name": "Cote d'Ivoire",
-   "weight": 0.5995764108693911,
+   "weight": 1.0795810381510287,
    "signals": {
     "gdp": 99773555666.1988,
-    "arrivals": 668000,
-    "hdi": 0.534,
+    "arrivals": 2070000,
+    "hdi": 0.582,
     "migrants": 2880839
    },
    "normalized": {
-    "gdp": 0.597977118873581,
-    "arrivals": 0.50273255655938,
-    "migrants": 0.7635959680446037,
-    "hdi": 0.534
+    "gdp": 0.2829491861732295,
+    "arrivals": -0.07916131856100149,
+    "migrants": 1.0963809387015466,
+    "hdi": -1.0551350839624127
    },
    "signalsUsed": 4,
    "iso2": "CI"
   },
   {
+   "iso3": "PRY",
+   "name": "Paraguay",
+   "weight": 1.0625635559276574,
+   "signals": {
+    "gdp": 49278227554.3339,
+    "arrivals": 4368000,
+    "hdi": 0.756,
+    "migrants": 180837
+   },
+   "normalized": {
+    "gdp": -0.01963311784549059,
+    "arrivals": 0.2823740393440379,
+    "migrants": -0.1626892946306375,
+    "hdi": 0.09413857271969504
+   },
+   "signalsUsed": 4,
+   "iso2": "PY"
+  },
+  {
+   "iso3": "KEN",
+   "name": "Kenya",
+   "weight": 1.0618218870292158,
+   "signals": {
+    "gdp": 135941278878.815,
+    "arrivals": 2049000,
+    "hdi": 0.628,
+    "migrants": 992536
+   },
+   "normalized": {
+    "gdp": 0.4156284439861321,
+    "arrivals": -0.08409797553311012,
+    "migrants": 0.6117294698957361,
+    "hdi": -0.7513041172533496
+   },
+   "signalsUsed": 4,
+   "iso2": "KE"
+  },
+  {
+   "iso3": "ARM",
+   "name": "Armenia",
+   "weight": 1.037934406365876,
+   "signals": {
+    "gdp": 29243452882.3545,
+    "arrivals": 1894000,
+    "hdi": 0.811,
+    "migrants": 274645
+   },
+   "normalized": {
+    "gdp": -0.2434647665464831,
+    "arrivals": -0.12218091477467553,
+    "migrants": 0.027375242101613444,
+    "hdi": 0.457414728567488
+   },
+   "signalsUsed": 4,
+   "iso2": "AM"
+  },
+  {
+   "iso3": "TUN",
+   "name": "Tunisia",
+   "weight": 1.0281186892667455,
+   "signals": {
+    "gdp": 57502836548.0878,
+    "arrivals": 9429000,
+    "hdi": 0.746,
+    "migrants": 63201
+   },
+   "normalized": {
+    "gdp": 0.04657439956681269,
+    "arrivals": 0.6549130351390146,
+    "migrants": -0.6408378233400266,
+    "hdi": 0.028088362565550876
+   },
+   "signalsUsed": 4,
+   "iso2": "TN"
+  },
+  {
+   "iso3": "BRN",
+   "name": "Brunei Darussalam",
+   "weight": 1.013221685100104,
+   "signals": {
+    "gdp": 15031980994.1121,
+    "arrivals": 4449000,
+    "hdi": 0.837,
+    "migrants": 119933
+   },
+   "normalized": {
+    "gdp": -0.5289130682439734,
+    "arrivals": 0.29126969742092773,
+    "migrants": -0.34946977133779156,
+    "hdi": 0.6291452749682621
+   },
+   "signalsUsed": 4,
+   "iso2": "BN"
+  },
+  {
+   "iso3": "TKM",
+   "name": "Turkmenistan",
+   "weight": 1.0003424495421271,
+   "signals": {
+    "gdp": 49828621355.6516,
+    "arrivals": null,
+    "hdi": 0.764,
+    "migrants": 193763
+   },
+   "normalized": {
+    "gdp": -0.014868812620545463,
+    "arrivals": null,
+    "migrants": -0.13128819001526681,
+    "hdi": 0.14697874084301038
+   },
+   "signalsUsed": 3,
+   "iso2": "TM"
+  },
+  {
+   "iso3": "KGZ",
+   "name": "Kyrgyz Republic",
+   "weight": 0.9934999669881922,
+   "signals": {
+    "gdp": 22623752095.4613,
+    "arrivals": 8508000,
+    "hdi": 0.72,
+    "migrants": 194816
+   },
+   "normalized": {
+    "gdp": -0.35355419787600145,
+    "arrivals": 0.6051515183849493,
+    "migrants": -0.12882313737149834,
+    "hdi": -0.14364218383522398
+   },
+   "signalsUsed": 4,
+   "iso2": "KG"
+  },
+  {
+   "iso3": "VEN",
+   "name": "Venezuela, RB",
+   "weight": 0.9834164655019344,
+   "signals": {
+    "gdp": 99661244155.6306,
+    "arrivals": 429000,
+    "hdi": 0.709,
+    "migrants": 1263304
+   },
+   "normalized": {
+    "gdp": 0.28246607329051426,
+    "arrivals": -0.8411248591243865,
+    "migrants": 0.7214439425942444,
+    "hdi": -0.21629741500478256
+   },
+   "signalsUsed": 4,
+   "iso2": "VE"
+  },
+  {
+   "iso3": "BHS",
+   "name": "Bahamas, The",
+   "weight": 0.9769995430804538,
+   "signals": {
+    "gdp": 15832800000,
+    "arrivals": 7250000,
+    "hdi": 0.82,
+    "migrants": 67285
+   },
+   "normalized": {
+    "gdp": -0.5066495445800798,
+    "arrivals": 0.5276863611504063,
+    "migrants": -0.6123578370463357,
+    "hdi": 0.516859917706217
+   },
+   "signalsUsed": 4,
+   "iso2": "BS"
+  },
+  {
    "iso3": "AND",
    "name": "Andorra",
-   "weight": 0.5988844962282727,
+   "weight": 0.9729372058136915,
    "signals": {
     "gdp": 4500982731.80784,
-    "arrivals": 5207000,
-    "hdi": 0.884,
+    "arrivals": 8235000,
+    "hdi": 0.913,
     "migrants": 48408
    },
    "normalized": {
-    "gdp": 0.3806279763509292,
-    "arrivals": 0.7003731233927726,
-    "migrants": 0.43053688516938904,
-    "hdi": 0.884
+    "gdp": -1.0461635090027839,
+    "arrivals": 0.5893619758623607,
+    "migrants": -0.7621196927762592,
+    "hdi": 1.1311268721397578
    },
    "signalsUsed": 4,
    "iso2": "AD"
@@ -1751,18 +1865,18 @@
   {
    "iso3": "ALB",
    "name": "Albania",
-   "weight": 0.5916583285847337,
+   "weight": 0.9729073311243254,
    "signals": {
     "gdp": 30540188271.3421,
-    "arrivals": 2658000,
-    "hdi": 0.789,
+    "arrivals": 6406000,
+    "hdi": 0.81,
     "migrants": 46377
    },
    "normalized": {
-    "gdp": 0.5149363014083072,
-    "arrivals": 0.635653713839159,
-    "migrants": 0.4270432990914683,
-    "hdi": 0.789
+    "gdp": -0.2248540810947184,
+    "arrivals": 0.46776598783869144,
+    "migrants": -0.7816142277274959,
+    "hdi": 0.45080970755207356
    },
    "signalsUsed": 4,
    "iso2": "AL"
@@ -1770,303 +1884,398 @@
   {
    "iso3": "GHA",
    "name": "Ghana",
-   "weight": 0.5916286796945576,
+   "weight": 0.9663880868398138,
    "signals": {
     "gdp": 114209905278.717,
-    "arrivals": 897000,
-    "hdi": 0.602,
+    "arrivals": null,
+    "hdi": 0.628,
     "migrants": 532286
    },
    "normalized": {
-    "gdp": 0.6074560366122197,
-    "arrivals": 0.5311030831563959,
-    "migrants": 0.6259555990096148,
-    "hdi": 0.602
+    "gdp": 0.340913757630606,
+    "arrivals": null,
+    "migrants": 0.32833488945386385,
+    "hdi": -0.7513041172533496
    },
-   "signalsUsed": 4,
+   "signalsUsed": 3,
    "iso2": "GH"
   },
   {
-   "iso3": "PRY",
-   "name": "Paraguay",
-   "weight": 0.5915401290946858,
+   "iso3": "GAB",
+   "name": "Gabon",
+   "weight": 0.9266063788163411,
    "signals": {
-    "gdp": 49278227554.3339,
-    "arrivals": 1077000,
-    "hdi": 0.731,
-    "migrants": 180837
+    "gdp": 21427119323.2764,
+    "arrivals": null,
+    "hdi": 0.733,
+    "migrants": 449746
    },
    "normalized": {
-    "gdp": 0.5484959841589,
-    "arrivals": 0.5487046334272868,
-    "migrants": 0.5379598987925565,
-    "hdi": 0.731
+    "gdp": -0.3768639950331682,
+    "arrivals": null,
+    "migrants": 0.2516974930761613,
+    "hdi": -0.057776910634836545
    },
-   "signalsUsed": 4,
-   "iso2": "PY"
-  },
-  {
-   "iso3": "TUN",
-   "name": "Tunisia",
-   "weight": 0.5881121795871108,
-   "signals": {
-    "gdp": 57502836548.0878,
-    "arrivals": 2012000,
-    "hdi": 0.732,
-    "migrants": 63201
-   },
-   "normalized": {
-    "gdp": 0.5593228667779182,
-    "arrivals": 0.6088542262995396,
-    "migrants": 0.4522716252709856,
-    "hdi": 0.732
-   },
-   "signalsUsed": 4,
-   "iso2": "TN"
-  },
-  {
-   "iso3": "SDN",
-   "name": "Sudan",
-   "weight": 0.5878581391599901,
-   "signals": {
-    "gdp": 60162634574.4689,
-    "arrivals": 836000,
-    "hdi": 0.516,
-    "migrants": 2397113
-   },
-   "normalized": {
-    "gdp": 0.5624945877923165,
-    "arrivals": 0.5243246667356827,
-    "migrants": 0.748613302111961,
-    "hdi": 0.516
-   },
-   "signalsUsed": 4,
-   "iso2": "SD"
-  },
-  {
-   "iso3": "SYR",
-   "name": "Syrian Arab Republic",
-   "weight": 0.5873628130970118,
-   "signals": {
-    "gdp": 23737634644.3994,
-    "arrivals": 2424000,
-    "hdi": 0.557,
-    "migrants": 896042
-   },
-   "normalized": {
-    "gdp": 0.49726126144087696,
-    "arrivals": 0.626784075412974,
-    "migrants": 0.6684059155341963,
-    "hdi": 0.557
-   },
-   "signalsUsed": 4,
-   "iso2": "SY"
-  },
-  {
-   "iso3": "BHS",
-   "name": "Bahamas, The",
-   "weight": 0.5860182997123609,
-   "signals": {
-    "gdp": 15832800000,
-    "arrivals": 1794500,
-    "hdi": 0.82,
-    "migrants": 67285
-   },
-   "normalized": {
-    "gdp": 0.46885442845831965,
-    "arrivals": 0.597843289918468,
-    "migrants": 0.4573754804726558,
-    "hdi": 0.82
-   },
-   "signalsUsed": 4,
-   "iso2": "BS"
-  },
-  {
-   "iso3": "BRN",
-   "name": "Brunei Darussalam",
-   "weight": 0.585216969206711,
-   "signals": {
-    "gdp": 15031980994.1121,
-    "arrivals": 1071000,
-    "hdi": 0.823,
-    "migrants": 119933
-   },
-   "normalized": {
-    "gdp": 0.46521368543070213,
-    "arrivals": 0.5481669388956739,
-    "migrants": 0.5044872525004678,
-    "hdi": 0.823
-   },
-   "signalsUsed": 4,
-   "iso2": "BN"
-  },
-  {
-   "iso3": "CMR",
-   "name": "Cameroon",
-   "weight": 0.5832407998507949,
-   "signals": {
-    "gdp": 58933453923.761,
-    "arrivals": 1021000,
-    "hdi": 0.587,
-    "migrants": 642948
-   },
-   "normalized": {
-    "gdp": 0.5610466329786911,
-    "arrivals": 0.543565342157552,
-    "migrants": 0.6413512242669365,
-    "hdi": 0.587
-   },
-   "signalsUsed": 4,
-   "iso2": "CM"
+   "signalsUsed": 3,
+   "iso2": "GA"
   },
   {
    "iso3": "UGA",
    "name": "Uganda",
-   "weight": 0.5800671582754278,
+   "weight": 0.9235713436686515,
    "signals": {
     "gdp": 61985829288.1496,
-    "arrivals": 473000,
-    "hdi": 0.55,
+    "arrivals": 1543000,
+    "hdi": 0.582,
     "migrants": 2057759
    },
    "normalized": {
-    "gdp": 0.5645886938295682,
-    "arrivals": 0.46950876212550313,
-    "migrants": 0.7361711771466398,
-    "hdi": 0.55
+    "gdp": 0.07877548167699365,
+    "arrivals": -0.22141158682923873,
+    "migrants": 0.9433480570818331,
+    "hdi": -1.0551350839624127
    },
    "signalsUsed": 4,
    "iso2": "UG"
   },
   {
-   "iso3": "TZA",
-   "name": "Tanzania",
-   "weight": 0.5799106209014218,
-   "signals": {
-    "gdp": 90143496090.4411,
-    "arrivals": 1527000,
-    "hdi": 0.532,
-    "migrants": 462371
-   },
-   "normalized": {
-    "gdp": 0.5908574628051431,
-    "arrivals": 0.5823069524816545,
-    "migrants": 0.6144780683188891,
-    "hdi": 0.532
-   },
-   "signalsUsed": 4,
-   "iso2": "TZ"
-  },
-  {
-   "iso3": "ARM",
-   "name": "Armenia",
-   "weight": 0.5792692806903468,
-   "signals": {
-    "gdp": 29243452882.3545,
-    "arrivals": 375000,
-    "hdi": 0.786,
-    "migrants": 274645
-   },
-   "normalized": {
-    "gdp": 0.511892905209188,
-    "arrivals": 0.4471631410452128,
-    "migrants": 0.5720210765069865,
-    "hdi": 0.786
-   },
-   "signalsUsed": 4,
-   "iso2": "AM"
-  },
-  {
-   "iso3": "BWA",
-   "name": "Botswana",
-   "weight": 0.5736931058664592,
-   "signals": {
-    "gdp": 19928479839.4476,
-    "arrivals": 1830000,
-    "hdi": 0.708,
-    "migrants": 116402
-   },
-   "normalized": {
-    "gdp": 0.4849922177610412,
-    "arrivals": 0.5997287253050853,
-    "migrants": 0.5020514803997103,
-    "hdi": 0.708
-   },
-   "signalsUsed": 4,
-   "iso2": "BW"
-  },
-  {
-   "iso3": "TKM",
-   "name": "Turkmenistan",
-   "weight": 0.5713250717862817,
-   "signals": {
-    "gdp": 49828621355.6516,
-    "arrivals": 380000,
-    "hdi": 0.744,
-    "migrants": 193763
-   },
-   "normalized": {
-    "gdp": 0.5492750886389913,
-    "arrivals": 0.44843795532244574,
-    "migrants": 0.5435872431836897,
-    "hdi": 0.744
-   },
-   "signalsUsed": 4,
-   "iso2": "TM"
-  },
-  {
    "iso3": "LKA",
    "name": "Sri Lanka",
-   "weight": 0.5706809110308435,
+   "weight": 0.886944581326828,
    "signals": {
     "gdp": 108825231671.196,
-    "arrivals": 540000,
-    "hdi": 0.78,
+    "arrivals": 2027000,
+    "hdi": 0.776,
     "migrants": 40698
    },
    "normalized": {
-    "gdp": 0.6040684386132381,
-    "arrivals": 0.4822589726281477,
-    "migrants": 0.41639623288198796,
-    "hdi": 0.78
+    "gdp": 0.32019824224213406,
+    "arrivals": -0.08932427640776305,
+    "migrants": -0.841025846539642,
+    "hdi": 0.2262389930279834
    },
    "signalsUsed": 4,
    "iso2": "LK"
   },
   {
-   "iso3": "GAB",
-   "name": "Gabon",
-   "weight": 0.5687576210447606,
+   "iso3": "MNE",
+   "name": "Montenegro",
+   "weight": 0.8829217416113178,
    "signals": {
-    "gdp": 21427119323.2764,
-    "arrivals": 526000,
-    "hdi": 0.693,
-    "migrants": 449746
+    "gdp": 9232801464.79257,
+    "arrivals": 2510000,
+    "hdi": 0.862,
+    "migrants": 92237
    },
    "normalized": {
-    "gdp": 0.4900781952677374,
-    "arrivals": 0.4797307616147598,
-    "migrants": 0.6122215272965449,
-    "hdi": 0.693
+    "gdp": -0.7379852967042353,
+    "arrivals": 0.01414914631910213,
+    "migrants": -0.46889452245683794,
+    "hdi": 0.7942708003536225
    },
    "signalsUsed": 4,
-   "iso2": "GA"
+   "iso2": "ME"
+  },
+  {
+   "iso3": "BOL",
+   "name": "Bolivia",
+   "weight": 0.8703079641095949,
+   "signals": {
+    "gdp": 64768947525.3256,
+    "arrivals": 1239000,
+    "hdi": 0.733,
+    "migrants": 183234
+   },
+   "normalized": {
+    "gdp": 0.09761467806221727,
+    "arrivals": -0.3276436850544306,
+    "migrants": -0.15670015672525234,
+    "hdi": -0.057776910634836545
+   },
+   "signalsUsed": 4,
+   "iso2": "BO"
+  },
+  {
+   "iso3": "GTM",
+   "name": "Guatemala",
+   "weight": 0.8301409745483315,
+   "signals": {
+    "gdp": 123306008821.471,
+    "arrivals": 2560000,
+    "hdi": 0.662,
+    "migrants": 92732
+   },
+   "normalized": {
+    "gdp": 0.37378380889108215,
+    "arrivals": 0.02369858425215476,
+    "migrants": -0.466460170448427,
+    "hdi": -0.5267334027292594
+   },
+   "signalsUsed": 4,
+   "iso2": "GT"
+  },
+  {
+   "iso3": "COD",
+   "name": "Congo, Dem. Rep.",
+   "weight": 0.7933609299302511,
+   "signals": {
+    "gdp": 91030531316.9936,
+    "arrivals": null,
+    "hdi": 0.522,
+    "migrants": 1085090
+   },
+   "normalized": {
+    "gdp": 0.2436119816404828,
+    "arrivals": null,
+    "migrants": 0.6522795249347177,
+    "hdi": -1.4514363448872771
+   },
+   "signalsUsed": 3,
+   "iso2": "CD"
+  },
+  {
+   "iso3": "ZWE",
+   "name": "Zimbabwe",
+   "weight": 0.7906619783143165,
+   "signals": {
+    "gdp": 51215643905.5886,
+    "arrivals": 2294000,
+    "hdi": 0.598,
+    "migrants": 429108
+   },
+   "normalized": {
+    "gdp": -0.0030920918706112094,
+    "arrivals": -0.02941661975261596,
+    "migrants": 0.2303323003964789,
+    "hdi": -0.9494547477157821
+   },
+   "signalsUsed": 4,
+   "iso2": "ZW"
+  },
+  {
+   "iso3": "MKD",
+   "name": "North Macedonia",
+   "weight": 0.7903600788409855,
+   "signals": {
+    "gdp": 19101199817.0174,
+    "arrivals": 758000,
+    "hdi": 0.815,
+    "migrants": 150902
+   },
+   "normalized": {
+    "gdp": -0.4261517248556594,
+    "arrivals": -0.5655390982702136,
+    "migrants": -0.2449972418657257,
+    "hdi": 0.4838348126291449
+   },
+   "signalsUsed": 4,
+   "iso2": "MK"
+  },
+  {
+   "iso3": "NPL",
+   "name": "Nepal",
+   "weight": 0.7508889575530483,
+   "signals": {
+    "gdp": 45489810283.1132,
+    "arrivals": 1197000,
+    "hdi": 0.622,
+    "migrants": 470719
+   },
+   "normalized": {
+    "gdp": -0.05394564200203334,
+    "arrivals": -0.3443398501614079,
+    "migrants": 0.2724277431883472,
+    "hdi": -0.7909342433458361
+   },
+   "signalsUsed": 4,
+   "iso2": "NP"
+  },
+  {
+   "iso3": "KHM",
+   "name": "Cambodia",
+   "weight": 0.7482384939635506,
+   "signals": {
+    "gdp": 51267065842.9641,
+    "arrivals": 6611000,
+    "hdi": 0.606,
+    "migrants": 83925
+   },
+   "normalized": {
+    "gdp": -0.0026616414690828136,
+    "arrivals": 0.4830163637835979,
+    "migrants": -0.5118473735373158,
+    "hdi": -0.8966145795924668
+   },
+   "signalsUsed": 4,
+   "iso2": "KH"
+  },
+  {
+   "iso3": "MMR",
+   "name": "Myanmar",
+   "weight": 0.7461907873934022,
+   "signals": {
+    "gdp": 81665773809.5238,
+    "arrivals": 4364000,
+    "hdi": 0.609,
+    "migrants": 79052
+   },
+   "normalized": {
+    "gdp": 0.19704640705862753,
+    "arrivals": 0.2819304838326529,
+    "migrants": -0.5390540601049552,
+    "hdi": -0.8767995165462236
+   },
+   "signalsUsed": 4,
+   "iso2": "MM"
+  },
+  {
+   "iso3": "SYR",
+   "name": "Syrian Arab Republic",
+   "weight": 0.7444193476139608,
+   "signals": {
+    "gdp": 23737634644.3994,
+    "arrivals": 2424000,
+    "hdi": 0.564,
+    "migrants": 896042
+   },
+   "normalized": {
+    "gdp": -0.3329387955582532,
+    "arrivals": -0.0027297862345754672,
+    "migrants": 0.565211600295364,
+    "hdi": -1.1740254622398723
+   },
+   "signalsUsed": 4,
+   "iso2": "SY"
+  },
+  {
+   "iso3": "TZA",
+   "name": "Tanzania",
+   "weight": 0.7416920318227274,
+   "signals": {
+    "gdp": 90143496090.4411,
+    "arrivals": 1527000,
+    "hdi": 0.555,
+    "migrants": 462371
+   },
+   "normalized": {
+    "gdp": 0.23941174610782162,
+    "arrivals": -0.22645805135363978,
+    "migrants": 0.26428920166665626,
+    "hdi": -1.2334706513786013
+   },
+   "signalsUsed": 4,
+   "iso2": "TZ"
+  },
+  {
+   "iso3": "SDN",
+   "name": "Sudan",
+   "weight": 0.7400164141297341,
+   "signals": {
+    "gdp": 60162634574.4689,
+    "arrivals": 836000,
+    "hdi": 0.511,
+    "migrants": 2397113
+   },
+   "normalized": {
+    "gdp": 0.06596980465958466,
+    "arrivals": -0.5181198168328408,
+    "migrants": 1.012776270554813,
+    "hdi": -1.5240915760568357
+   },
+   "signalsUsed": 4,
+   "iso2": "SD"
+  },
+  {
+   "iso3": "CMR",
+   "name": "Cameroon",
+   "weight": 0.7395503657843394,
+   "signals": {
+    "gdp": 58933453923.761,
+    "arrivals": 1021000,
+    "hdi": 0.588,
+    "migrants": 642948
+   },
+   "normalized": {
+    "gdp": 0.057115409825105996,
+    "arrivals": -0.4213356129961619,
+    "migrants": 0.4142439090059537,
+    "hdi": -1.0155049578699262
+   },
+   "signalsUsed": 4,
+   "iso2": "CM"
+  },
+  {
+   "iso3": "BWA",
+   "name": "Botswana",
+   "weight": 0.7360099837285049,
+   "signals": {
+    "gdp": 19928479839.4476,
+    "arrivals": 1830000,
+    "hdi": 0.731,
+    "migrants": 116402
+   },
+   "normalized": {
+    "gdp": -0.40796527840181573,
+    "arrivals": -0.13882326852149876,
+    "migrants": -0.3630616060006216,
+    "hdi": -0.07098695266566538
+   },
+   "signalsUsed": 4,
+   "iso2": "BW"
+  },
+  {
+   "iso3": "TTO",
+   "name": "Trinidad and Tobago",
+   "weight": 0.725873200070072,
+   "signals": {
+    "gdp": 25942749718.4685,
+    "arrivals": 480000,
+    "hdi": 0.807,
+    "migrants": 113478
+   },
+   "normalized": {
+    "gdp": -0.29483598561438,
+    "arrivals": -0.7867417168825113,
+    "migrants": -0.37463273388817997,
+    "hdi": 0.4309946445058303
+   },
+   "signalsUsed": 4,
+   "iso2": "TT"
+  },
+  {
+   "iso3": "BIH",
+   "name": "Bosnia and Herzegovina",
+   "weight": 0.7200876222626105,
+   "signals": {
+    "gdp": 32599982936.3931,
+    "arrivals": 1198000,
+    "hdi": 0.804,
+    "migrants": 34120
+   },
+   "normalized": {
+    "gdp": -0.19685797993771656,
+    "arrivals": -0.34393555718859176,
+    "migrants": -0.9212096500600871,
+    "hdi": 0.41117958145958705
+   },
+   "signalsUsed": 4,
+   "iso2": "BA"
   },
   {
    "iso3": "ETH",
    "name": "Ethiopia",
-   "weight": 0.5687112127340622,
+   "weight": 0.7138721669780478,
    "signals": {
     "gdp": 126358758448.356,
-    "arrivals": 518000,
-    "hdi": 0.492,
+    "arrivals": 812000,
+    "hdi": 0.497,
     "migrants": 1168455
    },
    "normalized": {
-    "gdp": 0.6145467054322565,
-    "arrivals": 0.4782556818485292,
-    "migrants": 0.6900424636554632,
-    "hdi": 0.492
+    "gdp": 0.3842739376461198,
+    "arrivals": -0.5322220023868507,
+    "migrants": 0.6859455493570085,
+    "hdi": -1.6165618702726374
    },
    "signalsUsed": 4,
    "iso2": "ET"
@@ -2074,18 +2283,18 @@
   {
    "iso3": "TJK",
    "name": "Tajikistan",
-   "weight": 0.5682613593744715,
+   "weight": 0.6918525119084152,
    "signals": {
     "gdp": 17660626562.4832,
     "arrivals": 1035000,
-    "hdi": 0.679,
+    "hdi": 0.691,
     "migrants": 276777
    },
    "normalized": {
-    "gdp": 0.4765179514997138,
-    "arrivals": 0.5448761201908062,
-    "migrants": 0.572651365807366,
-    "hdi": 0.679
+    "gdp": -0.4597863012018396,
+    "arrivals": -0.41474215379717183,
+    "migrants": 0.03089231496645341,
+    "hdi": -0.3351877932822421
    },
    "signalsUsed": 4,
    "iso2": "TJ"
@@ -2093,588 +2302,493 @@
   {
    "iso3": "AGO",
    "name": "Angola",
-   "weight": 0.5609097241356202,
+   "weight": 0.6889626736592547,
    "signals": {
     "gdp": 122174889423.635,
     "arrivals": 218000,
-    "hdi": 0.591,
+    "hdi": 0.616,
     "migrants": 676507
    },
    "normalized": {
-    "gdp": 0.6121848392543362,
-    "arrivals": 0.3949557497088853,
-    "migrants": 0.6454983075792597,
-    "hdi": 0.591
+    "gdp": 0.3698308794175664,
+    "arrivals": -1.1688697183368422,
+    "migrants": 0.43738501925044304,
+    "hdi": -0.8305643694383226
    },
    "signalsUsed": 4,
    "iso2": "AO"
   },
   {
-   "iso3": "BOL",
-   "name": "Bolivia",
-   "weight": 0.5593969985694465,
-   "signals": {
-    "gdp": 64768947525.3256,
-    "arrivals": 323299.987792969,
-    "hdi": 0.698,
-    "migrants": 183234
-   },
-   "normalized": {
-    "gdp": 0.5676694583087623,
-    "arrivals": 0.43288533284490266,
-    "migrants": 0.5390332031241212,
-    "hdi": 0.698
-   },
-   "signalsUsed": 4,
-   "iso2": "BO"
-  },
-  {
-   "iso3": "RWA",
-   "name": "Rwanda",
-   "weight": 0.5577567805240464,
-   "signals": {
-    "gdp": 16372132990.2271,
-    "arrivals": 1634000,
-    "hdi": 0.548,
-    "migrants": 513316
-   },
-   "normalized": {
-    "gdp": 0.47120404268245736,
-    "arrivals": 0.5888253787329791,
-    "migrants": 0.6229977006807491,
-    "hdi": 0.548
-   },
-   "signalsUsed": 4,
-   "iso2": "RW"
-  },
-  {
-   "iso3": "GNQ",
-   "name": "Equatorial Guinea",
-   "weight": 0.556024765036813,
-   "signals": {
-    "gdp": 12823210425.9217,
-    "arrivals": null,
-    "hdi": 0.65,
-    "migrants": 248930
-   },
-   "normalized": {
-    "gdp": 0.4540661579518248,
-    "arrivals": null,
-    "migrants": 0.5640081371586143,
-    "hdi": 0.65
-   },
-   "signalsUsed": 3,
-   "iso2": "GQ"
-  },
-  {
-   "iso3": "GTM",
-   "name": "Guatemala",
-   "weight": 0.5541962846021888,
-   "signals": {
-    "gdp": 123306008821.471,
-    "arrivals": 594000,
-    "hdi": 0.629,
-    "migrants": 92732
-   },
-   "normalized": {
-    "gdp": 0.612831259858578,
-    "arrivals": 0.4914322982550567,
-    "migrants": 0.483521580295121,
-    "hdi": 0.629
-   },
-   "signalsUsed": 4,
-   "iso2": "GT"
-  },
-  {
-   "iso3": "ZWE",
-   "name": "Zimbabwe",
-   "weight": 0.5520135967611138,
-   "signals": {
-    "gdp": 51215643905.5886,
-    "arrivals": 639000,
-    "hdi": 0.55,
-    "migrants": 429108
-   },
-   "normalized": {
-    "gdp": 0.5512009299660791,
-    "arrivals": 0.4984607535975591,
-    "migrants": 0.6083927034808172,
-    "hdi": 0.55
-   },
-   "signalsUsed": 4,
-   "iso2": "ZW"
-  },
-  {
-   "iso3": "MNE",
-   "name": "Montenegro",
-   "weight": 0.5497267274325862,
-   "signals": {
-    "gdp": 9232801464.79257,
-    "arrivals": 351000,
-    "hdi": 0.844,
-    "migrants": 92237
-   },
-   "normalized": {
-    "gdp": 0.4310242071824938,
-    "arrivals": 0.44079737878855496,
-    "migrants": 0.4830853237592962,
-    "hdi": 0.844
-   },
-   "signalsUsed": 4,
-   "iso2": "ME"
-  },
-  {
-   "iso3": "COD",
-   "name": "Congo, Dem. Rep.",
-   "weight": 0.5493377326130774,
-   "signals": {
-    "gdp": 91030531316.9936,
-    "arrivals": 351000,
-    "hdi": 0.481,
-    "migrants": 1085090
-   },
-   "normalized": {
-    "gdp": 0.5915443252470793,
-    "arrivals": 0.44079737878855496,
-    "migrants": 0.6840092264166752,
-    "hdi": 0.481
-   },
-   "signalsUsed": 4,
-   "iso2": "CD"
-  },
-  {
-   "iso3": "MMR",
-   "name": "Myanmar",
-   "weight": 0.5485465879512693,
-   "signals": {
-    "gdp": 81665773809.5238,
-    "arrivals": 903000,
-    "hdi": 0.608,
-    "migrants": 79052
-   },
-   "normalized": {
-    "gdp": 0.5839294798369236,
-    "arrivals": 0.5317447326717817,
-    "migrants": 0.47051213929637226,
-    "hdi": 0.608
-   },
-   "signalsUsed": 4,
-   "iso2": "MM"
-  },
-  {
-   "iso3": "KHM",
-   "name": "Cambodia",
-   "weight": 0.548479800137659,
-   "signals": {
-    "gdp": 51267065842.9641,
-    "arrivals": 1306000,
-    "hdi": 0.6,
-    "migrants": 83925
-   },
-   "normalized": {
-    "gdp": 0.5512713213076187,
-    "arrivals": 0.5672600708600619,
-    "migrants": 0.4753878083829553,
-    "hdi": 0.6
-   },
-   "signalsUsed": 4,
-   "iso2": "KH"
-  },
-  {
-   "iso3": "SEN",
-   "name": "Senegal",
-   "weight": 0.5479573929096735,
-   "signals": {
-    "gdp": 37006536238.3731,
-    "arrivals": 1376000,
-    "hdi": 0.517,
-    "migrants": 281867
-   },
-   "normalized": {
-    "gdp": 0.5284075591684938,
-    "arrivals": 0.5722852948815722,
-    "migrants": 0.5741367175886278,
-    "hdi": 0.517
-   },
-   "signalsUsed": 4,
-   "iso2": "SN"
-  },
-  {
-   "iso3": "BRB",
-   "name": "Barbados",
-   "weight": 0.5432220785687599,
-   "signals": {
-    "gdp": 8016550000,
-    "arrivals": 966000,
-    "hdi": 0.809,
-    "migrants": 35187
-   },
-   "normalized": {
-    "gdp": 0.421116041681096,
-    "arrivals": 0.538235758401702,
-    "migrants": 0.4045365141922415,
-    "hdi": 0.809
-   },
-   "signalsUsed": 4,
-   "iso2": "BB"
-  },
-  {
-   "iso3": "TTO",
-   "name": "Trinidad and Tobago",
-   "weight": 0.5426218867334386,
-   "signals": {
-    "gdp": 25942749718.4685,
-    "arrivals": 141000,
-    "hdi": 0.814,
-    "migrants": 113478
-   },
-   "normalized": {
-    "gdp": 0.5034921951299933,
-    "arrivals": 0.3530175157046168,
-    "migrants": 0.4999778360991444,
-    "hdi": 0.814
-   },
-   "signalsUsed": 4,
-   "iso2": "TT"
-  },
-  {
-   "iso3": "NPL",
-   "name": "Nepal",
-   "weight": 0.5399836286227808,
-   "signals": {
-    "gdp": 45489810283.1132,
-    "arrivals": 230000,
-    "hdi": 0.601,
-    "migrants": 470719
-   },
-   "normalized": {
-    "gdp": 0.542884874032362,
-    "arrivals": 0.4001130764421867,
-    "migrants": 0.6159365640165746,
-    "hdi": 0.601
-   },
-   "signalsUsed": 4,
-   "iso2": "NP"
-  },
-  {
-   "iso3": "MOZ",
-   "name": "Mozambique",
-   "weight": 0.5390909725489059,
-   "signals": {
-    "gdp": 22337997046.1913,
-    "arrivals": 2033000,
-    "hdi": 0.461,
-    "migrants": 353143
-   },
-   "normalized": {
-    "gdp": 0.49299841871893746,
-    "arrivals": 0.6098535868170295,
-    "migrants": 0.5925118846596567,
-    "hdi": 0.461
-   },
-   "signalsUsed": 4,
-   "iso2": "MZ"
-  },
-  {
    "iso3": "JAM",
    "name": "Jamaica",
-   "weight": 0.5356263345475206,
+   "weight": 0.6641514037109242,
    "signals": {
     "gdp": 22704903217.5631,
-    "arrivals": 1329699.95117188,
-    "hdi": 0.706,
+    "arrivals": 4233000,
+    "hdi": 0.72,
     "migrants": 24007
    },
    "normalized": {
-    "gdp": 0.4941411908658618,
-    "arrivals": 0.5689910056417387,
-    "migrants": 0.37337314168248203,
-    "hdi": 0.706
+    "gdp": -0.3520183528225089,
+    "arrivals": 0.2671747887945263,
+    "migrants": -1.0810986932914797,
+    "hdi": -0.14364218383522398
    },
    "signalsUsed": 4,
    "iso2": "JM"
   },
   {
-   "iso3": "MDV",
-   "name": "Maldives",
-   "weight": 0.5329725222490977,
-   "signals": {
-    "gdp": 7741066860.6337,
-    "arrivals": 555000,
-    "hdi": 0.762,
-    "migrants": 75099
-   },
-   "normalized": {
-    "gdp": 0.41866319665787366,
-    "arrivals": 0.48489604363763333,
-    "migrants": 0.4663308487008837,
-    "hdi": 0.762
-   },
-   "signalsUsed": 4,
-   "iso2": "MV"
-  },
-  {
-   "iso3": "SLV",
-   "name": "El Salvador",
-   "weight": 0.5328900318188008,
-   "signals": {
-    "gdp": 36708110000,
-    "arrivals": 707000,
-    "hdi": 0.674,
-    "migrants": 43342
-   },
-   "normalized": {
-    "gdp": 0.527839613276735,
-    "arrivals": 0.5081938552408917,
-    "migrants": 0.42152665875757656,
-    "hdi": 0.674
-   },
-   "signalsUsed": 4,
-   "iso2": "SV"
-  },
-  {
-   "iso3": "ZMB",
-   "name": "Zambia",
-   "weight": 0.5298373086456235,
-   "signals": {
-    "gdp": 28879806220.1264,
-    "arrivals": 502000,
-    "hdi": 0.569,
-    "migrants": 249205
-   },
-   "normalized": {
-    "gdp": 0.5110151838136742,
-    "arrivals": 0.4752359182042985,
-    "migrants": 0.5640981325645212,
-    "hdi": 0.569
-   },
-   "signalsUsed": 4,
-   "iso2": "ZM"
-  },
-  {
-   "iso3": "MKD",
-   "name": "North Macedonia",
-   "weight": 0.5265265265945729,
-   "signals": {
-    "gdp": 19101199817.0174,
-    "arrivals": 118000,
-    "hdi": 0.765,
-    "migrants": 150902
-   },
-   "normalized": {
-    "gdp": 0.4820181971556977,
-    "arrivals": 0.3358782929724017,
-    "migrants": 0.5232096162501922,
-    "hdi": 0.765
-   },
-   "signalsUsed": 4,
-   "iso2": "MK"
-  },
-  {
-   "iso3": "CUB",
-   "name": "Cuba",
-   "weight": 0.5232731195723783,
-   "signals": {
-    "gdp": 107352000000,
-    "arrivals": 1086000,
-    "hdi": 0.764,
-    "migrants": 2144
-   },
-   "normalized": {
-    "gdp": 0.6031123697164075,
-    "arrivals": 0.5495055845475256,
-    "migrants": 0.17647452402558034,
-    "hdi": 0.764
-   },
-   "signalsUsed": 4,
-   "iso2": "CU"
-  },
-  {
    "iso3": "MUS",
    "name": "Mauritius",
-   "weight": 0.5215348307712631,
+   "weight": 0.6601764909191374,
    "signals": {
     "gdp": 16157804491.7614,
-    "arrivals": 316000,
-    "hdi": 0.796,
+    "arrivals": 1418000,
+    "hdi": 0.806,
     "migrants": 29142
    },
    "normalized": {
-    "gdp": 0.4702797184306659,
-    "arrivals": 0.430687200528959,
-    "migrants": 0.389172404125427,
-    "hdi": 0.796
+    "gdp": -0.49793374761596243,
+    "arrivals": -0.2623123566612356,
+    "migrants": -0.9929373407362095,
+    "hdi": 0.4243896234904159
    },
    "signalsUsed": 4,
    "iso2": "MU"
   },
   {
-   "iso3": "BIH",
-   "name": "Bosnia and Herzegovina",
-   "weight": 0.5214369651060731,
+   "iso3": "SLV",
+   "name": "El Salvador",
+   "weight": 0.6576658309654652,
    "signals": {
-    "gdp": 32599982936.3931,
-    "arrivals": 197000,
-    "hdi": 0.779,
-    "migrants": 34120
+    "gdp": 36708110000,
+    "arrivals": 2639000,
+    "hdi": 0.678,
+    "migrants": 43342
    },
    "normalized": {
-    "gdp": 0.5195144900017477,
-    "arrivals": 0.3852067555055129,
-    "migrants": 0.4020266149170318,
-    "hdi": 0.779
+    "gdp": -0.14594898206790569,
+    "arrivals": 0.038412978495694715,
+    "migrants": -0.8123975934164452,
+    "hdi": -0.42105306648262875
    },
    "signalsUsed": 4,
-   "iso2": "BA"
+   "iso2": "SV"
+  },
+  {
+   "iso3": "MDV",
+   "name": "Maldives",
+   "weight": 0.6477874797566933,
+   "signals": {
+    "gdp": 7741066860.6337,
+    "arrivals": 1703000,
+    "hdi": 0.766,
+    "migrants": 75099
+   },
+   "normalized": {
+    "gdp": -0.8135741664038922,
+    "arrivals": -0.17364488553389246,
+    "migrants": -0.5623860501681691,
+    "hdi": 0.16018878287383922
+   },
+   "signalsUsed": 4,
+   "iso2": "MV"
+  },
+  {
+   "iso3": "GNQ",
+   "name": "Equatorial Guinea",
+   "weight": 0.6424571927935249,
+   "signals": {
+    "gdp": 12823210425.9217,
+    "arrivals": null,
+    "hdi": 0.674,
+    "migrants": 248930
+   },
+   "normalized": {
+    "gdp": -0.597081362445802,
+    "arrivals": null,
+    "migrants": -0.0173377040531165,
+    "hdi": -0.44747315054428644
+   },
+   "signalsUsed": 3,
+   "iso2": "GQ"
+  },
+  {
+   "iso3": "RWA",
+   "name": "Rwanda",
+   "weight": 0.6345121733797469,
+   "signals": {
+    "gdp": 16372132990.2271,
+    "arrivals": 1634000,
+    "hdi": 0.578,
+    "migrants": 513316
+   },
+   "normalized": {
+    "gdp": -0.49228140832786493,
+    "arrivals": -0.19366914549820946,
+    "migrants": 0.3118295419203641,
+    "hdi": -1.0815551680240705
+   },
+   "signalsUsed": 4,
+   "iso2": "RW"
+  },
+  {
+   "iso3": "CUB",
+   "name": "Cuba",
+   "weight": 0.6337301037105761,
+   "signals": {
+    "gdp": 107352000000,
+    "arrivals": 4276000,
+    "hdi": 0.762,
+    "migrants": 2144
+   },
+   "normalized": {
+    "gdp": 0.3143517811358604,
+    "arrivals": 0.2720680152394556,
+    "migrants": -2.1798112763365785,
+    "hdi": 0.13376869881218156
+   },
+   "signalsUsed": 4,
+   "iso2": "CU"
   },
   {
    "iso3": "PSE",
    "name": "West Bank and Gaza",
-   "weight": 0.5187173655961987,
+   "weight": 0.6242041078784367,
    "signals": {
     "gdp": 17167100000,
-    "arrivals": 93000,
-    "hdi": 0.716,
+    "arrivals": 688000,
+    "hdi": 0.674,
     "migrants": 272481
    },
    "normalized": {
-    "gdp": 0.4745298623799434,
-    "arrivals": 0.3129632964742523,
-    "migrants": 0.5713763035305992,
-    "hdi": 0.716
+    "gdp": -0.4719436737019533,
+    "arrivals": -0.6124497027738048,
+    "migrants": 0.02377734897877466,
+    "hdi": -0.44747315054428644
    },
    "signalsUsed": 4,
    "iso2": "PS"
   },
   {
+   "iso3": "MDA",
+   "name": "Moldova",
+   "weight": 0.6188220619222276,
+   "signals": {
+    "gdp": 20351796275.2943,
+    "arrivals": 174000,
+    "hdi": 0.785,
+    "migrants": 188207
+   },
+   "normalized": {
+    "gdp": -0.3989492779031854,
+    "arrivals": -1.2780143073614711,
+    "migrants": -0.144520623039393,
+    "hdi": 0.28568418216671315
+   },
+   "signalsUsed": 4,
+   "iso2": "MD"
+  },
+  {
+   "iso3": "ZMB",
+   "name": "Zambia",
+   "weight": 0.6156694584658132,
+   "signals": {
+    "gdp": 28879806220.1264,
+    "arrivals": 1266000,
+    "hdi": 0.595,
+    "migrants": 249205
+   },
+   "normalized": {
+    "gdp": -0.24883212450366177,
+    "arrivals": -0.3172067125801493,
+    "migrants": -0.01683552132546269,
+    "hdi": -0.9692698107620253
+   },
+   "signalsUsed": 4,
+   "iso2": "ZM"
+  },
+  {
+   "iso3": "NAM",
+   "name": "Namibia",
+   "weight": 0.6088836679991773,
+   "signals": {
+    "gdp": 15080340653.5276,
+    "arrivals": 1651000,
+    "hdi": 0.665,
+    "migrants": 116035
+   },
+   "normalized": {
+    "gdp": -0.527535336668088,
+    "arrivals": -0.18865820656988602,
+    "migrants": -0.36449787985328846,
+    "hdi": -0.5069183396830161
+   },
+   "signalsUsed": 4,
+   "iso2": "NA"
+  },
+  {
    "iso3": "HND",
    "name": "Honduras",
-   "weight": 0.5187054889278866,
+   "weight": 0.6013497391813745,
    "signals": {
     "gdp": 39601409103.3005,
-    "arrivals": 669000,
-    "hdi": 0.624,
+    "arrivals": 2315000,
+    "hdi": 0.645,
     "migrants": 39901
    },
    "normalized": {
-    "gdp": 0.5331612377638548,
-    "arrivals": 0.502876531262121,
-    "migrants": 0.4147841866855709,
-    "hdi": 0.624
+    "gdp": -0.11340669281524175,
+    "arrivals": -0.025004804912550384,
+    "migrants": -0.8500212141127133,
+    "hdi": -0.6390187599913045
    },
    "signalsUsed": 4,
    "iso2": "HN"
   },
   {
-   "iso3": "LAO",
-   "name": "Lao PDR",
-   "weight": 0.5161202442211745,
-   "signals": {
-    "gdp": 18302970218.5902,
-    "arrivals": 886400.024414063,
-    "hdi": 0.62,
-    "migrants": 51446
-   },
-   "normalized": {
-    "gdp": 0.47902389848226445,
-    "arrivals": 0.5299589443190779,
-    "migrants": 0.4354981340833558,
-    "hdi": 0.62
-   },
-   "signalsUsed": 4,
-   "iso2": "LA"
-  },
-  {
    "iso3": "NIC",
    "name": "Nicaragua",
-   "weight": 0.513424126624678,
+   "weight": 0.5962016027273599,
    "signals": {
     "gdp": 22237167113.0916,
-    "arrivals": 474000,
-    "hdi": 0.669,
+    "arrivals": 1455000,
+    "hdi": 0.706,
     "migrants": 43757
    },
    "normalized": {
-    "gdp": 0.4926810832333097,
-    "arrivals": 0.46971202951010466,
-    "migrants": 0.42230339375529763,
-    "hdi": 0.669
+    "gdp": -0.3609470634133321,
+    "arrivals": -0.24984162899628007,
+    "migrants": -0.8080633399521842,
+    "hdi": -0.2361124780510258
    },
    "signalsUsed": 4,
    "iso2": "NI"
   },
   {
+   "iso3": "LAO",
+   "name": "Lao PDR",
+   "weight": 0.592344893760064,
+   "signals": {
+    "gdp": 18302970218.5902,
+    "arrivals": 4791000,
+    "hdi": 0.617,
+    "migrants": 51446
+   },
+   "normalized": {
+    "gdp": -0.4444621738126599,
+    "arrivals": 0.3271250716874694,
+    "migrants": -0.7344354628194367,
+    "hdi": -0.8239593484229082
+   },
+   "signalsUsed": 4,
+   "iso2": "LA"
+  },
+  {
+   "iso3": "BRB",
+   "name": "Barbados",
+   "weight": 0.5885114198965133,
+   "signals": {
+    "gdp": 8016550000,
+    "arrivals": 966000,
+    "hdi": 0.811,
+    "migrants": 35187
+   },
+   "normalized": {
+    "gdp": -0.7985747630392143,
+    "arrivals": -0.4481444182631826,
+    "migrants": -0.9072041788756529,
+    "hdi": 0.457414728567488
+   },
+   "signalsUsed": 4,
+   "iso2": "BB"
+  },
+  {
+   "iso3": "GUY",
+   "name": "Guyana",
+   "weight": 0.5784820889924677,
+   "signals": {
+    "gdp": 27097477218.2254,
+    "arrivals": 315000,
+    "hdi": 0.776,
+    "migrants": 54175
+   },
+   "normalized": {
+    "gdp": -0.2761563668354615,
+    "arrivals": -0.9906683437048839,
+    "migrants": -0.7109269031181688,
+    "hdi": 0.2262389930279834
+   },
+   "signalsUsed": 4,
+   "iso2": "GY"
+  },
+  {
+   "iso3": "SEN",
+   "name": "Senegal",
+   "weight": 0.5735772903717016,
+   "signals": {
+    "gdp": 37006536238.3731,
+    "arrivals": 1376000,
+    "hdi": 0.53,
+    "migrants": 281867
+   },
+   "normalized": {
+    "gdp": -0.14247593365304415,
+    "arrivals": -0.27686886753763446,
+    "migrants": 0.039180715930062796,
+    "hdi": -1.3985961767639619
+   },
+   "signalsUsed": 4,
+   "iso2": "SN"
+  },
+  {
+   "iso3": "MOZ",
+   "name": "Mozambique",
+   "weight": 0.5440022717203119,
+   "signals": {
+    "gdp": 22337997046.1913,
+    "arrivals": 2033000,
+    "hdi": 0.493,
+    "migrants": 353143
+   },
+   "normalized": {
+    "gdp": -0.35900652379269055,
+    "arrivals": -0.08789331731633727,
+    "migrants": 0.14171585567225725,
+    "hdi": -1.6429819543342952
+   },
+   "signalsUsed": 4,
+   "iso2": "MZ"
+  },
+  {
+   "iso3": "ATG",
+   "name": "Antigua and Barbuda",
+   "weight": 0.5364615245952086,
+   "signals": {
+    "gdp": 2338196296.2963,
+    "arrivals": 1035000,
+    "hdi": 0.851,
+    "migrants": 30473
+   },
+   "normalized": {
+    "gdp": -1.3270823127961247,
+    "arrivals": -0.41474215379717183,
+    "migrants": -0.9726244947694525,
+    "hdi": 0.7216155691840639
+   },
+   "signalsUsed": 4,
+   "iso2": "AG"
+  },
+  {
+   "iso3": "MNG",
+   "name": "Mongolia",
+   "weight": 0.5305550236230098,
+   "signals": {
+    "gdp": 25369107325.4549,
+    "arrivals": 637000,
+    "hdi": 0.747,
+    "migrants": 22589
+   },
+   "normalized": {
+    "gdp": -0.30442705087242394,
+    "arrivals": -0.6497378318621934,
+    "migrants": -1.1087896400444361,
+    "hdi": 0.03469338358096529
+   },
+   "signalsUsed": 4,
+   "iso2": "MN"
+  },
+  {
+   "iso3": "LIE",
+   "name": "Liechtenstein",
+   "weight": 0.5304010195364736,
+   "signals": {
+    "gdp": 8905764270.4054,
+    "arrivals": 98099.9984741211,
+    "hdi": 0.938,
+    "migrants": 27669
+   },
+   "normalized": {
+    "gdp": -0.7534544490827593,
+    "arrivals": -1.5554598861602658,
+    "migrants": -1.0165281995919402,
+    "hdi": 1.2962523975251175
+   },
+   "signalsUsed": 4,
+   "iso2": "LI"
+  },
+  {
+   "iso3": "VAT",
+   "name": "Vatican City",
+   "weight": 0.5262071339540274,
+   "signals": {
+    "gdp": 1430000000,
+    "arrivals": 7000000,
+    "hdi": null,
+    "migrants": null
+   },
+   "normalized": {
+    "gdp": -1.5379937860209323,
+    "arrivals": 0.510697221264859,
+    "migrants": null,
+    "hdi": null
+   },
+   "signalsUsed": 2,
+   "iso2": "VA"
+  },
+  {
    "iso3": "SMR",
    "name": "San Marino",
-   "weight": 0.5133367207745292,
+   "weight": 0.5207761295166692,
    "signals": {
     "gdp": 2027243193.5116,
     "arrivals": 1904000,
-    "hdi": 0.867,
+    "hdi": 0.915,
     "migrants": 5838
    },
    "normalized": {
-    "gdp": 0.3246796856901804,
-    "arrivals": 0.6035440525060387,
-    "migrants": 0.2581231449018978,
-    "hdi": 0.867
+    "gdp": -1.3882931467254125,
+    "arrivals": -0.11963145755726443,
+    "migrants": -1.7242043847665893,
+    "hdi": 1.1443369141705866
    },
    "signalsUsed": 4,
    "iso2": "SM"
   },
   {
-   "iso3": "BEN",
-   "name": "Benin",
-   "weight": 0.5117106654786333,
+   "iso3": "BLZ",
+   "name": "Belize",
+   "weight": 0.5191639803565958,
    "signals": {
-    "gdp": 24566420903.5337,
-    "arrivals": 337000,
-    "hdi": 0.504,
-    "migrants": 418202
+    "gdp": 3326500000,
+    "arrivals": 1674000,
+    "hdi": 0.721,
+    "migrants": 68706
    },
    "normalized": {
-    "gdp": 0.49966852111081944,
-    "arrivals": 0.43687980605304794,
-    "migrants": 0.6062943347506659,
-    "hdi": 0.504
+    "gdp": -1.1758638787595763,
+    "arrivals": -0.18196021188421282,
+    "migrants": -0.6028523186165128,
+    "hdi": -0.13703716281980954
    },
    "signalsUsed": 4,
-   "iso2": "BJ"
-  },
-  {
-   "iso3": "MWI",
-   "name": "Malawi",
-   "weight": 0.5103805159404855,
-   "signals": {
-    "gdp": 14918276698.303,
-    "arrivals": 871000,
-    "hdi": 0.508,
-    "migrants": 186719
-   },
-   "normalized": {
-    "gdp": 0.464681087141989,
-    "arrivals": 0.5282720828634176,
-    "migrants": 0.5405688937565352,
-    "hdi": 0.508
-   },
-   "signalsUsed": 4,
-   "iso2": "MW"
+   "iso2": "BZ"
   },
   {
    "iso3": "TGO",
    "name": "Togo",
-   "weight": 0.5103155396514857,
+   "weight": 0.5007318676759546,
    "signals": {
     "gdp": 11889949067.4697,
-    "arrivals": 482000,
-    "hdi": 0.547,
+    "arrivals": 876000,
+    "hdi": 0.571,
     "migrants": 281994
    },
    "normalized": {
-    "gdp": 0.4487658273404462,
-    "arrivals": 0.47132289674949485,
-    "migrants": 0.5741734345160014,
-    "hdi": 0.547
+    "gdp": -0.629493437425482,
+    "arrivals": -0.49549229659733807,
+    "migrants": 0.03938559979667526,
+    "hdi": -1.1277903151319715
    },
    "signalsUsed": 4,
    "iso2": "TG"
@@ -2682,368 +2796,26 @@
   {
    "iso3": "COG",
    "name": "Congo, Rep.",
-   "weight": 0.5068932746284677,
+   "weight": 0.49509475465218034,
    "signals": {
     "gdp": 16306633778.765,
     "arrivals": 158000,
-    "hdi": 0.593,
+    "hdi": 0.649,
     "migrants": 385589
    },
    "normalized": {
-    "gdp": 0.4709228575426826,
-    "arrivals": 0.36397381474263085,
-    "migrants": 0.5996764262285572,
-    "hdi": 0.593
+    "gdp": -0.4940008848099518,
+    "arrivals": -1.3247146584588754,
+    "migrants": 0.1816946633813973,
+    "hdi": -0.6125986759296469
    },
    "signalsUsed": 4,
    "iso2": "CG"
   },
   {
-   "iso3": "LIE",
-   "name": "Liechtenstein",
-   "weight": 0.5059050953607249,
-   "signals": {
-    "gdp": 8905764270.4054,
-    "arrivals": 58400.0015258789,
-    "hdi": 0.942,
-    "migrants": 27669
-   },
-   "normalized": {
-    "gdp": 0.4284945443350712,
-    "arrivals": 0.26818111506205766,
-    "migrants": 0.38494472204577085,
-    "hdi": 0.942
-   },
-   "signalsUsed": 4,
-   "iso2": "LI"
-  },
-  {
-   "iso3": "ATG",
-   "name": "Antigua and Barbuda",
-   "weight": 0.500768282264655,
-   "signals": {
-    "gdp": 2338196296.2963,
-    "arrivals": 384500,
-    "hdi": 0.826,
-    "migrants": 30473
-   },
-   "normalized": {
-    "gdp": 0.334689463127349,
-    "arrivals": 0.44957102745042465,
-    "migrants": 0.3928126384808461,
-    "hdi": 0.826
-   },
-   "signalsUsed": 4,
-   "iso2": "AG"
-  },
-  {
-   "iso3": "SSD",
-   "name": "South Sudan",
-   "weight": 0.5001408773473898,
-   "signals": {
-    "gdp": 11997800760.2242,
-    "arrivals": null,
-    "hdi": 0.381,
-    "migrants": 914001
-   },
-   "normalized": {
-    "gdp": 0.44939922440371927,
-    "arrivals": null,
-    "migrants": 0.6700234076384503,
-    "hdi": 0.381
-   },
-   "signalsUsed": 3,
-   "iso2": "SS"
-  },
-  {
-   "iso3": "GUY",
-   "name": "Guyana",
-   "weight": 0.4985340769485451,
-   "signals": {
-    "gdp": 27097477218.2254,
-    "arrivals": 86400.0015258789,
-    "hdi": 0.742,
-    "migrants": 54175
-   },
-   "normalized": {
-    "gdp": 0.5065468639620522,
-    "arrivals": 0.30587837637591936,
-    "migrants": 0.43971106745620897,
-    "hdi": 0.742
-   },
-   "signalsUsed": 4,
-   "iso2": "GY"
-  },
-  {
-   "iso3": "MDA",
-   "name": "Moldova",
-   "weight": 0.4978721777591517,
-   "signals": {
-    "gdp": 20351796275.2943,
-    "arrivals": 29000,
-    "hdi": 0.763,
-    "migrants": 188207
-   },
-   "normalized": {
-    "gdp": 0.4864665998690998,
-    "arrivals": 0.20080623226133135,
-    "migrants": 0.5412158789061758,
-    "hdi": 0.763
-   },
-   "signalsUsed": 4,
-   "iso2": "MD"
-  },
-  {
-   "iso3": "BLZ",
-   "name": "Belize",
-   "weight": 0.49770331409291324,
-   "signals": {
-    "gdp": 3326500000,
-    "arrivals": 487000,
-    "hdi": 0.7,
-    "migrants": 68706
-   },
-   "normalized": {
-    "gdp": 0.3594181389505149,
-    "arrivals": 0.47231616738981297,
-    "migrants": 0.4590789500313252,
-    "hdi": 0.7
-   },
-   "signalsUsed": 4,
-   "iso2": "BZ"
-  },
-  {
-   "iso3": "YEM",
-   "name": "Yemen, Rep.",
-   "weight": 0.4921954373272522,
-   "signals": {
-    "gdp": 21606160663.0318,
-    "arrivals": 398000,
-    "hdi": 0.424,
-    "migrants": 392997
-   },
-   "normalized": {
-    "gdp": 0.490661872491282,
-    "arrivals": 0.4528923421927636,
-    "migrants": 0.6012275346249631,
-    "hdi": 0.424
-   },
-   "signalsUsed": 4,
-   "iso2": "YE"
-  },
-  {
-   "iso3": "HTI",
-   "name": "Haiti",
-   "weight": 0.49063706361396153,
-   "signals": {
-    "gdp": 32077278409.2339,
-    "arrivals": 938000,
-    "hdi": 0.552,
-    "migrants": 19581
-   },
-   "normalized": {
-    "gdp": 0.5183806925784923,
-    "arrivals": 0.5354047581087239,
-    "migrants": 0.3567628037686299,
-    "hdi": 0.552
-   },
-   "signalsUsed": 4,
-   "iso2": "HT"
-  },
-  {
-   "iso3": "NAM",
-   "name": "Namibia",
-   "weight": 0.4893693212799184,
-   "signals": {
-    "gdp": 15080340653.5276,
-    "arrivals": 187100.006103516,
-    "hdi": 0.61,
-    "migrants": 116035
-   },
-   "normalized": {
-    "gdp": 0.4654389851947717,
-    "arrivals": 0.38024421198663316,
-    "migrants": 0.5017940879382686,
-    "hdi": 0.61
-   },
-   "signalsUsed": 4,
-   "iso2": "NA"
-  },
-  {
-   "iso3": "MLI",
-   "name": "Mali",
-   "weight": 0.4865717814577071,
-   "signals": {
-    "gdp": 30069148580.7688,
-    "arrivals": 217000,
-    "hdi": 0.41,
-    "migrants": 545323
-   },
-   "normalized": {
-    "gdp": 0.5138459962030022,
-    "arrivals": 0.3945132336611546,
-    "migrants": 0.6279278959666716,
-    "hdi": 0.41
-   },
-   "signalsUsed": 4,
-   "iso2": "ML"
-  },
-  {
-   "iso3": "SUR",
-   "name": "Suriname",
-   "weight": 0.4814748476600319,
-   "signals": {
-    "gdp": 4523657796.86421,
-    "arrivals": 279000,
-    "hdi": 0.69,
-    "migrants": 51902
-   },
-   "normalized": {
-    "gdp": 0.3809804615733533,
-    "arrivals": 0.4187015112417261,
-    "migrants": 0.4362174178250481,
-    "hdi": 0.69
-   },
-   "signalsUsed": 4,
-   "iso2": "SR"
-  },
-  {
-   "iso3": "AFG",
-   "name": "Afghanistan",
-   "weight": 0.4757004316813436,
-   "signals": {
-    "gdp": 17778508875.7396,
-    "arrivals": null,
-    "hdi": 0.462,
-    "migrants": 98110
-   },
-   "normalized": {
-    "gdp": 0.47698459852710184,
-    "arrivals": null,
-    "migrants": 0.4881166965169292,
-    "hdi": 0.462
-   },
-   "signalsUsed": 3,
-   "iso2": "AF"
-  },
-  {
-   "iso3": "MNG",
-   "name": "Mongolia",
-   "weight": 0.4731484812340583,
-   "signals": {
-    "gdp": 25369107325.4549,
-    "arrivals": 66900.0015258789,
-    "hdi": 0.741,
-    "migrants": 22589
-   },
-   "normalized": {
-    "gdp": 0.5019237729658829,
-    "arrivals": 0.2812594629086957,
-    "migrants": 0.3684106890616548,
-    "hdi": 0.741
-   },
-   "signalsUsed": 4,
-   "iso2": "MN"
-  },
-  {
-   "iso3": "BFA",
-   "name": "Burkina Faso",
-   "weight": 0.47002468923894747,
-   "signals": {
-    "gdp": 27627297461.3181,
-    "arrivals": 67000,
-    "hdi": 0.438,
-    "migrants": 739820
-   },
-   "normalized": {
-    "gdp": 0.5079051133120579,
-    "arrivals": 0.2814032203680197,
-    "migrants": 0.6527904232757124,
-    "hdi": 0.438
-   },
-   "signalsUsed": 4,
-   "iso2": "BF"
-  },
-  {
-   "iso3": "SWZ",
-   "name": "Eswatini",
-   "weight": 0.45985219140514255,
-   "signals": {
-    "gdp": 5160679612.81734,
-    "arrivals": 345299.987792969,
-    "hdi": 0.61,
-    "migrants": 33268
-   },
-   "normalized": {
-    "gdp": 0.3902217667694696,
-    "arrivals": 0.43922155875865804,
-    "migrants": 0.39996544009244234,
-    "hdi": 0.61
-   },
-   "signalsUsed": 4,
-   "iso2": "SZ"
-  },
-  {
-   "iso3": "KNA",
-   "name": "St. Kitts and Nevis",
-   "weight": 0.45860924879014797,
-   "signals": {
-    "gdp": 1183514814.81481,
-    "arrivals": 301399.993896484,
-    "hdi": 0.838,
-    "migrants": 7958
-   },
-   "normalized": {
-    "gdp": 0.28692894110041206,
-    "arrivals": 0.42613433412919605,
-    "migrants": 0.28337371993098365,
-    "hdi": 0.838
-   },
-   "signalsUsed": 4,
-   "iso2": "KN"
-  },
-  {
-   "iso3": "FJI",
-   "name": "Fiji",
-   "weight": 0.45836174812494557,
-   "signals": {
-    "gdp": 6198013062.06553,
-    "arrivals": 168000,
-    "hdi": 0.729,
-    "migrants": 14362
-   },
-   "normalized": {
-    "gdp": 0.4030694011008323,
-    "arrivals": 0.3698803960715697,
-    "migrants": 0.3314971953273802,
-    "hdi": 0.729
-   },
-   "signalsUsed": 4,
-   "iso2": "FJ"
-  },
-  {
-   "iso3": "LCA",
-   "name": "St. Lucia",
-   "weight": 0.4535343949512868,
-   "signals": {
-    "gdp": 2656444444.44444,
-    "arrivals": 432500,
-    "hdi": 0.725,
-    "migrants": 8079
-   },
-   "normalized": {
-    "gdp": 0.3436404676930353,
-    "arrivals": 0.4608933920949955,
-    "migrants": 0.2846037200171163,
-    "hdi": 0.725
-   },
-   "signalsUsed": 4,
-   "iso2": "LC"
-  },
-  {
    "iso3": "XKX",
    "name": "Kosovo",
-   "weight": 0.4520304326496266,
+   "weight": 0.466772849181887,
    "signals": {
     "gdp": 12456403306.8191,
     "arrivals": null,
@@ -3051,7 +2823,7 @@
     "migrants": null
    },
    "normalized": {
-    "gdp": 0.4520304326496266,
+    "gdp": -0.609530035174109,
     "arrivals": null,
     "migrants": null,
     "hdi": null
@@ -3060,723 +2832,951 @@
    "iso2": "XK"
   },
   {
-   "iso3": "BDI",
-   "name": "Burundi",
-   "weight": 0.4513949072962148,
+   "iso3": "BEN",
+   "name": "Benin",
+   "weight": 0.4499963909739184,
    "signals": {
-    "gdp": 3364713864.08488,
-    "arrivals": 299000,
-    "hdi": 0.42,
-    "migrants": 387101
+    "gdp": 24566420903.5337,
+    "arrivals": 337000,
+    "hdi": 0.515,
+    "migrants": 418202
    },
    "normalized": {
-    "gdp": 0.3602193411559355,
-    "arrivals": 0.4253648683889219,
-    "migrants": 0.5999954196400018,
-    "hdi": 0.42
+    "gdp": -0.31821815138744697,
+    "arrivals": -0.9579838566969798,
+    "migrants": 0.2186232078943517,
+    "hdi": -1.497671491995178
    },
    "signalsUsed": 4,
-   "iso2": "BI"
+   "iso2": "BJ"
+  },
+  {
+   "iso3": "SWZ",
+   "name": "Eswatini",
+   "weight": 0.449086718403107,
+   "signals": {
+    "gdp": 5160679612.81734,
+    "arrivals": 1226000,
+    "hdi": 0.695,
+    "migrants": 33268
+   },
+   "normalized": {
+    "gdp": -0.9874964791164749,
+    "arrivals": -0.3327502885759847,
+    "migrants": -0.9327111971129891,
+    "hdi": -0.3087677092205844
+   },
+   "signalsUsed": 4,
+   "iso2": "SZ"
+  },
+  {
+   "iso3": "MRT",
+   "name": "Mauritania",
+   "weight": 0.4448613239318022,
+   "signals": {
+    "gdp": 11679910946.4371,
+    "arrivals": null,
+    "hdi": 0.563,
+    "migrants": 195937
+   },
+   "normalized": {
+    "gdp": -0.6371384440043621,
+    "arrivals": null,
+    "migrants": -0.12621349753326175,
+    "hdi": -1.1806304832552867
+   },
+   "signalsUsed": 3,
+   "iso2": "MR"
+  },
+  {
+   "iso3": "YEM",
+   "name": "Yemen, Rep.",
+   "weight": 0.4386291806618534,
+   "signals": {
+    "gdp": 21606160663.0318,
+    "arrivals": null,
+    "hdi": 0.47,
+    "migrants": 392997
+   },
+   "normalized": {
+    "gdp": -0.37329474788227407,
+    "arrivals": null,
+    "migrants": 0.19034999236784877,
+    "hdi": -1.7948974376888267
+   },
+   "signalsUsed": 3,
+   "iso2": "YE"
+  },
+  {
+   "iso3": "MWI",
+   "name": "Malawi",
+   "weight": 0.43509295676347004,
+   "signals": {
+    "gdp": 14918276698.303,
+    "arrivals": 871000,
+    "hdi": 0.517,
+    "migrants": 186719
+   },
+   "normalized": {
+    "gdp": -0.532169962376343,
+    "arrivals": -0.49826357380819897,
+    "migrants": -0.14813086029454842,
+    "hdi": -1.4844614499643491
+   },
+   "signalsUsed": 4,
+   "iso2": "MW"
+  },
+  {
+   "iso3": "FJI",
+   "name": "Fiji",
+   "weight": 0.4245751029693438,
+   "signals": {
+    "gdp": 6198013062.06553,
+    "arrivals": 969000,
+    "hdi": 0.731,
+    "migrants": 14362
+   },
+   "normalized": {
+    "gdp": -0.9089318540408838,
+    "arrivals": -0.44664320525628876,
+    "migrants": -1.3147703652147649,
+    "hdi": -0.07098695266566538
+   },
+   "signalsUsed": 4,
+   "iso2": "FJ"
   },
   {
    "iso3": "SYC",
    "name": "Seychelles",
-   "weight": 0.4510436209699727,
+   "weight": 0.41559795126402815,
    "signals": {
     "gdp": 2387022853.48583,
-    "arrivals": 124500,
-    "hdi": 0.802,
+    "arrivals": 428000,
+    "hdi": 0.848,
     "migrants": 13261
    },
    "normalized": {
-    "gdp": 0.3361391392177442,
-    "arrivals": 0.34103916595838235,
-    "migrants": 0.3249961787037641,
-    "hdi": 0.802
+    "gdp": -1.3182173921745186,
+    "arrivals": -0.842254709828103,
+    "migrants": -1.3510466420721203,
+    "hdi": 0.7018005061378206
    },
    "signalsUsed": 4,
    "iso2": "SC"
   },
   {
-   "iso3": "GMB",
-   "name": "Gambia, The",
-   "weight": 0.4508141928118541,
-   "signals": {
-    "gdp": 2593673987.53306,
-    "arrivals": 246000,
-    "hdi": 0.495,
-    "migrants": 236137
-   },
-   "normalized": {
-    "gdp": 0.34196310007277547,
-    "arrivals": 0.40658590629893926,
-    "migrants": 0.5597077648757014,
-    "hdi": 0.495
-   },
-   "signalsUsed": 4,
-   "iso2": "GM"
-  },
-  {
-   "iso3": "GIN",
-   "name": "Guinea",
-   "weight": 0.45061143269793125,
-   "signals": {
-    "gdp": 28346024753.2924,
-    "arrivals": 99000,
-    "hdi": 0.471,
-    "migrants": 117416
-   },
-   "normalized": {
-    "gdp": 0.5097065885338485,
-    "arrivals": 0.31898069770125476,
-    "migrants": 0.5027584445566218,
-    "hdi": 0.471
-   },
-   "signalsUsed": 4,
-   "iso2": "GN"
-  },
-  {
-   "iso3": "NER",
-   "name": "Niger",
-   "weight": 0.45030669992085937,
-   "signals": {
-    "gdp": 21646191388.2507,
-    "arrivals": 85000,
-    "hdi": 0.394,
-    "migrants": 449236
-   },
-   "normalized": {
-    "gdp": 0.49079171150969714,
-    "arrivals": 0.3043060421686847,
-    "migrants": 0.6121290460050556,
-    "hdi": 0.394
-   },
-   "signalsUsed": 4,
-   "iso2": "NE"
-  },
-  {
-   "iso3": "LBR",
-   "name": "Liberia",
-   "weight": 0.4472481945447333,
-   "signals": {
-    "gdp": 5245938900,
-    "arrivals": null,
-    "hdi": 0.487,
-    "migrants": 72423
-   },
-   "normalized": {
-    "gdp": 0.39137114548586754,
-    "arrivals": null,
-    "migrants": 0.46337343814833254,
-    "hdi": 0.487
-   },
-   "signalsUsed": 3,
-   "iso2": "LR"
-  },
-  {
-   "iso3": "GRD",
-   "name": "Grenada",
-   "weight": 0.4410033502187184,
-   "signals": {
-    "gdp": 1420173228.56948,
-    "arrivals": 217000,
-    "hdi": 0.793,
-    "migrants": 7340
-   },
-   "normalized": {
-    "gdp": 0.29971552901295256,
-    "arrivals": 0.3945132336611546,
-    "migrants": 0.2767846382007662,
-    "hdi": 0.793
-   },
-   "signalsUsed": 4,
-   "iso2": "GD"
-  },
-  {
-   "iso3": "VCT",
-   "name": "St. Vincent and the Grenadines",
-   "weight": 0.4392475784709747,
-   "signals": {
-    "gdp": 1255222222.22222,
-    "arrivals": 392000,
-    "hdi": 0.772,
-    "migrants": 4820
-   },
-   "normalized": {
-    "gdp": 0.2910550969070634,
-    "arrivals": 0.451430333258472,
-    "migrants": 0.2425048837183633,
-    "hdi": 0.772
-   },
-   "signalsUsed": 4,
-   "iso2": "VC"
-  },
-  {
    "iso3": "PRK",
    "name": "North Korea",
-   "weight": 0.4388748573607577,
+   "weight": 0.4056222185148678,
    "signals": {
-    "gdp": 23340000000,
+    "gdp": 31500000000,
     "arrivals": 200000,
     "hdi": null,
     "migrants": 50439
    },
    "normalized": {
-    "gdp": 0.4960763080164925,
-    "arrivals": 0.38666139887438883,
-    "migrants": 0.4338868651913918,
+    "gdp": -0.211580966505355,
+    "arrivals": -1.210591857724236,
+    "migrants": -0.7434264929614298,
     "hdi": null
    },
    "signalsUsed": 3,
    "iso2": "KP"
   },
   {
-   "iso3": "LSO",
-   "name": "Lesotho",
-   "weight": 0.43800345325054235,
+   "iso3": "KNA",
+   "name": "St. Kitts and Nevis",
+   "weight": 0.3995579136443095,
    "signals": {
-    "gdp": 2573572920.05159,
-    "arrivals": 1142000,
-    "hdi": 0.521,
-    "migrants": 15039
+    "gdp": 1183514814.81481,
+    "arrivals": 1107000,
+    "hdi": 0.84,
+    "migrants": 7958
    },
    "normalized": {
-    "gdp": 0.3414173629850824,
-    "arrivals": 0.5543448766551744,
-    "migrants": 0.33525157336191247,
-    "hdi": 0.521
+    "gdp": -1.6191428906179108,
+    "arrivals": -0.3821826063530089,
+    "migrants": -1.583303829731085,
+    "hdi": 0.6489603380145054
    },
    "signalsUsed": 4,
-   "iso2": "LS"
+   "iso2": "KN"
   },
   {
-   "iso3": "SOM",
-   "name": "Somalia, Fed. Rep.",
-   "weight": 0.43479720033696595,
+   "iso3": "SUR",
+   "name": "Suriname",
+   "weight": 0.39724010225464496,
    "signals": {
-    "gdp": 12995200000.2658,
-    "arrivals": null,
-    "hdi": 0.38,
-    "migrants": 77972
+    "gdp": 4523657796.86421,
+    "arrivals": 279000,
+    "hdi": 0.722,
+    "migrants": 51902
    },
    "normalized": {
-    "gdp": 0.4550007033777456,
-    "arrivals": null,
-    "migrants": 0.46939089763315234,
-    "hdi": 0.38
-   },
-   "signalsUsed": 3,
-   "iso2": "SO"
-  },
-  {
-   "iso3": "MRT",
-   "name": "Mauritania",
-   "weight": 0.43402036790847476,
-   "signals": {
-    "gdp": 11679910946.4371,
-    "arrivals": 30000,
-    "hdi": 0.54,
-    "migrants": 195937
-   },
-   "normalized": {
-    "gdp": 0.44751564319087744,
-    "arrivals": 0.20406915730687192,
-    "migrants": 0.5444966711361495,
-    "hdi": 0.54
+    "gdp": -1.0440080250724206,
+    "arrivals": -1.0494240869303986,
+    "migrants": -0.7304217927023913,
+    "hdi": -0.13043214180439514
    },
    "signalsUsed": 4,
-   "iso2": "MR"
+   "iso2": "SR"
   },
   {
-   "iso3": "CPV",
-   "name": "Cabo Verde",
-   "weight": 0.43347169621563775,
+   "iso3": "BFA",
+   "name": "Burkina Faso",
+   "weight": 0.3879108200024442,
    "signals": {
-    "gdp": 3056630435.32463,
-    "arrivals": 180000,
-    "hdi": 0.661,
-    "migrants": 16515
+    "gdp": 27627297461.3181,
+    "arrivals": 143000,
+    "hdi": 0.459,
+    "migrants": 739820
    },
    "normalized": {
-    "gdp": 0.3534834149768277,
-    "arrivals": 0.37652075786067385,
-    "migrants": 0.3428826120250493,
-    "hdi": 0.661
+    "gdp": -0.2678505302751953,
+    "arrivals": -1.373007898934402,
+    "migrants": 0.47807570244596453,
+    "hdi": -1.867552668858385
    },
    "signalsUsed": 4,
-   "iso2": "CV"
+   "iso2": "BF"
   },
   {
-   "iso3": "PNG",
-   "name": "Papua New Guinea",
-   "weight": 0.42781891592688703,
+   "iso3": "HTI",
+   "name": "Haiti",
+   "weight": 0.3819323443077153,
    "signals": {
-    "gdp": 32498658653.8415,
-    "arrivals": 39000,
-    "hdi": 0.568,
-    "migrants": 31171
+    "gdp": 32077278409.2339,
+    "arrivals": 938000,
+    "hdi": 0.554,
+    "migrants": 19581
    },
    "normalized": {
-    "gdp": 0.5192961349055085,
-    "arrivals": 0.2293209492536073,
-    "migrants": 0.3946585795484325,
-    "hdi": 0.568
+    "gdp": -0.203791269535809,
+    "arrivals": -0.46238488037845005,
+    "migrants": -1.1737859223424283,
+    "hdi": -1.2400756723940158
    },
    "signalsUsed": 4,
-   "iso2": "PG"
+   "iso2": "HT"
   },
   {
    "iso3": "BTN",
    "name": "Bhutan",
-   "weight": 0.4227407067550971,
+   "weight": 0.3770993089543575,
    "signals": {
     "gdp": 3579320145.13077,
-    "arrivals": 29799.9992370605,
-    "hdi": 0.681,
+    "arrivals": 316000,
+    "hdi": 0.698,
     "migrants": 55705
    },
    "normalized": {
-    "gdp": 0.3645563497851915,
-    "arrivals": 0.20342535932639147,
-    "migrants": 0.44198111790880557,
-    "hdi": 0.681
+    "gdp": -1.1444431831377937,
+    "arrivals": -0.9891338232227049,
+    "migrants": -0.6982598106515211,
+    "hdi": -0.28895264617434113
    },
    "signalsUsed": 4,
    "iso2": "BT"
   },
   {
-   "iso3": "MDG",
-   "name": "Madagascar",
-   "weight": 0.4224223063296997,
+   "iso3": "LCA",
+   "name": "St. Lucia",
+   "weight": 0.37453625269064494,
    "signals": {
-    "gdp": 19620352035.7899,
-    "arrivals": 87099.9984741211,
-    "hdi": 0.487,
-    "migrants": 38625
+    "gdp": 2656444444.44444,
+    "arrivals": 1220000,
+    "hdi": 0.748,
+    "migrants": 8079
    },
    "normalized": {
-    "gdp": 0.48389919957995314,
-    "arrivals": 0.3066550106286312,
-    "migrants": 0.41213501511021433,
-    "hdi": 0.487
+    "gdp": -1.2723459854991706,
+    "arrivals": -0.3351254730953429,
+    "migrants": -1.576440314954484,
+    "hdi": 0.04129840459637971
    },
    "signalsUsed": 4,
-   "iso2": "MG"
+   "iso2": "LC"
+  },
+  {
+   "iso3": "SSD",
+   "name": "South Sudan",
+   "weight": 0.3697400897639056,
+   "signals": {
+    "gdp": 11997800760.2242,
+    "arrivals": null,
+    "hdi": 0.388,
+    "migrants": 914001
+   },
+   "normalized": {
+    "gdp": -0.6256201482644921,
+    "arrivals": null,
+    "migrants": 0.5742373565402182,
+    "hdi": -2.3365091609528084
+   },
+   "signalsUsed": 3,
+   "iso2": "SS"
+  },
+  {
+   "iso3": "MLI",
+   "name": "Mali",
+   "weight": 0.3684512377282649,
+   "signals": {
+    "gdp": 30069148580.7688,
+    "arrivals": 217000,
+    "hdi": 0.419,
+    "migrants": 545323
+   },
+   "normalized": {
+    "gdp": -0.23152141123997702,
+    "arrivals": -1.1710956570019628,
+    "migrants": 0.3393404897470859,
+    "hdi": -2.1317535094749616
+   },
+   "signalsUsed": 4,
+   "iso2": "ML"
+  },
+  {
+   "iso3": "AFG",
+   "name": "Afghanistan",
+   "weight": 0.3498038372123523,
+   "signals": {
+    "gdp": 17778508875.7396,
+    "arrivals": null,
+    "hdi": 0.496,
+    "migrants": 98110
+   },
+   "normalized": {
+    "gdp": -0.45693270591699536,
+    "arrivals": null,
+    "migrants": -0.4408189949362011,
+    "hdi": -1.623166891288052
+   },
+   "signalsUsed": 3,
+   "iso2": "AF"
+  },
+  {
+   "iso3": "GMB",
+   "name": "Gambia, The",
+   "weight": 0.34290159324105035,
+   "signals": {
+    "gdp": 2593673987.53306,
+    "arrivals": 620000,
+    "hdi": 0.524,
+    "migrants": 236137
+   },
+   "normalized": {
+    "gdp": -1.28260326359417,
+    "arrivals": -0.6628339266374564,
+    "migrants": -0.041334180997652355,
+    "hdi": -1.4382263028564484
+   },
+   "signalsUsed": 4,
+   "iso2": "GM"
+  },
+  {
+   "iso3": "PNG",
+   "name": "Papua New Guinea",
+   "weight": 0.34130276666530446,
+   "signals": {
+    "gdp": 32498658653.8415,
+    "arrivals": 211000,
+    "hdi": 0.576,
+    "migrants": 31171
+   },
+   "normalized": {
+    "gdp": -0.19819324414487877,
+    "arrivals": -1.1846705876263341,
+    "migrants": -0.9623239720809136,
+    "hdi": -1.0947652100548992
+   },
+   "signalsUsed": 4,
+   "iso2": "PG"
   },
   {
    "iso3": "TCD",
    "name": "Chad",
-   "weight": 0.42078687114822744,
+   "weight": 0.3400225687660195,
    "signals": {
     "gdp": 21472835225.4338,
-    "arrivals": 10399.9996185303,
-    "hdi": 0.394,
+    "arrivals": 81000,
+    "hdi": 0.416,
     "migrants": 1269673
    },
    "normalized": {
-    "gdp": 0.490227692102497,
-    "arrivals": 0.10210581776613384,
-    "migrants": 0.696813974724279,
-    "hdi": 0.394
+    "gdp": -0.37594980628293223,
+    "arrivals": -1.6481913430739499,
+    "migrants": 0.7237312103538845,
+    "hdi": -2.151568572521205
    },
    "signalsUsed": 4,
    "iso2": "TD"
   },
   {
-   "iso3": "DJI",
-   "name": "Djibouti",
-   "weight": 0.4203782311958223,
-   "signals": {
-    "gdp": 4624533092.31886,
-    "arrivals": 63000,
-    "hdi": 0.515,
-    "migrants": 125996
-   },
-   "normalized": {
-    "gdp": 0.3825274553807864,
-    "arrivals": 0.2754784534800592,
-    "migrants": 0.5085070159224435,
-    "hdi": 0.515
-   },
-   "signalsUsed": 4,
-   "iso2": "DJ"
-  },
-  {
-   "iso3": "DMA",
-   "name": "Dominica",
-   "weight": 0.40823552079026665,
-   "signals": {
-    "gdp": 723859259.259259,
-    "arrivals": 140000,
-    "hdi": 0.74,
-    "migrants": 8440
-   },
-   "normalized": {
-    "gdp": 0.2524427890322862,
-    "arrivals": 0.35233248028010217,
-    "migrants": 0.2881668138486782,
-    "hdi": 0.74
-   },
-   "signalsUsed": 4,
-   "iso2": "DM"
-  },
-  {
-   "iso3": "SLE",
-   "name": "Sierra Leone",
-   "weight": 0.398565459476491,
-   "signals": {
-    "gdp": 7464157904.43509,
-    "arrivals": 71000,
-    "hdi": 0.458,
-    "migrants": 49997
-   },
-   "normalized": {
-    "gdp": 0.41610806343983847,
-    "arrivals": 0.2869843240626115,
-    "migrants": 0.4331694504035141,
-    "hdi": 0.458
-   },
-   "signalsUsed": 4,
-   "iso2": "SL"
-  },
-  {
    "iso3": "MCO",
    "name": "Monaco",
-   "weight": 0.39731882274391683,
+   "weight": 0.3376389259491481,
    "signals": {
     "gdp": 11125788838.2812,
-    "arrivals": 159000,
+    "arrivals": 363000,
     "hdi": null,
     "migrants": 27106
    },
    "normalized": {
-    "gdp": 0.4441063140369223,
-    "arrivals": 0.36458105379688394,
-    "migrants": 0.38326910039794426,
+    "gdp": -0.6579868476739705,
+    "arrivals": -0.9220025584545526,
+    "migrants": -1.0258783240915335,
     "hdi": null
    },
    "signalsUsed": 3,
    "iso2": "MC"
   },
   {
-   "iso3": "CAF",
-   "name": "Central African Republic",
-   "weight": 0.38308857697913246,
+   "iso3": "NER",
+   "name": "Niger",
+   "weight": 0.336697175792378,
    "signals": {
-    "gdp": 3066109226.40165,
-    "arrivals": 87000,
-    "hdi": 0.387,
-    "migrants": 94556
+    "gdp": 21646191388.2507,
+    "arrivals": 192000,
+    "hdi": 0.419,
+    "migrants": 449236
    },
    "normalized": {
-    "gdp": 0.3537005995006873,
-    "arrivals": 0.3065444470288052,
-    "migrants": 0.48510926138703747,
-    "hdi": 0.387
+    "gdp": -0.3725007687310255,
+    "arrivals": -1.2303554510869723,
+    "migrants": 0.25118143887596045,
+    "hdi": -2.1317535094749616
    },
    "signalsUsed": 4,
-   "iso2": "CF"
+   "iso2": "NE"
   },
   {
-   "iso3": "TON",
-   "name": "Tonga",
-   "weight": 0.3798141248328448,
+   "iso3": "CPV",
+   "name": "Cabo Verde",
+   "weight": 0.3332836423905842,
    "signals": {
-    "gdp": 679218218.578017,
-    "arrivals": 94000,
-    "hdi": 0.739,
-    "migrants": 3581
+    "gdp": 3056630435.32463,
+    "arrivals": 758000,
+    "hdi": 0.668,
+    "migrants": 16515
    },
    "normalized": {
-    "gdp": 0.2479777975353303,
-    "arrivals": 0.31399268672347114,
-    "migrants": 0.21828601507257778,
-    "hdi": 0.739
+    "gdp": -1.2121553353728498,
+    "arrivals": -0.5655390982702136,
+    "migrants": -1.251238682068373,
+    "hdi": -0.48710327663677294
    },
    "signalsUsed": 4,
-   "iso2": "TO"
+   "iso2": "CV"
   },
   {
-   "iso3": "ERI",
-   "name": "Eritrea",
-   "weight": 0.3732322918134071,
+   "iso3": "GRD",
+   "name": "Grenada",
+   "weight": 0.3268774027947259,
    "signals": {
-    "gdp": 2065001626.01626,
-    "arrivals": 142000,
-    "hdi": 0.493,
-    "migrants": 12512
+    "gdp": 1420173228.56948,
+    "arrivals": 526000,
+    "hdi": 0.791,
+    "migrants": 7340
    },
    "normalized": {
-    "gdp": 0.32597413797030006,
-    "arrivals": 0.3536977098489396,
-    "migrants": 0.3202573194343887,
-    "hdi": 0.493
+    "gdp": -1.5409515707659334,
+    "arrivals": -0.7424355182552179,
+    "migrants": -1.620071518066599,
+    "hdi": 0.32531430825919966
    },
    "signalsUsed": 4,
-   "iso2": "ER"
+   "iso2": "GD"
   },
   {
-   "iso3": "TLS",
-   "name": "Timor-Leste",
-   "weight": 0.3662621317376751,
+   "iso3": "MDG",
+   "name": "Madagascar",
+   "weight": 0.31048407016171925,
    "signals": {
-    "gdp": 1902180257.82737,
-    "arrivals": 74800.0030517578,
-    "hdi": 0.566,
-    "migrants": 8303
+    "gdp": 19620352035.7899,
+    "arrivals": 486000,
+    "hdi": 0.487,
+    "migrants": 38625
    },
    "normalized": {
-    "gdp": 0.3202131802760633,
-    "arrivals": 0.29200245853269,
-    "migrants": 0.28683288814194713,
-    "hdi": 0.566
+    "gdp": -0.41464919867718986,
+    "arrivals": -0.7807274680277643,
+    "migrants": -0.8648038376736441,
+    "hdi": -1.6826120804267817
    },
    "signalsUsed": 4,
-   "iso2": "TL"
+   "iso2": "MG"
   },
   {
-   "iso3": "VAT",
-   "name": "Vatican City",
-   "weight": 0.3644266177955497,
+   "iso3": "GIN",
+   "name": "Guinea",
+   "weight": 0.30845861697919463,
    "signals": {
-    "gdp": 19800000,
-    "arrivals": 7000000,
-    "hdi": null,
-    "migrants": null
+    "gdp": 28346024753.2924,
+    "arrivals": 99000,
+    "hdi": 0.5,
+    "migrants": 117416
    },
    "normalized": {
-    "gdp": 0,
-    "arrivals": 0.7288532355910994,
-    "migrants": null,
-    "hdi": null
-   },
-   "signalsUsed": 2,
-   "iso2": "VA"
-  },
-  {
-   "iso3": "VUT",
-   "name": "Vanuatu",
-   "weight": 0.35591543171863127,
-   "signals": {
-    "gdp": 1353658840.63993,
-    "arrivals": 82400.0015258789,
-    "hdi": 0.614,
-    "migrants": 3315
-   },
-   "normalized": {
-    "gdp": 0.29635087768388824,
-    "arrivals": 0.30131604981381577,
-    "migrants": 0.21199479937682125,
-    "hdi": 0.614
+    "gdp": -0.25683432124148636,
+    "arrivals": -1.5510384706692582,
+    "migrants": -0.3591166803114327,
+    "hdi": -1.5967468072263942
    },
    "signalsUsed": 4,
-   "iso2": "VU"
+   "iso2": "GN"
   },
   {
-   "iso3": "GNB",
-   "name": "Guinea-Bissau",
-   "weight": 0.35407404466471604,
+   "iso3": "DJI",
+   "name": "Djibouti",
+   "weight": 0.3021408629242706,
    "signals": {
-    "gdp": 2527930272.92988,
-    "arrivals": 52400.0015258789,
-    "hdi": 0.483,
-    "migrants": 15064
+    "gdp": 4624533092.31886,
+    "arrivals": null,
+    "hdi": 0.513,
+    "migrants": 125996
    },
    "normalized": {
-    "gdp": 0.34016218411275845,
-    "arrivals": 0.2577470379174287,
-    "migrants": 0.33538695662867707,
-    "hdi": 0.483
+    "gdp": -1.034547996452323,
+    "arrivals": null,
+    "migrants": -0.3270391179124579,
+    "hdi": -1.510881534026007
    },
-   "signalsUsed": 4,
-   "iso2": "GW"
+   "signalsUsed": 3,
+   "iso2": "DJ"
   },
   {
-   "iso3": "PLW",
-   "name": "Palau",
-   "weight": 0.3508398561687596,
+   "iso3": "VCT",
+   "name": "St. Vincent and the Grenadines",
+   "weight": 0.293894579893624,
    "signals": {
-    "gdp": 345000000,
-    "arrivals": 18399.9996185303,
-    "hdi": 0.797,
-    "migrants": 5212
+    "gdp": 1255222222.22222,
+    "arrivals": 392000,
+    "hdi": 0.798,
+    "migrants": 4820
    },
    "normalized": {
-    "gdp": 0.20046229667367643,
-    "arrivals": 0.15701909070844663,
-    "migrants": 0.24887803729291533,
-    "hdi": 0.797
+    "gdp": -1.5939110171389395,
+    "arrivals": -0.8847919775085684,
+    "migrants": -1.8113557334750687,
+    "hdi": 0.37154945536710055
    },
    "signalsUsed": 4,
-   "iso2": "PW"
+   "iso2": "VC"
+  },
+  {
+   "iso3": "BDI",
+   "name": "Burundi",
+   "weight": 0.2862319407992031,
+   "signals": {
+    "gdp": 3364713864.08488,
+    "arrivals": 299000,
+    "hdi": 0.439,
+    "migrants": 387101
+   },
+   "normalized": {
+    "gdp": -1.1709644436375046,
+    "arrivals": -1.015906151502946,
+    "migrants": 0.18347467625925967,
+    "hdi": -1.9996530891666733
+   },
+   "signalsUsed": 4,
+   "iso2": "BI"
+  },
+  {
+   "iso3": "LBR",
+   "name": "Liberia",
+   "weight": 0.2759537061036197,
+   "signals": {
+    "gdp": 5245938900,
+    "arrivals": null,
+    "hdi": 0.51,
+    "migrants": 72423
+   },
+   "normalized": {
+    "gdp": -0.9804679082843153,
+    "arrivals": null,
+    "migrants": -0.5788886758645079,
+    "hdi": -1.5306965970722501
+   },
+   "signalsUsed": 3,
+   "iso2": "LR"
+  },
+  {
+   "iso3": "LSO",
+   "name": "Lesotho",
+   "weight": 0.268024219494299,
+   "signals": {
+    "gdp": 2573572920.05159,
+    "arrivals": 1142000,
+    "hdi": 0.55,
+    "migrants": 15039
+   },
+   "normalized": {
+    "gdp": -1.2859405028538355,
+    "arrivals": -0.3671125339613915,
+    "migrants": -1.29382058691192,
+    "hdi": -1.2664957564556734
+   },
+   "signalsUsed": 4,
+   "iso2": "LS"
+  },
+  {
+   "iso3": "DMA",
+   "name": "Dominica",
+   "weight": 0.2658485639062806,
+   "signals": {
+    "gdp": 723859259.259259,
+    "arrivals": 322000,
+    "hdi": 0.761,
+    "migrants": 8440
+   },
+   "normalized": {
+    "gdp": -1.8300293104561658,
+    "arrivals": -0.9800274580731971,
+    "migrants": -1.5565579202790218,
+    "hdi": 0.12716367779676713
+   },
+   "signalsUsed": 4,
+   "iso2": "DM"
+  },
+  {
+   "iso3": "SOM",
+   "name": "Somalia, Fed. Rep.",
+   "weight": 0.24582693289532284,
+   "signals": {
+    "gdp": 12995200000.2658,
+    "arrivals": null,
+    "hdi": 0.404,
+    "migrants": 77972
+   },
+   "normalized": {
+    "gdp": -0.5913665196109352,
+    "arrivals": null,
+    "migrants": -0.545310692775484,
+    "hdi": -2.2308288247061774
+   },
+   "signalsUsed": 3,
+   "iso2": "SO"
   },
   {
    "iso3": "WSM",
    "name": "Samoa",
-   "weight": 0.35027291233005875,
+   "weight": 0.21098622879012316,
    "signals": {
     "gdp": 1287936621.64619,
-    "arrivals": 23899.9996185303,
-    "hdi": 0.702,
+    "arrivals": 181000,
+    "hdi": 0.708,
     "migrants": 3843
    },
    "normalized": {
-    "gdp": 0.29285982090135587,
-    "arrivals": 0.18219037531308058,
-    "migrants": 0.22404145310579845,
-    "hdi": 0.702
+    "gdp": -1.5828749415222485,
+    "arrivals": -1.2589189553840705,
+    "migrants": -1.9143833919807962,
+    "hdi": -0.22290243602019696
    },
    "signalsUsed": 4,
    "iso2": "WS"
   },
   {
-   "iso3": "NRU",
-   "name": "Naoero",
-   "weight": 0.3466042844182806,
+   "iso3": "SLE",
+   "name": "Sierra Leone",
+   "weight": 0.20295117325332274,
    "signals": {
-    "gdp": 176040043.932346,
-    "arrivals": null,
-    "hdi": 0.696,
-    "migrants": 2548
+    "gdp": 7464157904.43509,
+    "arrivals": 71000,
+    "hdi": 0.467,
+    "migrants": 49997
    },
    "normalized": {
-    "gdp": 0.15326701190933914,
-    "arrivals": null,
-    "migrants": 0.19054584134550265,
-    "hdi": 0.696
+    "gdp": -0.8291990727575146,
+    "arrivals": -1.7119862274593947,
+    "migrants": -0.7474297341425202,
+    "hdi": -1.8147125007350697
    },
-   "signalsUsed": 3,
-   "iso2": "NR"
+   "signalsUsed": 4,
+   "iso2": "SL"
+  },
+  {
+   "iso3": "TON",
+   "name": "Tonga",
+   "weight": 0.19691427657894056,
+   "signals": {
+    "gdp": 679218218.578017,
+    "arrivals": 94000,
+    "hdi": 0.769,
+    "migrants": 3581
+   },
+   "normalized": {
+    "gdp": -1.8573331995517417,
+    "arrivals": -1.5761291008383365,
+    "migrants": -1.946499271021932,
+    "hdi": 0.18000384592008248
+   },
+   "signalsUsed": 4,
+   "iso2": "TO"
+  },
+  {
+   "iso3": "PLW",
+   "name": "Palau",
+   "weight": 0.19644896717843086,
+   "signals": {
+    "gdp": 345000000,
+    "arrivals": 94000,
+    "hdi": 0.786,
+    "migrants": 5212
+   },
+   "normalized": {
+    "gdp": -2.1478954473705443,
+    "arrivals": -1.5761291008383365,
+    "migrants": -1.7757929443129798,
+    "hdi": 0.2922892031821276
+   },
+   "signalsUsed": 4,
+   "iso2": "PW"
+  },
+  {
+   "iso3": "TLS",
+   "name": "Timor-Leste",
+   "weight": 0.18625603253818346,
+   "signals": {
+    "gdp": 1902180257.82737,
+    "arrivals": 74800.0030517578,
+    "hdi": 0.634,
+    "migrants": 8303
+   },
+   "normalized": {
+    "gdp": -1.4156062935824638,
+    "arrivals": -1.6867440704777372,
+    "migrants": -1.5640013496757004,
+    "hdi": -0.7116739911608632
+   },
+   "signalsUsed": 4,
+   "iso2": "TL"
+  },
+  {
+   "iso3": "VUT",
+   "name": "Vanuatu",
+   "weight": 0.18315524493928093,
+   "signals": {
+    "gdp": 1353658840.63993,
+    "arrivals": 256000,
+    "hdi": 0.621,
+    "migrants": 3315
+   },
+   "normalized": {
+    "gdp": -1.5615267648725037,
+    "arrivals": -1.091076820424646,
+    "migrants": -1.9816048392063832,
+    "hdi": -0.7975392643612506
+   },
+   "signalsUsed": 4,
+   "iso2": "VU"
+  },
+  {
+   "iso3": "CAF",
+   "name": "Central African Republic",
+   "weight": 0.18229563410638888,
+   "signals": {
+    "gdp": 3066109226.40165,
+    "arrivals": 87000,
+    "hdi": 0.414,
+    "migrants": 94556
+   },
+   "normalized": {
+    "gdp": -1.210827229337983,
+    "arrivals": -1.6135951425976416,
+    "migrants": -0.45760076242256137,
+    "hdi": -2.164778614552034
+   },
+   "signalsUsed": 4,
+   "iso2": "CF"
   },
   {
    "iso3": "COM",
    "name": "Comoros",
-   "weight": 0.32169179673667736,
+   "weight": 0.170351490123919,
    "signals": {
     "gdp": 1814920856.27026,
-    "arrivals": 7000,
-    "hdi": 0.586,
+    "arrivals": 45099.9984741211,
+    "hdi": 0.603,
     "migrants": 12449
    },
    "normalized": {
-    "gdp": 0.31691929080469466,
-    "arrivals": 0.06400202394511144,
-    "migrants": 0.31984587219690325,
-    "hdi": 0.586
+    "gdp": -1.435748771542534,
+    "arrivals": -1.9316881948151836,
+    "migrants": -1.3797858309651958,
+    "hdi": -0.9164296426387101
    },
    "signalsUsed": 4,
    "iso2": "KM"
   },
   {
+   "iso3": "ERI",
+   "name": "Eritrea",
+   "weight": 0.1642827433969763,
+   "signals": {
+    "gdp": 2065001626.01626,
+    "arrivals": null,
+    "hdi": 0.503,
+    "migrants": 12512
+   },
+   "normalized": {
+    "gdp": -1.3803774359071506,
+    "arrivals": null,
+    "migrants": -1.3774899171468868,
+    "hdi": -1.576931744180151
+   },
+   "signalsUsed": 3,
+   "iso2": "ER"
+  },
+  {
+   "iso3": "GNB",
+   "name": "Guinea-Bissau",
+   "weight": 0.15576932538432464,
+   "signals": {
+    "gdp": 2527930272.92988,
+    "arrivals": 52400.0015258789,
+    "hdi": 0.514,
+    "migrants": 15064
+   },
+   "normalized": {
+    "gdp": -1.2936160526837535,
+    "arrivals": -1.859055256995144,
+    "migrants": -1.293065135703079,
+    "hdi": -1.5042765130105924
+   },
+   "signalsUsed": 4,
+   "iso2": "GW"
+  },
+  {
+   "iso3": "NRU",
+   "name": "Naoero",
+   "weight": 0.13568992519066844,
+   "signals": {
+    "gdp": 176040043.932346,
+    "arrivals": null,
+    "hdi": 0.703,
+    "migrants": 2548
+   },
+   "normalized": {
+    "gdp": -2.4364995403275262,
+    "arrivals": null,
+    "migrants": -2.1012920181345787,
+    "hdi": -0.25592754109726906
+   },
+   "signalsUsed": 3,
+   "iso2": "NR"
+  },
+  {
    "iso3": "STP",
    "name": "Sao Tome and Principe",
-   "weight": 0.31753515522564263,
+   "weight": 0.12360037204084741,
    "signals": {
     "gdp": 981293586.906408,
     "arrivals": 33400.0015258789,
-    "hdi": 0.613,
+    "hdi": 0.637,
     "migrants": 1955
    },
    "normalized": {
-    "gdp": 0.27378587574962804,
-    "arrivals": 0.21440210462143627,
-    "migrants": 0.16895264053150624,
-    "hdi": 0.613
+    "gdp": -1.6995141072167272,
+    "arrivals": -2.0770883960313307,
+    "migrants": -2.2217840851936685,
+    "hdi": -0.6918589281146199
    },
    "signalsUsed": 4,
    "iso2": "ST"
   },
   {
-   "iso3": "FSM",
-   "name": "Micronesia, Fed. Sts.",
-   "weight": 0.30414252223327454,
-   "signals": {
-    "gdp": 501797600,
-    "arrivals": 18000,
-    "hdi": 0.634,
-    "migrants": 2894
-   },
-   "normalized": {
-    "gdp": 0.22674196825996107,
-    "arrivals": 0.1549036873120113,
-    "migrants": 0.20092443336112584,
-    "hdi": 0.634
-   },
-   "signalsUsed": 4,
-   "iso2": "FM"
-  },
-  {
-   "iso3": "MHL",
-   "name": "Marshall Islands",
-   "weight": 0.29652708177273,
-   "signals": {
-    "gdp": 308000000,
-    "arrivals": 6099.99990463257,
-    "hdi": 0.731,
-    "migrants": 3309
-   },
-   "normalized": {
-    "gdp": 0.19250482074437525,
-    "arrivals": 0.05075636793555897,
-    "migrants": 0.21184713841098574,
-    "hdi": 0.731
-   },
-   "signalsUsed": 4,
-   "iso2": "MH"
-  },
-  {
-   "iso3": "KIR",
-   "name": "Kiribati",
-   "weight": 0.28921748261712854,
-   "signals": {
-    "gdp": 349227254.158833,
-    "arrivals": 12000,
-    "hdi": 0.628,
-    "migrants": 3302
-   },
-   "normalized": {
-    "gdp": 0.20131654362809215,
-    "arrivals": 0.11587885833086543,
-    "migrants": 0.2116745285095566,
-    "hdi": 0.628
-   },
-   "signalsUsed": 4,
-   "iso2": "KI"
-  },
-  {
    "iso3": "SLB",
    "name": "Solomon Islands",
-   "weight": 0.27090993118608026,
+   "weight": 0.12108005341975564,
    "signals": {
     "gdp": 1749572442.95016,
-    "arrivals": 4400.00009536743,
-    "hdi": 0.562,
+    "arrivals": 28899.9996185303,
+    "hdi": 0.584,
     "migrants": 2469
    },
    "normalized": {
-    "gdp": 0.3143470757334492,
-    "arrivals": 0.01931397127639961,
-    "migrants": 0.1879786777344721,
-    "hdi": 0.562
+    "gdp": -1.4514781352116783,
+    "arrivals": -2.1471505248540983,
+    "migrants": -2.115617029634099,
+    "hdi": -1.041925041931584
    },
    "signalsUsed": 4,
    "iso2": "SB"
   },
   {
+   "iso3": "MHL",
+   "name": "Marshall Islands",
+   "weight": 0.10749419180347443,
+   "signals": {
+    "gdp": 308000000,
+    "arrivals": 6099.99990463257,
+    "hdi": 0.733,
+    "migrants": 3309
+   },
+   "normalized": {
+    "gdp": -2.1965562433435006,
+    "arrivals": -2.9002571252541753,
+    "migrants": -1.982428801116927,
+    "hdi": -0.057776910634836545
+   },
+   "signalsUsed": 4,
+   "iso2": "MH"
+  },
+  {
+   "iso3": "FSM",
+   "name": "Micronesia, Fed. Sts.",
+   "weight": 0.10395610225361565,
+   "signals": {
+    "gdp": 501797600,
+    "arrivals": 18000,
+    "hdi": 0.615,
+    "migrants": 2894
+   },
+   "normalized": {
+    "gdp": -1.9871925123371241,
+    "arrivals": -2.3763765874578087,
+    "migrants": -2.043378510271732,
+    "hdi": -0.8371693904537371
+   },
+   "signalsUsed": 4,
+   "iso2": "FM"
+  },
+  {
+   "iso3": "KIR",
+   "name": "Kiribati",
+   "weight": 0.10074986331323431,
+   "signals": {
+    "gdp": 349227254.158833,
+    "arrivals": 12000,
+    "hdi": 0.644,
+    "migrants": 3302
+   },
+   "normalized": {
+    "gdp": -2.1426716380711306,
+    "arrivals": -2.572678792031654,
+    "migrants": -1.9833919804064275,
+    "hdi": -0.6456237810067189
+   },
+   "signalsUsed": 4,
+   "iso2": "KI"
+  },
+  {
    "iso3": "TUV",
    "name": "Tuvalu",
-   "weight": 0.1818980169037391,
+   "weight": 0.0500033393909767,
    "signals": {
     "gdp": 57345434.7234984,
     "arrivals": 3599.99990463257,
-    "hdi": 0.653,
+    "hdi": 0.689,
     "migrants": 246
    },
    "normalized": {
-    "gdp": 0.07459206761495639,
-    "arrivals": 0,
-    "migrants": 0,
-    "hdi": 0.653
+    "gdp": -2.917605037410552,
+    "arrivals": -3.1555711697237916,
+    "migrants": -3.16455551903951,
+    "hdi": -0.3483978353130709
    },
    "signalsUsed": 4,
    "iso2": "TV"

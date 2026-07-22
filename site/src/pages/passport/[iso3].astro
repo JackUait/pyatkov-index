@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import rankings from '../../data/rankings.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { deltaLabel, flagEmoji, fmt } from '../../lib/format.ts';
+import { deltaLabel, displayName, flagEmoji, fmt, reconcilePoints } from '../../lib/format.ts';
 
 export function getStaticPaths() {
   return rankings.passports.map((p) => ({ params: { iso3: p.iso3.toLowerCase() }, props: { passport: p } }));
@@ -14,25 +14,42 @@ const access = (matrix as Record<string, Record<string, string>>)[p.iso3];
 const CREDIT: Record<string, number> = { 'visa-free': 1.0, 'visa-on-arrival': 0.8, 'e-visa': 0.5, 'visa-required': 0 };
 const LABEL: Record<string, string> = { 'visa-free': 'Visa-free', 'visa-on-arrival': 'Visa on arrival / eTA', 'e-visa': 'eVisa', 'visa-required': 'Visa required' };
 
-const dests = weightsData.destinations
+// Foreign destinations only (exclude the home country) — used for the two
+// "most valuable destination" lists, which shouldn't list the passport itself.
+const foreignDests = weightsData.destinations
   .filter((d) => d.iso3 !== p.iso3)
   .map((d) => ({ ...d, category: access[d.iso3], contribution: CREDIT[access[d.iso3]] * d.weight }));
-const reachable = dests.filter((d) => d.category !== 'visa-required');
+const reachable = foreignDests.filter((d) => d.category !== 'visa-required');
 const topReachable = [...reachable].sort((a, b) => b.contribution - a.contribution).slice(0, 15);
-const topMissing = dests.filter((d) => d.category === 'visa-required').slice(0, 15); // already weight-desc
+const topMissing = foreignDests.filter((d) => d.category === 'visa-required').slice(0, 15); // already weight-desc
+// Self-inclusion, consistent with the pipeline score: the home country is counted
+// as a visa-free destination in BOTH numerator and denominator, so the tier points
+// (which include the home country's own weight in the visa-free tier) sum to p.score
+// before rounding, over the full destination pool.
 const totalWeight = weightsData.destinations.reduce((a, d) => a + d.weight, 0);
-const tierContribution = Object.keys(LABEL).map((cat) => ({
+const ownWeight = weightsData.destinations.find((d) => d.iso3 === p.iso3)?.weight ?? 0;
+const denom = totalWeight;
+const tierCats = Object.keys(LABEL);
+const rawPoints = tierCats.map((cat) => {
+  // The home country contributes its own weight to the visa-free tier (self-inclusion).
+  const selfContribution = cat === 'visa-free' ? ownWeight : 0;
+  const foreign = foreignDests.filter((d) => d.category === cat).reduce((a, d) => a + d.contribution, 0);
+  return (100 * (foreign + selfContribution)) / denom;
+});
+// B5: round the tier points so they sum exactly to the displayed Score.
+const reconciled = reconcilePoints(rawPoints, p.score);
+const tierContribution = tierCats.map((cat, i) => ({
   cat,
-  points: (100 * dests.filter((d) => d.category === cat).reduce((a, d) => a + d.contribution, 0)) / totalWeight,
+  points: reconciled[i],
   count: p.counts[cat as keyof typeof p.counts],
 }));
 ---
 <Base title={`${p.name} passport — Pyatkov Index`} description={`${p.name}: rank ${p.rank}, score ${fmt(p.score)} on the weighted passport index.`}>
-  <h1>{flagEmoji(p.iso2)} {p.name}</h1>
+  <h1>{flagEmoji(p.iso2)} {displayName(p.iso3, p.name)}</h1>
   <dl class="stats">
     <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
     <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
-    <div><dt>Equal-weight rank</dt><dd>#{p.equalRank}</dd></div>
+    <div><dt>Count rank</dt><dd>#{p.equalRank}</dd></div>
     <div><dt>Δ from weighting</dt><dd class={p.delta > 0 ? 'up' : p.delta < 0 ? 'down' : ''}>{deltaLabel(p.delta)}</dd></div>
   </dl>
 
@@ -45,13 +62,16 @@ const tierContribution = Object.keys(LABEL).map((cat) => ({
         <tr><td>{LABEL[t.cat]}</td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
       ))}
     </tbody>
+    <tfoot>
+      <tr><th scope="row">Total (Score)</th><td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa'] + p.counts['visa-required']}</td><td>{fmt(p.score)}</td></tr>
+    </tfoot>
   </table>
   </div>
 
   <h2>Most valuable destinations reachable</h2>
   <ol>
     {topReachable.map((d) => (
-      <li>{flagEmoji(d.iso2)} {d.name} <span class="meta">{LABEL[d.category]} · weight {d.weight.toFixed(3)}</span></li>
+      <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta">{LABEL[d.category]} · weight {d.weight.toFixed(3)}</span></li>
     ))}
   </ol>
 
@@ -59,7 +79,7 @@ const tierContribution = Object.keys(LABEL).map((cat) => ({
   {topMissing.length === 0 ? <p>None — this passport reaches every weighted destination.</p> : (
     <ol>
       {topMissing.map((d) => (
-        <li>{flagEmoji(d.iso2)} {d.name} <span class="meta">weight {d.weight.toFixed(3)}</span></li>
+        <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta">weight {d.weight.toFixed(3)}</span></li>
       ))}
     </ol>
   )}

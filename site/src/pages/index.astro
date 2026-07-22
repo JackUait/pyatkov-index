@@ -1,15 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
-import { deltaLabel, flagEmoji, fmt } from '../lib/format.ts';
+import { deltaLabel, displayName, flagEmoji, fmt, searchIndex } from '../lib/format.ts';
 const base = import.meta.env.BASE_URL;
+// B9: the pipeline now emits an honest build date (builtAt) plus per-signal
+// vintages. Fall back to the legacy generatedAt field for pre-regen data.
+const meta = rankings as typeof rankings & { builtAt?: string; vintages?: unknown };
+const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?? '';
 ---
 <Base title="Pyatkov Index — weighted passport ranking" description="A passport index where strong destinations count more than weak ones.">
   <h1>The Pyatkov Index</h1>
   <p class="lede">
-    Every passport, scored 0–100 by the share of the world's destination <em>value</em> it can reach.
-    Destinations are weighted by GDP, tourist arrivals, HDI, and migrant stock — the Δ column shows how far
-    each passport moves compared with counting every country equally.
+    Every passport, scored 0–100 by the share of the reachable world's destination <em>value</em> it can
+    reach — across {rankings.totalDestinations} sovereign-state and SAR destinations (dependent territories are
+    out of scope, inherited from the upstream dataset). Destinations are weighted by GDP, arrivals, HDI, and
+    migrant stock — the Δ column shows how far each passport moves compared with counting every country equally.
   </p>
   <input type="search" id="filter" placeholder="Filter countries…" aria-label="Filter countries" />
   <div class="table-scroll">
@@ -19,15 +24,15 @@ const base = import.meta.env.BASE_URL;
         <th data-sort="rank" aria-sort="ascending" tabindex="0">#</th>
         <th data-sort="name" tabindex="0">Passport</th>
         <th data-sort="score" tabindex="0">Score</th>
-        <th data-sort="delta" tabindex="0">Δ vs equal</th>
-        <th data-sort="equalRank" tabindex="0">Equal-weight #</th>
+        <th data-sort="delta" tabindex="0">Δ vs count</th>
+        <th data-sort="equalRank" tabindex="0">Count rank</th>
       </tr>
     </thead>
     <tbody>
       {rankings.passports.map((p) => (
-        <tr data-name={p.name.toLowerCase()} data-rank={p.rank} data-score={p.score} data-delta={p.delta} data-equalrank={p.equalRank}>
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score} data-delta={p.delta} data-equalrank={p.equalRank}>
           <td>{p.rank}</td>
-          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}>{flagEmoji(p.iso2)} {p.name}</a></td>
+          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}>{flagEmoji(p.iso2)} {displayName(p.iso3, p.name)}</a></td>
           <td>{fmt(p.score)}</td>
           <td class={p.delta > 0 ? 'up' : p.delta < 0 ? 'down' : ''}>{deltaLabel(p.delta)}</td>
           <td>{p.equalRank}</td>
@@ -36,7 +41,10 @@ const base = import.meta.env.BASE_URL;
     </tbody>
   </table>
   </div>
-  <p class="meta">Data snapshot: {rankings.generatedAt} · {rankings.totalDestinations} destinations</p>
+  <p class="meta">
+    Built {builtAt} · {rankings.totalDestinations} destinations ·
+    <a href={`${base}methodology/`}>per-signal data vintages</a>
+  </p>
 
   <script>
     const input = document.getElementById('filter') as HTMLInputElement;
@@ -45,7 +53,9 @@ const base = import.meta.env.BASE_URL;
 
     input.addEventListener('input', () => {
       const q = input.value.trim().toLowerCase();
-      for (const r of rows) (r as HTMLElement).hidden = !r.dataset.name!.includes(q);
+      // B8: match the full search blob (display name + iso3/iso2 + aliases),
+      // so "Palestine", "Turkey", "South Korea", "kor", etc. all resolve.
+      for (const r of rows) (r as HTMLElement).hidden = !r.dataset.search!.includes(q);
     });
 
     const DEFAULT_ASC: Record<string, boolean> = {

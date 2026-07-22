@@ -1,8 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
+
+// B9: honest build date + per-signal vintages emitted by the pipeline.
+// Coded defensively so the page still renders against pre-regen data.
+type Vintages = {
+  matrix?: { source: string; note: string };
+  gdp?: { series: string; label: string; selection: string; years: string; modalYear: number };
+  arrivals?: { series: string; label: string; window: string; preferredYear: number; yearsUsed: string };
+  migrants?: { series: string; label: string; selection: string; years: string; modalYear: number };
+  hdi?: { source: string; year: number };
+};
+const meta = rankings as typeof rankings & { builtAt?: string; vintages?: Vintages };
+const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?? '';
+const v = meta.vintages ?? {};
 ---
-<Base title="Methodology — Pyatkov Index" description="The formula, data sources, and snapshot dates behind the Pyatkov Index.">
+<Base title="Methodology — Pyatkov Index" description="The formula, data sources, and per-signal data vintages behind the Pyatkov Index.">
   <h1>Methodology</h1>
 
   <h2>The idea</h2>
@@ -15,14 +28,29 @@ import rankings from '../data/rankings.json';
   <h2>Destination weights</h2>
   <p>Each of the {rankings.totalDestinations} destinations gets a weight from four signals:</p>
   <ul>
-    <li><strong>GDP</strong> (World Bank, current US$) — log-scaled, min–max normalized to 0–1</li>
-    <li><strong>International tourist arrivals</strong> (UNWTO via World Bank) — log-scaled, normalized</li>
-    <li><strong>HDI</strong> (UNDP) — already 0–1, used directly</li>
-    <li><strong>International migrant stock</strong> (via World Bank) — log-scaled, normalized</li>
+    <li><strong>GDP</strong> (World Bank, current US$) — log-scaled</li>
+    <li><strong>International tourism, number of arrivals</strong> (World Bank / UN Tourism series
+      <code>ST.INT.ARVL</code>) — log-scaled. This counts arrivals of non-resident visitors and mixes
+      overnight tourists with same-day visitors, with definitions varying by country; it is a proxy for
+      how much the world travels to a destination, not a pure tourist count.</li>
+    <li><strong>HDI</strong> (UNDP Human Development Report) — used on its natural scale</li>
+    <li><strong>International migrant stock, total</strong> (World Bank, series <code>SM.POP.TOTL</code>)
+      — log-scaled</li>
   </ul>
   <p>
-    Weight = the mean of the signals that exist for that destination (microstates often miss some).
-    Log scaling matters: GDP spans five orders of magnitude, and without it only the US and China would count.
+    Every signal is put on one common scale — a population <em>z-score</em> (how many standard deviations
+    above or below the destination average it sits), computed only over the destinations that actually
+    report that signal. GDP, arrivals, and migrant stock are logged first because they span several orders
+    of magnitude; HDI is already a bounded index and is z-scored on its natural scale. A destination's
+    composite <code>Z</code> is the mean of whichever z-scores it has (a missing signal is simply left out
+    of the mean, never imputed off-scale).
+  </p>
+  <p>
+    The weight is then a tempered exponential of that composite: <code>weight = exp(1.25 × Z)</code>. The
+    exponential is what lets destination <em>quality</em> genuinely dominate <em>count</em> — one composite
+    standard deviation of extra value is worth about <code>exp(1.25) ≈ 3.5×</code> more weight — so a handful
+    of strong destinations (Germany, Japan, the United States) outweigh dozens of weak ones, while the score
+    stays smooth, strictly monotonic in value, and bounded.
   </p>
 
   <h2>Access credit</h2>
@@ -35,19 +63,47 @@ import rankings from '../data/rankings.json';
 
   <h2>The score</h2>
   <p>
-    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code>, where the numerator is
-    summed over all destinations except the passport's own country, while the denominator Σ weight(d)
-    is summed over all destinations, including it. It reads as "percent of the world's destination value this
-    passport can reach." The Δ column compares against an equal-weight ranking computed with the same
-    graded credits but every destination worth 1.
+    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code>, where <strong>both</strong>
+    sums run over every destination <em>including the passport's own country</em>, which every passport
+    admits visa-free (credit 1.0). A country's own destination value therefore accrues to its own score, so
+    large, high-value home economies (the United States most of all, since it is the single most valuable
+    destination) rank higher than they would if their own weight were thrown away. Because numerator and
+    denominator cover the same full pool, a passport with full visa-free access still scores exactly 100, and
+    the score reads as "percent of the world's destination value this passport can reach." The <strong>Count
+    rank</strong> is the ranking you get from the same graded credits over the same full set of destinations
+    but with every destination worth 1 — a plain "how many places can you go" count. The <strong>Δ vs
+    count</strong> column is the gap between the two, so a passport that reaches disproportionately valuable
+    destinations rises and one skewed toward low-value destinations falls.
   </p>
 
-  <h2>Sources & snapshot</h2>
+  <h2>Sources &amp; data vintages</h2>
   <p>
-    Visa matrix: the open <a href="https://github.com/ilyankou/passport-index-dataset">passport-index-dataset</a>
-    (PassportIndex.org data). Economic and social signals: World Bank API and UNDP HDR downloads.
-    A few destinations absent from those sources (e.g. Taiwan) use hand-researched values documented in the
-    repository. Data snapshot: {rankings.generatedAt}. All raw data and code are in the repo — the entire
-    index is reproducible with one command.
+    Visa matrix: the open
+    <a href="https://github.com/imorte/passport-index-data">passport-index-data</a> dataset
+    (the maintained successor to the archived <code>ilyankou/passport-index-dataset</code>, PassportIndex.org
+    data). Economic and social signals: the World Bank API and UNDP Human Development Report downloads.
+    A few passport-issuing entities absent from those sources (Taiwan, Vatican City, and North Korea in part)
+    use hand-researched values documented in the repository. The {rankings.totalDestinations} destinations are
+    sovereign states and SARs; dependent territories with their own visa regimes are out of scope, inherited
+    from the upstream dataset.
+  </p>
+  {meta.vintages && (
+    <Fragment>
+      <p>
+        Because the four signals carry different observation years, we disclose each one's vintage rather than
+        a single snapshot label:
+      </p>
+      <ul class="vintages">
+        {v.matrix && <li><strong>Visa matrix</strong>: {v.matrix.source} — {v.matrix.note}</li>}
+        {v.gdp && <li><strong>{v.gdp.label}</strong> (<code>{v.gdp.series}</code>): {v.gdp.selection}, years {v.gdp.years} (modal {v.gdp.modalYear})</li>}
+        {v.arrivals && <li><strong>{v.arrivals.label}</strong> (<code>{v.arrivals.series}</code>): {v.arrivals.window} window, preferring {v.arrivals.preferredYear}; years used {v.arrivals.yearsUsed}</li>}
+        {v.migrants && <li><strong>{v.migrants.label}</strong> (<code>{v.migrants.series}</code>): {v.migrants.selection}, years {v.migrants.years} (modal {v.migrants.modalYear})</li>}
+        {v.hdi && <li><strong>HDI</strong>: {v.hdi.source}, reference year {v.hdi.year}</li>}
+      </ul>
+    </Fragment>
+  )}
+  <p>
+    Built {builtAt} — the date the pipeline last ran, not the vintage of any single signal. All raw data and
+    code are in the repo; the entire index is reproducible with one command.
   </p>
 </Base>

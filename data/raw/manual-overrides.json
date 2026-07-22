@@ -2,24 +2,24 @@
   "TWN": {
     "name": "Taiwan",
     "iso2": "TW",
-    "gdp": 756590000000,
+    "gdp": 801500000000,
     "arrivals": 6487000,
-    "hdi": 0.926,
-    "migrants": 936000,
-    "source": "GDP: IMF WEO 2023; arrivals: Taiwan Tourism Administration 2023; HDI: DGBAS national calculation 2022; migrants: NIA foreign residents 2023"
+    "hdi": 0.925,
+    "migrants": 841627,
+    "source": "GDP: IMF World Economic Outlook (Oct 2025), 2024 nominal current US$ (Taiwan Province of China; ~US$801.5bn); arrivals: Taiwan Tourism Administration 2023; HDI: DGBAS national calculation (UNDP methodology), 2022 value 0.925; migrants: NIA foreign residents (ARC holders), year-end Dec 2023 (841,627)."
   },
   "PRK": {
     "name": "North Korea",
     "iso2": "KP",
-    "gdp": 23340000000,
+    "gdp": 31500000000,
     "arrivals": 200000,
-    "source": "GDP: Bank of Korea 2023 estimate of North Korea's real GDP (~$23.34bn, the standard external estimate given the DPRK does not publish official GDP figures); arrivals: pre-pandemic (2019) estimate of foreign visitors, ~90% from China, per South Korea's Institute for International Economic Policy. HDI/migrant-stock not reliably estimable — UNDP does not compute an official HDI for North Korea."
+    "source": "GDP: Bank of Korea, 'GDP Estimates for North Korea in 2024' (published Aug 2025) — nominal (current-price) GDP of 43,678.9 billion won, ~US$31.5bn at BOK's annual-average market exchange rate (the DPRK publishes no official GDP; BOK is the standard external estimator). Arrivals: pre-pandemic (2019) estimate of foreign visitors, ~90% from China. Migrant stock is NOT overridden here — it is supplied automatically by the World Bank series SM.POP.TOTL (PRK is present: 50,439 for 2024). HDI is not overridden and is genuinely unavailable: UNDP/DGBAS publish no composite HDI for North Korea (the HDR file carries component indicators only)."
   },
   "VAT": {
     "name": "Vatican City",
     "iso2": "VA",
-    "gdp": 19800000,
+    "gdp": 1430000000,
     "arrivals": 7000000,
-    "source": "GDP: commonly cited estimate of Vatican City's tiny formal economy (~$19.8m); arrivals: ~7 million visitors in 2023 (Vatican Museums/tourism recovery to pre-pandemic levels). HDI/migrant-stock not computed by UNDP/World Bank for the Holy See (population ~880, not a UN member state)."
+    "source": "GDP: PROXY (Vatican/Holy See has no national-accounts GDP). Holy See 2024 consolidated total operating income of EUR 1.23bn (~US$1.43bn), used as a clearly-labeled revenue proxy for economic output — Secretariat for the Economy, Holy See Consolidated Financial Statements 2024 (published 26 Nov 2025). Arrivals: ~7 million Vatican Museums/tourist visitors, pre-pandemic-recovery level. HDI/migrant stock: not computed by UNDP/World Bank for the Holy See (population ~880, not a UN member state)."
   }
 }

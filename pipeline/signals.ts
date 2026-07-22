@@ -22,6 +22,31 @@ export function parseWorldBankJson(body: string): Map<string, number> {
   return out;
 }
 
+// Arrivals live in a 2017:2019 window (D2). Pick a single year per country, preferring
+// the most recent pre-COVID year available, and record which year was used (for vintage disclosure).
+export function parseArrivals(body: string, prefer: number[] = [2019, 2018, 2017]): Map<string, { value: number; year: number }> {
+  const rows = (JSON.parse(body) as unknown[])[1] as Array<{
+    countryiso3code: string;
+    date: string;
+    value: number | null;
+  }>;
+  const byIso = new Map<string, Map<number, number>>();
+  for (const r of rows ?? []) {
+    if (r.countryiso3code?.length === 3 && r.value !== null) {
+      let years = byIso.get(r.countryiso3code);
+      if (!years) { years = new Map(); byIso.set(r.countryiso3code, years); }
+      years.set(Number(r.date), r.value);
+    }
+  }
+  const out = new Map<string, { value: number; year: number }>();
+  for (const [iso3, years] of byIso) {
+    for (const y of prefer) {
+      if (years.has(y)) { out.set(iso3, { value: years.get(y)!, year: y }); break; }
+    }
+  }
+  return out;
+}
+
 // Minimal CSV line splitter honoring double quotes (the HDI file quotes names with commas).
 function splitCsvLine(line: string): string[] {
   const cells: string[] = [];

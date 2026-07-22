@@ -1,15 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import weightsData from '../data/weights.json';
-import { flagEmoji } from '../lib/format.ts';
-const pct = (v: number | null) => (v === null ? '—' : v.toFixed(2));
+import { displayName, flagEmoji } from '../lib/format.ts';
+// Signal columns are per-signal z-scores (standard deviations from the
+// destination average), so they are signed; "—" marks a missing signal.
+const z = (v: number | null) => (v === null ? '—' : (v >= 0 ? '+' : '') + v.toFixed(2));
 ---
 <Base title="Destination weights — Pyatkov Index" description="How much each destination is worth in the Pyatkov Index, and why.">
   <h1>Destination weights</h1>
   <p class="lede">
-    Each destination's weight is the mean of its available normalized signals: log-scaled GDP,
-    log-scaled tourist arrivals, HDI, and log-scaled migrant stock. This table is the entire
-    "secret sauce" — nothing is hidden.
+    Each destination's weight is <code>exp(1.25 × Z)</code>, where <code>Z</code> is the mean of its
+    available signal <em>z-scores</em>: how many standard deviations above or below average it sits on
+    log-scaled GDP, log-scaled arrivals, HDI, and log-scaled migrant stock. The signal columns below show
+    those z-scores (signed; <code>—</code> means that signal is missing for the destination). This table is
+    the entire "secret sauce" — nothing is hidden.
   </p>
   <div class="table-scroll">
   <table class="weights-table">
@@ -20,12 +24,12 @@ const pct = (v: number | null) => (v === null ? '—' : v.toFixed(2));
       {weightsData.destinations.map((d, i) => (
         <tr>
           <td>{i + 1}</td>
-          <td>{flagEmoji(d.iso2)} {d.name}</td>
+          <td>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</td>
           <td>{d.weight.toFixed(3)}</td>
-          <td>{pct(d.normalized.gdp)}</td>
-          <td>{pct(d.normalized.arrivals)}</td>
-          <td>{pct(d.normalized.hdi)}</td>
-          <td>{pct(d.normalized.migrants)}</td>
+          <td>{z(d.normalized.gdp)}</td>
+          <td>{z(d.normalized.arrivals)}</td>
+          <td>{z(d.normalized.hdi)}</td>
+          <td>{z(d.normalized.migrants)}</td>
           <td>{d.signalsUsed}/4</td>
         </tr>
       ))}

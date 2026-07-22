@@ -1,63 +1,240 @@
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { parseVisaMatrix } from './ingest.ts';
-import { loadSignals, parseHdiCsv, parseWorldBankJson, type Override } from './signals.ts';
+import { loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from './signals.ts';
 import { computeWeights } from './weights.ts';
 import { computeScores } from './scores.ts';
+import type { DestinationWeight, PassportRow } from './types.ts';
 
 const RAW = join(import.meta.dirname, '..', 'data', 'raw');
 const OUT = join(import.meta.dirname, '..', 'site', 'src', 'data');
-const read = (f: string) => readFileSync(join(RAW, f), 'utf8');
 
-const matrix = parseVisaMatrix(read('passport-index-matrix-iso3.csv'));
-const overrides = JSON.parse(read('manual-overrides.json')) as Record<string, Override>;
-const countries = JSON.parse(read('countries.json')) as Record<string, { name: string; iso2: string }>;
+// ---------------------------------------------------------------------------
+// Sanity guards (B2 + B3). Ratio/share based so they survive the BETA-scaled
+// exp weights and the successor-dataset / HDR-2025 / override refreshes. Every
+// guard throws — the build fails rather than publishing corrupted numbers.
+// ---------------------------------------------------------------------------
+export function sanityGuards(weights: DestinationWeight[], rows: PassportRow[], countryCount: number): void {
+  // 1. Country count in the expected band.
+  if (countryCount < 190 || countryCount > 210) {
+    throw new Error(`unexpected country count: ${countryCount}`);
+  }
 
-// Merge override names/iso2 into the countries map, then demand full name coverage.
-for (const [iso3, o] of Object.entries(overrides)) countries[iso3] ??= { name: o.name, iso2: o.iso2 };
-const unnamed = matrix.countries.filter((c) => !countries[c]);
-if (unnamed.length > 0) {
-  throw new Error(
-    `matrix countries with no name/iso2: ${unnamed.join(', ')}\n` +
-      `Add them to data/raw/manual-overrides.json with "name" and "iso2".`,
-  );
+  // 2. Face-validity of the RANKED passports: the strongest passports must be
+  //    large high-mobility economies, not noise.
+  const top10 = rows.slice(0, 10).map((r) => r.iso3);
+  if (!['DEU', 'FRA', 'SGP', 'JPN', 'ITA', 'ESP', 'KOR', 'SWE', 'FIN'].some((c) => top10.includes(c))) {
+    throw new Error(`top 10 passports look wrong: ${top10.join(', ')}`);
+  }
+
+  // 3. USA destination-weight rank. B2: throw when USA is ABSENT (findIndex === -1,
+  //    the old fail-open case, since -1 > 10 was false) OR ranks outside the top 10
+  //    (idx > 9 for a 0-based index / "top 10" claim; the old `> 10` was off-by-one).
+  const usaIdx = weights.findIndex((w) => w.iso3 === 'USA');
+  if (usaIdx === -1 || usaIdx > 9) {
+    throw new Error(`USA weight rank ${usaIdx === -1 ? 'absent' : usaIdx + 1} — weighting looks broken`);
+  }
+
+  // 4. The README thesis as a hard build guard: access to Germany + Japan + USA
+  //    must outweigh access to the fifty weakest destinations (verified 1.94x; a
+  //    1.30x floor catches regression from the data switch with headroom).
+  const wByIso = new Map(weights.map((w) => [w.iso3, w.weight]));
+  const need = (iso: string): number => {
+    const v = wByIso.get(iso);
+    if (v === undefined) throw new Error(`thesis guard: ${iso} missing from weights — cannot verify quality-dominates-count`);
+    return v;
+  };
+  const trio = need('DEU') + need('JPN') + need('USA');
+  const bot50 = [...weights]
+    .sort((a, b) => a.weight - b.weight)
+    .slice(0, 50)
+    .reduce((a, w) => a + w.weight, 0);
+  if (!(trio >= 1.3 * bot50)) {
+    throw new Error(`thesis guard: DEU+JPN+USA weight (${trio.toFixed(3)}) does not exceed 1.30x the 50 weakest (${bot50.toFixed(3)})`);
+  }
+
+  // 5. Runaway / winner-take-all guard for the unbounded-in-principle exp(): no
+  //    single destination may hold more than 8% of total weight (verified ~4.3%).
+  const total = weights.reduce((a, w) => a + w.weight, 0);
+  const maxShare = Math.max(...weights.map((w) => w.weight)) / total;
+  if (maxShare > 0.08) {
+    throw new Error(`winner-take-all guard: top destination holds ${(maxShare * 100).toFixed(1)}% of weight (> 8%)`);
+  }
+
+  // 6. Scores are bounded credit-averages: assert finite and within [0, 100]
+  //    (self-inclusion keeps the ceiling at 100 — full visa-free coverage of the pool).
+  for (const r of rows) {
+    if (!Number.isFinite(r.score) || r.score < 0 || r.score > 100) {
+      throw new Error(`score out of range for ${r.iso3}: ${r.score}`);
+    }
+  }
 }
-const names = new Map(matrix.countries.map((c) => [c, countries[c].name]));
 
-const signals = loadSignals(
-  matrix.countries,
-  {
-    gdp: parseWorldBankJson(read('gdp.json')),
-    arrivals: parseWorldBankJson(read('arrivals.json')),
-    hdi: parseHdiCsv(read('hdi.csv')),
-    migrants: parseWorldBankJson(read('migrants.json')),
-  },
-  overrides,
-);
-const weights = computeWeights(signals, names);
-const rows = computeScores(matrix, weights, names);
+// ---------------------------------------------------------------------------
+// Vintage disclosure (B9). The pipeline run date is a BUILD date, not the data
+// vintage; publish each signal's own observation year(s) instead of one label.
+// ---------------------------------------------------------------------------
+export interface SignalVintages {
+  matrix: { source: string; note: string };
+  gdp: { series: string; label: string; selection: string; years: string; modalYear: number };
+  arrivals: { series: string; label: string; window: string; preferredYear: number; yearsUsed: string };
+  migrants: { series: string; label: string; selection: string; years: string; modalYear: number };
+  hdi: { source: string; year: number };
+}
 
-// Sanity checks — fail the build rather than publish nonsense.
-if (matrix.countries.length < 190 || matrix.countries.length > 210)
-  throw new Error(`unexpected country count: ${matrix.countries.length}`);
-const top10 = rows.slice(0, 10).map((r) => r.iso3);
-if (!['DEU', 'FRA', 'SGP', 'JPN', 'ITA', 'ESP'].some((c) => top10.includes(c)))
-  throw new Error(`top 10 looks wrong: ${top10.join(', ')}`);
-const usaWeightRank = weights.findIndex((w) => w.iso3 === 'USA');
-if (usaWeightRank > 10) throw new Error(`USA weight rank ${usaWeightRank + 1} — weighting looks broken`);
+export interface BuildMetadata {
+  builtAt: string; // YYYY-MM-DD — when the pipeline last ran (NOT a data vintage)
+  totalDestinations: number;
+  vintages: SignalVintages;
+}
 
-mkdirSync(OUT, { recursive: true });
-const withIso2 = <T extends { iso3: string }>(r: T) => ({ ...r, iso2: countries[r.iso3].iso2 });
-writeFileSync(
-  join(OUT, 'rankings.json'),
-  JSON.stringify({ generatedAt: new Date().toISOString().slice(0, 10), totalDestinations: matrix.countries.length, passports: rows.map(withIso2) }, null, 1),
-);
-writeFileSync(join(OUT, 'weights.json'), JSON.stringify({ destinations: weights.map(withIso2) }, null, 1));
-const matrixOut: Record<string, Record<string, string>> = {};
-for (const [p, row] of matrix.access) matrixOut[p] = Object.fromEntries(row);
-writeFileSync(join(OUT, 'matrix.json'), JSON.stringify(matrixOut));
+/** Min / max / modal observation year across a World Bank indicator payload. */
+export function wbYearSummary(body: string): { min: number; max: number; modal: number } {
+  const rows = (JSON.parse(body) as unknown[])[1] as Array<{ countryiso3code: string; date: string; value: number | null }>;
+  const years = (rows ?? [])
+    .filter((r) => r.countryiso3code?.length === 3 && r.value !== null)
+    .map((r) => Number(r.date))
+    .filter((y) => Number.isFinite(y));
+  if (years.length === 0) throw new Error('wbYearSummary: no dated observations');
+  const counts = new Map<number, number>();
+  for (const y of years) counts.set(y, (counts.get(y) ?? 0) + 1);
+  const modal = [...counts].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0][0];
+  return { min: Math.min(...years), max: Math.max(...years), modal };
+}
 
-console.log(`${rows.length} passports scored over ${matrix.countries.length} destinations`);
-console.log('top 5:', rows.slice(0, 5).map((r) => `${r.iso3} ${r.score.toFixed(1)}`).join('  '));
-console.log('biggest risers:', [...rows].sort((a, b) => b.delta - a.delta).slice(0, 3).map((r) => `${r.iso3} +${r.delta}`).join('  '));
-console.log('biggest fallers:', [...rows].sort((a, b) => a.delta - b.delta).slice(0, 3).map((r) => `${r.iso3} ${r.delta}`).join('  '));
+/** Latest hdi_<year> column present in an HDR composite-indices CSV header. */
+export function hdiLatestYear(csv: string): number {
+  const header = csv.slice(0, csv.indexOf('\n')).split(',');
+  const years = header
+    .map((h) => /^hdi_(\d{4})$/.exec(h.trim()))
+    .filter((m): m is RegExpExecArray => m !== null)
+    .map((m) => Number(m[1]));
+  if (years.length === 0) throw new Error('hdiLatestYear: no hdi_<year> column in header');
+  return Math.max(...years);
+}
+
+export function buildMetadata(opts: {
+  totalDestinations: number;
+  gdpBody: string;
+  migrantsBody: string;
+  hdiCsv: string;
+  arrivalsByIso: Map<string, { value: number; year: number }>;
+}): BuildMetadata {
+  const gdp = wbYearSummary(opts.gdpBody);
+  const migrants = wbYearSummary(opts.migrantsBody);
+  const arrivalYears = [...opts.arrivalsByIso.values()].map((a) => a.year);
+  const arrMin = Math.min(...arrivalYears);
+  const arrMax = Math.max(...arrivalYears);
+
+  return {
+    builtAt: new Date().toISOString().slice(0, 10),
+    totalDestinations: opts.totalDestinations,
+    vintages: {
+      matrix: {
+        source: 'imorte/passport-index-data (main)',
+        note: 'maintained successor to the archived ilyankou/passport-index-dataset',
+      },
+      gdp: {
+        series: 'NY.GDP.MKTP.CD',
+        label: 'GDP (current US$)',
+        selection: 'latest available per country',
+        years: gdp.min === gdp.max ? `${gdp.min}` : `${gdp.min}–${gdp.max}`,
+        modalYear: gdp.modal,
+      },
+      arrivals: {
+        series: 'ST.INT.ARVL',
+        // D3: the World Bank's own name for the series (it mixes overnight tourists
+        // and same-day visitors, with definitions varying by country).
+        label: 'International tourism, number of arrivals',
+        window: '2017–2019',
+        preferredYear: 2019,
+        yearsUsed: arrMin === arrMax ? `${arrMin}` : `${arrMin}–${arrMax}`,
+      },
+      migrants: {
+        series: 'SM.POP.TOTL',
+        label: 'International migrant stock, total',
+        selection: 'latest available per country',
+        years: migrants.min === migrants.max ? `${migrants.min}` : `${migrants.min}–${migrants.max}`,
+        modalYear: migrants.modal,
+      },
+      hdi: {
+        source: 'UNDP Human Development Report 2025',
+        year: hdiLatestYear(opts.hdiCsv),
+      },
+    },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Pipeline orchestration (side effects). Gated behind a main guard so importing
+// this module in tests exercises the pure guards/metadata without any I/O (B3).
+// ---------------------------------------------------------------------------
+function main(): void {
+  const read = (f: string) => readFileSync(join(RAW, f), 'utf8');
+
+  const matrix = parseVisaMatrix(read('passport-index-matrix-iso3.csv'));
+  const overrides = JSON.parse(read('manual-overrides.json')) as Record<string, Override>;
+  const countries = JSON.parse(read('countries.json')) as Record<string, { name: string; iso2: string }>;
+
+  // Arrivals: single pre-COVID year per country (D2). Keep the selected year for vintage disclosure.
+  const arrivalsByIso = parseArrivals(read('arrivals.json'));
+  const arrivals = new Map([...arrivalsByIso].map(([iso3, { value }]) => [iso3, value]));
+
+  // Merge override names/iso2 into the countries map, then demand full name coverage.
+  for (const [iso3, o] of Object.entries(overrides)) countries[iso3] ??= { name: o.name, iso2: o.iso2 };
+  const unnamed = matrix.countries.filter((c) => !countries[c]);
+  if (unnamed.length > 0) {
+    throw new Error(
+      `matrix countries with no name/iso2: ${unnamed.join(', ')}\n` +
+        `Add them to data/raw/manual-overrides.json with "name" and "iso2".`,
+    );
+  }
+  const names = new Map(matrix.countries.map((c) => [c, countries[c].name]));
+
+  const gdpBody = read('gdp.json');
+  const migrantsBody = read('migrants.json');
+  const hdiCsv = read('hdi.csv');
+  const signals = loadSignals(
+    matrix.countries,
+    {
+      gdp: parseWorldBankJson(gdpBody),
+      arrivals,
+      hdi: parseHdiCsv(hdiCsv),
+      migrants: parseWorldBankJson(migrantsBody),
+    },
+    overrides,
+  );
+  const weights = computeWeights(signals, names);
+  const rows = computeScores(matrix, weights, names);
+
+  // Fail the build rather than publish nonsense.
+  sanityGuards(weights, rows, matrix.countries.length);
+
+  const meta = buildMetadata({ totalDestinations: matrix.countries.length, gdpBody, migrantsBody, hdiCsv, arrivalsByIso });
+
+  mkdirSync(OUT, { recursive: true });
+  const withIso2 = <T extends { iso3: string }>(r: T) => ({ ...r, iso2: countries[r.iso3].iso2 });
+  writeFileSync(
+    join(OUT, 'rankings.json'),
+    JSON.stringify(
+      { builtAt: meta.builtAt, totalDestinations: meta.totalDestinations, vintages: meta.vintages, passports: rows.map(withIso2) },
+      null,
+      1,
+    ),
+  );
+  writeFileSync(join(OUT, 'weights.json'), JSON.stringify({ destinations: weights.map(withIso2) }, null, 1));
+  const matrixOut: Record<string, Record<string, string>> = {};
+  for (const [p, row] of matrix.access) matrixOut[p] = Object.fromEntries(row);
+  writeFileSync(join(OUT, 'matrix.json'), JSON.stringify(matrixOut));
+
+  console.log(`${rows.length} passports scored over ${matrix.countries.length} destinations`);
+  console.log('top 5:', rows.slice(0, 5).map((r) => `${r.iso3} ${r.score.toFixed(1)}`).join('  '));
+  console.log('biggest risers:', [...rows].sort((a, b) => b.delta - a.delta).slice(0, 3).map((r) => `${r.iso3} +${r.delta}`).join('  '));
+  console.log('biggest fallers:', [...rows].sort((a, b) => a.delta - b.delta).slice(0, 3).map((r) => `${r.iso3} ${r.delta}`).join('  '));
+}
+
+// Only run the pipeline side-effects when executed directly (not when imported by tests).
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
+  main();
+}
