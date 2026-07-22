@@ -12,8 +12,8 @@ const ROOT = join(import.meta.dirname, '..', '..');
 // changes on every run and must NOT count as drift.
 // ---------------------------------------------------------------------------
 describe('data-drift detection (B3)', () => {
-  it('enumerates the three generated data files', () => {
-    expect(DATA_FILES).toEqual(['rankings.json', 'weights.json', 'matrix.json']);
+  it('enumerates the four generated data files', () => {
+    expect(DATA_FILES).toEqual(['rankings.json', 'weights.json', 'matrix.json', 'openness.json']);
   });
 
   it('does NOT flag drift when only the build date differs (builtAt)', () => {
