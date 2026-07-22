@@ -7,6 +7,7 @@ import { displayName, flagEmoji } from '../lib/format.ts';
 const z = (v: number | null) => (v === null ? '—' : (v >= 0 ? '+' : '') + v.toFixed(2));
 ---
 <Base title="Destination weights — Pyatkov Index" description="How much each destination is worth in the Pyatkov Index, and why.">
+  <p class="kicker">Annex A · The entire secret sauce</p>
   <h1>Destination weights</h1>
   <p class="lede">
     Each destination's weight is <code>exp(1.25 × Z)</code>, where <code>Z</code> is the mean of its

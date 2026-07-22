@@ -643,6 +643,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/besley@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource-variable/besley@npm:5.3.0"
+  checksum: 10c0/47a70be90bd34e172de6e4425360025b6b5b2b14bce00b44ded0ea862eab5a00c29716ed4a74e49de14e923d2d58c0c3d0524ea208f45ba087aef42b66b88291
+  languageName: node
+  linkType: hard
+
+"@fontsource-variable/libre-franklin@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource-variable/libre-franklin@npm:5.3.0"
+  checksum: 10c0/91e077d38e6e52c119bbc34d5640a05f7adb56388c0723de43f022c03d4975731c8607c4480d01dd9dc301ec0892ac106e10f3fa9b5fba445650d1e079c22c77
+  languageName: node
+  linkType: hard
+
+"@fontsource-variable/spline-sans-mono@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource-variable/spline-sans-mono@npm:5.3.0"
+  checksum: 10c0/041330a2ce4f5a4b60a5124cfe4511579983c774c85c147c79cd932630d3d12b5c21e48a47c1029cd9c814d82a580a5da10444cc85446eee9842116f7373033b
+  languageName: node
+  linkType: hard
+
 "@img/colour@npm:^1.1.0":
   version: 1.1.0
   resolution: "@img/colour@npm:1.1.0"
@@ -2756,6 +2777,9 @@ __metadata:
   resolution: "pyatkov-index-site@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.9.9"
+    "@fontsource-variable/besley": "npm:^5.3.0"
+    "@fontsource-variable/libre-franklin": "npm:^5.3.0"
+    "@fontsource-variable/spline-sans-mono": "npm:^5.3.0"
     astro: "npm:^7.1.3"
     typescript: "npm:^6"
   languageName: unknown
