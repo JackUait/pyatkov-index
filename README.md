@@ -83,6 +83,29 @@ used for the Δ column applies the same graded credits over that same full set o
 destinations but sets every `weight(d) = 1` — a plain destination count — so the weighted
 score and its count-based baseline are directly comparable.
 
+## The openness rating
+
+The same machinery runs backwards. A passport score asks how much of the world's destination
+value a passport opens; an **openness** score asks how much of the world's *people* a
+destination lets in:
+
+```
+openness(d) = 100 × Σ credit(p, d) × population(p) / Σ population(p)
+```
+
+Both sums run over all 199 passports **including the destination's own**, which always admits
+its own citizens at full credit — the same self-inclusion the passport score uses, so a
+destination open to every passport scores exactly 100 and the number reads as a plain
+percentage. Credits are the same graded tiers. Population is the World Bank series
+`SP.POP.TOTL`, latest available per country, used *only* as this denominator: it is not a
+destination-weight signal, and adding it moved no passport score.
+
+Alongside it sits the naive reading — every passport counted as one, regardless of how many
+people hold it — and the gap between the two is the argument again, pointed the other way. A
+destination open to fifty small countries but closed to India and China is not open. The
+biggest population-weighting fall is **Nicaragua**: count rank #42, openness rank #105
+(Δ −63).
+
 ## Repo layout
 
 ```
@@ -94,11 +117,13 @@ pipeline/            The build pipeline (TypeScript, run with tsx)
   signals.ts           Parses World Bank / HDI, applies overrides
   weights.ts           Computes normalized destination weights
   scores.ts            Computes passport scores, ranks, and deltas
+  openness.ts          Computes the destination openness rating (the index inverted)
   build.ts             Orchestrates the above, runs sanity checks, writes JSON
   __tests__/           Vitest unit tests for the pipeline
 site/                Astro static site
   src/data/            Generated JSON consumed by the pages (built by the pipeline)
-  src/pages/           Rankings (/), passport detail, destinations, methodology
+  src/pages/           Rankings (/), passport detail, openness, destination detail,
+                       destinations, methodology
   src/layouts/         Base layout
   src/styles/          global.css (the design system)
 .github/workflows/   GitHub Pages deploy workflow

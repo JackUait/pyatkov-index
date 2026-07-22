@@ -117,3 +117,25 @@ describe('README claims match the real data + the current pipeline (docs subsyst
     expect(README).toMatch(/same-day visitors/i);
   });
 });
+
+describe('README openness claims match the shipped openness data', () => {
+  const openness = JSON.parse(
+    readFileSync(join(REPO, 'site', 'src', 'data', 'openness.json'), 'utf8'),
+  ) as { destinations: Array<{ iso3: string; name: string; rank: number; equalRank: number; delta: number }> };
+
+  it('names the real biggest population-weighting fall, with its real ranks', () => {
+    const claim = /biggest population-weighting fall is \*\*(.+?)\*\*: count rank #(\d+), openness rank #(\d+)\s*\n?\s*\(Δ −(\d+)\)/.exec(README);
+    expect(claim, 'README must state the biggest population-weighting fall in the documented format').not.toBeNull();
+    const worst = [...openness.destinations].sort((a, b) => a.delta - b.delta)[0];
+    expect(claim![1]).toBe(worst.name);
+    expect(Number(claim![2])).toBe(worst.equalRank);
+    expect(Number(claim![3])).toBe(worst.rank);
+    expect(Number(claim![4])).toBe(Math.abs(worst.delta));
+    expect(worst.delta).toBeLessThan(0);
+  });
+
+  it('states the self-inclusion and denominator rules the pipeline actually implements', () => {
+    expect(README).toContain('SP.POP.TOTL');
+    expect(README).toMatch(/including the destination's own/);
+  });
+});

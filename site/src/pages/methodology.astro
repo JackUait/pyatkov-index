@@ -10,6 +10,7 @@ type Vintages = {
   gdp?: { series: string; label: string; selection: string; years: string; modalYear: number };
   arrivals?: { series: string; label: string; window: string; preferredYear: number; yearsUsed: string };
   migrants?: { series: string; label: string; selection: string; years: string; modalYear: number };
+  population?: { series: string; label: string; selection: string; years: string; modalYear: number };
   hdi?: { source: string; year: number };
 };
 const meta = rankings as typeof rankings & { builtAt?: string; vintages?: Vintages };
@@ -96,6 +97,28 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
     destinations rises and one skewed toward low-value destinations falls.
   </p>
 
+  <h2>The openness rating</h2>
+  <p>
+    The index also runs backwards. Where a passport score asks how much of the world's destination
+    <em>value</em> a passport opens, an <a href={`${import.meta.env.BASE_URL}openness/`}>openness score</a>
+    asks how much of the world's <em>people</em> a destination lets in:
+  </p>
+  <p><code>openness(d) = 100 × Σ credit(p, d) × population(p) / Σ population(p)</code></p>
+  <p>
+    Both sums run over every one of the {rankings.totalDestinations} passports, including the destination's
+    own — a country always admits its own citizens, at full credit. Because numerator and denominator cover
+    the same pool, a destination open to every passport scores exactly 100, and the number reads as a
+    percentage: the share of the world's people who can arrive without applying for a visa first, with the
+    same graded credit the passport score uses.
+  </p>
+  <p>
+    Population comes from the World Bank series <code>SP.POP.TOTL</code>, latest available per country. It is
+    used only as this denominator: it is not one of the four destination-weight signals above, and adding it
+    moved no passport score. The <strong>&Delta;</strong> column on the openness table is the mirror of the
+    &Delta; on the rankings table — how far each destination moves once the passports it admits are weighted
+    by the people behind them instead of counted one apiece.
+  </p>
+
   <h2>Sources &amp; data vintages</h2>
   <p>
     Visa matrix: the open <a href="https://github.com/imorte/passport-index-data">passport-index-data</a> dataset
@@ -109,7 +132,7 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
   {meta.vintages && (
     <Fragment>
       <p>
-        Because the four signals carry different observation years, we disclose each one's vintage rather than
+        Because the signals carry different observation years, we disclose each one's vintage rather than
         a single snapshot label:
       </p>
       <ul class="vintages">
@@ -117,6 +140,7 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
         {v.gdp && <li><strong>{v.gdp.label}</strong> (<code>{v.gdp.series}</code>): {v.gdp.selection}, years {range(v.gdp.years)} (modal {v.gdp.modalYear})</li>}
         {v.arrivals && <li><strong>{v.arrivals.label}</strong> (<code>{v.arrivals.series}</code>): {range(v.arrivals.window)} window, preferring {v.arrivals.preferredYear}; years used {range(v.arrivals.yearsUsed)}</li>}
         {v.migrants && <li><strong>{v.migrants.label}</strong> (<code>{v.migrants.series}</code>): {v.migrants.selection}, years {range(v.migrants.years)} (modal {v.migrants.modalYear})</li>}
+        {v.population && <li><strong>{v.population.label}</strong> (<code>{v.population.series}</code>): {v.population.selection}, years {range(v.population.years)} (modal {v.population.modalYear}) — the openness denominator, not a weight signal</li>}
         {v.hdi && <li><strong>HDI</strong>: {v.hdi.source}, reference year {v.hdi.year}</li>}
       </ul>
     </Fragment>
