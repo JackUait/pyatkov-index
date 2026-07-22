@@ -72,7 +72,7 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
     {fmt(d.score)} out of 100 of the world's people — weighted by the population behind each passport, with
     partial credit for visa on arrival and eVisas — can enter {name} without applying for a visa first.
     As a destination in the passport index, {name} carries a weight of {weight.weight.toFixed(3)},
-    the {ordinal(weightIdx + 1)} highest of {weightsData.destinations.length}.
+    {weightIdx === 0 ? ' the highest of them all' : ` the ${ordinal(weightIdx + 1)} highest of ${weightsData.destinations.length}`}.
     {ownPassport && (
       <Fragment> Its own passport ranks <a href={`${base}passport/${d.iso3.toLowerCase()}/`}>#{ownPassport.rank}</a>.</Fragment>
     )}
