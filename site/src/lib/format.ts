@@ -6,6 +6,18 @@ export function fmt(n: number): string {
   return n.toFixed(1);
 }
 
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/** "2026-07-22" -> "July 22, 2026"; non-ISO strings pass through untouched. */
+export function formatBuiltDate(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return iso;
+  return `${MONTHS[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
+}
+
 export function deltaLabel(d: number): string {
   if (d === 0) return '=';
   return d > 0 ? `+${d}` : `−${Math.abs(d)}`;
@@ -78,6 +90,13 @@ const DISPLAY_NAMES: Record<string, string> = {
   VEN: 'Venezuela',
   COD: 'DR Congo',
   COG: 'Congo (Republic)',
+  HKG: 'Hong Kong',
+  MAC: 'Macao',
+  BHS: 'The Bahamas',
+  GMB: 'The Gambia',
+  FSM: 'Micronesia',
+  YEM: 'Yemen',
+  SOM: 'Somalia',
 };
 
 const COUNTRY_ALIASES: Record<string, string[]> = {

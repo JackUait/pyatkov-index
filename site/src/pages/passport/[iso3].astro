@@ -44,16 +44,14 @@ const tierContribution = tierCats.map((cat, i) => ({
   count: p.counts[cat as keyof typeof p.counts],
 }));
 
-// Decorative MRZ line for this passport's "data page" — TD3 shape (44 chars,
-// A–Z/0–9/< only), built from the ISO3 code and display name. aria-hidden.
-const mrzName = `P<${p.iso3}${displayName(p.iso3, p.name).toUpperCase().replace(/[^A-Z]+/g, '<')}`
-  .padEnd(44, '<')
-  .slice(0, 44);
+const name = displayName(p.iso3, p.name);
 ---
-<Base title={`${p.name} passport — Pyatkov Index`} description={`${p.name}: rank ${p.rank}, score ${fmt(p.score)} on the weighted passport index.`}>
-  <p class="kicker">Passport · {p.iso3} · Type P</p>
-  <h1>{flagEmoji(p.iso2)} {displayName(p.iso3, p.name)}</h1>
-  <p class="passport-mrz" aria-hidden="true">{mrzName}</p>
+<Base title={`${name} passport - Pyatkov Index`} description={`${name}: rank ${p.rank}, score ${fmt(p.score)} on the weighted passport index.`}>
+  <section class="passport-hero">
+    <span class="flag" aria-hidden="true">{flagEmoji(p.iso2)}</span>
+    <h1>The {name} passport</h1>
+  </section>
+
   <dl class="stats">
     <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
     <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
@@ -87,7 +85,7 @@ const mrzName = `P<${p.iso3}${displayName(p.iso3, p.name).toUpperCase().replace(
     </section>
     <section>
       <h2>Most valuable destinations missing</h2>
-      {topMissing.length === 0 ? <p>None — this passport reaches every weighted destination.</p> : (
+      {topMissing.length === 0 ? <p>None. This passport reaches every weighted destination.</p> : (
         <ol class="rank-list">
           {topMissing.map((d) => (
             <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta">weight {d.weight.toFixed(3)}</span></li>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { displayName, matchesSearch, reconcilePoints, searchIndex } from '../format.ts';
+import { displayName, formatBuiltDate, matchesSearch, reconcilePoints, searchIndex } from '../format.ts';
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
@@ -44,6 +44,18 @@ describe('reconcilePoints (B5 — tier points sum to the displayed score)', () =
   });
 });
 
+describe('formatBuiltDate (human-readable build date for display)', () => {
+  it('formats an ISO date as a readable English date', () => {
+    expect(formatBuiltDate('2026-07-22')).toBe('July 22, 2026');
+    expect(formatBuiltDate('2025-01-03')).toBe('January 3, 2025');
+  });
+
+  it('passes through strings that are not ISO dates', () => {
+    expect(formatBuiltDate('')).toBe('');
+    expect(formatBuiltDate('unknown')).toBe('unknown');
+  });
+});
+
 describe('displayName (B8 — passport-entity names, not World Bank economy labels)', () => {
   it('renders Palestine and Nauru correctly', () => {
     expect(displayName('PSE', 'West Bank and Gaza')).toBe('Palestine');
@@ -54,6 +66,16 @@ describe('displayName (B8 — passport-entity names, not World Bank economy labe
     expect(displayName('KOR', 'Korea, Rep.')).toBe('South Korea');
     expect(displayName('TUR', 'Turkiye')).toBe('Türkiye');
     expect(displayName('SVK', 'Slovak Republic')).toBe('Slovakia');
+  });
+
+  it('normalizes the remaining World Bank comma/SAR labels', () => {
+    expect(displayName('HKG', 'Hong Kong SAR, China')).toBe('Hong Kong');
+    expect(displayName('MAC', 'Macao SAR, China')).toBe('Macao');
+    expect(displayName('BHS', 'Bahamas, The')).toBe('The Bahamas');
+    expect(displayName('GMB', 'Gambia, The')).toBe('The Gambia');
+    expect(displayName('FSM', 'Micronesia, Fed. Sts.')).toBe('Micronesia');
+    expect(displayName('YEM', 'Yemen, Rep.')).toBe('Yemen');
+    expect(displayName('SOM', 'Somalia, Fed. Rep.')).toBe('Somalia');
   });
 
   it('falls back to the supplied name when there is no override', () => {

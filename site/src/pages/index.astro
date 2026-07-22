@@ -1,34 +1,36 @@
 ---
 import Base from '../layouts/Base.astro';
-import Rosette from '../components/Rosette.astro';
 import rankings from '../data/rankings.json';
-import { deltaLabel, displayName, flagEmoji, fmt, searchIndex } from '../lib/format.ts';
+import { deltaLabel, displayName, flagEmoji, fmt, formatBuiltDate, searchIndex } from '../lib/format.ts';
 const base = import.meta.env.BASE_URL;
 // B9: the pipeline now emits an honest build date (builtAt) plus per-signal
 // vintages. Fall back to the legacy generatedAt field for pre-regen data.
 const meta = rankings as typeof rankings & { builtAt?: string; vintages?: unknown };
 const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?? '';
 ---
-<Base title="Pyatkov Index — weighted passport ranking" description="A passport index where strong destinations count more than weak ones.">
-  <div class="doc-hero">
-    <Rosette />
-    <p class="kicker">An index of passport value</p>
-    <h1>The Pyatkov Index</h1>
-    <p class="lede">
-      Every passport, scored 0–100 by the share of the reachable world's destination <em>value</em> it can
-      reach — across {rankings.totalDestinations} sovereign-state and SAR destinations (dependent territories are
-      out of scope, inherited from the upstream dataset). Destinations are weighted by GDP, arrivals, HDI, and
-      migrant stock — the Δ column shows how far each passport moves compared with counting every country equally.
-    </p>
-  </div>
-  <div class="specline">
-    <span><strong>{rankings.passports.length}</strong> passports</span>
-    <span><strong>{rankings.totalDestinations}</strong> destinations</span>
-    <span>Signals <strong>GDP · Arrivals · HDI · Migrants</strong></span>
-    <span>Built <strong>{builtAt}</strong></span>
-    <span><a href={`${base}methodology/`}>Data vintages</a></span>
-  </div>
-  <input type="search" id="filter" placeholder="Filter countries…" aria-label="Filter countries" />
+<Base title="Pyatkov Index: the weighted passport ranking" description="A passport index where strong destinations count more than weak ones.">
+  <section class="hero">
+    <h1>Pyatkov Index</h1>
+    <p class="tagline">Not all destinations are equal.</p>
+    <div class="actions">
+      <a class="pill pill-filled" href="#rankings">See the rankings</a>
+      <a class="pill pill-outlined" href={`${base}methodology/`}>How it works</a>
+    </div>
+  </section>
+
+  <section class="statline" aria-label="Index coverage">
+    <div><strong>{rankings.passports.length}</strong><span>passports ranked</span></div>
+    <div><strong>{rankings.totalDestinations}</strong><span>destinations weighted</span></div>
+    <div><strong>4</strong><span>weighting signals</span></div>
+    <div><strong>{formatBuiltDate(builtAt)}</strong><span>last built</span></div>
+  </section>
+
+  <p class="table-intro">
+    Every passport is scored 0 to 100 by the share of the world's destination value it can reach.
+    Destinations are weighted by GDP, tourism arrivals, HDI, and migrant stock, and the Δ column
+    shows how far weighting moves each passport versus counting every destination equally.
+  </p>
+  <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   <div class="table-scroll">
   <table id="rankings">
     <thead>
@@ -53,17 +55,25 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
     </tbody>
   </table>
   </div>
+  <p id="no-results" hidden>No passports match your filter. Try a country name like Portugal, or a code like PRT.</p>
 
   <script>
     const input = document.getElementById('filter') as HTMLInputElement;
     const tbody = document.querySelector('#rankings tbody')!;
     const rows = [...tbody.querySelectorAll('tr')];
 
+    const noResults = document.getElementById('no-results')!;
     input.addEventListener('input', () => {
       const q = input.value.trim().toLowerCase();
       // B8: match the full search blob (display name + iso3/iso2 + aliases),
       // so "Palestine", "Turkey", "South Korea", "kor", etc. all resolve.
-      for (const r of rows) (r as HTMLElement).hidden = !r.dataset.search!.includes(q);
+      let visible = 0;
+      for (const r of rows) {
+        const hide = !r.dataset.search!.includes(q);
+        (r as HTMLElement).hidden = hide;
+        if (!hide) visible++;
+      }
+      noResults.hidden = visible > 0;
     });
 
     const DEFAULT_ASC: Record<string, boolean> = {
