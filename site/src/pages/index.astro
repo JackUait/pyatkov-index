@@ -1,29 +1,70 @@
 ---
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
+import weights from '../data/weights.json';
 import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex } from '../lib/format.ts';
 const base = import.meta.env.BASE_URL;
 // B9: the pipeline now emits an honest build date (builtAt) plus per-signal
 // vintages. Fall back to the legacy generatedAt field for pre-regen data.
 const meta = rankings as typeof rankings & { builtAt?: string; vintages?: unknown };
 const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?? '';
+
+// The hero graphic is the argument: every destination drawn to scale by its
+// weight, heaviest first. Weights are raw signal sums, not percentages, so
+// each one is expressed as a share of the total before it is drawn.
+const ribbon = [...weights.destinations].sort((a, b) => b.weight - a.weight);
+const totalWeight = ribbon.reduce((sum, d) => sum + d.weight, 0);
+const maxWeight = ribbon[0].weight;
+const share = (w: number) => (w / totalWeight) * 100;
+// How few destinations it takes to reach half the world's weight, computed
+// rather than hard-coded so the caption cannot drift from the data.
+let running = 0;
+let halfCount = 0;
+for (const d of ribbon) {
+  running += d.weight;
+  halfCount += 1;
+  if (running >= totalWeight / 2) break;
+}
+// Tint ramp: full marigold at the heaviest, a pale wash at the tail. The
+// square root keeps the long tail from collapsing into one flat value.
+const tint = (w: number) => 22 + 78 * (w / maxWeight) ** 0.62;
 ---
-<Base title="Pyatkov Index: the weighted passport ranking" description="A passport index where strong destinations count more than weak ones.">
+<Base title="Pyatkov Index: the weighted passport ranking" description="A passport index that weights every destination by the economy, travel, development, and diaspora behind it.">
   <section class="hero">
-    <div class="mark-row" aria-hidden="true">
-      {rankings.passports.slice(0, 7).map((p, i) => (
-        <span class="mark" style={`--i:${i}`}>{flagEmoji(p.iso2)}</span>
-      ))}
-    </div>
     <h1>
-      Not all destinations<br />are <span class="pill-word">equal</span><svg class="sparkle" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c.9 6.5 5.5 11.1 12 12-6.5.9-11.1 5.5-12 12-.9-6.5-5.5-11.1-12-12C6.5 11.1 11.1 6.5 12 0z" /></svg>
+      Most passport rankings <span class="count-word">count</span>.<br />
+      This one <span class="pill-word">weighs</span><span class="stop">.</span>
     </h1>
-    <p class="tagline">A passport index that weights every destination by what access to it is actually worth.</p>
     <div class="actions">
       <a class="btn btn-lg btn-primary" href="#rankings-card">See the rankings</a>
-      <a class="btn btn-lg btn-ghost" href={`${base}methodology/`}>Methodology</a>
+      <a class="btn btn-lg btn-ghost" href={`${base}methodology/`}>How it is built</a>
     </div>
   </section>
+
+  <figure class="ribbon-figure">
+    <div
+      class="ribbon"
+      role="img"
+      aria-label={`All ${ribbon.length} destinations drawn to scale by weight, heaviest first. ${displayName(ribbon[0].iso3, ribbon[0].name)} is the heaviest at ${share(ribbon[0].weight).toFixed(1)} percent of the world total; the ${halfCount} heaviest together account for half of it.`}
+    >
+      {ribbon.map((d, i) => (
+        <span
+          class:list={['seg', i >= halfCount && 'seg-tail', i === halfCount && 'seg-half']}
+          aria-hidden="true"
+          title={`${displayName(d.iso3, d.name)} — ${share(d.weight).toFixed(2)}% of world weight`}
+          style={`--grow:${d.weight.toFixed(4)};--tint:${tint(d.weight).toFixed(1)}%;--i:${i}`}
+        ></span>
+      ))}
+    </div>
+    <figcaption>
+      <span class="legend legend-heavy">
+        <b>{halfCount}</b> destinations carry half the world's weight
+      </span>
+      <span class="legend legend-tail">
+        the other <b>{ribbon.length - halfCount}</b> share the rest
+      </span>
+    </figcaption>
+  </figure>
 
   <section class="statline" aria-label="Index coverage">
     <div><strong>{rankings.passports.length}</strong><span>passports ranked</span></div>
@@ -31,12 +72,6 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
     <div><strong>4</strong><span>weighting signals</span></div>
     <div><strong>{formatBuiltDate(builtAt)}</strong><span>last built</span></div>
   </section>
-
-  <p class="table-intro">
-    Every passport is scored 0 to 100 by the share of the world's destination value it can reach.
-    Destinations are weighted by GDP, tourism arrivals, HDI, and migrant stock, so reaching a handful
-    of strong destinations counts for more than reaching dozens of weak ones.
-  </p>
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
     <h2>The ranking</h2>

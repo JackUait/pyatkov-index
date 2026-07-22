@@ -1,6 +1,7 @@
 ---
 import '@fontsource-variable/inter';
 import '@fontsource/source-serif-pro/400.css';
+import '@fontsource/source-serif-pro/400-italic.css';
 import '../styles/global.css';
 interface Props { title: string; description: string; wide?: boolean }
 const { title, description, wide = false } = Astro.props;
@@ -50,7 +51,7 @@ const nav = [
             <li><a href={item.href}>{item.label}</a></li>
           ))}
         </ul>
-        <p>Not all destinations are equal. The Pyatkov Index weights every destination by how much access to it is actually worth.</p>
+        <p>Most passport rankings count destinations. The Pyatkov Index weights each one by the economy, travel, development, and diaspora behind it.</p>
         <p>Data: imorte/passport-index-data, the World Bank API, and the UNDP Human Development Report. The index is fully reproducible from the repository.</p>
       </div>
     </footer>
