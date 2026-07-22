@@ -45,10 +45,13 @@ const tierContribution = tierCats.map((cat, i) => ({
 }));
 
 const name = displayName(p.iso3, p.name);
+// Character-mark border: rotate through the reference's accent cast by rank.
+const MARK_COLORS = ['var(--color-signal-blue)', 'var(--color-coral)', 'var(--color-marigold)', 'var(--color-sky-wash)'];
+const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
 ---
 <Base title={`${name} passport - Pyatkov Index`} description={`${name}: rank ${p.rank}, score ${fmt(p.score)} on the weighted passport index.`}>
   <section class="passport-hero">
-    <span class="flag" aria-hidden="true">{flagEmoji(p.iso2)}</span>
+    <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true">{flagEmoji(p.iso2)}</span>
     <h1>The {name} passport</h1>
   </section>
 
@@ -60,12 +63,13 @@ const name = displayName(p.iso3, p.name);
   </dl>
 
   <h2>Where the score comes from</h2>
+  <div class="card">
   <div class="table-scroll">
   <table class="tier-table">
     <thead><tr><th>Access tier</th><th>Destinations</th><th>Points</th></tr></thead>
     <tbody>
       {tierContribution.map((t) => (
-        <tr><td>{LABEL[t.cat]}</td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
+        <tr><td><span class={`tag tag-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
       ))}
     </tbody>
     <tfoot>
@@ -73,13 +77,14 @@ const name = displayName(p.iso3, p.name);
     </tfoot>
   </table>
   </div>
+  </div>
 
   <div class="rank-cols">
     <section>
       <h2>Most valuable destinations reachable</h2>
       <ol class="rank-list">
         {topReachable.map((d) => (
-          <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta">{LABEL[d.category]} · weight {d.weight.toFixed(3)}</span></li>
+          <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
         ))}
       </ol>
     </section>

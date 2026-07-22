@@ -10,11 +10,18 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
 ---
 <Base title="Pyatkov Index: the weighted passport ranking" description="A passport index where strong destinations count more than weak ones.">
   <section class="hero">
-    <h1>Pyatkov Index</h1>
-    <p class="tagline">Not all destinations are equal.</p>
+    <div class="mark-row" aria-hidden="true">
+      {rankings.passports.slice(0, 7).map((p, i) => (
+        <span class="mark" style={`--i:${i}`}>{flagEmoji(p.iso2)}</span>
+      ))}
+    </div>
+    <h1>
+      Not all destinations<br />are <span class="pill-word">equal</span><svg class="sparkle" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c.9 6.5 5.5 11.1 12 12-6.5.9-11.1 5.5-12 12-.9-6.5-5.5-11.1-12-12C6.5 11.1 11.1 6.5 12 0z" /></svg>
+    </h1>
+    <p class="tagline">A passport index that weights every destination by what access to it is actually worth.</p>
     <div class="actions">
-      <a class="pill pill-filled" href="#rankings">See the rankings</a>
-      <a class="pill pill-outlined" href={`${base}methodology/`}>How it works</a>
+      <a class="btn btn-lg btn-primary" href="#rankings-card">See the rankings</a>
+      <a class="btn btn-lg btn-ghost" href={`${base}methodology/`}>Methodology</a>
     </div>
   </section>
 
@@ -30,7 +37,12 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
     Destinations are weighted by GDP, tourism arrivals, HDI, and migrant stock, and the Δ column
     shows how far weighting moves each passport versus counting every destination equally.
   </p>
-  <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
+  <div class="card card-mockup" id="rankings-card">
+  <div class="card-header">
+    <h2>The ranking</h2>
+    <span class="count">{rankings.passports.length} passports</span>
+    <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
+  </div>
   <div class="table-scroll">
   <table id="rankings">
     <thead>
@@ -56,6 +68,7 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
   </table>
   </div>
   <p id="no-results" hidden>No passports match your filter. Try a country name like Portugal, or a code like PRT.</p>
+  </div>
 
   <script>
     const input = document.getElementById('filter') as HTMLInputElement;

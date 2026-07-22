@@ -1,50 +1,70 @@
-/* Pyatkov Index, set in the Apple style reference (DESIGN.md).
-   Near-white Frost canvas, Carbon ink, SF Pro (Inter substitute) with the
-   scale/tracking values from the reference, one-blue action system:
-   #0071e3 fills buttons only, #0066cc is the link/outline blue, #2997ff is
-   decorative. Hierarchy comes from hairlines and surface shifts, never
-   shadows. Light theme only, per the reference. */
+/* Pyatkov Index, set in the Notion style reference (DESIGN.md).
+   Warm paper canvas (#f6f5f4) with white hairline-bordered cards, ink built
+   from black alpha (100/95/60/40), one filled action color (#0075de), and a
+   rotating accent cast (marigold, coral, sky, midnight) used as sparse
+   punctuation. Inter (NotionInter substitute) with tight display tracking;
+   Source Serif Pro (Lyon Text substitute) reserved for editorial ledes.
+   Flat fills only: no gradients, no shadows on content cards. The two
+   allowed elevations are the sticky nav and the product-UI cards (the data
+   tables, which are this site's product mockup). Light theme, per the
+   reference. */
 
 :root {
   color-scheme: light;
 
   /* Colors (DESIGN.md tokens) */
-  --color-apple-blue: #0071e3;
-  --color-link-blue: #0066cc;
-  --color-signal-blue: #2997ff;
-  --color-carbon: #1d1d1f;
-  --color-frost: #f5f5f7;
-  --color-ice: #f4f8fb;
-  --color-smoke: #333333;
-  --color-graphite: #474747;
-  --color-ash: #707070;
-  --color-mist: #858585;
-  --color-pebble: #e2e2e5;
-  --color-hairline: #d2d2d7;
+  --color-notion-blue: #0075de;
+  /* Notion blue, deepened one step for AA contrast on sky-tint fills. */
+  --color-blue-deep: #0068c5;
+  --color-paper: #f6f5f4;
+  --color-white: #ffffff;
+  --color-ink: #000000;
+  --color-stone: #757575;
+  --color-graphite: #615d59;
+  --color-slate: #696969;
+  --color-sky-tint: #e6f3fe;
+  --color-marigold: #ffb110;
+  --color-coral: #f64932;
+  --color-signal-blue: #097fe8;
+  --color-sky-wash: #62aef0;
+  --color-midnight: #02093a;
+  --color-peach: #f6d5b8;
+
+  --ink-95: rgba(0, 0, 0, 0.95);
+  --ink-60: rgba(0, 0, 0, 0.6);
+  --ink-54: rgba(0, 0, 0, 0.54);
+  --ink-40: rgba(0, 0, 0, 0.4);
+  --border-hairline: rgba(0, 0, 0, 0.08);
+  --border-faint: rgba(0, 0, 0, 0.06);
 
   /* Typography */
-  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter Variable', 'Segoe UI', Roboto, system-ui, sans-serif;
-  --font-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter Variable', 'Segoe UI', Roboto, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Source Serif Pro', Georgia, 'Times New Roman', serif;
 
-  --text-caption: 12px;   --leading-caption: 1.33;   --tracking-caption: -0.264px;
-  --text-body-sm: 14px;   --leading-body-sm: 1.29;   --tracking-body-sm: -0.224px;
-  --text-body: 17px;      --leading-body: 1.47;      --tracking-body: -0.272px;
-  --text-subheading: 21px; --leading-subheading: 1.24; --tracking-subheading: -0.105px;
-  --text-heading-sm: 28px; --leading-heading-sm: 1.18; --tracking-heading-sm: 0.196px;
-  --text-heading: 40px;   --leading-heading: 1.14;    --tracking-heading: 0.44px;
-  --text-display: 56px;   --leading-display: 1.07;    --tracking-display: 0.616px;
+  --text-caption: 12px;    --leading-caption: 1.33;    --tracking-caption: 0.12px;
+  --text-body-sm: 14px;    --leading-body-sm: 1.43;
+  --text-body: 16px;       --leading-body: 1.5;
+  --text-heading-sm: 22px; --leading-heading-sm: 1.27; --tracking-heading-sm: -0.242px;
+  --text-heading: 40px;    --leading-heading: 1.1;
+  --text-display-sm: 54px; --leading-display-sm: 1.04; --tracking-display-sm: -1.89px;
+  --text-display: 72px;    --leading-display: 1.1;     --tracking-display: -2.016px;
 
   /* Layout */
-  --content-width: 61.25rem; /* 980px internal text/content column */
+  --content-width: 61.25rem; /* 980px text/content column */
   --wide-width: 72rem;       /* wide tables */
-  --section-gap: 64px;
+  --section-gap: 80px;
   --pad: clamp(16px, 4vw, 40px);
-  --nav-h: 48px;
+  --nav-h: 64px;
 
   /* Shape */
-  --radius-card: 8px;
-  --radius-input: 8px;
-  --radius-pill: 980px;
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  --radius-sm: 4px;
+  --radius-pill: 9999px;
+
+  /* Elevation (DESIGN.md: nav + product-UI mockup only) */
+  --shadow-nav: 0px 0.7px 1.462px 0px rgba(0, 0, 0, 0.015), 0px 3px 9px 0px rgba(0, 0, 0, 0.03);
+  --shadow-mockup: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 * { box-sizing: border-box; }
@@ -59,33 +79,35 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-text);
+  font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--leading-body);
-  letter-spacing: var(--tracking-body);
-  color: var(--color-carbon);
-  background: var(--color-frost);
+  font-feature-settings: 'lnum' 1;
+  color: var(--color-ink);
+  background: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-a { color: var(--color-link-blue); text-decoration: none; }
+::selection { background: var(--color-sky-tint); }
+
+a { color: var(--color-notion-blue); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 a:focus-visible,
 th[data-sort]:focus-visible {
-  outline: 2px solid var(--color-apple-blue);
+  outline: 2px solid var(--color-notion-blue);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
-/* ---- Global nav: carbon bar, hairline base ---- */
+/* ---- Global nav: white bar on the warm canvas, the one sticky elevation ---- */
 header {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--color-carbon);
-  border-bottom: 1px solid var(--color-smoke);
+  background: var(--color-white);
+  box-shadow: var(--shadow-nav);
 }
 .nav-inner {
   max-width: var(--content-width);
@@ -99,30 +121,33 @@ header {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: var(--text-body-sm);
-  letter-spacing: var(--tracking-body-sm);
+  gap: 9px;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--color-frost);
+  letter-spacing: -0.1px;
+  color: var(--color-ink);
 }
 .brand:hover { text-decoration: none; }
-.brand svg { display: block; }
+.brand svg { display: block; color: var(--color-notion-blue); }
 header nav {
   display: flex;
-  gap: 24px;
+  gap: 4px;
   margin-left: auto;
-  font-size: var(--text-caption);
-  letter-spacing: var(--tracking-caption);
+  font-size: var(--text-body-sm);
 }
 header nav a {
-  color: rgba(245, 245, 247, 0.8);
-  font-weight: 400;
-  padding: 4px 0;
-  transition: color 140ms ease;
+  color: var(--ink-54);
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--radius-btn);
+  transition: color 200ms ease, background-color 200ms ease;
 }
-header nav a:hover { color: #fff; text-decoration: none; }
-header nav a[aria-current='page'] { color: #fff; }
-header a:focus-visible { outline-color: var(--color-frost); }
+header nav a:hover {
+  color: var(--ink-95);
+  background: rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+}
+header nav a[aria-current='page'] { color: var(--ink-95); }
 
 /* ---- Shell ---- */
 main {
@@ -134,11 +159,11 @@ main.wide { max-width: var(--wide-width); }
 
 /* Page-load reveal: one staggered rise, load-only, honoring reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  main > * { animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
-  main > :nth-child(2) { animation-delay: 0.06s; }
-  main > :nth-child(3) { animation-delay: 0.12s; }
-  main > :nth-child(4) { animation-delay: 0.18s; }
-  main > :nth-child(n + 5) { animation-delay: 0.24s; }
+  main > * { animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+  main > :nth-child(2) { animation-delay: 0.05s; }
+  main > :nth-child(3) { animation-delay: 0.1s; }
+  main > :nth-child(4) { animation-delay: 0.15s; }
+  main > :nth-child(n + 5) { animation-delay: 0.2s; }
 }
 @keyframes rise {
   from { opacity: 0; transform: translateY(12px); }
@@ -146,29 +171,27 @@ main.wide { max-width: var(--wide-width); }
 
 /* ---- Type ---- */
 h1 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(32px, 4.5vw, var(--text-heading));
+  font-weight: 700;
+  font-size: clamp(34px, 4.5vw, var(--text-heading));
   line-height: var(--leading-heading);
-  letter-spacing: var(--tracking-heading);
+  letter-spacing: -0.03em;
   margin: 48px 0 12px;
 }
 h2 {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--text-heading-sm);
   line-height: var(--leading-heading-sm);
   letter-spacing: var(--tracking-heading-sm);
-  margin: var(--section-gap) 0 16px;
+  margin: 56px 0 16px;
 }
-p { margin: 0 0 16px; max-width: 68ch; }
+p { margin: 0 0 16px; max-width: 68ch; color: var(--ink-95); }
 
+/* Lyon Text substitute: the editorial serif, reserved for page ledes. */
 .lede {
-  font-size: var(--text-subheading);
-  line-height: var(--leading-subheading);
-  letter-spacing: var(--tracking-subheading);
-  font-weight: 300;
-  color: var(--color-smoke);
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.56;
+  color: var(--color-graphite);
   max-width: 56ch;
   margin-bottom: 24px;
 }
@@ -176,9 +199,8 @@ p { margin: 0 0 16px; max-width: 68ch; }
 code {
   font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
   font-size: 0.88em;
-  letter-spacing: 0;
-  background: var(--color-pebble);
-  border-radius: 4px;
+  background: var(--border-faint);
+  border-radius: var(--radius-sm);
   padding: 0.12em 0.4em;
 }
 
@@ -186,85 +208,142 @@ ul, ol { max-width: 68ch; padding-left: 20px; }
 li { margin: 6px 0; }
 
 .meta {
-  color: var(--color-ash);
+  color: var(--color-stone);
   font-size: var(--text-caption);
+  line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
   font-variant-numeric: tabular-nums;
 }
 
-/* ---- Hero (rankings page): typography-only product hero ---- */
+/* ---- Buttons (DESIGN.md components) ---- */
+.btn {
+  display: inline-block;
+  border-radius: var(--radius-btn);
+  padding: 6px 15px;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  font-weight: 500;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: scale(0.98); }
+/* Hero-scale variant of the same family: same radius, same colors, more air. */
+.btn-lg { padding: 10px 20px; font-size: var(--text-body); }
+.btn-primary {
+  background: var(--color-notion-blue);
+  color: var(--color-white);
+}
+.btn-primary:hover { background: color-mix(in srgb, var(--color-notion-blue) 88%, #000); }
+.btn-ghost {
+  background: var(--color-sky-tint);
+  color: var(--color-blue-deep);
+}
+.btn-ghost:hover { background: color-mix(in srgb, var(--color-sky-tint) 92%, var(--color-notion-blue)); }
+
+/* ---- Hero (rankings page): the Notion centered stack ---- */
 .hero {
   text-align: center;
-  padding: 56px 0 48px;
+  padding: 48px 0 44px;
 }
 .hero h1 {
-  margin: 0 0 8px;
-  font-size: clamp(40px, 6vw, var(--text-display));
+  margin: 0 0 20px;
+  font-weight: 600;
+  font-size: clamp(40px, 6.6vw, var(--text-display));
   line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
+  letter-spacing: -0.028em;
+}
+/* The signature device: a colored pill wrapping one word of the headline. */
+.hero .pill-word {
+  display: inline-block;
+  background: var(--color-peach);
+  border-radius: var(--radius-pill);
+  padding: 0.02em 0.32em 0.06em;
 }
 .hero .tagline {
-  margin: 0 auto 24px;
-  font-family: var(--font-display);
-  font-size: clamp(21px, 3vw, var(--text-heading-sm));
-  line-height: var(--leading-heading-sm);
-  letter-spacing: var(--tracking-heading-sm);
-  font-weight: 300;
-  color: var(--color-carbon);
-  max-width: 40ch;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.56;
+  color: var(--color-graphite);
+  max-width: 44ch;
+  margin: 0 auto 28px;
 }
 .actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
 }
 
-/* ---- Pill buttons: the only 980px-radius interactive elements ---- */
-.pill {
-  display: inline-block;
+/* Character-mark row: circular flag marks with rotating accent borders.
+   Purely decorative punctuation, per the reference; never interactive. */
+.mark-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 28px;
+}
+.mark {
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-pill);
-  padding: 11px 22px;
-  font-size: var(--text-body);
-  line-height: var(--leading-body-sm);
-  letter-spacing: var(--tracking-body);
-  font-weight: 400;
-  transition: background-color 140ms ease, transform 140ms ease;
+  background: var(--color-white);
+  border: 2px solid var(--mark-color, var(--color-signal-blue));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  line-height: 1;
 }
-.pill:hover { text-decoration: none; }
-.pill:active { transform: scale(0.98); }
-.pill-filled {
-  background: var(--color-apple-blue);
-  color: var(--color-ice);
+.mark-row .mark:nth-child(4n + 1) { --mark-color: var(--color-signal-blue); }
+.mark-row .mark:nth-child(4n + 2) { --mark-color: var(--color-coral); }
+.mark-row .mark:nth-child(4n + 3) { --mark-color: var(--color-marigold); }
+.mark-row .mark:nth-child(4n + 4) { --mark-color: var(--color-sky-wash); }
+@media (prefers-reduced-motion: no-preference) {
+  .mark-row .mark {
+    animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
 }
-.pill-filled:hover { background: color-mix(in srgb, var(--color-apple-blue) 92%, #fff); }
-.pill-outlined {
-  border: 1px solid var(--color-link-blue);
-  color: var(--color-link-blue);
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.4); }
 }
-.pill-outlined:hover { background: color-mix(in srgb, var(--color-link-blue) 8%, transparent); }
+@media (max-width: 560px) {
+  .mark-row { gap: 10px; }
+  .mark-row .mark:nth-child(n + 6) { display: none; }
+}
+
+/* Decorative sparkle beside the headline pill. */
+.sparkle {
+  display: inline-block;
+  vertical-align: super;
+  margin-left: 6px;
+  color: var(--color-marigold);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sparkle {
+    animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+  }
+}
 
 /* ---- Stat strip under the hero ---- */
 .statline {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--color-hairline);
-  border-bottom: 1px solid var(--color-hairline);
-  margin: 0 0 var(--section-gap);
+  border-top: 1px solid var(--border-hairline);
+  border-bottom: 1px solid var(--border-hairline);
+  margin: 0 0 48px;
   padding: 20px 0;
 }
 .statline > div {
   text-align: center;
   padding: 4px 12px;
 }
-.statline > div + div { border-left: 1px solid var(--color-hairline); }
+.statline > div + div { border-left: 1px solid var(--border-hairline); }
 .statline strong {
   display: block;
-  font-family: var(--font-display);
-  font-size: var(--text-subheading);
-  line-height: var(--leading-subheading);
-  letter-spacing: var(--tracking-subheading);
+  font-size: 20px;
   font-weight: 600;
+  letter-spacing: -0.2px;
   font-variant-numeric: tabular-nums;
 }
 .statline span {
@@ -273,7 +352,8 @@ li { margin: 6px 0; }
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  color: var(--color-ash);
+  /* Slate, not Stone: captions sit on the paper canvas and need AA there. */
+  color: var(--color-slate);
 }
 @media (max-width: 640px) {
   .statline { grid-template-columns: repeat(2, 1fr); row-gap: 16px; }
@@ -281,38 +361,70 @@ li { margin: 6px 0; }
 }
 
 .table-intro {
-  color: var(--color-smoke);
+  color: var(--color-graphite);
   max-width: 65ch;
 }
 
-/* ---- Filter input (DESIGN.md form input spec) ---- */
+/* ---- Cards: white surfaces on the warm canvas, hairline borders, no shadow ---- */
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+}
+
+/* Product-UI card: the data table is this site's product mockup, the one
+   content surface that earns the mockup elevation. */
+.card-mockup { box-shadow: var(--shadow-mockup); }
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+.card-header h2 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.1px;
+}
+.card-header .count {
+  color: var(--color-stone);
+  font-size: var(--text-body-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Filter input ---- */
 #filter {
   width: 100%;
-  max-width: 384px;
-  margin: 8px 0 24px;
-  padding: 10px 14px;
+  max-width: 300px;
+  margin-left: auto;
+  padding: 7px 12px;
   font: inherit;
   font-size: var(--text-body-sm);
-  letter-spacing: var(--tracking-body-sm);
-  color: var(--color-carbon);
-  background: var(--color-frost);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-input);
-  transition: border-color 140ms ease;
+  color: var(--color-ink);
+  background: var(--color-white);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: var(--radius-btn);
+  transition: border-color 200ms ease;
 }
-#filter::placeholder { color: var(--color-ash); }
+#filter::placeholder { color: var(--color-stone); }
 #filter:focus-visible {
-  outline: 2px solid var(--color-apple-blue);
+  outline: 2px solid var(--color-notion-blue);
   outline-offset: -1px;
   border-color: transparent;
 }
-
-#no-results {
-  color: var(--color-ash);
-  padding: 24px 0;
+@media (max-width: 560px) {
+  #filter { max-width: none; }
 }
 
-/* ---- Tables: hairline rows on the canvas itself, no card chrome ---- */
+#no-results {
+  color: var(--color-slate);
+  padding: 20px;
+  margin: 0;
+}
+
+/* ---- Tables: hairline rows inside white cards ---- */
 .table-scroll { -webkit-overflow-scrolling: touch; }
 @media (max-width: 720px) {
   .table-scroll { overflow-x: auto; }
@@ -326,53 +438,52 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   font-size: var(--text-body-sm);
-  letter-spacing: var(--tracking-body-sm);
+  line-height: var(--leading-body-sm);
 }
 thead th {
   position: sticky;
   top: var(--nav-h);
   z-index: 1;
-  background: var(--color-frost);
-  color: var(--color-ash);
-  font-weight: 600;
+  background: var(--color-white);
+  color: var(--ink-60);
+  font-weight: 500;
   font-size: var(--text-caption);
   letter-spacing: var(--tracking-caption);
   text-align: left;
   white-space: nowrap;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--color-carbon);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-hairline);
 }
 tbody td {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--color-hairline);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-faint);
   white-space: nowrap;
 }
-tbody tr:hover td { background: var(--color-pebble); }
-/* When a total row follows, its carbon top rule replaces the last body hairline. */
-table:has(tfoot) tbody tr:last-child td { border-bottom: 0; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: rgba(0, 0, 0, 0.024); }
 tfoot th, tfoot td {
-  padding: 10px 14px;
-  border-top: 1px solid var(--color-carbon);
+  padding: 10px 16px;
+  border-top: 1px solid var(--border-hairline);
   font-weight: 600;
   text-align: left;
 }
 
 /* Row links read as ink; the blue appears on hover only. */
-tbody td a { color: var(--color-carbon); }
-tbody td a:hover { color: var(--color-link-blue); }
+tbody td a { color: var(--color-ink); }
+tbody td a:hover { color: var(--color-notion-blue); }
 
 /* Sortable headers */
-th[data-sort] { cursor: pointer; user-select: none; transition: color 140ms ease; }
-th[data-sort]:hover { color: var(--color-carbon); }
+th[data-sort] { cursor: pointer; user-select: none; transition: color 200ms ease; }
+th[data-sort]:hover { color: var(--color-ink); }
 th[data-sort]::after {
   content: '';
   display: inline-block;
   width: 0.7em;
   margin-left: 0.25em;
 }
-th[aria-sort='ascending']::after { content: '\2191'; color: var(--color-carbon); }
-th[aria-sort='descending']::after { content: '\2193'; color: var(--color-carbon); }
-th[aria-sort] { color: var(--color-carbon); }
+th[aria-sort='ascending']::after { content: '\2191'; color: var(--color-ink); }
+th[aria-sort='descending']::after { content: '\2193'; color: var(--color-ink); }
+th[aria-sort] { color: var(--color-ink); }
 
 /* Numeric cells: tabular figures, right-aligned */
 #rankings td:nth-child(1), #rankings th:nth-child(1),
@@ -389,10 +500,10 @@ th[aria-sort] { color: var(--color-carbon); }
 }
 
 #rankings td:nth-child(1),
-#rankings td:nth-child(5) { color: var(--color-ash); }
+#rankings td:nth-child(5) { color: var(--color-stone); }
 
-/* Score cell: the value, grounded by a thin decorative magnitude bar.
-   Signal blue is the one decorative color the system allows. */
+/* Score cell: the value, grounded by a thin magnitude bar in marigold, the
+   warm accent the reference reserves for callouts. */
 #rankings td.score-cell {
   min-width: 136px;
   font-weight: 600;
@@ -402,7 +513,7 @@ th[aria-sort] { color: var(--color-carbon); }
   height: 3px;
   margin-top: 5px;
   border-radius: 2px;
-  background: var(--color-pebble);
+  background: var(--border-faint);
   overflow: hidden;
 }
 .score-cell .bar::before {
@@ -411,83 +522,97 @@ th[aria-sort] { color: var(--color-carbon); }
   height: 100%;
   width: var(--w, 0%);
   border-radius: 2px;
-  background: var(--color-signal-blue);
+  background: var(--color-marigold);
 }
 
-/* ---- Delta column: direction is carried by glyph and sign, ink stays ink ---- */
+/* ---- Delta column: direction carried by glyph and sign, ink stays ink ---- */
 .up, .down { font-variant-numeric: tabular-nums; font-weight: 600; }
 td.up::before, td.down::before {
   display: inline-block;
   margin-right: 0.4em;
   font-size: 0.72em;
   vertical-align: 0.08em;
-  color: var(--color-ash);
+  color: var(--ink-40);
 }
 td.up::before { content: '\25B2'; }   /* up triangle */
 td.down::before { content: '\25BC'; } /* down triangle */
+
+/* ---- Access-tier pill tags (the reference's kanban status pills) ---- */
+.tag {
+  display: inline-block;
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.tag-visa-free { background: var(--color-sky-tint); color: var(--color-blue-deep); font-weight: 600; }
+.tag-visa-on-arrival { background: var(--color-marigold); color: var(--color-ink); }
+.tag-e-visa { background: var(--color-peach); color: var(--color-ink); }
+.tag-visa-required { background: var(--border-faint); color: var(--ink-60); }
 
 /* ---- Passport page ---- */
 .passport-hero {
   text-align: center;
   padding: 48px 0 8px;
 }
-.passport-hero .flag {
-  display: block;
-  font-size: 56px;
-  line-height: 1;
-  margin-bottom: 16px;
+.passport-hero .mark {
+  width: 76px;
+  height: 76px;
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .passport-hero .mark { animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 }
 .passport-hero h1 {
   margin: 0 0 8px;
-  font-size: clamp(32px, 5vw, 44px);
-  line-height: 1.18;
-  letter-spacing: -0.44px;
-}
-.passport-hero .lede {
-  margin: 0 auto 40px;
-  max-width: 44ch;
+  font-size: clamp(34px, 5vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
+/* Stat cards: four white sticky notes on the canvas. */
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 0 0 16px;
-  padding: 24px 0;
-  border-top: 1px solid var(--color-hairline);
-  border-bottom: 1px solid var(--color-hairline);
+  gap: 12px;
+  margin: 24px 0 16px;
 }
 .stats > div {
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+  padding: 18px 20px 20px;
   text-align: center;
-  padding: 4px 12px;
 }
-.stats > div + div { border-left: 1px solid var(--color-hairline); }
 .stats dt {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  color: var(--color-ash);
+  color: var(--color-stone);
 }
 .stats dd {
   margin: 0;
-  font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
   font-size: clamp(28px, 4vw, var(--text-heading));
   line-height: var(--leading-heading);
-  letter-spacing: var(--tracking-heading);
+  letter-spacing: -0.02em;
   font-weight: 600;
 }
-.stats dd.up::before { content: '\25B2\00a0'; font-size: 0.5em; vertical-align: 0.35em; color: var(--color-ash); }
-.stats dd.down::before { content: '\25BC\00a0'; font-size: 0.5em; vertical-align: 0.35em; color: var(--color-ash); }
+.stats dd.up::before { content: '\25B2\00a0'; font-size: 0.5em; vertical-align: 0.35em; color: var(--ink-40); }
+.stats dd.down::before { content: '\25BC\00a0'; font-size: 0.5em; vertical-align: 0.35em; color: var(--ink-40); }
 @media (max-width: 640px) {
-  .stats { grid-template-columns: repeat(2, 1fr); row-gap: 20px; }
-  .stats > :nth-child(3) { border-left: 0; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ---- Ranked destination lists on passport page ---- */
 .rank-cols {
   display: grid;
-  gap: 0 48px;
+  gap: 0 32px;
   align-items: start;
 }
 @media (min-width: 920px) {
@@ -495,37 +620,137 @@ td.down::before { content: '\25BC'; } /* down triangle */
 }
 .rank-list {
   list-style: none;
-  padding: 0;
+  padding: 4px 0;
   margin: 0 0 16px;
   counter-reset: rankrow;
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
 }
 .rank-list li {
   counter-increment: rankrow;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
   gap: 4px 10px;
   margin: 0;
-  padding: 9px 0 9px 40px;
+  padding: 9px 16px 9px 48px;
   position: relative;
-  border-bottom: 1px solid var(--color-hairline);
   font-size: var(--text-body-sm);
-  letter-spacing: var(--tracking-body-sm);
+  line-height: var(--leading-body-sm);
 }
+.rank-list li + li { border-top: 1px solid var(--border-faint); }
 .rank-list li::before {
   content: counter(rankrow);
   position: absolute;
-  left: 8px;
+  left: 16px;
   font-size: var(--text-caption);
   font-variant-numeric: tabular-nums;
-  color: var(--color-ash);
+  color: var(--ink-40);
 }
-.rank-list li .meta { margin-left: auto; }
+.rank-list li .meta { margin-left: auto; display: inline-flex; align-items: center; gap: 10px; }
+
+/* ---- Methodology: signal cards, credit card, midnight formula island ---- */
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+  padding: 0;
+  max-width: none;
+  list-style: none;
+}
+.signal-card {
+  margin: 0;
+  border-radius: var(--radius-card);
+  padding: 24px;
+}
+.signal-card h3 {
+  margin: 0 0 6px;
+  font-size: var(--text-heading-sm);
+  line-height: var(--leading-heading-sm);
+  letter-spacing: var(--tracking-heading-sm);
+  font-weight: 700;
+}
+.signal-card p {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  /* 75% ink: 60% fails AA on the saturated sky-wash fill. */
+  color: rgba(0, 0, 0, 0.75);
+  max-width: none;
+}
+.signal-card .source {
+  display: block;
+  margin: 0 0 10px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: rgba(0, 0, 0, 0.75);
+}
+.signal-gdp { background: var(--color-marigold); }
+.signal-arrivals { background: var(--color-sky-wash); }
+.signal-hdi { background: var(--color-sky-tint); }
+.signal-migrants { background: var(--color-peach); }
+@media (max-width: 640px) {
+  .signal-grid { grid-template-columns: 1fr; }
+}
+
+/* Access-credit rows: pill tag + credit value in a white card. */
+.credit-list {
+  list-style: none;
+  padding: 4px 0;
+  margin: 24px 0;
+  max-width: 480px;
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+}
+.credit-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding: 11px 16px;
+}
+.credit-list li + li { border-top: 1px solid var(--border-faint); }
+.credit-list .credit {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The one dark island on the light page: the score formula on midnight ink. */
+.formula-card {
+  background: var(--color-midnight);
+  color: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: 28px 32px;
+  margin: 24px 0;
+  overflow-x: auto;
+}
+.formula-card code {
+  display: block;
+  background: none;
+  color: var(--color-white);
+  font-size: 17px;
+  line-height: 1.6;
+  padding: 0;
+  white-space: nowrap;
+}
+.formula-card .note {
+  display: block;
+  margin-top: 10px;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: rgba(255, 255, 255, 0.64);
+  max-width: none;
+}
 
 /* ---- Footer: flat, typographic, hairline-structured ---- */
 footer {
-  border-top: 1px solid var(--color-hairline);
-  background: var(--color-frost);
+  border-top: 1px solid var(--border-hairline);
+  background: var(--color-paper);
 }
 .footer-inner {
   max-width: var(--content-width);
@@ -534,9 +759,10 @@ footer {
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  color: var(--color-ash);
+  /* Slate on the paper canvas for AA at caption size. */
+  color: var(--color-slate);
 }
-.footer-inner p { margin: 0 0 8px; max-width: none; }
+.footer-inner p { margin: 0 0 8px; max-width: none; color: var(--color-slate); }
 .footer-links {
   display: flex;
   flex-wrap: wrap;
@@ -545,10 +771,10 @@ footer {
   padding: 0 0 16px;
   max-width: none;
   list-style: none;
-  border-bottom: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--border-hairline);
 }
-.footer-links a { color: var(--color-ash); }
-.footer-links a:hover { color: var(--color-carbon); }
+.footer-links a { color: var(--color-slate); }
+.footer-links a:hover { color: var(--color-ink); }
 
 @media (max-width: 640px) {
   /* The ranking must read without horizontal scrolling: the count-rank column
@@ -556,10 +782,10 @@ footer {
   #rankings th:nth-child(5), #rankings td:nth-child(5) { display: none; }
   #rankings td:nth-child(2) { white-space: normal; }
   #rankings td.score-cell { min-width: 76px; }
-  thead th, tbody td, tfoot th, tfoot td { padding-left: 8px; padding-right: 8px; }
+  thead th, tbody td, tfoot th, tfoot td { padding-left: 10px; padding-right: 10px; }
 }
 
 @media (max-width: 520px) {
-  header nav { gap: 16px; }
+  header nav { gap: 0; }
   .brand span { display: none; }
 }

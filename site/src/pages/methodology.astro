@@ -31,15 +31,28 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
 
   <h2>Destination weights</h2>
   <p>Each of the {rankings.totalDestinations} destinations gets a weight from four signals:</p>
-  <ul>
-    <li><strong>GDP</strong> (World Bank, current US$), log-scaled</li>
-    <li><strong>International tourism, number of arrivals</strong> (World Bank / UN Tourism series
-      <code>ST.INT.ARVL</code>), log-scaled. This counts arrivals of non-resident visitors and mixes
-      overnight tourists with same-day visitors, with definitions varying by country; it is a proxy for
-      how much the world travels to a destination, not a pure tourist count.</li>
-    <li><strong>HDI</strong> (UNDP Human Development Report), used on its natural scale</li>
-    <li><strong>International migrant stock, total</strong> (World Bank, series <code>SM.POP.TOTL</code>),
-      log-scaled</li>
+  <ul class="signal-grid">
+    <li class="signal-card signal-gdp">
+      <h3>GDP</h3>
+      <span class="source">World Bank, current US$</span>
+      <p>Economic mass, log-scaled before z-scoring so the largest economies don't drown out everything else.</p>
+    </li>
+    <li class="signal-card signal-arrivals">
+      <h3>Tourism arrivals</h3>
+      <span class="source">World Bank / UN Tourism, series <code>ST.INT.ARVL</code></span>
+      <p>How much the world travels there, log-scaled. Counts non-resident visitor arrivals and mixes overnight
+        tourists with same-day visitors, with definitions varying by country: a proxy, not a pure tourist count.</p>
+    </li>
+    <li class="signal-card signal-hdi">
+      <h3>HDI</h3>
+      <span class="source">UNDP Human Development Report</span>
+      <p>Development level, used on its natural scale: the index is already bounded, so it is never logged.</p>
+    </li>
+    <li class="signal-card signal-migrants">
+      <h3>Migrant stock</h3>
+      <span class="source">World Bank, series <code>SM.POP.TOTL</code></span>
+      <p>International migrant stock, log-scaled: how much of the world has chosen to move there.</p>
+    </li>
   </ul>
   <p>
     Every signal is put on one common scale, a population <em>z-score</em> (how many standard deviations
@@ -58,17 +71,20 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
   </p>
 
   <h2>Access credit</h2>
-  <ul>
-    <li>Visa-free / freedom of movement: <strong>1.0</strong></li>
-    <li>Visa on arrival / eTA: <strong>0.8</strong></li>
-    <li>eVisa: <strong>0.5</strong></li>
-    <li>Visa required / no admission: <strong>0</strong></li>
+  <ul class="credit-list">
+    <li><span class="tag tag-visa-free">Visa-free / freedom of movement</span> <span class="credit">1.0</span></li>
+    <li><span class="tag tag-visa-on-arrival">Visa on arrival / eTA</span> <span class="credit">0.8</span></li>
+    <li><span class="tag tag-e-visa">eVisa</span> <span class="credit">0.5</span></li>
+    <li><span class="tag tag-visa-required">Visa required / no admission</span> <span class="credit">0</span></li>
   </ul>
 
   <h2>The score</h2>
+  <div class="formula-card">
+    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code>
+    <span class="note">The share of the world's destination value this passport can reach.</span>
+  </div>
   <p>
-    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code>, where <strong>both</strong>
-    sums run over every destination <em>including the passport's own country</em>, which every passport
+    <strong>Both</strong> sums run over every destination <em>including the passport's own country</em>, which every passport
     admits visa-free (credit 1.0). A country's own destination value therefore accrues to its own score, so
     large, high-value home economies (the United States most of all, since it is the single most valuable
     destination) rank higher than they would if their own weight were thrown away. Because numerator and

@@ -3,8 +3,8 @@ import Base from '../layouts/Base.astro';
 import weightsData from '../data/weights.json';
 import { displayName, flagEmoji } from '../lib/format.ts';
 // Signal columns are per-signal z-scores (standard deviations from the
-// destination average), so they are signed; an en-dash marks a missing signal.
-const z = (v: number | null) => (v === null ? '–' : (v >= 0 ? '+' : '') + v.toFixed(2));
+// destination average), so they are signed; a middle dot marks a missing signal.
+const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toFixed(2));
 ---
 <Base title="Destination weights - Pyatkov Index" description="How much each destination is worth in the Pyatkov Index, and why." wide>
   <h1>Destination weights</h1>
@@ -15,8 +15,13 @@ const z = (v: number | null) => (v === null ? '–' : (v >= 0 ? '+' : '') + v.to
     Each destination's weight is <code>exp(1.25 × Z)</code>, where <code>Z</code> is the mean of its
     available signal <em>z-scores</em>: how many standard deviations above or below average it sits on
     log-scaled GDP, log-scaled arrivals, HDI, and log-scaled migrant stock. The signal columns below show
-    those z-scores (signed; <code>–</code> means that signal is missing for the destination).
+    those z-scores (signed; <code>·</code> means that signal is missing for the destination).
   </p>
+  <div class="card card-mockup">
+  <div class="card-header">
+    <h2>Every destination, weighted</h2>
+    <span class="count">{weightsData.destinations.length} destinations</span>
+  </div>
   <div class="table-scroll">
   <table class="weights-table">
     <thead>
@@ -37,5 +42,6 @@ const z = (v: number | null) => (v === null ? '–' : (v >= 0 ? '+' : '') + v.to
       ))}
     </tbody>
   </table>
+  </div>
   </div>
 </Base>

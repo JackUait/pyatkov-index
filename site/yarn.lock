@@ -650,6 +650,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/source-serif-pro@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource/source-serif-pro@npm:5.3.0"
+  checksum: 10c0/322a588bd8498512161c95ad96a5bd22ef7bc36549903b26fda86a295caac3c5122395a692e001030dcc838a7c009880a7d6db7a96ff838afea15b0bbcf5769d
+  languageName: node
+  linkType: hard
+
 "@img/colour@npm:^1.1.0":
   version: 1.1.0
   resolution: "@img/colour@npm:1.1.0"
@@ -2764,6 +2771,7 @@ __metadata:
   dependencies:
     "@astrojs/check": "npm:^0.9.9"
     "@fontsource-variable/inter": "npm:^5.3.0"
+    "@fontsource/source-serif-pro": "npm:^5.3.0"
     astro: "npm:^7.1.3"
     typescript: "npm:^6"
   languageName: unknown

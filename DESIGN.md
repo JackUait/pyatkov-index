@@ -1,58 +1,64 @@
-# Apple — Style Reference
-> white room with a single blue switch.
+# Notion — Style Reference
+> warm paper notebook under afternoon sun
 
 **Theme:** light
 
-Apple's design language is a study in restraint: near-white canvas, generous breathing room, and one vivid blue accent that makes every action feel deliberate. Typography is the primary voice — SF Pro set with negative tracking that tightens as size grows, giving headlines architectural clarity without weight. The product IS the design: large product photography and lifestyle imagery dominate, while chrome recedes into thin borders, ghost navigation, and hairline rules. Sections alternate on a light gray canvas with full-bleed color washes for promotional blocks, creating rhythm through scale shifts rather than decoration.
+Notion reads like a well-loved paper notebook under afternoon light: a warm off-white canvas (#f6f5f4) that feels tactile rather than clinical, generous sans typography that gives editorial weight to product copy, and color used as sparse punctuation — peachy pills highlight verbs, a single blue anchors the primary action, and a rotating cast of accent hues (coral, amber, sky, midnight) paints the feature card backgrounds like sticky notes. Cards sit on the canvas with 1px hairline borders and 12px corners — no shadows, no chrome — like ruled sections in a Moleskine. Motion is playful and springy, with 200ms ease transitions and bouncy character-mark animations that make the interface feel alive without ever being decorative.
 
 ## Tokens — Colors
 
 | Name | Value | Token | Role |
 |------|-------|-------|------|
-| Apple Blue | `#0071e3` | `--color-apple-blue` | Filled action buttons, selected states — the only chromatic interactive color, used sparingly so each appearance carries weight |
-| Link Blue | `#0066cc` | `--color-link-blue` | Outlined action borders, inline links — deeper saturation than Apple Blue, used where a filled pill would be too loud |
-| Signal Blue | `#2997ff` | `--color-signal-blue` | Decorative borders, image outlines, icon strokes — the lightest blue in the system, used for atmospheric emphasis rather than interaction |
-| Carbon | `#1d1d1f` | `--color-carbon` | Primary text, heading borders, nav rules, card borders — the dominant ink color, near-black with a whisper of warmth |
-| Frost | `#f5f5f7` | `--color-frost` | Page canvas, body backgrounds, footer surface — the signature Apple light gray, slightly cooler than pure white |
-| Ice | `#f4f8fb` | `--color-ice` | Elevated surface washes, subtle fills, button text on dark backgrounds — barely-blue tint that lifts a section without declaring it |
-| Smoke | `#333333` | `--color-smoke` | Secondary text, nav fills, button borders — the workhorse neutral for borders and icons that need more presence than mid-gray |
-| Graphite | `#474747` | `--color-graphite` | Nav text, nav borders, link borders — sits between Carbon and Smoke for tertiary hierarchy |
-| Ash | `#707070` | `--color-ash` | Footer text, list borders, nav borders, muted body text — the mid-gray for content that should be present but quiet |
-| Mist | `#858585` | `--color-mist` | Body borders, icon strokes, button borders — the lightest functional gray, for hairline rules on light surfaces |
-| Onyx | `#000000` | `--color-onyx` | Heading borders, nav borders, dark image backgrounds — true black for maximum contrast in promotional and heading contexts |
-| Pebble | `#e2e2e5` | `--color-pebble` | Button background fills, disabled surfaces — the only near-white surface that is deliberately grayer than the canvas |
+| Notion Blue | `#0075de` | `--color-notion-blue` | Primary CTA fill, active nav accent, filled action buttons — the single chromatic commitment in a near-monochrome system, saturated enough to read as a switch |
+| Paper Warmth | `#f6f5f4` | `--color-paper-warmth` | Page canvas, hero background, section backgrounds — warm off-white gives the system its tactile analog feel |
+| Pure White | `#ffffff` | `--color-pure-white` | Card surfaces, elevated panels, logo-wall background, contrast text on dark cards |
+| Ink Black | `#000000` | `--color-ink-black` | Primary text, nav links, headings — deployed at varying alpha (100%, 95%, 90%, 60%, 40%, 20%) to build hierarchy without adding new colors |
+| Charcoal | `#111111` | `--color-charcoal` | Dark text variant for specific UI moments where pure black would feel too harsh |
+| Stone | `#757575` | `--color-stone` | Secondary nav text, muted helper text, deactivated button labels — the 60% alpha of ink |
+| Graphite | `#615d59` | `--color-graphite` | Body text with warm cast — the brown-tinted gray that harmonizes with the warm canvas |
+| Slate | `#696969` | `--color-slate` | Card body text, secondary content within cards — slightly lighter than Stone |
+| Sky Tint | `#e6f3fe` | `--color-sky-tint` | Ghost CTA background, soft blue wash for secondary actions, tinted hover states |
+| Marigold | `#ffb110` | `--color-marigold` | Hero pill highlights, Agent feature card background, warm accent for callouts — the first color the eye finds |
+| Coral | `#f64932` | `--color-coral` | Decorative card backgrounds, hero pill alternates, warm-to-hot accent in the rotating cast |
+| Saffron | `#e89d01` | `--color-saffron` | Body-section accent panels, secondary warm yellow for background washes |
+| Vermillion | `#e32d14` | `--color-vermillion` | Deep coral for saturated body-section backgrounds, signal-warm accent |
+| Mocha | `#b18164` | `--color-mocha` | Warm brown accent for body-section panels — the earthy member of the accent cast |
+| Signal Blue | `#097fe8` | `--color-signal-blue` | Decorative card backgrounds, hero decorative highlights, secondary blue for visual variety |
+| Sky Wash | `#62aef0` | `--color-sky-wash` | Lightest blue in the cast — decorative backgrounds, heading accent highlights, airy washes |
+| Midnight Ink | `#02093a` | `--color-midnight-ink` | Violet wash for highlight backgrounds, decorative bands, and soft emphasis behind content. |
 
 ## Tokens — Typography
 
-### SF Pro Display — Display headlines and large feature text — sizes 40px+ use the display cut for tighter aperture and stronger negative tracking; 700 reserved for promotional lockups, 400 for editorial product names · `--font-sf-pro-display`
-- **Substitute:** Inter, system-ui
-- **Weights:** 400, 600, 700
-- **Sizes:** 21px, 28px, 40px, 56px
-- **Line height:** 1.07, 1.10, 1.14, 1.19
-- **Letter spacing:** -0.005em at 21px, 0.007em at 28px, 0.011em at 40px+
-- **OpenType features:** `"numr"`
-- **Role:** Display headlines and large feature text — sizes 40px+ use the display cut for tighter aperture and stronger negative tracking; 700 reserved for promotional lockups, 400 for editorial product names
+### NotionInter — Primary sans-serif — geometric humanist with slight quirks, deployed at 400 for body, 500 for nav/UI, 600-700 for display headings. The type-scale uses aggressive negative letter-spacing at large sizes (-4.6px at 96px, -2px at 72px) that tightens the headline to feel confident and compact rather than airy. · `--font-notioninter`
+- **Substitute:** Inter
+- **Weights:** 400, 500, 600, 700
+- **Sizes:** 12px, 14px, 16px, 20px, 22px, 24px, 40px, 42px, 48px, 54px, 72px, 96px
+- **Line height:** 0.83, 1.00, 1.04, 1.14, 1.21, 1.27, 1.33, 1.40, 1.43, 1.50
+- **Letter spacing:** -0.048em at 96px, -0.036em at 42px, -0.035em at 54px, -0.028em at 72px, -0.011em at 22px, +0.01em at 12px, normal at body sizes
+- **OpenType features:** `"lnum", "locl" 0`
+- **Role:** Primary sans-serif — geometric humanist with slight quirks, deployed at 400 for body, 500 for nav/UI, 600-700 for display headings. The type-scale uses aggressive negative letter-spacing at large sizes (-4.6px at 96px, -2px at 72px) that tightens the headline to feel confident and compact rather than airy.
 
-### SF Pro Text — Body, navigation, buttons, subheads — the working typeface; 400 for body copy, 300 for subheads and refined labels, 600 for nav items and button text; negative tracking tightens proportionally with size (-0.022em at 12px down to -0.01em at 44px) · `--font-sf-pro-text`
-- **Substitute:** Inter, system-ui
-- **Weights:** 300, 400, 600
-- **Sizes:** 12px, 14px, 17px, 18px, 24px, 26px, 34px, 44px
-- **Line height:** 1.18, 1.24, 1.29, 1.33, 1.47, 1.50, 2.12, 2.41
-- **Letter spacing:** -0.022em at 12px, -0.016em at 17px, -0.011em at 24px, -0.01em at 44px
-- **Role:** Body, navigation, buttons, subheads — the working typeface; 400 for body copy, 300 for subheads and refined labels, 600 for nav items and button text; negative tracking tightens proportionally with size (-0.022em at 12px down to -0.01em at 44px)
+### Lyon Text — Editorial serif reserved for specific body-text moments and section intros — used sparingly (4 instances) to give voice a literary weight, like a pull-quote in a magazine layout. Functions as a system accent, not a parallel hierarchy. · `--font-lyon-text`
+- **Substitute:** Source Serif Pro
+- **Weights:** 400
+- **Sizes:** 18px, 32px
+- **Line height:** 1.25, 1.56
+- **Role:** Editorial serif reserved for specific body-text moments and section intros — used sparingly (4 instances) to give voice a literary weight, like a pull-quote in a magazine layout. Functions as a system accent, not a parallel hierarchy.
 
 ### Type Scale
 
 | Role | Size | Line Height | Letter Spacing | Token |
 |------|------|-------------|----------------|-------|
-| caption | 12px | 1.33 | -0.264px | `--text-caption` |
-| body-sm | 14px | 1.29 | -0.224px | `--text-body-sm` |
-| body | 17px | 1.47 | -0.272px | `--text-body` |
-| subheading | 21px | 1.24 | -0.105px | `--text-subheading` |
-| heading-sm | 28px | 1.18 | 0.196px | `--text-heading-sm` |
-| heading | 40px | 1.14 | 0.44px | `--text-heading` |
-| heading-lg | 44px | 1.18 | -0.44px | `--text-heading-lg` |
-| display | 56px | 1.07 | 0.616px | `--text-display` |
+| caption | 12px | 1.33 | 0.12px | `--text-caption` |
+| body-sm | 14px | 1.43 | — | `--text-body-sm` |
+| body | 16px | 1.5 | — | `--text-body` |
+| subheading | 20px | 1 | — | `--text-subheading` |
+| heading-sm | 22px | 1.27 | -0.242px | `--text-heading-sm` |
+| heading | 40px | 1.5 | — | `--text-heading` |
+| heading-lg | 48px | 1.5 | — | `--text-heading-lg` |
+| display-sm | 54px | 1.04 | -1.89px | `--text-display-sm` |
+| display | 72px | 1.21 | -2.016px | `--text-display` |
+| display-lg | 96px | 1.04 | -4.608px | `--text-display-lg` |
 
 ## Tokens — Spacing & Shapes
 
@@ -70,157 +76,174 @@ Apple's design language is a study in restraint: near-white canvas, generous bre
 | 16 | 16px | `--spacing-16` |
 | 20 | 20px | `--spacing-20` |
 | 24 | 24px | `--spacing-24` |
-| 40 | 40px | `--spacing-40` |
-| 48 | 48px | `--spacing-48` |
-| 56 | 56px | `--spacing-56` |
+| 28 | 28px | `--spacing-28` |
+| 32 | 32px | `--spacing-32` |
+| 36 | 36px | `--spacing-36` |
+| 64 | 64px | `--spacing-64` |
+| 80 | 80px | `--spacing-80` |
 
 ### Border Radius
 
 | Element | Value |
 |---------|-------|
-| tags | 980px |
-| cards | 8px |
-| images | 8px |
-| inputs | 8px |
-| buttons | 980px |
-
-### Shadows
-
-| Name | Value | Token |
-|------|-------|-------|
-| xl | `rgba(0, 0, 0, 0.22) 3px 5px 30px 0px` | `--shadow-xl` |
+| cards | 12px |
+| pills | 9999px |
+| small | 4px |
+| buttons | 8px |
 
 ### Layout
 
 - **Page max-width:** 1440px
-- **Section gap:** 64px
+- **Section gap:** 80px
 - **Card padding:** 24px
-- **Element gap:** 12px
+- **Element gap:** 8px
 
 ## Components
 
-### Filled Pill Button
-**Role:** Primary action — Buy, Learn more, Shop
+### Primary CTA Button
+**Role:** Filled blue action button for the main conversion goal
 
-980px border-radius, #0071e3 background, white (#f4f8fb) text at 17px weight 400, padding 11px 15px, no border, no shadow. The single filled interactive element in the system.
+Background #0075de, text #ffffff at 14px NotionInter weight 500, border-radius 8px, padding 6px 15px. The only chromatic filled button in the system — every other action defers to ghost or text styles.
 
-### Outlined Pill Button
-**Role:** Secondary action — pair with filled primary
+### Ghost CTA Button
+**Role:** Secondary action with a subtle blue tint
 
-980px border-radius, 1px solid #0066cc border, #0066cc text at 17px weight 400, transparent fill, padding 11px 15px. Used as the second action next to a filled blue button.
+Background #e6f3fe (sky tint), text #0075de at 14px weight 500, border-radius 8px, padding 6px 15px. Pairs beside the primary CTA as the lower-commitment alternative.
 
-### Ghost Link
-**Role:** Tertiary action or inline text link
+### Ghost Text Button
+**Role:** Minimal action button with no fill or border
 
-No background, no border, #0066cc text at inherit size, underline on hover only. Weight 400, same family as body.
+Background transparent, text #000000 at 95% alpha, border-radius 8px, padding 6px 15px. The default for tertiary actions in the hero and feature cards.
 
-### Global Nav Bar
-**Role:** Top-level site navigation
+### Outlined Text Button
+**Role:** Bordered button with no fill for mid-priority actions
 
-Full-width, #1d1d1f or white background, 8px vertical padding, horizontal links at 12px weight 400 in #1d1d1f or #f5f5f7. Apple logo on left, product categories centered, search and bag icons on right. 1px hairline bottom border in #1d1d1f or #333.
+Background transparent, text #000000 at 90% alpha, 1px border at same color, border-radius 4px, padding 5px 10px. Used for compact inline actions like view-all links.
 
-### Sticky Mini-Nav
-**Role:** Product page sub-navigation that pins below global nav
+### Muted Nav Link
+**Role:** Low-emphasis navigation item
 
-White background, product name in 21px weight 600 + colored wordmark, action links at 14px weight 400. 1px bottom border in #d2d2d7.
+Background transparent, text #000000 at 54% alpha, border-radius 8px, padding 12px 16px. The default nav-item state — text darkens to full alpha on hover, never gets an underline.
 
-### Product Hero Section
-**Role:** Full-bleed product showcase
+### Pill Tag
+**Role:** Category label or status indicator
 
-#f5f5f7 background, centered product name at 56px weight 600 in #1d1d1f, tagline at 26px weight 300, two action buttons centered below. Large product render fills the section with generous bottom padding.
+Background colored fill (varies), text #000000 or #ffffff, border-radius 9999px, padding 4px 12px. Used for status labels like 'In progress', 'To do', 'Complete' in product mockups.
 
-### Feature Banner
-**Role:** Full-bleed promotional or service content
+### White Feature Card
+**Role:** Standard content card on warm canvas
 
-Full-width photographic or color-washed background, overlay text and CTA. Can be dark with white text, or a pastel wash with dark text. No card surface — the image IS the surface.
+Background #ffffff, border-radius 12px, padding 24px, 1px solid border at rgba(0,0,0,0.08), no shadow. The default card — sits on the warm canvas like a sticky note.
 
-### Service Card Grid
-**Role:** Multi-service promotional row (Apple TV+, Fitness+, Music, Arcade)
+### Accent Feature Card
+**Role:** Full-bleed colored card for feature blocks
 
-Horizontal scroll or grid of cards, each full-bleed photographic background, 8px radius, white text overlay. Card title 24-28px weight 600, genre label in 12-14px, pill action button (Listen now, Play now, Watch now) at bottom.
+Background one of the accent hues (#ffb110, #f64932, #62aef0, #e6f3fe, etc.), border-radius 12px, padding 24px, no border. Functions as a colored panel that paints the canvas — text inside uses #000000 or #ffffff depending on contrast.
 
-### Typography-Only CTA Block
-**Role:** Compact product call-out within a section
+### Dark Feature Card
+**Role:** Inverted card for dark-on-light contrast moments
 
-Centered stack: product name at 40-56px weight 600, one-line descriptor at 21px weight 300, optional italic product variant (e.g. 'iPad air') at 28px in #2997ff. Two pill buttons below, generous vertical breathing room.
+Background #02093a (midnight), text #ffffff, border-radius 12px, padding 24px. The system uses this sparingly as a 'dark mode island' on the light page — not as a full dark theme.
 
-### Footer
-**Role:** Site-wide legal and link directory
+### Hero Highlight Pill
+**Role:** Colored pill placed behind a verb in hero copy
 
-#f5f5f7 or #1d1d1f background, multi-column link grid at 12px weight 400 in #707070 or #f5f5f7, 1px hairline dividers in #333 or #d2d2d7, fine print at 12px. No card surfaces — flat, typographic, structural.
+Background accent color (peach #f6d5b8, yellow #ffb110, or coral #f64932), text #000000, border-radius 9999px, padding 8px 24px. The signature typographic device — wraps a single word in a sentence to draw the eye and give it weight.
 
-### Form Input
-**Role:** Search, email capture, configuration inputs
+### Avatar Character Mark
+**Role:** Decorative illustrated character in a circle
 
-8px radius, 1px border in #d2d2d7 or #707070, 14-17px text, #f5f5f7 fill. Focus ring in #0071e3 at 2px.
+40-48px circle with 2px colored border (blue, red, yellow), flat illustration inside, white background. Used in hero arrangements and scattered as decorative marks with squiggle/sparkle companions.
+
+### Kanban Task Card
+**Role:** Product UI task item in the embedded product mockup
+
+Background #ffffff, border-radius 8px, padding 8px 12px, 1px border at rgba(0,0,0,0.08), small status text and emoji. Replicates the real Notion task card aesthetic inside the marketing screenshot.
+
+### Section Header
+**Role:** Large heading that opens a new content section
+
+NotionInter weight 500-700, 48-54px, line-height 1.04-1.5, letter-spacing -1.89 to -2.016px. Color #000000. Followed by an optional Lyon Text subhead at 18px for editorial voice.
+
+### Logo Wall Item
+**Role:** Greyscale partner/client logo
+
+SVG logo at native proportions, color desaturated to near-black (#000000 at 60% alpha), no individual borders or backgrounds. Centered grid layout with generous spacing — logos are treated as typography, not imagery.
 
 ## Do's and Don'ts
 
 ### Do
-- Use #0071e3 only for filled action buttons and selected/active states — one color, one job.
-- Pair every filled blue button with an outlined blue secondary action, never stack two filled buttons.
-- Set body text at 17px with -0.016em letter-spacing — the negative tracking is what makes Apple type feel precise, not the size alone.
-- Let product photography fill the full viewport width — never constrain hero images to a max-width container.
-- Use 980px border-radius for every interactive button, tag, and pill — the fully rounded shape is non-negotiable.
-- Set section backgrounds to full-bleed #f5f5f7 or a single product color wash — never use card containers inside a section.
-- Weight 300 for subheads and editorial descriptors creates the signature Apple whisper-voice — 400 is for body, 600 is for nav.
+- Use #f6f5f4 as the page canvas and #ffffff for card surfaces — never invert this hierarchy by putting a warm card on a white page
+- Reserve #0075de for the single primary action per screen; all secondary actions should use ghost (#e6f3fe bg) or text styles
+- Apply negative letter-spacing to all display sizes: -4.6px at 96px, -2px at 72px, -1.9px at 54px — body text stays at normal tracking
+- Use 1px solid borders at rgba(0,0,0,0.08) instead of shadows to separate cards from the canvas
+- Use 12px border-radius for cards and 8px for buttons; reserve 9999px for pills and hero highlight pills only
+- Paint feature-block backgrounds with accent hues (#ffb110, #f64932, #62aef0, #02093a) rather than adding borders or shadows to create visual variety
+- Keep motion at 200ms with ease timing for hovers and transitions; reserve spring/bounce animations for character marks and hero elements
 
 ### Don't
-- Never use #0071e3 for text, borders, or decoration — it is exclusively a button fill color.
-- Never add drop shadows to cards, buttons, or nav — the system uses hairline borders and surface shifts, not elevation.
-- Never set headlines at 700 weight for product names — 600 is the maximum; 700 only appears in editorial lockups or promotional art.
-- Never use a card or panel inside a #f5f5f7 section — the canvas itself is the surface; containers break the spatial logic.
-- Never constrain the main content to a narrow column — Apple pages breathe at 100% width with internal max-widths only for text-heavy blocks.
-- Never use radius below 980px for buttons or above 8px for cards/images — these are the only two radius values in the system.
-- Never mix the three blues in one interactive element — #0071e3 is fill, #0066cc is outlined action, #2997ff is decorative.
+- Do not use pure #ffffff as the page background — the warm #f6f5f4 canvas is the system's signature warmth
+- Do not add shadows to content cards — the system uses hairline borders only, shadows appear only on the product UI mockup and nav bar
+- Do not use multiple chromatic button colors in the same view — #0075de is the only filled button; color variety belongs in card backgrounds
+- Do not use #000000 at 100% for all text — build hierarchy through alpha (100%, 95%, 60%, 40%) on the same color
+- Do not use Lyon Text for UI labels or navigation — it is reserved for editorial body copy moments at 18px
+- Do not apply border-radius larger than 12px to rectangular content — pills (9999px) and cards (12px) are the two shapes
+- Do not use gradients — the system is strictly flat fills; visual depth comes from the warm-to-white surface contrast and accent card backgrounds
 
 ## Surfaces
 
 | Level | Name | Value | Purpose |
 |-------|------|-------|---------|
-| 0 | Canvas | `#f5f5f7` | Page background, section default |
-| 1 | Elevated Wash | `#f4f8fb` | Light blue-tinted section background for featured products |
-| 2 | Pebble | `#e2e2e5` | Button fills, disabled states, surface differentiation |
+| 0 | Page Canvas | `#f6f5f4` | Warm off-white base for the entire page — the analog-paper feel starts here |
+| 1 | Card Surface | `#ffffff` | White cards on warm canvas — pure white is reserved for surfaces that need to read as 'on top of the page' |
+| 2 | Accent Card Surface | `#ffb110` | Colored card backgrounds (yellow, coral, blue, midnight) — feature blocks paint the canvas with single-hue fills |
+| 3 | Dark Card Surface | `#02093a` | Deep navy panels for dark-mode-style feature blocks — inverting the surface stack with white text on midnight |
+
+## Elevation
+
+- **Nav (sticky):** `0px 0.7px 1.462px 0px rgb(0% 0% 0%/0.015), 0px 3px 9px 0px rgb(0% 0% 0%/0.03)`
+- **Product UI Mockup:** `0px 4px 12px rgba(0, 0, 0, 0.1)`
 
 ## Imagery
 
-Photography is the dominant visual language. Product shots are rendered on pure white or soft gray backgrounds with no environmental context — the device IS the hero, isolated and lit. Lifestyle photography appears in feature banners at full-bleed width, often with subjects cropped tightly. Color washes (pastel blue, pink, green) serve as section backgrounds for product highlights, not as decoration. Iconography is minimal and line-based, weight 1-2px, in the same gray scale as text. No illustrations, no abstract graphics, no 3D renders beyond the product photography itself.
+Illustration-first, photography-free. The visual language is built from flat illustrated character marks (round faces in 2px colored circles), abstract decorative elements (hand-drawn squiggles, sparkles, arrows, flower shapes), and product UI mockups. Character marks appear in the hero as a horizontal row of 7 avatars and scatter across the page as playful punctuation. Product screenshots are the only 'real' visuals — they show the actual Notion interface (kanban boards, document views, AI agent panels) with full chrome and real data. The product mockup in the hero is large, centered, and casts a single drop-shadow to separate it from the canvas. There are no lifestyle photos, no stock imagery, no abstract 3D renders.
 
 ## Layout
 
-Full-bleed page model with no fixed max-width container — sections stretch edge-to-edge while text blocks center internally at roughly 980px. Navigation is a single sticky global bar with a secondary product-specific sub-nav that appears on scroll. Hero pattern is always centered: large product name, one-line tagline, two pill buttons, then the product render filling the remaining viewport. Sections stack vertically with generous vertical rhythm (64px+ between sections), alternating between #f5f5f7 and color-wash backgrounds. The lower page is a single horizontal row of full-bleed service cards (Apple TV+, Fitness+, Music, Arcade), each a photographic tile with overlaid text and a pill action. No sidebars, no multi-column content layouts, no asymmetric compositions — everything is centered, stacked, and symmetrical.
+Centered, max-width contained at ~1440px. The hero is a centered stack: character-mark row → large two-line headline with an embedded colored pill → subhead → two-button CTA row → large product UI mockup. Below the hero, sections alternate between white-card grids and full-bleed colored accent panels. The logo wall is a centered single-row grid of greyscale partner logos. Feature blocks use a 2-column layout (text left, colored panel right) that alternates left-right between sections. The 'Ask your on-demand assistants' section uses a 2×2 card grid where the top card is full-width and the bottom row splits into two equal columns. Section gaps are generous (~80px) creating a calm vertical rhythm. Navigation is a fixed top bar at 64px height with centered nav items and right-aligned action buttons.
 
 ## Agent Prompt Guide
 
-**Quick Color Reference**
-- text: #1d1d1f
-- background: #f5f5f7
-- border: #d2d2d7 / #333333
-- accent: #2997ff (decorative only)
-- primary action: #0071e3 (filled action)
-- outlined action border: #0066cc
+## Quick Color Reference
+- text: #000000 (build hierarchy through alpha: 100% / 95% / 60% / 40%)
+- background: #f6f5f4 (warm off-white canvas)
+- card surface: #ffffff
+- border: rgba(0, 0, 0, 0.08)
+- primary action: #0075de (filled action)
+- accent: #ffb110, #f64932, #62aef0, #02093a (rotate through these for card backgrounds)
 
-**3-5 Example Component Prompts**
-1. Create a product hero section: #f5f5f7 full-bleed background. Headline 'iPhone' at 56px SF Pro Display weight 600, #1d1d1f, letter-spacing 0.616px. Tagline 'Meet the latest iPhone lineup.' at 26px SF Pro Text weight 300, #1d1d1f. Two pill buttons centered below: filled #0071e3 with white text 'Learn more' (980px radius, 11px 15px padding), and outlined #0066cc with 1px border and #0066cc text 'Shop iPhone' (same radius and padding). Product render fills the lower portion.
+## Example Component Prompts
 
-2. Create a service card tile: full-bleed photographic background, 8px radius. Title 'Fitness+' at 28px weight 600 white, genre label at 12px weight 400 white with 70% opacity. Pill button at bottom: 980px radius, #0071e3 background, white text 'Watch now' at 14px weight 400, 8px 15px padding.
+1. **Hero headline with highlight pill**: Render a centered hero on #f6f5f4. Headline: 'Where teams and agents Create together.' at 72px NotionInter weight 500, #000000, line-height 1.21, letter-spacing -2.016px. Wrap the word 'Create' in a pill: background #f6d5b8, text #000000, border-radius 9999px, padding 8px 24px, inline within the sentence. Subhead below at 18px Lyon Text weight 400, #615d59, line-height 1.56.
 
-3. Create a global nav bar: full-width, #1d1d1f background, 8px vertical padding. Apple logo SVG on left at 14px height. Nav links centered: Store, Mac, iPad, iPhone, Watch, Vision, AirPods, TV & Home, Entertainment, Accessories, Support — all 12px weight 400, #f5f5f7 color, 1px #333333 bottom border on the bar. Search icon and bag icon on right.
+2. **White feature card**: Create a card on the warm canvas. Background #ffffff, border-radius 12px, padding 24px, 1px solid border rgba(0,0,0,0.08). No shadow. Title at 22px NotionInter weight 700, #000000, letter-spacing -0.242px. Body at 16px weight 400, #615d59, line-height 1.5.
 
-4. Create a typographic CTA block: centered, 64px vertical padding. Product name 'iPad' at 40px SF Pro Display weight 600 #1d1d1f, followed by 'air' inline at 28px weight 400 italic #2997ff. Subtitle 'Now supercharged by M4.' at 21px weight 300 #1d1d1f. Two pill buttons below: filled #0071e3 'Learn more' and outlined #0066cc 'Buy' (both 980px radius, 11px 15px padding).
+3. **Accent feature block**: Create a full-bleed colored panel. Background #ffb110, border-radius 12px, padding 24px. Title at 40px NotionInter weight 400, #000000, line-height 1.5. A product UI screenshot sits inside with a drop-shadow at 0px 4px 12px rgba(0,0,0,0.1) to create depth against the colored background.
 
-5. Create a footer block: #f5f5f7 background, four-column link grid. Each link 12px weight 400 #707070, 10px vertical gap. Column headers at 12px weight 600 #1d1d1f. 1px #d2d2d7 hairline divider above fine print. Fine print at 12px weight 400 #707070.
+4. Create a Primary Action Button: #0075de background, #ffffff text, 9999px radius, compact pill padding. Use this filled treatment for the main CTA.
 
-## Elevation Philosophy
+5. **Kanban task card (product mockup)**: Create a task card inside a product screenshot. Background #ffffff, border-radius 8px, padding 8px 12px, 1px solid border rgba(0,0,0,0.08). Task text at 14px NotionInter weight 500, #000000. Optional status pill above: background colored fill, text #ffffff, border-radius 9999px, padding 2px 8px, font 12px.
 
-This system intentionally avoids elevation as a visual tool. Instead of shadows, hierarchy is built through surface color shifts (#f5f5f7 canvas, #f4f8fb elevated wash, #e2e2e5 filled surfaces) and 1px hairline borders in #d2d2d7 or #333333. The only shadow present is a subtle rgba(0,0,0,0.22) 3px 5px 30px on product images to ground them against the white canvas — never on cards, buttons, or panels. Flatness is the signature; depth comes from scale and photography, not from CSS shadows.
+## Decorative Marks System
+
+Character marks (round illustrated faces in 2px colored circles) and abstract decorative elements (squiggles, sparkles, arrows, flower shapes) are deployed as visual punctuation, not as illustrations with content. They cluster around hero copy, scatter near feature cards, and animate on scroll. Colors for the circle borders rotate through the accent palette: #097fe8 (blue), #f64932 (coral), #ffb110 (yellow), #62aef0 (sky). The marks are 40-48px circles with flat color illustrations inside, always on white fills. They never carry information or link to content — they exist purely to make the interface feel alive and handcrafted.
 
 ## Similar Brands
 
-- **Bang & Olufsen** — Same product-as-hero isolation photography on white canvas, same generous whitespace, same whisper-thin typography for product names
-- **Teenage Engineering** — Same near-monochrome product pages with generous spacing, though TE adds more personality through type and color accents
-- **Nothing (tech)** — Similar minimal product showcase layout, though Nothing uses more dot-matrix texture and dark surfaces
-- **Dyson** — Same centered product hero with large render, minimal copy, and paired pill action buttons on a light gray canvas
+- **Linear** — Same monochrome-light approach with a single accent color, hairline-border cards, generous display typography with negative tracking, and zero shadows on content surfaces
+- **Stripe** — Same editorial use of serif+sans pairing, large display headlines with tight letter-spacing, and color reserved for functional emphasis rather than decoration
+- **Figma** — Same playful illustrated character marks as decorative punctuation, warm light canvas, and rotating accent hues for section variety
+- **Craft Docs** — Same paper-warm aesthetic with off-white canvas, restrained color palette, and a focus on the document-as-surface metaphor
 
 ## Quick Start
 
@@ -229,52 +252,58 @@ This system intentionally avoids elevation as a visual tool. Instead of shadows,
 ```css
 :root {
   /* Colors */
-  --color-apple-blue: #0071e3;
-  --color-link-blue: #0066cc;
-  --color-signal-blue: #2997ff;
-  --color-carbon: #1d1d1f;
-  --color-frost: #f5f5f7;
-  --color-ice: #f4f8fb;
-  --color-smoke: #333333;
-  --color-graphite: #474747;
-  --color-ash: #707070;
-  --color-mist: #858585;
-  --color-onyx: #000000;
-  --color-pebble: #e2e2e5;
+  --color-notion-blue: #0075de;
+  --color-paper-warmth: #f6f5f4;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-charcoal: #111111;
+  --color-stone: #757575;
+  --color-graphite: #615d59;
+  --color-slate: #696969;
+  --color-sky-tint: #e6f3fe;
+  --color-marigold: #ffb110;
+  --color-coral: #f64932;
+  --color-saffron: #e89d01;
+  --color-vermillion: #e32d14;
+  --color-mocha: #b18164;
+  --color-signal-blue: #097fe8;
+  --color-sky-wash: #62aef0;
+  --color-midnight-ink: #02093a;
 
   /* Typography — Font Families */
-  --font-sf-pro-display: 'SF Pro Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-sf-pro-text: 'SF Pro Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-notioninter: 'NotionInter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-lyon-text: 'Lyon Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */
   --text-caption: 12px;
   --leading-caption: 1.33;
-  --tracking-caption: -0.264px;
+  --tracking-caption: 0.12px;
   --text-body-sm: 14px;
-  --leading-body-sm: 1.29;
-  --tracking-body-sm: -0.224px;
-  --text-body: 17px;
-  --leading-body: 1.47;
-  --tracking-body: -0.272px;
-  --text-subheading: 21px;
-  --leading-subheading: 1.24;
-  --tracking-subheading: -0.105px;
-  --text-heading-sm: 28px;
-  --leading-heading-sm: 1.18;
-  --tracking-heading-sm: 0.196px;
+  --leading-body-sm: 1.43;
+  --text-body: 16px;
+  --leading-body: 1.5;
+  --text-subheading: 20px;
+  --leading-subheading: 1;
+  --text-heading-sm: 22px;
+  --leading-heading-sm: 1.27;
+  --tracking-heading-sm: -0.242px;
   --text-heading: 40px;
-  --leading-heading: 1.14;
-  --tracking-heading: 0.44px;
-  --text-heading-lg: 44px;
-  --leading-heading-lg: 1.18;
-  --tracking-heading-lg: -0.44px;
-  --text-display: 56px;
-  --leading-display: 1.07;
-  --tracking-display: 0.616px;
+  --leading-heading: 1.5;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.5;
+  --text-display-sm: 54px;
+  --leading-display-sm: 1.04;
+  --tracking-display-sm: -1.89px;
+  --text-display: 72px;
+  --leading-display: 1.21;
+  --tracking-display: -2.016px;
+  --text-display-lg: 96px;
+  --leading-display-lg: 1.04;
+  --tracking-display-lg: -4.608px;
 
   /* Typography — Weights */
-  --font-weight-light: 300;
   --font-weight-regular: 400;
+  --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
@@ -286,36 +315,35 @@ This system intentionally avoids elevation as a visual tool. Instead of shadows,
   --spacing-16: 16px;
   --spacing-20: 20px;
   --spacing-24: 24px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-56: 56px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
 
   /* Layout */
   --page-max-width: 1440px;
-  --section-gap: 64px;
+  --section-gap: 80px;
   --card-padding: 24px;
-  --element-gap: 12px;
+  --element-gap: 8px;
 
   /* Border Radius */
+  --radius-md: 4px;
   --radius-lg: 8px;
-  --radius-lg-2: 11px;
-  --radius-full: 980px;
-  --radius-full-2: 999px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
 
   /* Named Radii */
-  --radius-tags: 980px;
-  --radius-cards: 8px;
-  --radius-images: 8px;
-  --radius-inputs: 8px;
-  --radius-buttons: 980px;
-
-  /* Shadows */
-  --shadow-xl: rgba(0, 0, 0, 0.22) 3px 5px 30px 0px;
+  --radius-cards: 12px;
+  --radius-pills: 9999px;
+  --radius-small: 4px;
+  --radius-buttons: 8px;
 
   /* Surfaces */
-  --surface-canvas: #f5f5f7;
-  --surface-elevated-wash: #f4f8fb;
-  --surface-pebble: #e2e2e5;
+  --surface-page-canvas: #f6f5f4;
+  --surface-card-surface: #ffffff;
+  --surface-accent-card-surface: #ffb110;
+  --surface-dark-card-surface: #02093a;
 }
 ```
 
@@ -324,48 +352,54 @@ This system intentionally avoids elevation as a visual tool. Instead of shadows,
 ```css
 @theme {
   /* Colors */
-  --color-apple-blue: #0071e3;
-  --color-link-blue: #0066cc;
-  --color-signal-blue: #2997ff;
-  --color-carbon: #1d1d1f;
-  --color-frost: #f5f5f7;
-  --color-ice: #f4f8fb;
-  --color-smoke: #333333;
-  --color-graphite: #474747;
-  --color-ash: #707070;
-  --color-mist: #858585;
-  --color-onyx: #000000;
-  --color-pebble: #e2e2e5;
+  --color-notion-blue: #0075de;
+  --color-paper-warmth: #f6f5f4;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-charcoal: #111111;
+  --color-stone: #757575;
+  --color-graphite: #615d59;
+  --color-slate: #696969;
+  --color-sky-tint: #e6f3fe;
+  --color-marigold: #ffb110;
+  --color-coral: #f64932;
+  --color-saffron: #e89d01;
+  --color-vermillion: #e32d14;
+  --color-mocha: #b18164;
+  --color-signal-blue: #097fe8;
+  --color-sky-wash: #62aef0;
+  --color-midnight-ink: #02093a;
 
   /* Typography */
-  --font-sf-pro-display: 'SF Pro Display', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-sf-pro-text: 'SF Pro Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-notioninter: 'NotionInter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-lyon-text: 'Lyon Text', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */
   --text-caption: 12px;
   --leading-caption: 1.33;
-  --tracking-caption: -0.264px;
+  --tracking-caption: 0.12px;
   --text-body-sm: 14px;
-  --leading-body-sm: 1.29;
-  --tracking-body-sm: -0.224px;
-  --text-body: 17px;
-  --leading-body: 1.47;
-  --tracking-body: -0.272px;
-  --text-subheading: 21px;
-  --leading-subheading: 1.24;
-  --tracking-subheading: -0.105px;
-  --text-heading-sm: 28px;
-  --leading-heading-sm: 1.18;
-  --tracking-heading-sm: 0.196px;
+  --leading-body-sm: 1.43;
+  --text-body: 16px;
+  --leading-body: 1.5;
+  --text-subheading: 20px;
+  --leading-subheading: 1;
+  --text-heading-sm: 22px;
+  --leading-heading-sm: 1.27;
+  --tracking-heading-sm: -0.242px;
   --text-heading: 40px;
-  --leading-heading: 1.14;
-  --tracking-heading: 0.44px;
-  --text-heading-lg: 44px;
-  --leading-heading-lg: 1.18;
-  --tracking-heading-lg: -0.44px;
-  --text-display: 56px;
-  --leading-display: 1.07;
-  --tracking-display: 0.616px;
+  --leading-heading: 1.5;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.5;
+  --text-display-sm: 54px;
+  --leading-display-sm: 1.04;
+  --tracking-display-sm: -1.89px;
+  --text-display: 72px;
+  --leading-display: 1.21;
+  --tracking-display: -2.016px;
+  --text-display-lg: 96px;
+  --leading-display-lg: 1.04;
+  --tracking-display-lg: -4.608px;
 
   /* Spacing */
   --spacing-4: 4px;
@@ -374,17 +408,16 @@ This system intentionally avoids elevation as a visual tool. Instead of shadows,
   --spacing-16: 16px;
   --spacing-20: 20px;
   --spacing-24: 24px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-56: 56px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
 
   /* Border Radius */
+  --radius-md: 4px;
   --radius-lg: 8px;
-  --radius-lg-2: 11px;
-  --radius-full: 980px;
-  --radius-full-2: 999px;
-
-  /* Shadows */
-  --shadow-xl: rgba(0, 0, 0, 0.22) 3px 5px 30px 0px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
 }
 ```
