@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from '../signals.ts';
+import { loadPopulations, loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from '../signals.ts';
 
 describe('parseArrivals', () => {
   const body = JSON.stringify([
@@ -144,5 +144,25 @@ describe('manual-overrides.json (corrected values, nominal current-US$ basis)', 
     const merged = loadSignals(['PRK'], wb, { PRK: overrides.PRK });
     expect(merged.get('PRK')!.migrants).toBe(50439);
     expect(merged.get('PRK')!.gdp).toBe(31500000000);
+  });
+});
+
+describe('loadPopulations', () => {
+  it('reads the World Bank value and prefers a manual override', () => {
+    const source = new Map([['AAA', 1000], ['BBB', 2000]]);
+    const overrides = { BBB: { name: 'Beeland', iso2: 'BB', population: 9999 } };
+    const pops = loadPopulations(['AAA', 'BBB'], source, overrides);
+    expect(pops.get('AAA')).toBe(1000);
+    expect(pops.get('BBB')).toBe(9999);
+  });
+
+  it('throws naming every country with no population (the denominator must be complete)', () => {
+    const source = new Map([['AAA', 1000]]);
+    expect(() => loadPopulations(['AAA', 'BBB', 'CCC'], source, {})).toThrow(/BBB, CCC/);
+  });
+
+  it('treats a non-positive population as missing rather than dividing by a bad denominator', () => {
+    const source = new Map([['AAA', 1000], ['BBB', 0]]);
+    expect(() => loadPopulations(['AAA', 'BBB'], source, {})).toThrow(/BBB/);
   });
 });

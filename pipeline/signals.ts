@@ -7,6 +7,7 @@ export interface Override {
   arrivals?: number;
   hdi?: number;
   migrants?: number;
+  population?: number;
   source?: string;
 }
 
@@ -109,6 +110,38 @@ export function loadSignals(
     throw new Error(
       `destinations with zero available signals: ${empty.join(', ')}\n` +
         `Add each to data/raw/manual-overrides.json with researched values (see plan Task 1 Step 4).`,
+    );
+  }
+  return out;
+}
+
+/**
+ * Total population per passport country — the openness rating's denominator.
+ *
+ * Unlike the four weight signals, this one has no "missing is fine" path: the
+ * openness score is a SHARE of the world's people, so a country with no
+ * population would silently shrink the denominator and inflate every score.
+ * Missing or non-positive values therefore throw, listing every offender.
+ */
+export function loadPopulations(
+  iso3List: string[],
+  source: Map<string, number>,
+  overrides: Record<string, Override>,
+): Map<string, number> {
+  const out = new Map<string, number>();
+  const missing: string[] = [];
+  for (const iso3 of iso3List) {
+    const v = overrides[iso3]?.population ?? source.get(iso3);
+    if (v === undefined || !(v > 0)) {
+      missing.push(iso3);
+      continue;
+    }
+    out.set(iso3, v);
+  }
+  if (missing.length > 0) {
+    throw new Error(
+      `countries with no usable population: ${missing.join(', ')}\n` +
+        `Add each to data/raw/manual-overrides.json with a researched "population" and a cited "source".`,
     );
   }
   return out;
