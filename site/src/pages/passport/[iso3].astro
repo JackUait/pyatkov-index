@@ -10,6 +10,7 @@ export function getStaticPaths() {
 }
 
 const { passport: p } = Astro.props;
+const base = import.meta.env.BASE_URL;
 const access = (matrix as Record<string, Record<string, string>>)[p.iso3];
 const CREDIT: Record<string, number> = { 'visa-free': 1.0, 'visa-on-arrival': 0.8, 'e-visa': 0.5, 'visa-required': 0 };
 const LABEL: Record<string, string> = { 'visa-free': 'Visa-free', 'visa-on-arrival': 'Visa on arrival / eTA', 'e-visa': 'eVisa', 'visa-required': 'Visa required' };
@@ -84,7 +85,7 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       <h2>Most valuable destinations reachable</h2>
       <ol class="rank-list">
         {topReachable.map((d) => (
-          <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
+          <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</a> <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
         ))}
       </ol>
     </section>
@@ -93,7 +94,7 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       {topMissing.length === 0 ? <p>None. This passport reaches every weighted destination.</p> : (
         <ol class="rank-list">
           {topMissing.map((d) => (
-            <li>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)} <span class="meta">weight {d.weight.toFixed(3)}</span></li>
+            <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</a> <span class="meta">weight {d.weight.toFixed(3)}</span></li>
           ))}
         </ol>
       )}

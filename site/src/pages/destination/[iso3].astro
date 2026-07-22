@@ -1,0 +1,145 @@
+---
+import Base from '../../layouts/Base.astro';
+import openness from '../../data/openness.json';
+import rankings from '../../data/rankings.json';
+import weightsData from '../../data/weights.json';
+import matrix from '../../data/matrix.json';
+import { deltaLabel, displayName, flagEmoji, fmt, reconcilePoints, searchIndex } from '../../lib/format.ts';
+
+export function getStaticPaths() {
+  return openness.destinations.map((d) => ({ params: { iso3: d.iso3.toLowerCase() }, props: { dest: d } }));
+}
+
+const { dest: d } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const CREDIT: Record<string, number> = { 'visa-free': 1.0, 'visa-on-arrival': 0.8, 'e-visa': 0.5, 'visa-required': 0 };
+const LABEL: Record<string, string> = { 'visa-free': 'Visa-free', 'visa-on-arrival': 'Visa on arrival / eTA', 'e-visa': 'eVisa', 'visa-required': 'Visa required' };
+const TIERS = ['visa-free', 'visa-on-arrival', 'e-visa', 'visa-required'];
+
+const access = matrix as Record<string, Record<string, string>>;
+
+// Every passport, with the access it gets to THIS destination. The destination's
+// own passport is included and always visa-free (its citizens are always admitted),
+// matching the self-inclusion in the score.
+const holders = rankings.passports.map((p) => ({
+  ...p,
+  category: p.iso3 === d.iso3 ? 'visa-free' : access[p.iso3][d.iso3],
+}));
+// Default order: strongest access first, then by the passport's own index score —
+// so the table reads as a rating of passports for getting into this destination.
+const ordered = [...holders].sort(
+  (a, b) => CREDIT[b.category] - CREDIT[a.category] || b.score - a.score || a.name.localeCompare(b.name),
+);
+
+// Tier rows, with points reconciled so they sum exactly to the displayed score.
+const reconciled = reconcilePoints(TIERS.map((t) => d.points[t as keyof typeof d.points]), d.score);
+const tierRows = TIERS.map((t, i) => ({
+  cat: t,
+  points: reconciled[i],
+  count: d.counts[t as keyof typeof d.counts],
+}));
+
+// This destination's own weight in the passport index, and where that ranks.
+const weightIdx = weightsData.destinations.findIndex((w) => w.iso3 === d.iso3);
+const weight = weightsData.destinations[weightIdx];
+const ordinal = (n: number) => {
+  const rem100 = n % 100;
+  if (rem100 >= 11 && rem100 <= 13) return `${n}th`;
+  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
+};
+// Its own passport's row, for the cross-link.
+const ownPassport = rankings.passports.find((p) => p.iso3 === d.iso3);
+
+const name = displayName(d.iso3, d.name);
+const MARK_COLORS = ['var(--color-signal-blue)', 'var(--color-coral)', 'var(--color-marigold)', 'var(--color-sky-wash)'];
+const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
+---
+<Base title={`Who can enter ${name} - Pyatkov Index`} description={`${name}: openness rank ${d.rank}, ${fmt(d.score)} of the world's people can enter without a prior visa. Every passport and the access it gets.`} wide>
+  <section class="passport-hero">
+    <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true">{flagEmoji(d.iso2)}</span>
+    <h1>Who can enter {name}</h1>
+  </section>
+
+  <dl class="stats">
+    <div><dt>Openness</dt><dd>{fmt(d.score)}</dd></div>
+    <div><dt>Openness rank</dt><dd>#{d.rank}</dd></div>
+    <div><dt>Count rank</dt><dd>#{d.equalRank}</dd></div>
+    <div><dt>Δ from weighting</dt><dd class={d.delta > 0 ? 'up' : d.delta < 0 ? 'down' : ''}>{deltaLabel(d.delta)}</dd></div>
+  </dl>
+
+  <p class="lede">
+    {fmt(d.score)} out of 100 of the world's people — weighted by the population behind each passport, with
+    partial credit for visa on arrival and eVisas — can enter {name} without applying for a visa first.
+    As a destination in the passport index, {name} carries a weight of {weight.weight.toFixed(3)},
+    the {ordinal(weightIdx + 1)} highest of {weightsData.destinations.length}.
+    {ownPassport && (
+      <Fragment> Its own passport ranks <a href={`${base}passport/${d.iso3.toLowerCase()}/`}>#{ownPassport.rank}</a>.</Fragment>
+    )}
+  </p>
+
+  <h2>Where the openness comes from</h2>
+  <div class="card">
+  <div class="table-scroll">
+  <table class="tier-table">
+    <thead><tr><th>Access tier</th><th>Passports</th><th>Points</th></tr></thead>
+    <tbody>
+      {tierRows.map((t) => (
+        <tr><td><span class={`tag tag-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
+      ))}
+    </tbody>
+    <tfoot>
+      <tr><th scope="row">Total (Openness)</th><td>{holders.length}</td><td>{fmt(d.score)}</td></tr>
+    </tfoot>
+  </table>
+  </div>
+  </div>
+
+  <p class="table-intro">
+    Every passport in the index and the access it gets to {name}, strongest access first and ordered by
+    the passport's own Pyatkov score within each tier.
+  </p>
+
+  <div class="card card-mockup">
+  <div class="card-header">
+    <h2>Every passport</h2>
+    <span class="count">{holders.length} passports</span>
+    <input type="search" id="filter" placeholder="Filter passports" aria-label="Filter passports" />
+  </div>
+  <div class="table-scroll">
+  <table id="holders" class="access-table">
+    <thead>
+      <tr>
+        <th scope="col" data-sort="credit" aria-sort="descending" tabindex="0">Access</th>
+        <th scope="col" data-sort="name" tabindex="0">Passport</th>
+        <th scope="col" data-sort="rank" tabindex="0">Passport rank</th>
+        <th scope="col" data-sort="score" tabindex="0">Passport score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ordered.map((p) => (
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-credit={CREDIT[p.category]} data-rank={p.rank} data-score={p.score}>
+          <td><span class={`tag tag-${p.category}`}>{LABEL[p.category]}</span></td>
+          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}>{flagEmoji(p.iso2)} {displayName(p.iso3, p.name)}</a></td>
+          <td>{p.rank}</td>
+          <td>{fmt(p.score)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  </div>
+  <p id="no-results" hidden>No passports match your filter. Try a country name like Portugal, or a code like PRT.</p>
+  </div>
+
+  <script>
+    import { initSortableTable } from '../../lib/table-ui.ts';
+
+    initSortableTable({
+      table: '#holders',
+      filter: '#filter',
+      noResults: '#no-results',
+      initialSort: 'credit',
+      defaultAsc: { credit: false, name: true, rank: true, score: false },
+    });
+  </script>
+</Base>

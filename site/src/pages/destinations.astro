@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import weightsData from '../data/weights.json';
 import { displayName, flagEmoji } from '../lib/format.ts';
+const base = import.meta.env.BASE_URL;
 // Signal columns are per-signal z-scores (standard deviations from the
 // destination average), so they are signed; a middle dot marks a missing signal.
 const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toFixed(2));
@@ -31,7 +32,7 @@ const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toF
       {weightsData.destinations.map((d, i) => (
         <tr>
           <td>{i + 1}</td>
-          <td>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</td>
+          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</a></td>
           <td>{d.weight.toFixed(3)}</td>
           <td>{z(d.normalized.gdp)}</td>
           <td>{z(d.normalized.arrivals)}</td>
