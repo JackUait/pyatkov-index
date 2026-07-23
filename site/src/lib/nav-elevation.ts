@@ -21,4 +21,9 @@ export function initNavElevation(): void {
   const update = () => root.toggleAttribute('data-top', isAtTop(window.scrollY));
   update();
   window.addEventListener('scroll', update, { passive: true });
+  // A client-router swap replaces <html>'s attributes with the incoming
+  // page's static ones, which never carry the JS-set flag. after-swap fires
+  // before the new page's first paint, so re-applying here means the bar
+  // never flashes elevated at the top of a swapped-in page.
+  document.addEventListener('astro:after-swap', update);
 }

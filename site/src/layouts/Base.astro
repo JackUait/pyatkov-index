@@ -3,6 +3,7 @@ import '@fontsource-variable/inter';
 import '@fontsource/source-serif-pro/400.css';
 import '@fontsource/source-serif-pro/400-italic.css';
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import { normalizePath } from '../lib/nav-current.ts';
 interface Props { title: string; description: string; wide?: boolean }
 const { title, description, wide = false } = Astro.props;
@@ -23,6 +24,7 @@ const nav = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f6f5f4" />
+    <ClientRouter />
     {/* The version query pushes browsers past their sticky favicon caches;
         bump it whenever the icon artwork changes (v4: the marigold/midnight
         half split). Safari tends to ignore SVG icons, so the ico is linked
@@ -40,7 +42,7 @@ const nav = [
     </script>
   </head>
   <body>
-    <header>
+    <header transition:persist="header">
       <div class="nav-inner">
         <a href={base} class="brand" aria-label="Pyatkov Index home">
           {/* The weight ribbon in miniature: one decaying spectrum, heaviest
@@ -71,7 +73,7 @@ const nav = [
       </div>
     </header>
     <main class={wide ? 'wide' : undefined}><slot /></main>
-    <footer>
+    <footer transition:persist="footer">
       <div class="footer-inner">
         <ul class="footer-links">
           {nav.map((item) => (
@@ -84,7 +86,9 @@ const nav = [
     </footer>
     <script>
       import { initNavElevation } from '../lib/nav-elevation.ts';
+      import { initNavCurrent } from '../lib/nav-current.ts';
       initNavElevation();
+      initNavCurrent();
     </script>
   </body>
 </html>
