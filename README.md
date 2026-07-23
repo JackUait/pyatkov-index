@@ -128,14 +128,25 @@ pipeline/            The build pipeline (TypeScript, run with tsx)
   scores.ts            Computes passport scores, ranks, and deltas
   openness.ts          Computes the destination openness rating (the index inverted)
   build.ts             Orchestrates the above, runs sanity checks, writes JSON
-  __tests__/           Vitest unit tests for the pipeline
+  data-drift.ts        Diffs committed site/src/data/*.json against a fresh build
+  check-data-drift.ts  CLI wrapper for the above (yarn check-data-drift)
+  types.ts             Shared pipeline types
+  __tests__/           Vitest unit tests for the pipeline, including readme-claims.test.ts,
+                       which asserts this file's factual claims against the shipped data
 site/                Astro static site
   src/data/            Generated JSON consumed by the pages (built by the pipeline)
   src/pages/           Rankings (/), passport detail, openness, destination detail,
-                       destinations, methodology
-  src/layouts/         Base layout
+                       destinations, methodology, 404
+  src/layouts/         Base layout (canonical URL, Open Graph, JSON-LD)
+  src/components/      Flag.astro
+  src/lib/             Page helpers — credit ladder, flags, formatting, nav state,
+                       table UI, SEO URLs, JSON-LD schema (+ __tests__/)
   src/styles/          global.css (the design system)
-.github/workflows/   GitHub Pages deploy workflow
+  public/              robots.txt, favicons, og-default.png
+  scripts/             copy-data.mjs (data → public/), make-og-card.mjs (OG image)
+docs/                Design specs and implementation plans
+DESIGN.md            The site's design system and visual rationale
+.github/workflows/   ci.yml (branches + PRs), deploy.yml (GitHub Pages, on main)
 ```
 
 ## Building the index
@@ -154,9 +165,19 @@ runs sanity checks that fail the build rather than publish nonsense. `yarn typec
 type-checks the pipeline (root `tsconfig.json` includes only `pipeline/`), and the Astro
 site is type-checked separately with `cd site && yarn typecheck` (which runs `astro
 check`); `yarn typecheck-all` from the repo root runs both. `yarn test` (Vitest) runs the
-pipeline unit tests. `yarn serve` (from the repo root) starts the Astro dev server with
-hot reloading — edits appear in the browser without a restart. `yarn preview` builds the
-site for production and serves that build, for checking the real output before deploying.
+pipeline unit tests *and* the site's `src/lib/` unit tests — one root Vitest run covers
+both trees. `yarn check-data-drift` re-derives the index and fails if the committed
+`site/src/data/*.json` differs from a fresh pipeline run (the `builtAt` date aside), so
+stale or hand-edited numbers can never ship. `yarn verify` is the single pre-push gate:
+`typecheck-all` + `test` + `pipeline` + `check-data-drift`, exactly what CI runs.
+
+`yarn serve` (from the repo root) starts the Astro dev server with hot reloading — edits
+appear in the browser without a restart. `yarn preview` builds the site for production and
+serves that build, for checking the real output before deploying. The site build runs
+`copy-data.mjs` first, which copies the four generated JSON files into
+`site/public/data/` (gitignored) so the `Dataset` JSON-LD's advertised distribution URLs
+resolve to real static assets; `cd site && yarn og-card` regenerates
+`public/og-default.png`.
 
 ### Refreshing data snapshots
 
@@ -173,8 +194,13 @@ downloads, from live sources:
 - **international arrivals** (`ST.INT.ARVL`) from the World Bank API over a fixed
   pre-COVID window (`date=2017:2019`), from which the pipeline picks one year per country,
   preferring 2019, then 2018, then 2017 — this avoids the COVID-collapsed 2020/2021 values;
+- **total population** (`SP.POP.TOTL`) from the World Bank API at each country's latest
+  available year — the openness rating's denominator only, deliberately *not* the migrant
+  stock series;
 - **HDI** from the UNDP **Human Development Report 2025** composite-indices CSV (its latest
   column is `hdi_2023`), which is Latin-1 encoded and decoded accordingly.
+
+It also derives `data/raw/countries.json` (the ISO3 → name/iso2 map) from the GDP response.
 
 Because those four signals carry different observation years, the generated
 `rankings.json` records a `builtAt` date (honestly, the date the pipeline last ran — not a
@@ -227,9 +253,16 @@ so nothing is ever silently dropped.
 ## Deployment
 
 `.github/workflows/deploy.yml` builds and publishes the site to GitHub Pages on every
-push to `main`. It runs the tests, runs the pipeline, builds the site with the
-repository name as the base path, and deploys the `site/dist/` artifact. Enable Pages
-for the repository (Settings → Pages → Source: GitHub Actions) before the first run.
+push to `main`. It type-checks both trees, runs the tests, runs the pipeline, fails on
+data drift, builds the site with the repository name as the base path (`BASE_PATH`),
+verifies the crawl surface (`sitemap-index.xml`, `robots.txt`, and canonical passport URLs
+in `sitemap-0.xml` — a guard against the `site` origin in `astro.config.mjs` silently
+drifting), and deploys the `site/dist/` artifact. Enable Pages for the repository
+(Settings → Pages → Source: GitHub Actions) before the first run.
+
+`.github/workflows/ci.yml` runs the same gate (`yarn verify` plus the site build) on
+pull requests and on pushes to every branch *except* `main`, which `deploy.yml` already
+covers.
 
 ## Data sources and licenses
 
@@ -247,3 +280,11 @@ This project is only possible because of open data. Credit and thanks to:
 Manual-override figures cite their individual sources (IMF, national statistics offices,
 Bank of Korea, the Holy See) inline in `data/raw/manual-overrides.json`. All raw data and
 code live in this repo; the entire index is reproducible with one command.
+
+## License
+
+Dual-licensed, because the data and the code carry different terms. The **derived
+datasets** — `site/src/data/{rankings,openness,matrix,weights}.json` and any copy
+published under `/data/` — are **CC BY 4.0**, keeping the attribution chain from the
+World Bank and UN DESA sources intact. **Everything else** — the pipeline, the Astro
+site, build scripts, configuration — is **MIT**. Full text in [`LICENSE`](LICENSE).
