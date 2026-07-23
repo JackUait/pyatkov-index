@@ -63,12 +63,17 @@ const leastOpen = dests[dests.length - 1];
   <script>
     import { initSortableTable } from '../lib/table-ui.ts';
 
-    initSortableTable({
-      table: '#openness-table',
-      filter: '#filter',
-      noResults: '#no-results',
-      initialSort: 'rank',
-      defaultAsc: { rank: true, name: true, score: false },
+    // Module scripts run once per session under the client router; page-load
+    // fires again after every swap, re-binding against the fresh DOM. On other
+    // pages the element guards make this call a no-op.
+    document.addEventListener('astro:page-load', () => {
+      initSortableTable({
+        table: '#openness-table',
+        filter: '#filter',
+        noResults: '#no-results',
+        initialSort: 'rank',
+        defaultAsc: { rank: true, name: true, score: false },
+      });
     });
   </script>
 </Base>

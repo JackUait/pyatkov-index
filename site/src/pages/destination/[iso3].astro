@@ -135,12 +135,17 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   <script>
     import { initSortableTable } from '../../lib/table-ui.ts';
 
-    initSortableTable({
-      table: '#holders',
-      filter: '#filter',
-      noResults: '#no-results',
-      initialSort: 'credit',
-      defaultAsc: { credit: false, name: true, rank: true, score: false },
+    // Module scripts run once per session under the client router; page-load
+    // fires again after every swap, re-binding against the fresh DOM. On other
+    // pages the element guards make this call a no-op.
+    document.addEventListener('astro:page-load', () => {
+      initSortableTable({
+        table: '#holders',
+        filter: '#filter',
+        noResults: '#no-results',
+        initialSort: 'credit',
+        defaultAsc: { credit: false, name: true, rank: true, score: false },
+      });
     });
   </script>
 </Base>
