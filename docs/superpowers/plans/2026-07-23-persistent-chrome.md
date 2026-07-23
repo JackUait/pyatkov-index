@@ -32,7 +32,7 @@
 - Consumes: nothing.
 - Produces: `normalizePath(pathname: string): string` and `initNavCurrent(): void`, both imported by `Base.astro` (Task 2 wires `initNavCurrent` into the body script).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `site/src/lib/__tests__/nav-current.test.ts`:
 
@@ -63,12 +63,12 @@ describe('normalizePath', () => {
 });
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [x] **Step 2: Run the test to verify it fails**
 
 Run: `yarn vitest run site/src/lib/__tests__/nav-current.test.ts`
 Expected: FAIL — cannot resolve `../nav-current.ts`.
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 Create `site/src/lib/nav-current.ts`:
 
@@ -96,12 +96,12 @@ export function initNavCurrent(): void {
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+- [x] **Step 4: Run the test to verify it passes**
 
 Run: `yarn vitest run site/src/lib/__tests__/nav-current.test.ts`
 Expected: PASS (5 tests).
 
-- [ ] **Step 5: Replace Base.astro's inline `norm` with the shared helper**
+- [x] **Step 5: Replace Base.astro's inline `norm` with the shared helper**
 
 In `site/src/layouts/Base.astro` frontmatter, replace:
 
@@ -123,12 +123,12 @@ const here = normalizePath(Astro.url.pathname);
 <a href={item.href} aria-current={here === normalizePath(item.href) ? 'page' : undefined}>{item.label}</a>
 ```
 
-- [ ] **Step 6: Typecheck the site**
+- [x] **Step 6: Typecheck the site**
 
 Run: `cd site && yarn typecheck`
 Expected: 0 errors (warnings/hints unchanged from before the edit).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add site/src/lib/nav-current.ts site/src/lib/__tests__/nav-current.test.ts site/src/layouts/Base.astro
@@ -147,7 +147,7 @@ git commit -m "feat(site): share one path normalizer between server nav and clie
 - Consumes: `initNavCurrent` from Task 1.
 - Produces: the `astro:page-load` / `astro:after-swap` lifecycle that Task 3's page scripts rely on (dispatched by `<ClientRouter />`).
 
-- [ ] **Step 1: Add the router and persist directives in `Base.astro`**
+- [x] **Step 1: Add the router and persist directives in `Base.astro`**
 
 Add to the frontmatter imports:
 
@@ -167,7 +167,7 @@ Change the header/footer open tags (attribute only, contents untouched):
 <footer transition:persist="footer">
 ```
 
-- [ ] **Step 2: Wire `initNavCurrent` into the layout's body script**
+- [x] **Step 2: Wire `initNavCurrent` into the layout's body script**
 
 Replace the body `<script>` block at the bottom of `Base.astro`:
 
@@ -180,7 +180,7 @@ Replace the body `<script>` block at the bottom of `Base.astro`:
 </script>
 ```
 
-- [ ] **Step 3: Re-apply `data-top` after each swap in `nav-elevation.ts`**
+- [x] **Step 3: Re-apply `data-top` after each swap in `nav-elevation.ts`**
 
 In `initNavElevation`, after the `window.addEventListener('scroll', ...)` line, add:
 
@@ -192,12 +192,12 @@ In `initNavElevation`, after the `window.addEventListener('scroll', ...)` line, 
   document.addEventListener('astro:after-swap', update);
 ```
 
-- [ ] **Step 4: Typecheck the site**
+- [x] **Step 4: Typecheck the site**
 
 Run: `cd site && yarn typecheck`
 Expected: 0 errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add site/src/layouts/Base.astro site/src/lib/nav-elevation.ts
@@ -217,7 +217,7 @@ git commit -m "feat(site): persist the header and footer across navigations"
 - Consumes: the `astro:page-load` event dispatched by Task 2's `<ClientRouter />` (fires on initial load and after every swap, after new scripts have run).
 - Produces: nothing new — same page behavior, now swap-safe.
 
-- [ ] **Step 1: Wrap `index.astro`'s init calls**
+- [x] **Step 1: Wrap `index.astro`'s init calls**
 
 Replace the script block with:
 
@@ -242,7 +242,7 @@ Replace the script block with:
 </script>
 ```
 
-- [ ] **Step 2: Wrap `openness.astro`'s init call**
+- [x] **Step 2: Wrap `openness.astro`'s init call**
 
 Replace the script block with:
 
@@ -265,7 +265,7 @@ Replace the script block with:
 </script>
 ```
 
-- [ ] **Step 3: Wrap `destination/[iso3].astro`'s init call**
+- [x] **Step 3: Wrap `destination/[iso3].astro`'s init call**
 
 Replace the script block with:
 
@@ -288,12 +288,12 @@ Replace the script block with:
 </script>
 ```
 
-- [ ] **Step 4: Typecheck the site**
+- [x] **Step 4: Typecheck the site**
 
 Run: `cd site && yarn typecheck`
 Expected: 0 errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add site/src/pages/index.astro site/src/pages/openness.astro 'site/src/pages/destination/[iso3].astro'
@@ -309,38 +309,38 @@ git commit -m "feat(site): re-init page scripts on every client-router page load
 **Interfaces:**
 - Consumes: everything above, running in a dev server.
 
-- [ ] **Step 1: Start the dev server on a fresh port**
+- [x] **Step 1: Start the dev server on a fresh port**
 
 Run (background): `cd site && yarn dev --port 4331`
 Then verify it serves (the background task may report failure yet still serve):
 `curl -s -o /dev/null -w '%{http_code}' http://localhost:4331/` → expected `200`.
 
-- [ ] **Step 2: Verify the header node truly persists**
+- [x] **Step 2: Verify the header node truly persists**
 
 With playwright-cli: open `http://localhost:4331/`, then evaluate
 `document.querySelector('header').__probe = 'alive'`. Click the "Openness" nav link, wait for the URL to be `/openness/`, then evaluate `document.querySelector('header').__probe`.
 Expected: `'alive'` — the same DOM node survived the navigation. (An expando property cannot survive a re-render; it only survives if the node was moved, not rebuilt.)
 
-- [ ] **Step 3: Verify `aria-current` follows the page**
+- [x] **Step 3: Verify `aria-current` follows the page**
 
 On `/openness/` evaluate `document.querySelector('header nav a[aria-current="page"]').textContent`.
 Expected: `'Openness'` (was `'Rankings'` before the swap).
 
-- [ ] **Step 4: Verify `data-top` after a swap**
+- [x] **Step 4: Verify `data-top` after a swap**
 
 Still on `/openness/` (freshly navigated, unscrolled) evaluate `document.documentElement.hasAttribute('data-top')`.
 Expected: `true`. Then scroll (`window.scrollTo(0, 600)`) and re-evaluate → `false`.
 
-- [ ] **Step 5: Verify table interactivity after navigating away and back**
+- [x] **Step 5: Verify table interactivity after navigating away and back**
 
 From `/openness/`, click "Rankings" in the nav. On `/`, click the "Passport" / name column header of `#rankings` and evaluate that `#rankings th[aria-sort]` exists; type `portugal` into `#filter` and confirm visible rows shrink (e.g. evaluate `[...document.querySelectorAll('#rankings tbody tr:not([hidden])')].length` is small and > 0).
 Expected: sorting sets `aria-sort`, filtering hides rows — the re-init on `astro:page-load` worked.
 
-- [ ] **Step 6: Stop only the server this task started**
+- [x] **Step 6: Stop only the server this task started**
 
 Kill the specific background dev-server task started in Step 1 (never other terminals/tasks).
 
-- [ ] **Step 7: Run the full static gate**
+- [x] **Step 7: Run the full static gate**
 
 Run: `yarn typecheck-all`
 Expected: both root `tsc` and `astro check` exit 0.
