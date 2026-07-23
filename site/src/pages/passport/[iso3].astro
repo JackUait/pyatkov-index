@@ -4,7 +4,7 @@ import rankings from '../../data/rankings.json';
 import openness from '../../data/openness.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { bareName, displayName, fmt, reconcilePoints, verbFor, withArticle } from '../../lib/format.ts';
+import { bareName, displayName, fmt, reconcilePoints, searchIndex, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
@@ -19,12 +19,12 @@ const base = import.meta.env.BASE_URL;
 const access = (matrix as Record<string, Record<string, string>>)[p.iso3];
 
 // Foreign destinations only (exclude the home country) — used for the two
-// "most valuable destination" lists, which shouldn't list the passport itself.
+// "heaviest doors" lists, which shouldn't list the passport itself.
 const foreignDests = weightsData.destinations
   .filter((d) => d.iso3 !== p.iso3)
   .map((d) => ({ ...d, category: access[d.iso3] as Tier, contribution: CREDIT[access[d.iso3] as Tier] * d.weight }));
 // Open/closed is the credit ladder, not the tier name: an eVisa earns nothing, so it
-// belongs in the "missing" column even though the destination does admit the holder.
+// belongs in the "closed" column even though the destination does admit the holder.
 const reachable = foreignDests.filter((d) => CREDIT[d.category] > 0);
 const topReachable = [...reachable].sort((a, b) => b.contribution - a.contribution).slice(0, 15);
 const topMissing = foreignDests.filter((d) => CREDIT[d.category] === 0).slice(0, 15); // already weight-desc
@@ -50,78 +50,53 @@ const tierContribution = TIERS.map((cat, i) => ({
 }));
 
 const name = displayName(p.iso3, p.name);
-// The same name where it lands as a sentence subject or after a preposition, which is
-// where "is United States" reads as a template tell. Attributive uses ("the {name}
-// passport", "{name} holders") keep the bare form.
+// The name where it lands after a preposition ("who can enter …"), which is where
+// "enter United States" reads as a template tell.
 const theName = withArticle(p.iso3, p.name);
-// And the form for the two slots that write their own "The" — otherwise BHS and GMB,
+// And the form for the slot that writes its own "The" — otherwise BHS and GMB,
 // whose display names carry an article, read "The The Bahamas passport".
 const bare = bareName(p.iso3, p.name);
 const total = rankings.passports.length;
 
-const ordinal = (n: number) => {
-  const rem100 = n % 100;
-  if (rem100 >= 11 && rem100 <= 13) return `${n}th`;
-  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
-};
-const places = (n: number) => `${n} ${n === 1 ? 'place' : 'places'}`;
-// Where a destination sits in the weight table, for prose like "the 4th heaviest".
+// Where a destination sits in the weight table, for the mirror statline.
 const weightRank = (iso3: string) => weightsData.destinations.findIndex((w) => w.iso3 === iso3) + 1;
-const sharePoints = (weight: number) => fmt((100 * weight) / totalWeight);
+// Weight as points: credit for both open tiers is 1.0, so a destination's share of
+// the total weight is exactly what it pays into the score — or would, if opened.
+const sharePoints = (weight: number) => fmt((100 * weight) / denom);
 
-// A shift this small is inside the noise of a densely tied count rank, so it gets no
-// causal story: attaching the full "its reach is to destinations that carry little
-// weight" clause to a one-place move said exactly that about Singapore, which is #3 and
-// reaches every heavy destination there is.
-const NEAR_TIE = 2;
-const deltaSentence =
+// The delta from weighting, folded into the count-rank tile as a one-line note.
+const places = (n: number) => `${n} ${n === 1 ? 'place' : 'places'}`;
+const deltaNote =
   p.delta === 0
-    ? `A plain destination count puts it at #${p.equalRank} as well, so the weighting neither flatters nor punishes it: its access is spread across the value scale in about the proportion a headcount would suggest.`
-    : Math.abs(p.delta) <= NEAR_TIE
-      ? `A plain destination count would put it at #${p.equalRank}, so weighting ${p.delta > 0 ? 'lifts' : 'costs'} it ${places(Math.abs(p.delta))} — close enough that the two orderings agree about where it belongs.`
-      : p.delta > 0
-        ? `A plain destination count would put it at #${p.equalRank}, so weighting lifts it ${places(p.delta)} — the countries it reaches are disproportionately valuable ones, the large economies and heavily visited destinations that carry most of the index's weight.`
-        : `A plain destination count would put it at #${p.equalRank}, so weighting costs it ${places(-p.delta)} — much of its reach is to destinations that carry little economic, tourist, or diaspora weight, while heavier ones stay closed.`;
+    ? 'matches the weighted rank'
+    : p.delta > 0
+      ? `weighting lifts it ${places(p.delta)}`
+      : `weighting costs it ${places(-p.delta)}`;
 
-// Prose is assembled here rather than inline: the template strips the whitespace
-// between an expression and the text on the next line, and these sentences wrap.
-const lede =
-  `The ${bare} passport scores ${fmt(p.score)} out of 100 on the Pyatkov Index, which ranks it ` +
-  `#${p.rank} of ${total}. Of the ${rankings.totalDestinations} destinations the index scores, it enters ` +
-  `${p.counts['visa-free']} visa-free and ${p.counts['visa-on-arrival']} on arrival; ${p.counts['e-visa']} ` +
-  `${verbFor(p.counts['e-visa'], 'offer')} an eVisa, which this index counts as closed because it has to ` +
-  `clear before departure, and ${p.counts['visa-required']} ` +
-  `${verbFor(p.counts['visa-required'], 'require')} a visa arranged in advance. ${deltaSentence}`;
+// Score anatomy bar: the two earning tiers at their (reconciled) points, the two
+// closed tiers at the points they withhold — together the segments span 100.
+const potential = (cat: Tier) =>
+  (100 * foreignDests.filter((d) => d.category === cat).reduce((a, d) => a + d.weight, 0)) / denom;
+const segments = tierContribution
+  .map((t) => ({ cat: t.cat, share: CREDIT[t.cat] > 0 ? t.points : potential(t.cat) }))
+  .filter((s) => s.share > 0.05);
+const locked = potential('e-visa') + potential('visa-required');
+const barLabel = segments
+  .map((s) => `${LABEL[s.cat]}: ${fmt(s.share)} points ${CREDIT[s.cat] > 0 ? 'earned' : 'locked'}`)
+  .join(', ');
 
+// The two doors that matter most, pulled out as cards.
 const best = topReachable[0];
 const gap = topMissing[0];
-const bestSentence = best
-  ? `Its most valuable open destination is ${withArticle(best.iso3, best.name)} — weight ` +
-    `${best.weight.toFixed(3)}, the ${ordinal(weightRank(best.iso3))} heaviest in the index — which ` +
-    `${name} holders enter ${best.category === 'visa-free' ? 'visa-free' : 'on arrival'}, worth ` +
-    `${sharePoints(best.weight)} points on its own.`
-  : '';
-const gapSentence = gap
-  ? `The most valuable one still closed to them is ${withArticle(gap.iso3, gap.name)}, the ` +
-    `${ordinal(weightRank(gap.iso3))} heaviest at weight ${gap.weight.toFixed(3)}: it ` +
-    `${gap.category === 'e-visa' ? 'issues an eVisa that has to be approved before boarding' : 'requires a visa arranged in advance'}, ` +
-    `so it adds nothing here. Opening that one destination would move the score by ${sharePoints(gap.weight)} points.`
-  : 'Nothing is left out: every weighted destination admits this passport without prior permission.';
-// The mirror view: how the country does as a destination. On near-identical passports
-// (the Schengen pairs) this is where the numbers actually diverge.
+
+// Weight meters in the lists share one scale across both columns, so the
+// open/closed asymmetry stays visible.
+const maxListWeight = Math.max(...[...topReachable, ...topMissing].map((d) => d.weight), ownWeight, 1e-9);
+const meterWidth = (weight: number) => `${Math.max(2, (100 * weight) / maxListWeight).toFixed(1)}%`;
+
+// The mirror view: how the country does as a destination. On near-identical
+// passports (the Schengen pairs) this is where the numbers actually diverge.
 const ownDest = openness.destinations.find((x) => x.iso3 === p.iso3);
-const mirrorSentence = ownDest
-  ? `Read the other way round, ${theName} is itself the ${ordinal(weightRank(p.iso3))} heaviest destination ` +
-    `in the index at weight ${ownWeight.toFixed(3)}, and the ${ordinal(ownDest.rank)} most open: ` +
-    `${fmt(ownDest.score)} out of 100 of the world's people outside it can arrive without a prior visa.`
-  : '';
-const reachableIntro =
-  `Weight is a destination's share of the world's destination value — its economy, inbound arrivals, ` +
-  `human development and migrant stock, normalised and combined — so these are the ${reachable.length} ` +
-  `open destinations that put the most into the ${fmt(p.score)} above.`;
-const missingIntro =
-  `The heaviest destinations that need permission before departure, eVisas included. Each one's weight ` +
-  `is roughly the points it would add to ${name}'s score if that permission were dropped.`;
 
 const countryId = pageId(Astro.url.pathname, 'country');
 const country = countryNode({
@@ -166,49 +141,99 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
   <dl class="stats">
     <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
     <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
-    <div><dt><a href={`${base}methodology/#count-rank`}>Count rank</a></dt><dd>#{p.equalRank}</dd></div>
+    <div>
+      <dt><a href={`${base}methodology/#count-rank`}>Count rank</a></dt>
+      <dd>#{p.equalRank} <span class="stat-note">{deltaNote}</span></dd>
+    </div>
   </dl>
-
-  <p class="lede">{lede}</p>
-
-  <p>{bestSentence} {gapSentence} {mirrorSentence}</p>
 
   <h2>Where the score comes from</h2>
   <div class="card">
-  <div class="table-scroll">
-  <table class="tier-table">
-    <caption class="sr-only">How {name}'s score of {fmt(p.score)} splits across the four access tiers</caption>
-    <thead><tr><th scope="col">Access tier</th><th scope="col">Destinations</th><th scope="col">Points</th></tr></thead>
-    <tbody>
-      {tierContribution.map((t) => (
-        <tr><td><span class={`tag tag-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
-      ))}
-    </tbody>
-    <tfoot>
-      <tr><th scope="row">Total (Score)</th><td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa'] + p.counts['visa-required']}</td><td>{fmt(p.score)}</td></tr>
-    </tfoot>
-  </table>
+    <div class="score-anatomy">
+      <div class="bar-annot">
+        <span><b>{fmt(p.score)}</b> points earned</span>
+        {locked > 0.05 && <span><b>{fmt(locked)}</b> points locked</span>}
+      </div>
+      <div class="score-bar" role="img" aria-label={barLabel}>
+        {segments.map((s) => (
+          <i class={`tier-${s.cat}`} style={`--share:${s.share.toFixed(2)}`} />
+        ))}
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table class="tier-table">
+        <caption class="sr-only">How {name}'s score of {fmt(p.score)} splits across the four access tiers</caption>
+        <thead><tr><th scope="col">Access tier</th><th scope="col">Destinations</th><th scope="col">Points</th></tr></thead>
+        <tbody>
+          {tierContribution.map((t) => (
+            <tr><td><span class={`tier-key tier-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr><th scope="row">Total (Score)</th><td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa'] + p.counts['visa-required']}</td><td>{fmt(p.score)}</td></tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
+
+  <div class="hl-grid">
+    {best && (
+      <div class="hl-card hl-open">
+        <span class="hl-label">Best open door</span>
+        <a class="hl-name" href={`${base}destination/${best.iso3.toLowerCase()}/`}><Flag iso2={best.iso2} /> {displayName(best.iso3, best.name)}</a>
+        <span class={`tier-key tier-${best.category}`}>{LABEL[best.category]}</span>
+        <span class="hl-pts"><b>{sharePoints(best.weight)}</b> points of the score</span>
+      </div>
+    )}
+    <div class="hl-card hl-locked">
+      {gap ? (
+        <Fragment>
+          <span class="hl-label">Costliest closed door</span>
+          <a class="hl-name" href={`${base}destination/${gap.iso3.toLowerCase()}/`}><Flag iso2={gap.iso2} /> {displayName(gap.iso3, gap.name)}</a>
+          <span class={`tier-key tier-${gap.category}`}>{LABEL[gap.category]}</span>
+          <span class="hl-pts"><b>+{sharePoints(gap.weight)}</b> points if it opened</span>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <span class="hl-label">Nothing closed</span>
+          <p class="hl-none">Every weighted destination admits {name} holders without prior permission.</p>
+        </Fragment>
+      )}
+    </div>
   </div>
 
   <div class="rank-cols">
     <section>
-      <h2>Most valuable destinations reachable</h2>
-      <p class="list-intro">{reachableIntro}</p>
+      <h2>The heaviest open doors</h2>
+      <p class="list-intro">Top {topReachable.length} of {reachable.length} open destinations, by the points each pays into the score.</p>
       <ol class="rank-list">
         {topReachable.map((d) => (
-          <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a> <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
+          <li>
+            <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
+            <span class={`wt tier-${d.category}`} title={LABEL[d.category]}>
+              <span class="sr-only">{LABEL[d.category]},</span>
+              <i class="wt-meter" style={`--w:${meterWidth(d.weight)}`} aria-hidden="true"></i>
+              <b class="wt-val">{sharePoints(d.weight)}</b>
+            </span>
+          </li>
         ))}
       </ol>
     </section>
     <section>
-      <h2>Most valuable destinations missing</h2>
-      {topMissing.length === 0 ? <p>None. This passport reaches every weighted destination.</p> : (
+      <h2>The heaviest closed doors</h2>
+      {topMissing.length === 0 ? <p class="list-intro">None — this passport reaches every weighted destination.</p> : (
         <Fragment>
-          <p class="list-intro">{missingIntro}</p>
+          <p class="list-intro">Still need permission before departure — and the points each would add if it opened.</p>
           <ol class="rank-list">
             {topMissing.map((d) => (
-              <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a> <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
+              <li>
+                <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
+                <span class={`wt tier-${d.category}`} title={LABEL[d.category]}>
+                  <span class="sr-only">{LABEL[d.category]},</span>
+                  <i class="wt-meter" style={`--w:${meterWidth(d.weight)}`} aria-hidden="true"></i>
+                  <b class="wt-val">+{sharePoints(d.weight)}</b>
+                </span>
+              </li>
             ))}
           </ol>
         </Fragment>
@@ -216,9 +241,54 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
     </section>
   </div>
 
-  <p class="closing">
-    All {total} passports are scored the same way: see the <a href={base}>full ranking</a>, read <a href={`${base}methodology/`}>how the weights are built</a>, or turn the question around and <a href={`${base}destination/${p.iso3.toLowerCase()}/`}>see who can enter {theName}</a>.
-  </p>
+  <div class="dest-map-head">
+    <h2>Every destination</h2>
+    <input
+      id="dest-search"
+      class="dest-search"
+      type="search"
+      placeholder={`Search ${foreignDests.length} destinations`}
+      aria-label="Search destinations"
+      autocomplete="off"
+    />
+  </div>
+  <div class="dest-map">
+    {TIERS.map((cat) => {
+      const items = foreignDests
+        .filter((d) => d.category === cat)
+        .map((d) => ({ ...d, label: displayName(d.iso3, d.name) }))
+        .sort((a, b) => a.label.localeCompare(b.label, 'en'));
+      const points = tierContribution.find((t) => t.cat === cat)?.points ?? 0;
+      return (
+        items.length > 0 && (
+          <section class="dest-group">
+            <header class="dest-head">
+              <h3 class={`tier-key tier-${cat}`}>{LABEL[cat]} <span class="count">{items.length}</span></h3>
+              <span class="dest-pts">{fmt(points)} points</span>
+            </header>
+            <ul class={`dest-flow tier-${cat}${CREDIT[cat] > 0 ? '' : ' is-locked'}`}>
+              {items.map((d) => (
+                <li data-search={searchIndex(d)}><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {d.label}</a></li>
+              ))}
+            </ul>
+          </section>
+        )
+      );
+    })}
+    <p class="dest-empty" hidden>No destination matches that search.</p>
+  </div>
+
+  {ownDest && (
+    <Fragment>
+      <h2>As a destination</h2>
+      <div class="statline">
+        <div><strong>#{weightRank(p.iso3)}</strong> <span>heaviest in the index · weight {ownWeight.toFixed(3)}</span></div>
+        <div><strong>#{ownDest.rank}</strong> <span>most open of {openness.destinations.length}</span></div>
+        <div><strong>{fmt(ownDest.score)}</strong> <span>openness score / 100</span></div>
+        <div class="stat-end"><a href={`${base}destination/${p.iso3.toLowerCase()}/`}>Who can enter {theName} →</a></div>
+      </div>
+    </Fragment>
+  )}
 
   <style>
     .crumbs {
@@ -233,7 +303,6 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       color: var(--color-graphite);
       max-width: 46ch;
     }
-    .closing { margin-top: 40px; }
     /* Captions are indexable text, but the tables are already titled by their h2. */
     .sr-only {
       position: absolute;
@@ -247,4 +316,12 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       border: 0;
     }
   </style>
+
+  {/* astro:page-load fires on the initial load too (ClientRouter), so one
+      listener covers first paint and every view transition. In the drawer the
+      page's scripts arrive inert; country-drawer.ts re-runs the init there. */}
+  <script>
+    import { initDestSearch } from '../../lib/dest-search.ts';
+    document.addEventListener('astro:page-load', () => initDestSearch());
+  </script>
 </Base>

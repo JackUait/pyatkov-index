@@ -7,6 +7,7 @@
 // verified in the browser.
 // ---------------------------------------------------------------------------
 import { initSortableTable } from './table-ui.ts';
+import { initDestSearch } from './dest-search.ts';
 
 export type CountryKind = 'passport' | 'destination';
 
@@ -50,6 +51,19 @@ let bound = false;
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel);
 const root = () => $('#country-drawer');
+
+/** Highlight the host-page table row whose country is showing in the drawer.
+ *  Passing null clears it. Rows outside the drawer that link to `url` get the
+ *  marker; the drawer's own copy of the page is skipped. */
+function markActiveRow(url: string | null): void {
+  for (const tr of document.querySelectorAll('tr.is-drawer-active')) tr.classList.remove('is-drawer-active');
+  if (!url) return;
+  const path = new URL(url).pathname;
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('a[href]')) {
+    if (a.closest('#country-drawer') || a.pathname !== path) continue;
+    a.closest('tr')?.classList.add('is-drawer-active');
+  }
+}
 
 function parsePage(html: string): CountryPage | null {
   const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -122,6 +136,7 @@ function render(url: string, page: CountryPage): void {
   if (full) full.href = url;
   const back = $('#drawer-back');
   if (back) back.hidden = stack.length < 2;
+  markActiveRow(url);
 
   // The injected copy of a country page carries the same table/filter ids as
   // the host page can, so behavior re-init is scoped to the drawer's subtree.
@@ -133,6 +148,9 @@ function render(url: string, page: CountryPage): void {
     initialSort: 'credit',
     defaultAsc: { credit: false, name: true, rank: true, score: false },
   });
+  // The passport page's destination-map search, same deal: its own script
+  // arrived inert with the fetched page, so the drawer wires the clone here.
+  initDestSearch({ root: content });
   content.scrollTop = 0;
   content.focus({ preventScroll: true });
 }
@@ -205,6 +223,7 @@ function close(): void {
   if (!el || el.hidden) return;
   stack.length = 0;
   loadSeq++;
+  markActiveRow(null);
   setModal(false);
   el.classList.remove('is-open');
   const panel = el.querySelector<HTMLElement>('.drawer-panel');
@@ -278,6 +297,7 @@ export function initCountryDrawer(): void {
   document.addEventListener('astro:before-swap', () => {
     stack.length = 0;
     loadSeq++;
+    markActiveRow(null);
     setModal(false);
     lastFocus = null;
   });
