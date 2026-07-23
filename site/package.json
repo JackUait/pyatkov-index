@@ -7,10 +7,9 @@
   },
   "packageManager": "yarn@4.17.1",
   "scripts": {
-    "dev": "astro dev",
+    "serve": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "serve": "astro preview",
     "typecheck": "astro check",
     "astro": "astro"
   },

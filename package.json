@@ -6,8 +6,8 @@
   "scripts": {
     "fetch-data": "tsx pipeline/fetch.ts",
     "pipeline": "tsx pipeline/build.ts",
-    "dev": "cd site && yarn dev",
-    "serve": "cd site && yarn build && yarn serve",
+    "serve": "cd site && yarn serve",
+    "preview": "cd site && yarn build && yarn preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "typecheck-all": "tsc --noEmit && cd site && yarn typecheck",

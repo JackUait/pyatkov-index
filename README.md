@@ -154,7 +154,9 @@ runs sanity checks that fail the build rather than publish nonsense. `yarn typec
 type-checks the pipeline (root `tsconfig.json` includes only `pipeline/`), and the Astro
 site is type-checked separately with `cd site && yarn typecheck` (which runs `astro
 check`); `yarn typecheck-all` from the repo root runs both. `yarn test` (Vitest) runs the
-pipeline unit tests, and `yarn serve` (from the repo root) serves the built site locally.
+pipeline unit tests. `yarn serve` (from the repo root) starts the Astro dev server with
+hot reloading — edits appear in the browser without a restart. `yarn preview` builds the
+site for production and serves that build, for checking the real output before deploying.
 
 ### Refreshing data snapshots
 
