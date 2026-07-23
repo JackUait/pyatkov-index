@@ -76,9 +76,9 @@ const itemList = {
     </h1>
     <div class="hero-deck">
       <p class="tagline">
-        A door to the United States is not a door to Tuvalu. Every destination
-        is weighed by the economy, travel, development, and diaspora behind it
-        — and every passport by the doors it opens.
+        Getting into the United States isn't the same as getting into Tuvalu.
+        We score each destination by its economy, travel, development, and
+        diaspora, then rank each passport by how much it can actually reach.
       </p>
       <div class="actions">
         <a class="btn btn-lg btn-primary" href="#rankings-card">See the rankings</a>
@@ -114,25 +114,6 @@ const itemList = {
     </div>
     <div class="ribbon-tip" aria-hidden="true" hidden></div>
   </figure>
-
-  {/* The strip is a graphic; this is its readable counterpart, and the only
-      non-decorative route from the site root into the destination pages. */}
-  <nav class="heavy-head" aria-labelledby="heavy-head-title">
-    <h2 id="heavy-head-title">The twenty heaviest destinations</h2>
-    <ol class="heavy-list">
-      {ribbon.slice(0, 20).map((d, i) => (
-        <li>
-          <span class="heavy-rank">{i + 1}</span>
-          <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
-          <span class="heavy-share">{share(d.weight).toFixed(2)}%</span>
-        </li>
-      ))}
-    </ol>
-    <p class="heavy-more">
-      <a href={`${base}destinations/`}>All {ribbon.length} destination weights</a>
-      <a href={`${base}openness/`}>See who can enter each destination</a>
-    </p>
-  </nav>
 
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
@@ -202,40 +183,5 @@ const itemList = {
       clip-path: inset(50%);
       white-space: nowrap;
     }
-
-    .heavy-head { margin: 0 0 56px; }
-    .heavy-head h2 {
-      font-size: var(--text-caption);
-      line-height: var(--leading-caption);
-      letter-spacing: var(--tracking-caption);
-      text-transform: uppercase;
-      color: var(--color-slate);
-      margin: 0 0 12px;
-    }
-    .heavy-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 2px 28px;
-    }
-    .heavy-list li {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      padding: 5px 0;
-      border-bottom: 1px solid var(--border-hairline);
-      font-size: 15px;
-    }
-    .heavy-rank,
-    .heavy-share {
-      font-variant-numeric: tabular-nums;
-      color: var(--color-slate);
-      font-size: var(--text-caption);
-    }
-    .heavy-rank { min-width: 1.6ch; text-align: right; }
-    .heavy-list a { flex: 1; }
-    .heavy-more { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 16px 0 0; }
   </style>
 </Base>
