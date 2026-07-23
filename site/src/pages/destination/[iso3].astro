@@ -4,7 +4,7 @@ import openness from '../../data/openness.json';
 import rankings from '../../data/rankings.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { deltaLabel, displayName, fmt, opennessBand, reconcilePoints, searchIndex, verbFor, withArticle } from '../../lib/format.ts';
+import { displayName, fmt, opennessBand, reconcilePoints, searchIndex, verbFor, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
@@ -167,7 +167,6 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
     <div><dt>Openness</dt><dd>{fmt(d.score)}</dd></div>
     <div><dt>Openness rank</dt><dd>#{d.rank}</dd></div>
     <div><dt>Count rank</dt><dd>#{d.equalRank}</dd></div>
-    <div><dt>Δ from weighting</dt><dd class={d.delta > 0 ? 'up' : d.delta < 0 ? 'down' : ''}>{deltaLabel(d.delta)}</dd></div>
   </dl>
 
   <p class="lede">

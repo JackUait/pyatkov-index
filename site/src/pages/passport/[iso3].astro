@@ -4,7 +4,7 @@ import rankings from '../../data/rankings.json';
 import openness from '../../data/openness.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { bareName, deltaLabel, displayName, fmt, reconcilePoints, verbFor, withArticle } from '../../lib/format.ts';
+import { bareName, displayName, fmt, reconcilePoints, verbFor, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
@@ -167,7 +167,6 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
     <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
     <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
     <div><dt><a href={`${base}methodology/#count-rank`}>Count rank</a></dt><dd>#{p.equalRank}</dd></div>
-    <div><dt><a href={`${base}methodology/#delta`}>Δ from weighting</a></dt><dd class={p.delta > 0 ? 'up' : p.delta < 0 ? 'down' : ''}>{deltaLabel(p.delta)}</dd></div>
   </dl>
 
   <p class="lede">{lede}</p>
