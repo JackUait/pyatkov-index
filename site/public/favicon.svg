@@ -1,8 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <rect width="128" height="128" rx="28" fill="#0075de"/>
-  <g fill="none" stroke="#ffffff" stroke-width="6">
-    <circle cx="64" cy="64" r="42"/>
-    <ellipse cx="64" cy="64" rx="18.5" ry="42"/>
-    <line x1="22" y1="64" x2="106" y2="64"/>
+  <!-- The ribbon reduced to its claim: half the world's weight on one side,
+       everything else on the other. Marigold meets midnight at the exact
+       center — two flat fills, so the split stays razor sharp at 16px where
+       tab icons actually live. The header mark carries the nuanced fade;
+       the favicon states the argument. -->
+  <defs><clipPath id="tile"><rect width="128" height="128" rx="24"/></clipPath></defs>
+  <g clip-path="url(#tile)">
+    <rect width="64" height="128" fill="#ffb110"/>
+    <rect x="64" width="64" height="128" fill="#02093a"/>
   </g>
 </svg>

@@ -24,6 +24,7 @@
   --color-slate: #696969;
   --color-sky-tint: #e6f3fe;
   --color-marigold: #ffb110;
+  --color-saffron: #e89d01;
   --color-coral: #f64932;
   --color-signal-blue: #097fe8;
   --color-sky-wash: #62aef0;
@@ -101,13 +102,23 @@ th[data-sort]:focus-visible {
   border-radius: var(--radius-sm);
 }
 
-/* ---- Global nav: white bar on the warm canvas, the one sticky elevation ---- */
+/* ---- Global nav: the masthead of the argument ----
+   The bar rests transparent on the paper so the masthead and the hero share
+   one canvas; the white fill and the one sticky elevation appear only once
+   content scrolls beneath it (data-top, set by nav-elevation.ts). The
+   elevated bar is the no-JS default so a failed script never leaves a
+   transparent bar over scrolled content. */
 header {
   position: sticky;
   top: 0;
   z-index: 20;
   background: var(--color-white);
   box-shadow: var(--shadow-nav);
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+header[data-top] {
+  background: transparent;
+  box-shadow: none;
 }
 .nav-inner {
   max-width: var(--content-width);
@@ -121,14 +132,20 @@ header {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.1px;
   color: var(--color-ink);
 }
 .brand:hover { text-decoration: none; }
-.brand svg { display: block; color: var(--color-notion-blue); }
+.brand-mark { display: block; }
+/* The scale tips: the marigold half is the heavy end, so it dips. Hover-only
+   motion, spring timing per the reference's character-mark animations. */
+@media (prefers-reduced-motion: no-preference) {
+  .brand-mark { transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .brand:hover .brand-mark { transform: rotate(-5deg); }
+}
 header nav {
   display: flex;
   gap: 4px;
@@ -138,16 +155,25 @@ header nav {
 header nav a {
   color: var(--ink-54);
   font-weight: 500;
-  padding: 8px 12px;
-  border-radius: var(--radius-btn);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
   transition: color 200ms ease, background-color 200ms ease;
 }
+header nav a:focus-visible { border-radius: var(--radius-pill); }
 header nav a:hover {
   color: var(--ink-95);
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 0, 0, 0.05);
   text-decoration: none;
 }
-header nav a[aria-current='page'] { color: var(--ink-95); }
+/* The current page is a highlighted word: the hero's peach pill, reused as
+   the active state so the nav quotes the headline device. */
+header nav a[aria-current='page'] {
+  color: var(--ink-95);
+  background: var(--color-peach);
+}
+header nav a[aria-current='page']:hover {
+  background: color-mix(in srgb, var(--color-peach) 94%, var(--color-ink));
+}
 
 /* ---- Shell ---- */
 main {
@@ -989,7 +1015,36 @@ footer {
   thead th, tbody td, tfoot th, tfoot td { padding-left: 10px; padding-right: 10px; }
 }
 
-@media (max-width: 520px) {
-  header nav { gap: 0; }
-  .brand span { display: none; }
+@media (max-width: 660px) {
+  /* Phone masthead: brand and four sections cannot share one readable row,
+     so the bar becomes a nameplate — wordmark centered over a centered row
+     of section pills — and gives up stickiness rather than holding a
+     hundred pixels of a small screen. */
+  header {
+    position: static;
+    background: transparent;
+    box-shadow: none;
+  }
+  html { scroll-padding-top: 16px; }
+  .nav-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-height: 0;
+    padding-top: 18px;
+    padding-bottom: 10px;
+  }
+  header nav {
+    margin-left: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 13px;
+  }
+  header nav a { padding: 6px 11px; }
+}
+
+/* Below ~412px one pill row can no longer hold all four sections and would
+   wrap 3+1; capping the row width turns the orphan into a balanced 2+2. */
+@media (max-width: 411px) {
+  header nav { max-width: 240px; }
 }
