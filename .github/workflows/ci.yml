@@ -1,0 +1,32 @@
+name: CI
+on:
+  # main is covered by deploy.yml, which runs the same checks before deploying.
+  push:
+    branches-ignore: [main]
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: |
+            yarn.lock
+            site/yarn.lock
+      - run: corepack enable
+      - run: yarn install --immutable
+      - run: yarn install --immutable
+        working-directory: site
+      # typecheck-all + test + pipeline + check-data-drift
+      - run: yarn verify
+      - run: yarn build
+        working-directory: site
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
