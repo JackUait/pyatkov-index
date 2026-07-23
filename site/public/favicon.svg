@@ -1,12 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <!-- The ribbon reduced to its claim: half the world's weight on one side,
-       everything else on the other. Marigold meets midnight at the exact
-       center — two flat fills, so the split stays razor sharp at 16px where
-       tab icons actually live. The header mark carries the nuanced fade;
-       the favicon states the argument. -->
-  <defs><clipPath id="tile"><rect width="128" height="128" rx="24"/></clipPath></defs>
+       everything else on the other. Marigold meets the tail's gray at the
+       exact center — two flat fills, so the split stays razor sharp at 16px
+       where tab icons actually live. Stone, not the ribbon's pale wash: at
+       icon size the tail must hold its own against white browser chrome.
+       rx 16 (12.5%), squarer than the site's card radius: at 16px a deep
+       radius rounds the tile into a blob. -->
+  <defs><clipPath id="tile"><rect width="128" height="128" rx="16"/></clipPath></defs>
   <g clip-path="url(#tile)">
     <rect width="64" height="128" fill="#ffb110"/>
-    <rect x="64" width="64" height="128" fill="#02093a"/>
+    <rect x="64" width="64" height="128" fill="#757575"/>
   </g>
 </svg>

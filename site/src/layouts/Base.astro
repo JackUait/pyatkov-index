@@ -143,11 +143,11 @@ const nav = [
     <meta name="theme-color" content="#f6f5f4" />
     <ClientRouter />
     {/* The version query pushes browsers past their sticky favicon caches;
-        bump it whenever the icon artwork changes (v4: the marigold/midnight
-        half split). Safari tends to ignore SVG icons, so the ico is linked
-        explicitly, first. */}
-    <link rel="icon" href={`${base}favicon.ico?v=4`} sizes="32x32" />
-    <link rel="icon" href={`${base}favicon.svg?v=4`} type="image/svg+xml" />
+        bump it whenever the icon artwork changes (v5: gray tail instead of
+        midnight, squarer tile). Safari tends to ignore SVG icons, so the
+        ico is linked explicitly, first. */}
+    <link rel="icon" href={`${base}favicon.ico?v=5`} sizes="32x32" />
+    <link rel="icon" href={`${base}favicon.svg?v=5`} type="image/svg+xml" />
     {/* First paint must already know whether the bar sits on an unscrolled
         page: the elevation module is deferred, and Chrome can paint mid-parse,
         so a same-element or after-the-header script is still too late. Set in
