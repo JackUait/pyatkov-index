@@ -363,7 +363,8 @@ li { margin: 6px 0; }
    as a color split, and a midnight bracket measures the marigold half. */
 .ribbon-figure {
   position: relative;
-  margin: 12px 0 24px;
+  /* The bottom margin alone separates the plate from the rankings card. */
+  margin: 12px 0 64px;
 }
 /* Annotation band: the caption sits inside the chart, anchored to the data.
    --half (set inline from the pipeline data) is the head's share of width. */
@@ -508,7 +509,7 @@ li { margin: 6px 0; }
 
 /* ---- Stat colophon: the plate's closing line ----
    Number-and-label pairs on one baseline between hairlines, left-ragged like
-   the rest of the page; on the rankings page it closes the ribbon plate. */
+   the rest of the page; used on the openness page. */
 .statline {
   display: flex;
   flex-wrap: wrap;
@@ -575,6 +576,18 @@ li { margin: 6px 0; }
   color: var(--color-stone);
   font-size: var(--text-body-sm);
   font-variant-numeric: tabular-nums;
+}
+/* The build date joins the count behind a hairline divider; the divider goes
+   when wrapping would strand it at the start of a line. */
+.card-header .built {
+  padding-left: 16px;
+  border-left: 1px solid var(--border-hairline);
+}
+@media (max-width: 560px) {
+  .card-header .built {
+    padding-left: 0;
+    border-left: 0;
+  }
 }
 
 /* ---- Filter input ---- */

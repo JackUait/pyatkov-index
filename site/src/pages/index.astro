@@ -84,16 +84,11 @@ const tipFor = (d: (typeof ribbon)[number], i: number) =>
     <div class="ribbon-tip" aria-hidden="true" hidden></div>
   </figure>
 
-  <section class="statline" aria-label="Index coverage">
-    <div><strong>{rankings.passports.length}</strong><span>passports ranked</span></div>
-    <div><strong>{rankings.totalDestinations}</strong><span>destinations weighted</span></div>
-    <div><strong>4</strong><span>weighting signals</span></div>
-    <div class="stat-end"><strong>{formatBuiltDate(builtAt)}</strong><span>last built</span></div>
-  </section>
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
     <h2>The ranking</h2>
     <span class="count">{rankings.passports.length} passports</span>
+    <span class="count built">Last built {formatBuiltDate(builtAt)}</span>
     <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   </div>
   <div class="table-scroll">
