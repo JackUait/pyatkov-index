@@ -3,12 +3,12 @@ import '@fontsource-variable/inter';
 import '@fontsource/source-serif-pro/400.css';
 import '@fontsource/source-serif-pro/400-italic.css';
 import '../styles/global.css';
+import { normalizePath } from '../lib/nav-current.ts';
 interface Props { title: string; description: string; wide?: boolean }
 const { title, description, wide = false } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
-const norm = (p: string) => p.replace(/\/+$/, '') || '/';
-const here = norm(Astro.url.pathname);
+const here = normalizePath(Astro.url.pathname);
 const nav = [
   { href: base, label: 'Rankings' },
   { href: `${base}openness/`, label: 'Openness' },
@@ -65,7 +65,7 @@ const nav = [
         </a>
         <nav>
           {nav.map((item) => (
-            <a href={item.href} aria-current={here === norm(item.href) ? 'page' : undefined}>{item.label}</a>
+            <a href={item.href} aria-current={here === normalizePath(item.href) ? 'page' : undefined}>{item.label}</a>
           ))}
         </nav>
       </div>
