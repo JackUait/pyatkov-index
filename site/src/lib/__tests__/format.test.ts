@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { displayName, formatBuiltDate, matchesSearch, reconcilePoints, searchIndex, tiedRanks } from '../format.ts';
+import { displayName, formatBuiltDate, matchesSearch, opennessBand, reconcilePoints, searchIndex, tiedRanks, bareName, verbFor, withArticle } from '../format.ts';
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
@@ -161,5 +161,95 @@ describe('matchesSearch / searchIndex (B8 — search matches name, iso3, iso2, a
     expect(idx).toContain('tur');
     expect(idx).toContain('türkiye');
     expect(idx).toBe(idx.toLowerCase());
+  });
+});
+
+describe('opennessBand', () => {
+  // Openness ranks tie densely — eleven destinations share #1 and the last rank is 139
+  // of 199 rows — so a band read off the array position contradicts the rank printed in
+  // the same sentence. The band is a function of the rank alone; nothing else.
+  const maxRank = 139;
+
+  it('calls the joint-first destinations the most open, however many share the rank', () => {
+    expect(opennessBand(1, maxRank)).toBe('among the most open destinations rated');
+  });
+
+  it('gives tied destinations the same band', () => {
+    expect(opennessBand(36, maxRank)).toBe(opennessBand(36, maxRank));
+    expect(opennessBand(36, maxRank)).not.toBe(opennessBand(1, maxRank));
+  });
+
+  it('calls the last rank the hardest to enter', () => {
+    expect(opennessBand(maxRank, maxRank)).toBe('among the hardest destinations in the index to enter');
+  });
+
+  it('never improves as the rank gets worse', () => {
+    const bands = Array.from({ length: maxRank }, (_, i) => opennessBand(i + 1, maxRank));
+    // Each band appears in one contiguous run, in worsening order — so the index of a
+    // band in first-appearance order can only go up as the rank goes up.
+    const order = [...new Set(bands)];
+    for (let i = 1; i < bands.length; i++) {
+      expect(order.indexOf(bands[i])).toBeGreaterThanOrEqual(order.indexOf(bands[i - 1]));
+    }
+  });
+
+  it('survives a single-rank table without dividing by zero', () => {
+    expect(opennessBand(1, 1)).toBe('among the most open destinations rated');
+  });
+});
+
+describe('verbFor (subject-verb agreement in generated prose)', () => {
+  it('takes the -s form for a count of one', () => {
+    expect(verbFor(1, 'enter')).toBe('enters');
+    expect(verbFor(1, 'need')).toBe('needs');
+  });
+
+  it('leaves the bare form for every other count', () => {
+    expect(verbFor(0, 'enter')).toBe('enter');
+    expect(verbFor(2, 'enter')).toBe('enter');
+    expect(verbFor(198, 'need')).toBe('need');
+  });
+});
+
+describe('withArticle (definite article on names that require one)', () => {
+  it('prefixes the names that take "the"', () => {
+    expect(withArticle('USA', 'United States')).toBe('the United States');
+    expect(withArticle('GBR', 'United Kingdom')).toBe('the United Kingdom');
+    expect(withArticle('ARE', 'United Arab Emirates')).toBe('the United Arab Emirates');
+    expect(withArticle('NLD', 'Netherlands')).toBe('the Netherlands');
+    expect(withArticle('PHL', 'Philippines')).toBe('the Philippines');
+    expect(withArticle('CAF', 'Central African Republic')).toBe('the Central African Republic');
+  });
+
+  it('leaves names that take no article alone', () => {
+    expect(withArticle('DEU', 'Germany')).toBe('Germany');
+    expect(withArticle('CYP', 'Cyprus')).toBe('Cyprus');
+    expect(withArticle('BRB', 'Barbados')).toBe('Barbados');
+    expect(withArticle('VCT', 'St. Vincent and the Grenadines')).toBe('St. Vincent and the Grenadines');
+  });
+
+  it('lowercases an article already baked into the display name, for mid-sentence use', () => {
+    expect(withArticle('BHS', 'The Bahamas')).toBe('the Bahamas');
+    expect(withArticle('GMB', 'The Gambia')).toBe('the Gambia');
+  });
+
+  it('never doubles the article', () => {
+    expect(withArticle('BHS', 'The Bahamas').match(/\bthe\b/gi)).toHaveLength(1);
+  });
+});
+
+describe('bareName (slots that supply their own article)', () => {
+  it('strips an article baked into the display name', () => {
+    expect(bareName('BHS', 'The Bahamas')).toBe('Bahamas');
+    expect(bareName('GMB', 'The Gambia')).toBe('Gambia');
+  });
+
+  it('leaves every other name untouched', () => {
+    expect(bareName('USA', 'United States')).toBe('United States');
+    expect(bareName('DEU', 'Germany')).toBe('Germany');
+  });
+
+  it('is what makes "The {name} passport" read correctly', () => {
+    expect(`The ${bareName('BHS', 'Bahamas, The')} passport`).toBe('The Bahamas passport');
   });
 });

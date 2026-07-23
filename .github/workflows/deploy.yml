@@ -33,6 +33,15 @@ jobs:
         working-directory: site
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
+      # The guard against a silent placeholder-origin regression: if `site` in
+      # astro.config.mjs ever drifts, the sitemap still builds but every URL in
+      # it points at the wrong host, and nothing else would notice.
+      - name: Verify crawl surface
+        run: |
+          test -f site/dist/sitemap-index.xml || { echo 'missing sitemap-index.xml'; exit 1; }
+          test -f site/dist/robots.txt || { echo 'missing robots.txt'; exit 1; }
+          grep -q 'https://jackuait.github.io/pyatkov-index/passport/' site/dist/sitemap-0.xml \
+            || { echo 'sitemap-0.xml has no canonical passport URLs'; exit 1; }
       - uses: actions/upload-pages-artifact@v5
         with: { path: site/dist }
   deploy:

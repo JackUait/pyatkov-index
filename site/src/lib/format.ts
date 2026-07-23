@@ -31,6 +31,30 @@ export function deltaLabel(d: number): string {
   return d > 0 ? `+${d}` : `−${Math.abs(d)}`;
 }
 
+// Worst-first: each band covers ranks up to `maxShare` of the way down the rank scale.
+const OPENNESS_BANDS: Array<{ maxShare: number; phrase: string }> = [
+  { maxShare: 0.05, phrase: 'among the most open destinations rated' },
+  { maxShare: 0.25, phrase: 'in the open quarter of the table' },
+  { maxShare: 0.5, phrase: 'in the open half of the table, though not near the top' },
+  { maxShare: 0.75, phrase: 'in the more restrictive half of the table' },
+  { maxShare: 0.95, phrase: 'in the restrictive quarter of the table' },
+  { maxShare: Infinity, phrase: 'among the hardest destinations in the index to enter' },
+];
+
+/** Plain-English placement for a destination's openness rank.
+ *
+ *  Keyed on the RANK, not on the row's position in the sorted array: openness ranks tie
+ *  densely (199 destinations share 139 distinct ranks, eleven of them at #1), so a band
+ *  read off the array position contradicts the rank printed in the same sentence — a
+ *  joint-first destination came out "in the open quarter of the table, at openness rank
+ *  #1". Normalising rank against the last rank keeps ties in one band and pins both ends
+ *  of the scale. */
+export function opennessBand(rank: number, maxRank: number): string {
+  const span = Math.max(1, maxRank - 1);
+  const share = Math.min(1, Math.max(0, (rank - 1) / span));
+  return OPENNESS_BANDS.find((b) => share < b.maxShare || b.maxShare === Infinity)!.phrase;
+}
+
 // ---------------------------------------------------------------------------
 // B5 — reconcile per-tier "Points" with the displayed Score.
 // Each tier's contribution and the headline score were each rounded to one
@@ -133,6 +157,41 @@ const COUNTRY_ALIASES: Record<string, string[]> = {
 
 export function displayName(iso3: string, fallback: string): string {
   return DISPLAY_NAMES[iso3] ?? fallback;
+}
+
+// Countries whose English name carries a definite article. Every generated sentence that
+// puts a name after a copula ("the heaviest destination is …") needs it, and the list is
+// enumerated rather than inferred: a plural-form heuristic would take Cyprus, Barbados,
+// Honduras and Mauritius, none of which take an article.
+const ARTICLE_NAMES = new Set([
+  'ARE', 'BHS', 'CAF', 'COD', 'COM', 'GBR', 'GMB', 'MDV', 'MHL', 'NLD', 'PHL', 'SLB', 'SYC', 'USA',
+]);
+
+/** A display name with its definite article, ready to sit mid-sentence.
+ *
+ *  BHS and GMB already carry a capitalised "The" in DISPLAY_NAMES because that is how they
+ *  read as a standalone table cell; mid-sentence the same article has to be lowercased, so
+ *  an existing one is rewritten rather than a second one prepended. */
+export function withArticle(iso3: string, fallback: string): string {
+  const name = displayName(iso3, fallback);
+  if (!ARTICLE_NAMES.has(iso3)) return name;
+  return /^the /i.test(name) ? `the ${name.slice(4)}` : `the ${name}`;
+}
+
+/** The mirror of withArticle, for slots that already supply their own article — "The
+ *  {name} passport" rendered "The The Bahamas passport" on the two pages whose display
+ *  name carries one. */
+export function bareName(iso3: string, fallback: string): string {
+  return displayName(iso3, fallback).replace(/^The /, '');
+}
+
+/** Subject-verb agreement for counted prose: `verbFor(1, 'enter')` -> 'enters'.
+ *
+ *  Only regular verbs pass through here — the generated sentences use enter, need and
+ *  offer — so the -s form is the whole rule. "1 foreign passports enter visa-free" is the
+ *  most visible kind of template tell, and seven destination pages hit a count of one. */
+export function verbFor(count: number, verb: string): string {
+  return count === 1 ? `${verb}s` : verb;
 }
 
 export interface SearchableRow {

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import { formatBuiltDate } from '../lib/format.ts';
+import { absUrl, pageId, ID } from '../lib/seo.ts';
 
 // B9: honest build date + per-signal vintages emitted by the pipeline.
 // Coded defensively so the page still renders against pre-regen data.
@@ -18,8 +19,91 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
 const v = meta.vintages ?? {};
 // Year-range strings from the pipeline use an en-dash; ranges render with a hyphen.
 const range = (s: string) => s.replace(/[–—]/g, '-');
+
+const base = import.meta.env.BASE_URL;
+// The four derived datasets are copied to public/data/ at build time; these are
+// both the Dataset's distribution URLs and the visible download links below.
+const downloads = [
+  { file: 'rankings.json', label: 'Passport rankings', desc: 'Every passport with its score, rank, count rank, and access counts.' },
+  { file: 'weights.json', label: 'Destination weights', desc: 'Every destination with its weight and the four z-scored signals behind it.' },
+  { file: 'openness.json', label: 'Destination openness', desc: 'Every destination with its openness score and rank.' },
+  { file: 'matrix.json', label: 'Visa matrix', desc: 'The full passport-by-destination access matrix the index is computed from.' },
+];
+
+// Coverage is the span the signals actually observe, read off the vintages the
+// pipeline emits rather than restated by hand where it could drift.
+const coverageYears = [v.gdp?.years, v.arrivals?.window]
+  .filter((s): s is string => Boolean(s))
+  .flatMap((s) => s.match(/\d{4}/g) ?? [])
+  .map(Number);
+const temporalCoverage = coverageYears.length
+  ? `${Math.min(...coverageYears)}/${Math.max(...coverageYears)}`
+  : undefined;
+
+const canonical = absUrl(Astro.url.pathname);
+const dataset = {
+  '@type': 'Dataset',
+  '@id': ID.dataset,
+  name: 'The Pyatkov Index: weighted passport and destination-openness rankings',
+  description:
+    `A weighted passport index over ${rankings.totalDestinations} destinations. Each destination's weight is exp(1.25 × Z), where Z is the mean of its available z-scores on log-scaled GDP, log-scaled tourism arrivals, HDI, and log-scaled migrant stock. Each passport scores 0-100 as the credit-weighted share of the world's destination weight it can reach, with full credit for visa-free and visa-on-arrival access and none for an eVisa or a visa requirement. The same credits run backwards to rate every destination's openness by the share of the world's foreign population it admits.`,
+  url: canonical,
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  creator: { '@id': ID.creator },
+  isAccessibleForFree: true,
+  inLanguage: 'en',
+  // Build date only. The page says below that this is not the vintage of any
+  // single signal, so there is deliberately no datePublished to imply one.
+  ...(builtAt ? { dateModified: builtAt } : {}),
+  keywords: [
+    'passport index',
+    'visa-free travel',
+    'weighted ranking',
+    'destination openness',
+    'travel freedom',
+    'z-score',
+  ],
+  spatialCoverage: { '@type': 'Place', name: 'World' },
+  ...(temporalCoverage ? { temporalCoverage } : {}),
+  measurementTechnique:
+    'Composite z-score: each signal is z-scored across the destinations that report it (GDP, arrivals, and migrant stock log-scaled first; HDI on its natural scale), averaged over the available signals, then exponentiated as exp(1.25 × Z) to give the destination weight.',
+  variableMeasured: [
+    { '@type': 'PropertyValue', name: 'Pyatkov score', description: "Share of the world's destination weight a passport can reach.", minValue: 0, maxValue: 100 },
+    { '@type': 'PropertyValue', name: 'Count rank', description: 'Rank from the same binary credits with every destination worth 1.' },
+    { '@type': 'PropertyValue', name: 'Delta from weighting', description: 'Count rank minus weighted rank: how far weighting moves a passport.' },
+    { '@type': 'PropertyValue', name: 'Destination weight', description: 'exp(1.25 × Z) for a destination, in raw signal units, not a percentage.' },
+    { '@type': 'PropertyValue', name: 'Openness', description: "Share of the world's foreign population a destination admits without a prior visa.", minValue: 0, maxValue: 100 },
+  ],
+  citation: [
+    { '@type': 'CreativeWork', name: 'imorte/passport-index-data', url: 'https://github.com/imorte/passport-index-data' },
+    { '@type': 'CreativeWork', name: 'World Bank World Development Indicators', url: 'https://data.worldbank.org/' },
+    { '@type': 'CreativeWork', name: 'UNDP Human Development Report', url: 'https://hdr.undp.org/' },
+  ],
+  distribution: downloads.map((d) => ({
+    '@type': 'DataDownload',
+    name: d.label,
+    encodingFormat: 'application/json',
+    contentUrl: absUrl(`${base}data/${d.file}`),
+  })),
+};
+
+const article = {
+  '@type': 'TechArticle',
+  '@id': pageId(Astro.url.pathname, 'article'),
+  headline: 'Methodology of the Pyatkov Index',
+  about: { '@id': ID.dataset },
+  author: { '@id': ID.creator },
+  ...(builtAt ? { dateModified: builtAt } : {}),
+  inLanguage: 'en',
+  isPartOf: { '@id': ID.website },
+  proficiencyLevel: 'Expert',
+};
 ---
-<Base title="Methodology - Pyatkov Index" description="The formula, data sources, and per-signal data vintages behind the Pyatkov Index.">
+<Base
+  title="Methodology - Pyatkov Index"
+  description="The formula, data sources, and per-signal data vintages behind the Pyatkov Index."
+  jsonld={[dataset, article]}
+>
   <h1>Methodology</h1>
   <p class="lede">How the score is computed, from destination weights to access credit.</p>
 
@@ -96,10 +180,10 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
     large, high-value home economies (the United States most of all, since it is the single most valuable
     destination) rank higher than they would if their own weight were thrown away. Because numerator and
     denominator cover the same full pool, a passport with full visa-free access still scores exactly 100, and
-    the score reads as "percent of the world's destination value this passport can reach". The <strong>Count
+    the score reads as "percent of the world's destination value this passport can reach". The <strong id="count-rank">Count
     rank</strong>, shown on each passport's own page, is the ranking you get from the same binary credits over
     the same full set of destinations but with every destination worth 1, a plain "how many places can you go"
-    count. The <strong>Δ from weighting</strong> beside it is the gap between the two, so a passport that
+    count. The <strong id="delta">Δ from weighting</strong> beside it is the gap between the two, so a passport that
     reaches disproportionately valuable destinations rises and one skewed toward low-value destinations falls.
   </p>
 
@@ -158,4 +242,35 @@ const range = (s: string) => s.replace(/[–—]/g, '-');
     Built {formatBuiltDate(builtAt)}, the date the pipeline last ran, not the vintage of any single signal. All raw data and
     code are in the repo; the entire index is reproducible with one command.
   </p>
+
+  <h2 id="download">Download the data</h2>
+  <p>
+    The four derived datasets are published alongside the site as plain JSON, under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. They are the same files the
+    pages above are rendered from, rebuilt every time the pipeline runs.
+  </p>
+  <ul class="downloads">
+    {downloads.map((d) => (
+      <li>
+        <a href={`${base}data/${d.file}`} download><code>{d.file}</code> — {d.label}</a>
+        <span>{d.desc}</span>
+      </li>
+    ))}
+  </ul>
+
+  <style>
+    .downloads { list-style: none; margin: 0 0 8px; padding: 0; max-width: 65ch; }
+    .downloads li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .downloads span {
+      display: block;
+      margin-top: 2px;
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      letter-spacing: var(--tracking-caption);
+      color: var(--color-slate);
+    }
+  </style>
 </Base>

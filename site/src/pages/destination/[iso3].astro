@@ -4,7 +4,10 @@ import openness from '../../data/openness.json';
 import rankings from '../../data/rankings.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { deltaLabel, displayName, fmt, reconcilePoints, searchIndex } from '../../lib/format.ts';
+import { deltaLabel, displayName, fmt, opennessBand, reconcilePoints, searchIndex, verbFor, withArticle } from '../../lib/format.ts';
+import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
+import { ID, pageId } from '../../lib/seo.ts';
+import { countryNode } from '../../lib/schema.ts';
 import Flag from '../../components/Flag.astro';
 
 export function getStaticPaths() {
@@ -14,22 +17,22 @@ export function getStaticPaths() {
 const { dest: d } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
-const CREDIT: Record<string, number> = { 'visa-free': 1.0, 'visa-on-arrival': 0.8, 'e-visa': 0.5, 'visa-required': 0 };
-const LABEL: Record<string, string> = { 'visa-free': 'Visa-free', 'visa-on-arrival': 'Visa on arrival / eTA', 'e-visa': 'eVisa', 'visa-required': 'Visa required' };
-const TIERS = ['visa-free', 'visa-on-arrival', 'e-visa', 'visa-required'];
-
 const access = matrix as Record<string, Record<string, string>>;
+// Ladder position, not credit: the credit ladder is binary, so it cannot order the four
+// tiers for display. Higher = stronger access, which keeps the table's default sort
+// descending and its rows grouped by tier.
+const ladder = (cat: Tier) => TIERS.length - TIERS.indexOf(cat);
 
 // Every FOREIGN passport, with the access it gets to THIS destination. The
 // destination's own passport is excluded, matching the score: every country
 // admits its own citizens, so counting them measures nothing.
 const holders = rankings.passports
   .filter((p) => p.iso3 !== d.iso3)
-  .map((p) => ({ ...p, category: access[p.iso3][d.iso3] }));
+  .map((p) => ({ ...p, category: access[p.iso3][d.iso3] as Tier }));
 // Default order: strongest access first, then by the passport's own index score —
 // so the table reads as a rating of passports for getting into this destination.
 const ordered = [...holders].sort(
-  (a, b) => CREDIT[b.category] - CREDIT[a.category] || b.score - a.score || a.name.localeCompare(b.name),
+  (a, b) => ladder(b.category) - ladder(a.category) || b.score - a.score || a.name.localeCompare(b.name),
 );
 
 // Tier rows, with points reconciled so they sum exactly to the displayed score.
@@ -48,17 +51,116 @@ const ordinal = (n: number) => {
   if (rem100 >= 11 && rem100 <= 13) return `${n}th`;
   return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
 };
+const places = (n: number) => `${n} ${n === 1 ? 'place' : 'places'}`;
 // Its own passport's row, for the cross-link.
 const ownPassport = rankings.passports.find((p) => p.iso3 === d.iso3);
 
 const name = displayName(d.iso3, d.name);
+// Every use on this page is a sentence subject or the object of a preposition ("outside
+// {name}", "who can enter {name}"), so the article-bearing form is the default here.
+const theName = withArticle(d.iso3, d.name);
+const totalDests = openness.destinations.length;
+
+// Where this destination sits in the openness order — used to vary the table intro,
+// which would otherwise repeat the same sentence on all 199 pages. Derived from d.rank,
+// the number the same sentence prints: ranks tie densely, so a band read off the row's
+// array position disagreed with the printed rank on 128 of the 199 pages.
+const maxRank = Math.max(...openness.destinations.map((x) => x.rank));
+const band = opennessBand(d.rank, maxRank);
+
+// The "wide spread of nationalities" reading of a negative delta only holds if there IS a
+// spread: eighteen destinations with delta < 0 admit fewer than ten passports openly, and
+// three admit none at all, where the old sentence followed "0 enter visa-free" with a
+// claim that the place lets in a wide spread. A shift of one or two places is likewise
+// inside the noise of a densely tied count rank and gets no causal story.
+const openHolders = d.counts['visa-free'] + d.counts['visa-on-arrival'];
+const NEAR_TIE = 2;
+const FEW_OPEN = 10;
+const deltaWords =
+  openHolders === 0
+    ? `No foreign passport enters ${theName} without prior permission, so weighting the passports by the populations behind them has nothing left to reorder: the headcount rank of #${d.equalRank} and the weighted #${d.rank} are both simply the floor of the table.`
+    : d.delta === 0
+      ? `Counting passports and weighting them by the populations behind them both put ${theName} at #${d.equalRank}, so its openness is not an artefact of which particular nationalities it lets in.`
+      : Math.abs(d.delta) <= NEAR_TIE
+        ? `Weighting each passport by the population behind it moves ${theName} ${places(Math.abs(d.delta))} ${d.delta > 0 ? 'above' : 'below'} its plain headcount rank of #${d.equalRank} — close enough that the two orderings agree about it.`
+        : d.delta > 0
+          ? `Weighting each passport by the population behind it lifts ${theName} ${places(d.delta)} above its plain headcount rank of #${d.equalRank}: the nationalities it admits are unusually populous ones.`
+          : openHolders < FEW_OPEN
+            ? `Weighting each passport by the population behind it costs ${theName} ${places(-d.delta)} against its plain headcount rank of #${d.equalRank}: the few nationalities it does admit are comparatively small ones.`
+            : `Weighting each passport by the population behind it costs ${theName} ${places(-d.delta)} against its plain headcount rank of #${d.equalRank}: it admits a wide spread of nationalities, but comparatively small ones.`;
+
+// rankings.passports is already rank-ordered, and ranks tie freely — so take the top 20
+// rows rather than filtering on rank <= 20, which would return far more than twenty.
+const topTwenty = holders.slice(0, 20);
+const topTwentyOpen = topTwenty.filter((p) => CREDIT[p.category] > 0).length;
+// "Has to apply in advance" is the credit ladder, not the tier name: an eVisa also has to
+// clear before departure and earns nothing here, so it belongs in this set. Filtering on
+// 'visa-required' alone named a weaker passport than the strongest closed one on 29 pages
+// (Myanmar named Liechtenstein #12 while Spain #4 needs an eVisa). Sorted by the
+// passport's own score, not by tier: "strongest" spans both closed tiers.
+const strongestClosed = holders
+  .filter((p) => CREDIT[p.category] === 0)
+  .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))[0];
+
+// Assembled here, not inline: the template drops the whitespace between an expression
+// and the text on the next line, and these sentences wrap.
+const lede =
+  `${fmt(d.score)} out of 100 of the world's people outside ${theName} — weighted by the population behind ` +
+  `each passport, counting visa-free and visa on arrival as open and an eVisa as closed — can enter ` +
+  `without applying for a visa first. Of the ${holders.length} foreign passports, ` +
+  `${d.counts['visa-free']} ${verbFor(d.counts['visa-free'], 'enter')} visa-free and ` +
+  `${d.counts['visa-on-arrival']} on arrival, while ${d.counts['e-visa']} ` +
+  `${verbFor(d.counts['e-visa'], 'need')} an eVisa approved before boarding and ` +
+  `${d.counts['visa-required']} ${verbFor(d.counts['visa-required'], 'need')} a visa arranged in advance. ` +
+  `As a destination in the passport index, ${theName} carries a weight of ${weight.weight.toFixed(3)}, ` +
+  `${weightIdx === 0 ? 'the highest of them all' : `the ${ordinal(weightIdx + 1)} highest of ${weightsData.destinations.length}`}.`;
+const topTwentySentence =
+  topTwentyOpen === topTwenty.length
+    ? `All twenty of the highest-ranked passports get in without prior permission.`
+    : `Of the twenty highest-ranked passports, ${topTwentyOpen} ${verbFor(topTwentyOpen, 'get')} in without prior permission.`;
+const tableIntro =
+  `${theName} sits ${band}, at openness rank #${d.rank} of ${totalDests}. Every foreign passport in the ` +
+  `index and the access it gets is listed below, strongest access first and ordered by the passport's ` +
+  `own Pyatkov score within each tier. Its own passport is not listed: every country admits its ` +
+  `own citizens, so it says nothing about how open the destination is.`;
+
+const countryId = pageId(Astro.url.pathname, 'country');
+const country = countryNode({
+  id: countryId,
+  name,
+  iso3: d.iso3,
+  iso2: d.iso2,
+  // Qualified with "openness" for the same reason the passport page qualifies with
+  // "passport": both pages describe the same country, and an unqualified "Count rank" on
+  // each would merge into one property holding two contradictory values.
+  measures: [
+    { propertyID: 'openness-score', name: 'Openness', value: Number(fmt(d.score)), minValue: 0, maxValue: 100 },
+    { propertyID: 'openness-rank', name: 'Openness rank', value: d.rank },
+    { propertyID: 'openness-count-rank', name: 'Openness count rank', value: d.equalRank },
+    { propertyID: 'openness-delta', name: 'Openness delta from weighting', value: d.delta },
+  ],
+});
+
 const MARK_COLORS = ['var(--color-signal-blue)', 'var(--color-coral)', 'var(--color-marigold)', 'var(--color-sky-wash)'];
 const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
 ---
-<Base title={`Who can enter ${name} - Pyatkov Index`} description={`${name}: openness rank ${d.rank}, ${fmt(d.score)} of the world's people outside it can enter without a prior visa. Every foreign passport and the access it gets.`} wide>
+<Base
+  title={`Who can enter ${theName} - Pyatkov Index`}
+  description={`${name}: openness rank #${d.rank} of ${totalDests}, score ${fmt(d.score)}/100. Of ${holders.length} foreign passports, ${d.counts['visa-free']} ${verbFor(d.counts['visa-free'], 'enter')} visa-free and ${d.counts['visa-on-arrival']} on arrival; ${d.counts['e-visa'] + d.counts['visa-required']} must apply first.`}
+  ogType="article"
+  breadcrumb={[{ name: 'Openness', href: `${base}openness/` }, { name: `Who can enter ${theName}` }]}
+  mainEntityId={countryId}
+  basedOnId={ID.dataset}
+  jsonld={country}
+  wide
+>
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href={`${base}openness/`}>Openness</a> <span aria-hidden="true">/</span> <span aria-current="page">Who can enter {theName}</span>
+  </nav>
+
   <section class="passport-hero">
     <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true"><Flag iso2={d.iso2} class="flag-mark" /></span>
-    <h1>Who can enter {name}</h1>
+    <h1>Who can enter {theName}</h1>
   </section>
 
   <dl class="stats">
@@ -69,12 +171,18 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   </dl>
 
   <p class="lede">
-    {fmt(d.score)} out of 100 of the world's people outside {name} — weighted by the population behind each
-    passport, with partial credit for visa on arrival and eVisas — can enter without applying for a visa first.
-    As a destination in the passport index, {name} carries a weight of {weight.weight.toFixed(3)},
-    {weightIdx === 0 ? ' the highest of them all' : ` the ${ordinal(weightIdx + 1)} highest of ${weightsData.destinations.length}`}.
+    {lede}
     {ownPassport && (
       <Fragment> Its own passport ranks <a href={`${base}passport/${d.iso3.toLowerCase()}/`}>#{ownPassport.rank}</a>.</Fragment>
+    )}
+  </p>
+
+  <p>
+    {`${deltaWords} ${topTwentySentence}`}
+    {strongestClosed ? (
+      <Fragment> The strongest passport that still needs permission before departure is <a href={`${base}passport/${strongestClosed.iso3.toLowerCase()}/`}>{withArticle(strongestClosed.iso3, strongestClosed.name)}</a>{`, ranked #${strongestClosed.rank} overall with a score of ${fmt(strongestClosed.score)}${strongestClosed.category === 'e-visa' ? ' — its holders need an eVisa rather than a consulate appointment, but that still has to clear before departure.' : ' — its holders have to apply at a consulate.'}`}</Fragment>
+    ) : (
+      <Fragment>{` No passport in the index needs permission before departure: ${theName} admits every one of them at the border.`}</Fragment>
     )}
   </p>
 
@@ -82,7 +190,8 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   <div class="card">
   <div class="table-scroll">
   <table class="tier-table">
-    <thead><tr><th>Access tier</th><th>Passports</th><th>Points</th></tr></thead>
+    <caption class="sr-only">How {name}'s openness of {fmt(d.score)} splits across the four access tiers</caption>
+    <thead><tr><th scope="col">Access tier</th><th scope="col">Passports</th><th scope="col">Points</th></tr></thead>
     <tbody>
       {tierRows.map((t) => (
         <tr><td><span class={`tag tag-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
@@ -95,11 +204,7 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   </div>
   </div>
 
-  <p class="table-intro">
-    Every foreign passport in the index and the access it gets to {name}, strongest access first and
-    ordered by the passport's own Pyatkov score within each tier. {name}'s own passport is not listed:
-    every country admits its own citizens, so it says nothing about how open the destination is.
-  </p>
+  <p class="table-intro">{tableIntro}</p>
 
   <div class="card card-mockup">
   <div class="card-header">
@@ -119,7 +224,7 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
     </thead>
     <tbody>
       {ordered.map((p) => (
-        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-credit={CREDIT[p.category]} data-rank={p.rank} data-score={p.score}>
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-credit={ladder(p.category)} data-rank={p.rank} data-score={p.score}>
           <td><span class={`tag tag-${p.category}`}>{LABEL[p.category]}</span></td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a></td>
           <td>{p.rank}</td>
@@ -131,6 +236,28 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   </div>
   <p id="no-results" hidden>No passports match your filter. Try a country name like Portugal, or a code like PRT.</p>
   </div>
+
+  <style>
+    .crumbs {
+      font-size: 13px;
+      color: var(--color-graphite);
+      margin-bottom: 12px;
+    }
+    .crumbs span { margin: 0 6px; }
+    .crumbs [aria-current] { margin: 0; }
+    /* Captions are indexable text, but the tables are already titled by their h2. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 
   <script>
     import { initSortableTable } from '../../lib/table-ui.ts';

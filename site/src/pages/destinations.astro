@@ -2,13 +2,38 @@
 import Base from '../layouts/Base.astro';
 import weightsData from '../data/weights.json';
 import { displayName } from '../lib/format.ts';
+import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
 // Signal columns are per-signal z-scores (standard deviations from the
 // destination average), so they are signed; a middle dot marks a missing signal.
 const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toFixed(2));
+
+const rankingId = pageId(Astro.url.pathname, 'ranking');
+// weightsData.destinations arrives weight-sorted, so the row index is the position.
+const itemList = {
+  '@type': 'ItemList',
+  '@id': rankingId,
+  name: 'Destination weights',
+  itemListOrder: 'https://schema.org/ItemListOrderDescending',
+  numberOfItems: weightsData.destinations.length,
+  // subjectOf rather than about — see the note on the same node in index.astro.
+  subjectOf: { '@id': ID.dataset },
+  itemListElement: weightsData.destinations.map((d, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: absUrl(`${base}destination/${d.iso3.toLowerCase()}/`),
+    name: displayName(d.iso3, d.name),
+  })),
+};
 ---
-<Base title="Destination weights - Pyatkov Index" description="How much each destination is worth in the Pyatkov Index, and why." wide>
+<Base
+  title="Destination weights - Pyatkov Index"
+  description="How much each destination is worth in the Pyatkov Index, and why."
+  wide
+  mainEntityId={rankingId}
+  jsonld={itemList}
+>
   <h1>Destination weights</h1>
   <p class="lede">
     How much each destination is worth, and why. This table is the entire recipe: nothing is hidden.
@@ -26,8 +51,9 @@ const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toF
   </div>
   <div class="table-scroll">
   <table class="weights-table">
+    <caption class="sr-only">Every destination in the Pyatkov Index with its weight and the four z-scored signals behind it</caption>
     <thead>
-      <tr><th>#</th><th>Destination</th><th>Weight</th><th>GDP</th><th>Arrivals</th><th>HDI</th><th>Migrants</th><th>Signals</th></tr>
+      <tr><th scope="col">#</th><th scope="col">Destination</th><th scope="col">Weight</th><th scope="col">GDP</th><th scope="col">Arrivals</th><th scope="col">HDI</th><th scope="col">Migrants</th><th scope="col">Signals</th></tr>
     </thead>
     <tbody>
       {weightsData.destinations.map((d, i) => (
@@ -46,4 +72,17 @@ const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toF
   </table>
   </div>
   </div>
+
+  <style>
+    /* global.css carries no visually-hidden utility; the caption names the
+       table for assistive tech without repeating the heading on screen. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  </style>
 </Base>

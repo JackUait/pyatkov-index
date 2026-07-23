@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
+// GitHub Pages serves the artifact-root 404.html for any unmatched path under
+// the base, so this one page has to cover the whole long tail.
+const pages = [
+  { href: base, label: 'The passport rankings' },
+  { href: `${base}openness/`, label: 'Openness: which passports get in' },
+  { href: `${base}destinations/`, label: 'Destination weights' },
+  { href: `${base}methodology/`, label: 'Methodology' },
+];
+---
+<Base title="Page not found - Pyatkov Index" description="No page at this address." noindex>
+  <h1>Page not found</h1>
+  <p class="lede">
+    Country pages are keyed on ISO 3166-1 alpha-3 codes, so <code>{base}passport/uk/</code> does not
+    exist but <code>{base}passport/gbr/</code> does.
+  </p>
+  <ul>
+    {pages.map((p) => (
+      <li><a href={p.href}>{p.label}</a></li>
+    ))}
+  </ul>
+</Base>

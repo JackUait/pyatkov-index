@@ -5,3 +5,4 @@ dist/
 site/dist/
 site/.astro/
 .playwright-cli/
+site/public/data/

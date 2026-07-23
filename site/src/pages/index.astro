@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
 import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex, tiedRanks } from '../lib/format.ts';
+import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
 // B9: the pipeline now emits an honest build date (builtAt) plus per-signal
@@ -38,8 +39,36 @@ const tipFor = (d: (typeof ribbon)[number], i: number) =>
 // Shared ranks are real ties, and the table says so: repeated rank values get
 // an "=" mark, computed from the data so it can never drift from it.
 const ties = tiedRanks(rankings.passports.map((p) => p.rank));
+
+const rankingId = pageId(Astro.url.pathname, 'ranking');
+// position is the array index, not p.rank. The ties are real and the visible table marks
+// them, but an ItemList position is a list ordinal, not a score: feeding it p.rank
+// declared numberOfItems: 199 alongside 22 duplicated positions, 37 unused ones and a
+// maximum of 162, which no consumer can reconcile.
+const itemList = {
+  '@type': 'ItemList',
+  '@id': rankingId,
+  name: 'Passport rankings by Pyatkov score',
+  itemListOrder: 'https://schema.org/ItemListOrderDescending',
+  numberOfItems: rankings.passports.length,
+  // subjectOf, not about: `about` domainIncludes CreativeWork and Event, and an ItemList
+  // is an Intangible. subjectOf runs the other way — domain Thing, range CreativeWork —
+  // and a Dataset is a CreativeWork, so it states the same link legally.
+  subjectOf: { '@id': ID.dataset },
+  itemListElement: rankings.passports.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: absUrl(`${base}passport/${p.iso3.toLowerCase()}/`),
+    name: `${displayName(p.iso3, p.name)} passport`,
+  })),
+};
 ---
-<Base title="Pyatkov Index: the weighted passport ranking" description="A passport index that weights every destination by the economy, travel, development, and diaspora behind it.">
+<Base
+  title="Pyatkov Index: the weighted passport ranking"
+  description="A passport index that weights every destination by the economy, travel, development, and diaspora behind it."
+  mainEntityId={rankingId}
+  jsonld={itemList}
+>
   <section class="hero hero-split">
     <h1>
       Most passport rankings <span class="count-word">count<svg class="tally" viewBox="0 0 46 30" aria-hidden="true"><path d="M5 3.5 C5.4 10.5 4.7 18.5 5.3 26.5" pathLength="1" /><path d="M15.5 3 C15 11 15.7 19 15.2 26" pathLength="1" /><path d="M25.5 4 C26 11 25.4 18 26 26.5" pathLength="1" /><path d="M36 3.2 C35.5 10.5 36.2 19 35.7 26.2" pathLength="1" /><path d="M2.5 22.5 C14 18 30 10 43.5 5.5" pathLength="1" /></svg></span><br />
@@ -73,19 +102,37 @@ const ties = tiedRanks(rankings.passports.map((p) => p.rank));
         <a
           class:list={['seg', i >= halfCount && 'seg-tail', share(d.weight) >= sepShare && 'seg-sep']}
           href={`${base}destination/${d.iso3.toLowerCase()}/`}
-          tabindex="-1"
-          aria-hidden="true"
           data-tip={tipFor(d, i)}
           style={`--w:${share(d.weight).toFixed(4)}%`}
         >
           {share(d.weight) >= labelShare && (
             <span class="seg-label"><b>{d.iso2}</b><span>{share(d.weight).toFixed(1)}%</span></span>
           )}
+          <span class="sr-only">{displayName(d.iso3, d.name)} — {share(d.weight).toFixed(2)}% of world weight</span>
         </a>
       ))}
     </div>
     <div class="ribbon-tip" aria-hidden="true" hidden></div>
   </figure>
+
+  {/* The strip is a graphic; this is its readable counterpart, and the only
+      non-decorative route from the site root into the destination pages. */}
+  <nav class="heavy-head" aria-labelledby="heavy-head-title">
+    <h2 id="heavy-head-title">The twenty heaviest destinations</h2>
+    <ol class="heavy-list">
+      {ribbon.slice(0, 20).map((d, i) => (
+        <li>
+          <span class="heavy-rank">{i + 1}</span>
+          <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
+          <span class="heavy-share">{share(d.weight).toFixed(2)}%</span>
+        </li>
+      ))}
+    </ol>
+    <p class="heavy-more">
+      <a href={`${base}destinations/`}>All {ribbon.length} destination weights</a>
+      <a href={`${base}openness/`}>See who can enter each destination</a>
+    </p>
+  </nav>
 
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
@@ -143,4 +190,52 @@ const ties = tiedRanks(rankings.passports.map((p) => p.rank));
       });
     });
   </script>
+
+  <style>
+    /* global.css carries no visually-hidden utility, so the one the ribbon's
+       anchor text needs is defined here, next to its only two users. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .heavy-head { margin: 0 0 56px; }
+    .heavy-head h2 {
+      font-size: var(--text-caption);
+      line-height: var(--leading-caption);
+      letter-spacing: var(--tracking-caption);
+      text-transform: uppercase;
+      color: var(--color-slate);
+      margin: 0 0 12px;
+    }
+    .heavy-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 2px 28px;
+    }
+    .heavy-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border-hairline);
+      font-size: 15px;
+    }
+    .heavy-rank,
+    .heavy-share {
+      font-variant-numeric: tabular-nums;
+      color: var(--color-slate);
+      font-size: var(--text-caption);
+    }
+    .heavy-rank { min-width: 1.6ch; text-align: right; }
+    .heavy-list a { flex: 1; }
+    .heavy-more { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 16px 0 0; }
+  </style>
 </Base>

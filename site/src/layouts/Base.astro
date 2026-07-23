@@ -1,13 +1,107 @@
 ---
 import '@fontsource-variable/inter';
-import '@fontsource/source-serif-pro/400.css';
-import '@fontsource/source-serif-pro/400-italic.css';
+import '@fontsource/source-serif-pro/latin-400.css';
+import '@fontsource/source-serif-pro/latin-400-italic.css';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { normalizePath } from '../lib/nav-current.ts';
-interface Props { title: string; description: string; wide?: boolean }
-const { title, description, wide = false } = Astro.props;
+import { absUrl, ID } from '../lib/seo.ts';
+// The three faces the first screen actually paints. Imported for their URLs so the
+// build's content hash is never hardcoded.
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import serifLatin from '@fontsource/source-serif-pro/files/source-serif-pro-latin-400-normal.woff2?url';
+import serifLatinItalic from '@fontsource/source-serif-pro/files/source-serif-pro-latin-400-italic.woff2?url';
+
+export interface Props {
+  title: string;
+  description: string;
+  wide?: boolean;
+  ogType?: 'website' | 'article';
+  /** Base-relative path or absolute URL; resolved to absolute below. */
+  image?: string;
+  noindex?: boolean;
+  /** Mirror of the page's VISIBLE breadcrumb. The last crumb gets no `item`, so the
+   *  current page never self-links. */
+  breadcrumb?: Array<{ name: string; href?: string }>;
+  /** @id of this page's primary entity, from pageId(Astro.url.pathname, ...). */
+  mainEntityId?: string;
+  /** @id of the source this page's content is derived from — usually ID.dataset. It is
+   *  emitted as isBasedOn on the WebPage node: isBasedOn domainIncludes CreativeWork
+   *  only, so a Country/Place mainEntity cannot carry the provenance itself. */
+  basedOnId?: string;
+  /** Extra JSON-LD node(s), without '@context' — the graph root supplies it once. */
+  jsonld?: unknown | unknown[];
+}
+
+const {
+  title,
+  description,
+  wide = false,
+  ogType = 'website',
+  image,
+  noindex = false,
+  breadcrumb = [],
+  mainEntityId,
+  basedOnId,
+  jsonld,
+} = Astro.props;
+
+if (import.meta.env.PROD && Astro.site?.hostname === 'example.github.io') {
+  throw new Error('astro.config.mjs site is still the placeholder');
+}
+
 const base = import.meta.env.BASE_URL;
+
+// Astro.url.pathname already carries the base — absUrl must not add it again.
+const canonical = absUrl(Astro.url.pathname);
+const ogImage = absUrl(image ?? `${base}og-default.png`);
+const tagline =
+  'Most passport rankings count destinations. The Pyatkov Index weights each one by the economy, travel, development, and diaspora behind it.';
+
+const graph: unknown[] = [
+  {
+    '@type': 'WebSite',
+    '@id': ID.website,
+    url: absUrl(base),
+    name: 'Pyatkov Index',
+    alternateName: 'The Pyatkov Index',
+    description: tagline,
+    inLanguage: 'en',
+    publisher: { '@id': ID.creator },
+  },
+  {
+    '@type': 'Organization',
+    '@id': ID.creator,
+    name: 'The Pyatkov Index',
+    url: absUrl(base),
+    sameAs: ['https://github.com/JackUait/pyatkov-index'],
+  },
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { '@id': ID.website },
+    inLanguage: 'en',
+    ...(breadcrumb.length > 0 ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
+    ...(mainEntityId ? { mainEntity: { '@id': mainEntityId } } : {}),
+    ...(basedOnId ? { isBasedOn: { '@id': basedOnId } } : {}),
+  },
+  ...(breadcrumb.length > 0
+    ? [{
+        '@type': 'BreadcrumbList',
+        '@id': `${canonical}#breadcrumb`,
+        itemListElement: breadcrumb.map((crumb, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: crumb.name,
+          ...(crumb.href && i < breadcrumb.length - 1 ? { item: absUrl(crumb.href) } : {}),
+        })),
+      }]
+    : []),
+  ...(jsonld === undefined ? [] : Array.isArray(jsonld) ? jsonld : [jsonld]),
+];
 
 const here = normalizePath(Astro.url.pathname);
 const nav = [
@@ -21,8 +115,31 @@ const nav = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Ahead of the stylesheet on purpose: a preload discovered after it would queue
+        behind a render-blocking request that is itself what reveals the font URLs. */}
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={interLatin} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={serifLatin} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={serifLatinItalic} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {/* Only on a real route. GitHub Pages serves 404.html at whatever path was missed,
+        so its canonical could never be right — and pointed at /404/ it named a URL that
+        itself 404s. */}
+    {noindex ? null : <link rel="canonical" href={canonical} />}
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Pyatkov Index" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#f6f5f4" />
     <ClientRouter />
     {/* The version query pushes browsers past their sticky favicon caches;
@@ -40,6 +157,11 @@ const nav = [
     <script is:inline>
       if (window.scrollY <= 8) document.documentElement.toggleAttribute('data-top', true);
     </script>
+    {/* is:inline keeps Astro's parser off the payload; set:html with a single
+        JSON.stringify escapes it exactly once. */}
+    {graph.length > 0 && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
+    )}
   </head>
   <body>
     <header transition:persist="header">
@@ -80,7 +202,10 @@ const nav = [
             <li><a href={item.href}>{item.label}</a></li>
           ))}
         </ul>
-        <p>Most passport rankings count destinations. The Pyatkov Index weights each one by the economy, travel, development, and diaspora behind it.</p>
+        {/* Visible counterpart to the Organization node — a structured-data claim with
+            nothing on the page behind it is a guidelines violation. */}
+        <p><a href="https://github.com/JackUait/pyatkov-index">The Pyatkov Index</a></p>
+        <p>{tagline}</p>
         <p>Data: imorte/passport-index-data, the World Bank API, and the UNDP Human Development Report. The index is fully reproducible from the repository.</p>
       </div>
     </footer>
