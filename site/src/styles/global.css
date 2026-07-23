@@ -292,32 +292,97 @@ li { margin: 6px 0; }
   max-width: 16ch;
 }
 /* The counting verb: the method this index argues against, set in the
-   editorial serif so it reads as the quoted idea rather than the claim. */
+   editorial serif so it reads as the quoted idea rather than the claim.
+   Ink-54, not 40: the word is real headline text and 40 misses the 3:1
+   large-text floor on the paper canvas. Inline-block so it can drift in. */
 .hero .count-word {
+  position: relative;
+  display: inline-block;
   font-family: var(--font-serif);
   font-weight: 400;
   font-style: italic;
   letter-spacing: -0.01em;
-  color: var(--ink-40);
+  color: var(--ink-54);
+}
+/* A pencil tally in the margin after "count" — the reference's hand-drawn
+   punctuation, spent on the one word it can annotate literally. Absolute so
+   it costs no layout and can never rewrap the headline. */
+.hero .tally {
+  position: absolute;
+  left: calc(100% + 0.35em);
+  bottom: 0.06em;
+  width: 0.8em;
+  height: auto;
+  fill: none;
+  stroke: var(--ink-40);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  transform: rotate(-4deg);
 }
 /* The signature device: a colored pill wrapping one word of the headline.
-   The fill is a gradient layer so it can sweep in like a highlighter stroke. */
+   It hangs a shade below the baseline — the one word with weight sags. */
 .hero .pill-word {
   display: inline-block;
-  background: linear-gradient(var(--color-peach), var(--color-peach)) left / 100% 100% no-repeat;
+  vertical-align: -0.055em;
+  background: var(--color-peach);
   border-radius: var(--radius-pill);
   padding: 0.02em 0.32em 0.06em;
 }
+/* Load order tells the argument: "count" drifts in weightless, the tally
+   ticks its strokes off one by one, then "weighs" falls under gravity and
+   lands hard — squashing against the baseline, rebounding once, and jolting
+   the whole headline on impact. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero .pill-word {
-    animation: ink-sweep 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) 0.4s backwards;
+  .hero .count-word { animation: drift-in 0.55s ease-out 0.15s backwards; }
+  .hero .tally path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: tally-draw 0.24s ease-out both;
   }
+  .hero .tally path:nth-child(1) { animation-delay: 0.35s; }
+  .hero .tally path:nth-child(2) { animation-delay: 0.42s; }
+  .hero .tally path:nth-child(3) { animation-delay: 0.49s; }
+  .hero .tally path:nth-child(4) { animation-delay: 0.56s; }
+  .hero .tally path:nth-child(5) { animation-delay: 0.66s; animation-duration: 0.3s; }
+  .hero .pill-word {
+    transform-origin: 50% 100%;
+    animation: weigh-drop 0.65s linear 0.72s backwards;
+  }
+  /* The ground reacts: the headline dips and recovers when the pill hits.
+     Delay = the pill's 0.72s start plus its 0.25s fall. */
+  .hero h1 { animation: land-jolt 0.28s ease-out 0.97s; }
+}
+@keyframes drift-in {
+  from { opacity: 0; transform: translateY(-0.25em); }
+}
+@keyframes tally-draw {
+  to { stroke-dashoffset: 0; }
+}
+/* Real weight: accelerate from above (ease-in fall for the first 38%), then
+   squash flat against the baseline, lift once on the rebound, and settle.
+   Timing functions live on the keyframes; the element's is a placeholder. */
+@keyframes weigh-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-1.2em);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.6);
+  }
+  12% { opacity: 1; }
+  38% { transform: translateY(0) scale(1, 1); animation-timing-function: ease-out; }
+  50% { transform: translateY(0) scale(1.08, 0.85); animation-timing-function: ease-in-out; }
+  66% { transform: translateY(-0.1em) scale(0.99, 1.03); animation-timing-function: ease-in; }
+  80% { transform: translateY(0) scale(1.015, 0.97); animation-timing-function: ease-out; }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+@keyframes land-jolt {
+  0% { transform: translateY(0); }
+  35% { transform: translateY(0.045em); }
+  65% { transform: translateY(-0.015em); }
+  100% { transform: translateY(0); }
 }
 @keyframes ink-sweep {
   from { background-size: 0% 100%; }
 }
-/* The pill's own padding would strand the full stop; pull it back onto the word. */
-.hero .stop { margin-left: -0.22em; }
 .hero .tagline {
   font-family: var(--font-serif);
   font-size: 18px;
@@ -341,17 +406,28 @@ li { margin: 6px 0; }
   align-items: end;
   padding: 64px 0 44px;
 }
-/* Sized so the headline holds its three composed lines inside the column. */
+/* Sized so the headline stands exactly as tall as the deck beside it: three
+   lines at 62px/1.08 measure the deck's height, and 62px is also the widest
+   the pill line fits in the column — one notch more and it wraps to four. */
 .hero-split h1 {
   margin: 0;
-  font-size: clamp(38px, 4.4vw, 60px);
+  font-size: clamp(38px, 5.9vw, 62px);
+  line-height: 1.08;
+}
+/* The shell stops growing at 980px, so the columns — and the deck's height —
+   are fixed from there up. The type must be too, or a vw-sized headline runs
+   short of the deck until the vw curve catches up at ~1050px. */
+@media (min-width: 980px) {
+  .hero-split h1 { font-size: 62px; }
 }
 .hero-deck {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 26px;
-  padding-bottom: 5px;
+  /* 3px, not an even number by design: with it the deck measures exactly the
+     headline's three 62px lines, so the columns' tops and bottoms align. */
+  padding-bottom: 3px;
 }
 .hero-deck .tagline { margin: 0; }
 @media (max-width: 860px) {
@@ -362,6 +438,11 @@ li { margin: 6px 0; }
     padding: 48px 0 36px;
   }
   .hero-deck { padding-bottom: 0; }
+}
+/* At phone widths the headline runs to the container edge and the margin
+   the tally sits in disappears. */
+@media (max-width: 640px) {
+  .hero .tally { display: none; }
 }
 
 /* ---- Weight ribbon: the argument, drawn ----
@@ -446,7 +527,7 @@ li { margin: 6px 0; }
 /* The tail's wash is far lighter than marigold, so its hairlines whisper. */
 .ribbon .seg-tail.seg-sep:not(:last-child) { box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06); }
 .ribbon .seg:hover { background: var(--color-midnight); text-decoration: none; }
-/* The strip inks in left to right, the same stroke as the headline pill. */
+/* The strip inks in left to right while the headline settles above it. */
 @media (prefers-reduced-motion: no-preference) {
   .ribbon { animation: ink-sweep 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.15s backwards; }
 }
