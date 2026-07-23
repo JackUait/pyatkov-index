@@ -2,14 +2,10 @@
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
-import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex, tiedRanks } from '../lib/format.ts';
+import { displayName, flagEmoji, fmt, searchIndex, tiedRanks } from '../lib/format.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
-// B9: the pipeline now emits an honest build date (builtAt) plus per-signal
-// vintages. Fall back to the legacy generatedAt field for pre-regen data.
-const meta = rankings as typeof rankings & { builtAt?: string; vintages?: unknown };
-const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?? '';
 
 // The hero graphic is the argument: every destination drawn to scale by its
 // weight, heaviest first. Weights are raw signal sums, not percentages, so
@@ -117,9 +113,7 @@ const itemList = {
 
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
-    <h2>The ranking</h2>
-    <span class="chip">{rankings.passports.length} passports</span>
-    <span class="built">Last built {formatBuiltDate(builtAt)}</span>
+    <h2>Passport ranking</h2>
     <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   </div>
   <div class="table-scroll">
