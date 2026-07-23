@@ -75,12 +75,10 @@ const itemList = {
     </thead>
     <tbody>
       {dests.map((d) => (
-        <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score}>
+        <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score} style={`--w:${d.score}%`}>
           <td>{ties.has(d.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{d.rank}</td>
           <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
-          <td class="score-cell" style={`--w:${d.score}%`}>
-            <span class="score-line"><span class="meter" aria-hidden="true"></span><span class="score-val">{fmt(d.score)}</span></span>
-          </td>
+          <td class="score-cell">{fmt(d.score)}</td>
         </tr>
       ))}
     </tbody>

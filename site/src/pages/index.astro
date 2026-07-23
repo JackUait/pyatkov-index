@@ -129,7 +129,7 @@ const itemList = {
     </thead>
     <tbody>
       {rankings.passports.map((p) => (
-        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score}>
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score} style={`--w:${p.score}%`}>
           <td>
             {p.rank <= 3 ? (
               <span class={`medal medal-${p.rank}`}>{p.rank}</span>
@@ -138,9 +138,7 @@ const itemList = {
             )}
           </td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a><span class="code" aria-hidden="true">{p.iso3}</span></td>
-          <td class="score-cell" style={`--w:${p.score}%`}>
-            <span class="score-line"><span class="meter" aria-hidden="true"></span><span class="score-val">{fmt(p.score)}</span></span>
-          </td>
+          <td class="score-cell">{fmt(p.score)}</td>
         </tr>
       ))}
     </tbody>

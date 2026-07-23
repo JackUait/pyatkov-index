@@ -838,10 +838,12 @@ tbody td {
 }
 tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover td { background: rgba(0, 0, 0, 0.024); }
-/* The row whose country is open in the drawer: a marigold wash so it stays
-   findable behind the panel, with a left accent marking the active datum. */
-tbody tr.is-drawer-active td { background: color-mix(in srgb, var(--color-marigold) 12%, transparent); }
-tbody tr.is-drawer-active td:first-child { box-shadow: inset 3px 0 0 var(--color-marigold); }
+/* The row whose country is open in the drawer. Sky, not marigold: the rank
+   rows wear the marigold wash as data now, so the open row speaks the
+   selection grammar instead — the ::selection tint, opaque so it reads over
+   any score bar, with a blue accent marking the active datum. */
+tbody tr.is-drawer-active td { background: var(--color-sky-tint); }
+tbody tr.is-drawer-active td:first-child { box-shadow: inset 3px 0 0 var(--color-notion-blue); }
 tfoot th, tfoot td {
   padding: 10px 16px;
   border-top: 1px solid var(--border-hairline);
@@ -899,20 +901,27 @@ th[aria-sort] { color: var(--color-ink); }
   font-variant-numeric: tabular-nums;
 }
 
-.rank-table td:nth-child(1) { color: var(--color-stone); }
+/* Ink-60, not stone: the rank digits sit on the marigold wash, which eats
+   stone's AA margin. */
+.rank-table td:nth-child(1) { color: var(--ink-60); }
 
-/* Fixed gutters give the table its charting room: a narrow rank rail, the
-   name column, and a wide score column for the meters to draw across. */
+/* Fixed gutters: a narrow rank rail and a slim right rail for the values.
+   The name column takes all the rest — the chart needs no column of its
+   own, because the row itself draws it. */
 .rank-table th:nth-child(1) { width: 64px; }
-.rank-table th:nth-child(3) { width: 45%; }
+.rank-table th:nth-child(3) { width: 92px; }
+
+/* Names carry medium weight so they anchor the row over the wash. */
+.rank-table tbody td a { font-weight: 500; }
 
 /* ISO code after the name: quiet metadata texture, and a visible hint that
-   the filter matches codes too. */
+   the filter matches codes too. Slate, not stone: 11px on the wash needs
+   the darker step to hold AA. */
 .rank-table .code {
   margin-left: 8px;
   font-size: 11px;
   letter-spacing: 0.08em;
-  color: var(--color-stone);
+  color: var(--color-slate);
 }
 
 /* Per-destination access table: passport rank + score are the numeric columns. */
@@ -923,63 +932,44 @@ th[aria-sort] { color: var(--color-ink); }
 }
 .access-table td:nth-child(3) { color: var(--color-stone); }
 
-/* ---- Score meter: every row keeps charting the ribbon's argument ----
-   The dead middle of the table is the chart: a warm track spans the score
-   column (a lighter step of the same marigold ramp, so the meter reads as
-   one bar even where the fill ends), the marigold fill grows from a shared
-   left baseline, and the value sits right-anchored in tabular figures. The
-   number is the datum; the meter is its shadow — which is why the track may
-   run this pale on white. */
-.score-cell .score-line {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+/* ---- Score bar: every row keeps charting the ribbon's argument ----
+   The row itself is the chart. Each <tr> carries --w, its score on the
+   0–100 scale that spans the full row, and its paper is washed marigold
+   exactly that far — under the rank, the name, everything. The wash edge
+   alone marks the score: every saturated end-tick tried here (full-height,
+   bottom notch, baseline dash) read as clutter against 199 rows of soft
+   edges, so the bar ends the way the paper does — quietly. The wash stays
+   this light so every ink on the row keeps its AA margin; the staircase of
+   edges down the table is the chart. */
+.rank-table tbody tr {
+  background:
+    linear-gradient(
+        color-mix(in srgb, var(--color-marigold) 13%, transparent),
+        color-mix(in srgb, var(--color-marigold) 13%, transparent)
+      )
+      left / var(--w, 0%) 100% no-repeat;
 }
-.score-cell .meter {
-  position: relative;
-  flex: 1 1 auto;
-  height: 6px;
-  border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--color-marigold) 18%, var(--color-white));
-  overflow: hidden;
+/* The datum the bar shadows: one step up in size and weight, because the
+   number now speaks without a meter beside it. */
+.score-cell {
+  font-size: 15px;
+  font-weight: 650;
 }
-.score-cell .meter::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--w, 0%);
-  /* Rounded data-end on the right; the left end is the baseline, squared and
-     clipped by the track's own curve. */
-  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
-  background: var(--color-marigold);
-  transition: background-color 160ms ease;
-}
-/* Hovering a row deepens its fill one warm step — the ribbon's hover, quoted. */
-tbody tr:hover .score-cell .meter::before { background: var(--color-saffron); }
-.score-cell .score-val {
-  min-width: 40px;
-  text-align: right;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-/* The meters ink in left-to-right once the card has risen; the first rows
-   stagger in sequence, everything below the fold lands together.
-   Rows past the stagger use the latest delay so no lower row ever fills
-   before a higher one on tall viewports. */
+/* The rows ink in left-to-right once the card has risen — the ribbon's
+   sweep, quoted row by row. The first rows stagger in sequence; rows past
+   the stagger use the latest delay so no lower row ever fills before a
+   higher one on tall viewports. */
 @media (prefers-reduced-motion: no-preference) {
-  .score-cell .meter::before {
-    transform-origin: left;
-    animation: meter-ink 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) 0.85s backwards;
-  }
-  tbody tr:nth-child(1) .meter::before { animation-delay: 0.4s; }
-  tbody tr:nth-child(2) .meter::before { animation-delay: 0.45s; }
-  tbody tr:nth-child(3) .meter::before { animation-delay: 0.5s; }
-  tbody tr:nth-child(4) .meter::before { animation-delay: 0.55s; }
-  tbody tr:nth-child(5) .meter::before { animation-delay: 0.6s; }
-  tbody tr:nth-child(6) .meter::before { animation-delay: 0.65s; }
-  tbody tr:nth-child(7) .meter::before { animation-delay: 0.7s; }
-  tbody tr:nth-child(8) .meter::before { animation-delay: 0.75s; }
-  tbody tr:nth-child(9) .meter::before { animation-delay: 0.8s; }
+  .rank-table tbody tr { animation: ink-sweep 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) 0.85s backwards; }
+  .rank-table tbody tr:nth-child(1) { animation-delay: 0.4s; }
+  .rank-table tbody tr:nth-child(2) { animation-delay: 0.45s; }
+  .rank-table tbody tr:nth-child(3) { animation-delay: 0.5s; }
+  .rank-table tbody tr:nth-child(4) { animation-delay: 0.55s; }
+  .rank-table tbody tr:nth-child(5) { animation-delay: 0.6s; }
+  .rank-table tbody tr:nth-child(6) { animation-delay: 0.65s; }
+  .rank-table tbody tr:nth-child(7) { animation-delay: 0.7s; }
+  .rank-table tbody tr:nth-child(8) { animation-delay: 0.75s; }
+  .rank-table tbody tr:nth-child(9) { animation-delay: 0.8s; }
 }
 @keyframes meter-ink {
   from { transform: scaleX(0); }
@@ -1616,16 +1606,13 @@ footer {
 .footer-links a:hover { color: var(--color-ink); }
 
 @media (max-width: 640px) {
-  /* The ranking must read without horizontal scrolling: the rank rail and the
-     code yield, names wrap, and the score chart folds into a value over a
-     short meter. */
+  /* The ranking must read without horizontal scrolling: the rank rail and
+     the code yield and names wrap. The chart needs no folding — the row
+     wash draws at any width. */
   .rank-table td:nth-child(2) { white-space: normal; }
   .rank-table .code { display: none; }
   .rank-table th:nth-child(1) { width: 44px; }
-  .rank-table th:nth-child(3) { width: auto; }
-  .rank-table td.score-cell { min-width: 88px; }
-  .score-cell .score-line { flex-wrap: wrap; gap: 4px 0; justify-content: flex-end; }
-  .score-cell .meter { flex: 1 1 100%; order: 2; height: 4px; }
+  .rank-table th:nth-child(3) { width: 72px; }
   thead th, tbody td, tfoot th, tfoot td { padding-left: 10px; padding-right: 10px; }
 }
 
