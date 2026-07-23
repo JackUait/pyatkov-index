@@ -67,12 +67,14 @@ const itemList = {
 >
   <section class="hero hero-split">
     <h1>
-      Most passport rankings <span class="count-word">count<svg class="tally" viewBox="0 0 46 30" aria-hidden="true"><path d="M5 3.5 C5.4 10.5 4.7 18.5 5.3 26.5" pathLength="1" /><path d="M15.5 3 C15 11 15.7 19 15.2 26" pathLength="1" /><path d="M25.5 4 C26 11 25.4 18 26 26.5" pathLength="1" /><path d="M36 3.2 C35.5 10.5 36.2 19 35.7 26.2" pathLength="1" /><path d="M2.5 22.5 C14 18 30 10 43.5 5.5" pathLength="1" /></svg></span><br />
+      Most passport rankings <span class="count-word"><span class="sr-only">count</span><span class="count-letters" aria-hidden="true"><i>c</i><i>o</i><i>u</i><i>n</i><i>t</i></span></span><br />
       This one <span class="pill-word">weighs</span>
     </h1>
     <div class="hero-deck">
+      <p class="deck-lede">
+        Getting into the United&nbsp;States isn't the same as getting into Tuvalu.
+      </p>
       <p class="tagline">
-        Getting into the United States isn't the same as getting into Tuvalu.
         We score each destination by its economy, travel, development, and
         diaspora, then rank each passport by how much it can actually reach.
       </p>
@@ -168,7 +170,8 @@ const itemList = {
 
   <style>
     /* global.css carries no visually-hidden utility, so the one the ribbon's
-       anchor text needs is defined here, next to its only two users. */
+       anchor text and the headline's counted word need is defined here, next
+       to its only users. */
     .sr-only {
       position: absolute;
       width: 1px;

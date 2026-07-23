@@ -307,11 +307,12 @@ li { margin: 6px 0; }
   max-width: 16ch;
 }
 /* The counting verb: the method this index argues against, set in the
-   editorial serif so it reads as the quoted idea rather than the claim.
-   Ink-54, not 40: the word is real headline text and 40 misses the 3:1
-   large-text floor on the paper canvas. Inline-block so it can drift in. */
+   editorial serif so it reads as the quoted idea rather than the claim —
+   and left bare. Every mark tried on it (tally, digits, outline capsule)
+   read as noise next to the pill; the voice change IS the device. Ink-54,
+   not 40: the word is real headline text and 40 misses the 3:1 large-text
+   floor on the paper canvas. */
 .hero .count-word {
-  position: relative;
   display: inline-block;
   font-family: var(--font-serif);
   font-weight: 400;
@@ -319,20 +320,13 @@ li { margin: 6px 0; }
   letter-spacing: -0.01em;
   color: var(--ink-54);
 }
-/* A pencil tally in the margin after "count" — the reference's hand-drawn
-   punctuation, spent on the one word it can annotate literally. Absolute so
-   it costs no layout and can never rewrap the headline. */
-.hero .tally {
-  position: absolute;
-  left: calc(100% + 0.35em);
-  bottom: 0.06em;
-  width: 0.8em;
-  height: auto;
-  fill: none;
-  stroke: var(--ink-40);
-  stroke-width: 2.6;
-  stroke-linecap: round;
-  transform: rotate(-4deg);
+/* The word counts itself in: five letters, one tick apart, each settling
+   from above the way the whole word used to drift — an sr-only twin keeps
+   the split letters out of the accessible name. Inline-block so each
+   letter can move; italic comes from the word, not the <i>. */
+.hero .count-letters i {
+  display: inline-block;
+  font-style: inherit;
 }
 /* The signature device: a colored pill wrapping one word of the headline.
    It hangs a shade below the baseline — the one word with weight sags. */
@@ -343,56 +337,93 @@ li { margin: 6px 0; }
   border-radius: var(--radius-pill);
   padding: 0.02em 0.32em 0.06em;
 }
-/* Load order tells the argument: "count" drifts in weightless, the tally
-   ticks its strokes off one by one, then "weighs" falls under gravity and
-   lands hard — squashing against the baseline, rebounding once, and jolting
-   the whole headline on impact. */
+/* Load order tells the argument: "count" ticks itself in letter by letter
+   on a metronome beat — counting — then "weighs" falls under gravity and
+   lands hard — squashing against the baseline, rebounding once, and
+   jolting the whole headline on impact. The last letter settles at 0.79s,
+   just as the pill begins its 0.72s fall. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero .count-word { animation: drift-in 0.55s ease-out 0.15s backwards; }
-  .hero .tally path {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: tally-draw 0.24s ease-out both;
-  }
-  .hero .tally path:nth-child(1) { animation-delay: 0.35s; }
-  .hero .tally path:nth-child(2) { animation-delay: 0.42s; }
-  .hero .tally path:nth-child(3) { animation-delay: 0.49s; }
-  .hero .tally path:nth-child(4) { animation-delay: 0.56s; }
-  .hero .tally path:nth-child(5) { animation-delay: 0.66s; animation-duration: 0.3s; }
+  .hero .count-letters i { animation: drift-in 0.35s ease-out backwards; }
+  .hero .count-letters i:nth-child(1) { animation-delay: 0.12s; }
+  .hero .count-letters i:nth-child(2) { animation-delay: 0.2s; }
+  .hero .count-letters i:nth-child(3) { animation-delay: 0.28s; }
+  .hero .count-letters i:nth-child(4) { animation-delay: 0.36s; }
+  .hero .count-letters i:nth-child(5) { animation-delay: 0.44s; }
   .hero .pill-word {
     transform-origin: 50% 100%;
-    animation: weigh-drop 0.65s linear 0.72s backwards;
+    animation: weigh-drop 0.8s linear 0.72s backwards;
   }
-  /* The ground reacts: the headline dips and recovers when the pill hits.
-     Delay = the pill's 0.72s start plus its 0.25s fall. */
-  .hero h1 { animation: land-jolt 0.28s ease-out 0.97s; }
+  /* The ground reacts: the headline dips hard on first impact, recovers,
+     then flinches once more — smaller — when the pill's second, lower
+     bounce comes down. Delay = the pill's 0.72s start plus its 0.25s fall. */
+  .hero h1 { animation: land-jolt 0.5s ease-out 0.97s; }
 }
 @keyframes drift-in {
   from { opacity: 0; transform: translateY(-0.25em); }
 }
-@keyframes tally-draw {
-  to { stroke-dashoffset: 0; }
-}
-/* Real weight: accelerate from above (ease-in fall for the first 38%), then
-   squash flat against the baseline, lift once on the rebound, and settle.
-   Timing functions live on the keyframes; the element's is a placeholder. */
+/* Real weight, by the animator's physics: the fall accelerates the whole
+   way down and the pill stretches tall mid-flight (fast things smear along
+   their motion); contact comes stretched, then the mass piles into a squash
+   within 50ms, near volume-preserving (1.13 × 0.83). What follows decays
+   like a real bounce: a low first rebound — heavy things barely bounce — a
+   second at a quarter the height and a shorter period, then a last
+   material ripple as the mass settles. Timing functions live on the
+   keyframes; the element's `linear` is a placeholder. Impact lands at 31%
+   of 0.8s = 0.25s in, keeping the ground jolt's 0.97s sync. */
 @keyframes weigh-drop {
   0% {
     opacity: 0;
-    transform: translateY(-1.2em);
-    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.6);
+    transform: translateY(-1.3em) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
   }
-  12% { opacity: 1; }
-  38% { transform: translateY(0) scale(1, 1); animation-timing-function: ease-out; }
-  50% { transform: translateY(0) scale(1.08, 0.85); animation-timing-function: ease-in-out; }
-  66% { transform: translateY(-0.1em) scale(0.99, 1.03); animation-timing-function: ease-in; }
-  80% { transform: translateY(0) scale(1.015, 0.97); animation-timing-function: ease-out; }
+  10% { opacity: 1; }
+  22% {
+    transform: translateY(-0.58em) scale(0.975, 1.045);
+    animation-timing-function: cubic-bezier(0.35, 0, 0.9, 0.55);
+  }
+  31% {
+    transform: translateY(0) scale(0.99, 1.02);
+    animation-timing-function: cubic-bezier(0.2, 0.5, 0.35, 1);
+  }
+  37% {
+    transform: translateY(0) scale(1.13, 0.83);
+    animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1);
+  }
+  47% {
+    transform: translateY(-0.09em) scale(0.995, 1.008);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  56% {
+    transform: translateY(0) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1);
+  }
+  60% {
+    transform: translateY(0) scale(1.05, 0.945);
+    animation-timing-function: cubic-bezier(0.25, 0.6, 0.4, 1);
+  }
+  66% {
+    transform: translateY(-0.024em) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  72% {
+    transform: translateY(0) scale(1.02, 0.985);
+    animation-timing-function: ease-out;
+  }
+  82% {
+    transform: translateY(0) scale(0.998, 1.002);
+    animation-timing-function: ease-in-out;
+  }
   100% { transform: translateY(0) scale(1, 1); }
 }
+/* Two thuds, one echo: the sharp dip is the pill's first landing, the small
+   one at 46% is its second bounce coming down (0.97s + 0.21s), amplitudes
+   matched to the bounce heights so ground and mass agree. */
 @keyframes land-jolt {
   0% { transform: translateY(0); }
-  35% { transform: translateY(0.045em); }
-  65% { transform: translateY(-0.015em); }
+  16% { transform: translateY(0.048em); }
+  38% { transform: translateY(-0.014em); }
+  46% { transform: translateY(0.012em); }
+  62% { transform: translateY(-0.004em); }
   100% { transform: translateY(0); }
 }
 @keyframes ink-sweep {
@@ -423,11 +454,13 @@ li { margin: 6px 0; }
   padding: 64px 0 44px;
 }
 /* 62px is the widest the pill line fits in the column — one notch more and
-   it wraps to four lines. */
+   it wraps to four lines. 1.06 leading, not the base 1.08: the reference
+   tightens as display type grows, and three lines this large read as one
+   block only when the leading bites. */
 .hero-split h1 {
   margin: 0;
   font-size: clamp(38px, 5.9vw, 62px);
-  line-height: 1.08;
+  line-height: 1.06;
 }
 /* The shell stops growing at 980px, so the columns — and the deck's height —
    are fixed from there up. The type must be too, or a vw-sized headline runs
@@ -439,20 +472,36 @@ li { margin: 6px 0; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 26px;
+  gap: 12px;
 }
-.hero-deck .tagline { margin: 0; }
+/* The deck opens with the claim itself: the tagline's first sentence cut as
+   a standfirst — full ink, one serif step up — so the deck answers the
+   headline's weight instead of trailing it in gray. Same words, same serif;
+   only the hierarchy is new. */
+.deck-lede {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  line-height: 1.42;
+  letter-spacing: -0.1px;
+  color: var(--ink-95);
+  margin: 0;
+  /* Even rag: without it the first line ends on "isn't", splitting the
+     negation from its complement. */
+  text-wrap: balance;
+}
+.hero-deck .tagline {
+  margin: 0;
+  text-wrap: pretty;
+}
+/* One wider step before the actions than between the two serif blocks, so
+   the deck reads lede → support → do, not three even items. */
+.hero-deck .actions { margin-top: 14px; }
 @media (max-width: 860px) {
   .hero-split {
     grid-template-columns: 1fr;
     row-gap: 28px;
     padding: 48px 0 36px;
   }
-}
-/* At phone widths the headline runs to the container edge and the margin
-   the tally sits in disappears. */
-@media (max-width: 640px) {
-  .hero .tally { display: none; }
 }
 
 /* ---- Weight ribbon: the argument, drawn ----
@@ -504,7 +553,7 @@ li { margin: 6px 0; }
   border: 1px solid var(--color-midnight);
   border-bottom: none;
   border-radius: 3px 3px 0 0;
-  opacity: 0.75;
+  opacity: 0.9;
 }
 .ribbon {
   display: flex;
@@ -549,14 +598,14 @@ li { margin: 6px 0; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  font-size: 10px;
+  gap: 4px;
+  font-size: 11px;
   line-height: 1;
   letter-spacing: 0.02em;
   color: var(--ink-95);
   transition: color 160ms ease;
 }
-.seg-label b { font-weight: 700; font-size: 11px; }
+.seg-label b { font-weight: 700; font-size: 12px; }
 .ribbon .seg:hover .seg-label { color: var(--color-white); }
 /* One shared tooltip, positioned by ribbon-tip.ts; nowrap keeps it measurable. */
 .ribbon-tip {
@@ -883,7 +932,7 @@ tbody tr:hover .score-cell .meter::before { background: var(--color-saffron); }
   font-variant-numeric: tabular-nums;
 }
 /* The meters ink in left-to-right once the card has risen; the first rows
-   stagger like the tally strokes, everything below the fold lands together.
+   stagger in sequence, everything below the fold lands together.
    Rows past the stagger use the latest delay so no lower row ever fills
    before a higher one on tall viewports. */
 @media (prefers-reduced-motion: no-preference) {
