@@ -735,31 +735,62 @@ li { margin: 6px 0; }
   font-variant-numeric: tabular-nums;
   color: var(--ink-60);
 }
-/* ---- Filter input: the product mockup's search pill ----
-   Pill radius quotes the nav and the headline device; the magnifier is inked
-   in stone as a background so the input needs no extra markup. */
-#filter {
-  width: 100%;
-  max-width: 280px;
-  margin-left: auto;
-  padding: 7px 16px 7px 35px;
+/* ---- Search inputs: the product mockup's search pill, made real ----
+   One cut shared by the table pages' pill (#filter) and the passport page's
+   squared field (.dest-search). The magnifier is inked in stone as a
+   background so the input needs no extra markup. Focus retires the fat ring
+   for the system's own grammar: the hairline inks to blue, a sky-tint halo
+   blooms around it, and the magnifier wakes to the same blue. Chrome's stock
+   clear ✕ is re-cut in stone and inks up on hover; Safari and Firefox never
+   draw one, and lose nothing. */
+#filter,
+.dest-search {
+  padding: 7px 15px 7px 35px;
   font: inherit;
   font-size: var(--text-body-sm);
   color: var(--color-ink);
+  caret-color: var(--color-notion-blue);
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20.5 20.5-4.8-4.8'/%3E%3C/svg%3E")
     13px 50% / 14px no-repeat var(--color-white);
   border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: var(--radius-pill);
-  transition: border-color 200ms ease;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
   appearance: none;
 }
-#filter::placeholder { color: var(--color-stone); }
-#filter:focus-visible {
-  outline: 2px solid var(--color-notion-blue);
-  outline-offset: -1px;
-  border-color: transparent;
+#filter {
+  width: 100%;
+  max-width: 280px;
+  margin-left: auto;
+  border-radius: var(--radius-pill);
 }
+#filter::placeholder,
+.dest-search::placeholder { color: var(--color-stone); }
+#filter:hover,
+.dest-search:hover { border-color: rgba(0, 0, 0, 0.3); }
+#filter:focus-visible,
+.dest-search:focus-visible {
+  outline: none;
+  border-color: var(--color-notion-blue);
+  box-shadow: 0 0 0 3px var(--color-sky-tint);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230075de' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20.5 20.5-4.8-4.8'/%3E%3C/svg%3E");
+}
+#filter::-webkit-search-cancel-button,
+.dest-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0 0 0 6px;
+  background: var(--color-stone);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='m2.5 2.5 7 7M9.5 2.5l-7 7'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='m2.5 2.5 7 7M9.5 2.5l-7 7'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+#filter::-webkit-search-cancel-button:hover,
+.dest-search::-webkit-search-cancel-button:hover { background: var(--color-ink); }
 @media (max-width: 560px) {
   #filter { max-width: none; }
 }
@@ -1369,27 +1400,12 @@ td.down::before { content: '\25BC'; } /* down triangle */
   margin: 56px 0 16px;
 }
 .dest-map-head h2 { margin: 0; }
-/* The table pages' search input, re-cut at the button radius: this page
-   retired its pills, and the squared field matches the chips it filters. */
+/* The table pages' search input (its shared cut lives with #filter), re-cut
+   at the button radius: this page retired its pills, and the squared field
+   matches the chips it filters. */
 .dest-search {
   width: min(280px, 100%);
-  padding: 7px 14px 7px 34px;
-  font: inherit;
-  font-size: var(--text-body-sm);
-  color: var(--color-ink);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20.5 20.5-4.8-4.8'/%3E%3C/svg%3E")
-    12px 50% / 14px no-repeat var(--color-white);
-  border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: var(--radius-btn);
-  transition: border-color 200ms ease;
-  appearance: none;
-}
-.dest-search::placeholder { color: var(--color-stone); }
-.dest-search:focus-visible {
-  outline: 2px solid var(--color-notion-blue);
-  outline-offset: -1px;
-  border-color: transparent;
 }
 .dest-empty {
   margin: 0;
