@@ -715,6 +715,19 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .tag-e-visa { background: var(--color-peach); color: var(--color-ink); }
 .tag-visa-required { background: var(--border-faint); color: var(--ink-60); }
 
+/* ---- Inline flag cards ----
+   21x15 SVGs from react-svg-country-flags, inlined at build time. They size
+   off the type around them so a flag in a table cell tracks the cell's font,
+   and sit on the text baseline rather than the line box's bottom. */
+.flag {
+  width: 1.4em;
+  height: auto;
+  display: inline-block;
+  vertical-align: -0.18em;
+  border-radius: 2px;
+  flex: none;
+}
+
 /* ---- Character mark: circular flag badge, used on the passport pages ---- */
 .mark {
   width: 44px;
@@ -725,8 +738,21 @@ td.down::before { content: '\25BC'; } /* down triangle */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  overflow: hidden;
   line-height: 1;
+}
+/* The flag fills the badge: the 7:5 card is scaled until its short side covers
+   the circle, then the circle itself clips the overhang. The ring stays on the
+   .mark so the accent colour reads over the flag's own edge. Sizing by
+   aspect-ratio rather than object-fit because an inline <svg> honours its
+   viewBox, not object-fit: match the box to the card's 7:5 and nothing
+   letterboxes; the surplus width overflows and the circle trims it. */
+.mark .flag-mark {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 7 / 5;
+  border-radius: 0;
+  vertical-align: baseline;
 }
 @keyframes pop {
   from { opacity: 0; transform: scale(0.4); }
@@ -740,7 +766,6 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .passport-hero .mark {
   width: 76px;
   height: 76px;
-  font-size: 38px;
   margin-bottom: 20px;
 }
 @media (prefers-reduced-motion: no-preference) {

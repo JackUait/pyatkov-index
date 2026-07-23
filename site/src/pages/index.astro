@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
 import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex } from '../lib/format.ts';
+import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
 // B9: the pipeline now emits an honest build date (builtAt) plus per-signal
 // vintages. Fall back to the legacy generatedAt field for pre-regen data.
@@ -108,7 +109,7 @@ const tipFor = (d: (typeof ribbon)[number], i: number) =>
       {rankings.passports.map((p) => (
         <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score}>
           <td>{p.rank}</td>
-          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}>{flagEmoji(p.iso2)} {displayName(p.iso3, p.name)}</a></td>
+          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a></td>
           <td class="score-cell" style={`--w:${p.score}%`}>{fmt(p.score)}<span class="bar" aria-hidden="true"></span></td>
         </tr>
       ))}

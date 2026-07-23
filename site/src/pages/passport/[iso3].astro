@@ -3,7 +3,8 @@ import Base from '../../layouts/Base.astro';
 import rankings from '../../data/rankings.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { deltaLabel, displayName, flagEmoji, fmt, reconcilePoints } from '../../lib/format.ts';
+import { deltaLabel, displayName, fmt, reconcilePoints } from '../../lib/format.ts';
+import Flag from '../../components/Flag.astro';
 
 export function getStaticPaths() {
   return rankings.passports.map((p) => ({ params: { iso3: p.iso3.toLowerCase() }, props: { passport: p } }));
@@ -52,7 +53,7 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
 ---
 <Base title={`${name} passport - Pyatkov Index`} description={`${name}: rank ${p.rank}, score ${fmt(p.score)} on the weighted passport index.`}>
   <section class="passport-hero">
-    <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true">{flagEmoji(p.iso2)}</span>
+    <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true"><Flag iso2={p.iso2} class="flag-mark" /></span>
     <h1>The {name} passport</h1>
   </section>
 
@@ -85,7 +86,7 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       <h2>Most valuable destinations reachable</h2>
       <ol class="rank-list">
         {topReachable.map((d) => (
-          <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</a> <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
+          <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a> <span class="meta"><span class={`tag tag-${d.category}`}>{LABEL[d.category]}</span> weight {d.weight.toFixed(3)}</span></li>
         ))}
       </ol>
     </section>
@@ -94,7 +95,7 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       {topMissing.length === 0 ? <p>None. This passport reaches every weighted destination.</p> : (
         <ol class="rank-list">
           {topMissing.map((d) => (
-            <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}>{flagEmoji(d.iso2)} {displayName(d.iso3, d.name)}</a> <span class="meta">weight {d.weight.toFixed(3)}</span></li>
+            <li><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a> <span class="meta">weight {d.weight.toFixed(3)}</span></li>
           ))}
         </ol>
       )}

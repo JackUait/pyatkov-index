@@ -1,0 +1,13 @@
+---
+import { flagMarkup } from '../lib/flag.ts';
+
+interface Props {
+  iso2: string;
+  /** Extra classes, e.g. "flag-mark" for the hero badge. */
+  class?: string;
+}
+
+const { iso2, class: extra } = Astro.props;
+const className = extra ? `flag ${extra}` : 'flag';
+---
+<Fragment set:html={flagMarkup(iso2, className)} />
