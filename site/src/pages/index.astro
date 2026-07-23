@@ -14,7 +14,6 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
 // each one is expressed as a share of the total before it is drawn.
 const ribbon = [...weights.destinations].sort((a, b) => b.weight - a.weight);
 const totalWeight = ribbon.reduce((sum, d) => sum + d.weight, 0);
-const maxWeight = ribbon[0].weight;
 const share = (w: number) => (w / totalWeight) * 100;
 // How few destinations it takes to reach half the world's weight, computed
 // rather than hard-coded so the caption cannot drift from the data.
@@ -25,52 +24,70 @@ for (const d of ribbon) {
   halfCount += 1;
   if (running >= totalWeight / 2) break;
 }
-// Tint ramp: full marigold at the heaviest, a pale wash at the tail. The
-// square root keeps the long tail from collapsing into one flat value.
-const tint = (w: number) => 22 + 78 * (w / maxWeight) ** 0.62;
+// Where the heavy head ends, as a share of the strip's width: the bracket
+// annotation is anchored to this so it always measures the marigold block.
+const halfShare = share(running);
+// Only the extreme gets an in-mark label; anything narrower can't fit one.
+const labelShare = 4;
+// Slats below this share render at a pixel or less, where a separator would
+// swallow the slat itself — the comb texture fades out into the deep tail.
+const sepShare = 0.25;
+const tipFor = (d: (typeof ribbon)[number], i: number) =>
+  `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · ${share(d.weight).toFixed(2)}% of world weight · #${i + 1} of ${ribbon.length}`;
 ---
 <Base title="Pyatkov Index: the weighted passport ranking" description="A passport index that weights every destination by the economy, travel, development, and diaspora behind it.">
-  <section class="hero">
+  <section class="hero hero-split">
     <h1>
       Most passport rankings <span class="count-word">count</span>.<br />
       This one <span class="pill-word">weighs</span><span class="stop">.</span>
     </h1>
-    <div class="actions">
-      <a class="btn btn-lg btn-primary" href="#rankings-card">See the rankings</a>
-      <a class="btn btn-lg btn-ghost" href={`${base}methodology/`}>How it is built</a>
+    <div class="hero-deck">
+      <p class="tagline">
+        A door to the United States is not a door to Tuvalu. Every destination
+        is weighed by the economy, travel, development, and diaspora behind it
+        — and every passport by the doors it opens.
+      </p>
+      <div class="actions">
+        <a class="btn btn-lg btn-primary" href="#rankings-card">See the rankings</a>
+        <a class="btn btn-lg btn-ghost" href={`${base}methodology/`}>How it is built</a>
+      </div>
     </div>
   </section>
 
-  <figure class="ribbon-figure">
+  <figure class="ribbon-figure" style={`--half:${halfShare.toFixed(2)}%`}>
+    <figcaption class="ribbon-annot">
+      <span class="annot-half"><b>{halfCount} destinations</b> carry half the world's weight</span>
+      <span class="annot-tail">the other <b>{ribbon.length - halfCount}</b> share the rest</span>
+      <i class="annot-bracket" aria-hidden="true"></i>
+    </figcaption>
     <div
       class="ribbon"
       role="img"
-      aria-label={`All ${ribbon.length} destinations drawn to scale by weight, heaviest first. ${displayName(ribbon[0].iso3, ribbon[0].name)} is the heaviest at ${share(ribbon[0].weight).toFixed(1)} percent of the world total; the ${halfCount} heaviest together account for half of it.`}
+      aria-label={`All ${ribbon.length} destinations drawn to scale by weight, heaviest first. ${displayName(ribbon[0].iso3, ribbon[0].name)} is the heaviest at ${share(ribbon[0].weight).toFixed(1)} percent of the world total; the ${halfCount} heaviest together carry half of it, and the remaining ${ribbon.length - halfCount} share the rest.`}
     >
       {ribbon.map((d, i) => (
-        <span
-          class:list={['seg', i >= halfCount && 'seg-tail', i === halfCount && 'seg-half']}
+        <a
+          class:list={['seg', i >= halfCount && 'seg-tail', share(d.weight) >= sepShare && 'seg-sep']}
+          href={`${base}destination/${d.iso3.toLowerCase()}/`}
+          tabindex="-1"
           aria-hidden="true"
-          title={`${displayName(d.iso3, d.name)} — ${share(d.weight).toFixed(2)}% of world weight`}
-          style={`--grow:${d.weight.toFixed(4)};--tint:${tint(d.weight).toFixed(1)}%;--i:${i}`}
-        ></span>
+          data-tip={tipFor(d, i)}
+          style={`--w:${share(d.weight).toFixed(4)}%`}
+        >
+          {share(d.weight) >= labelShare && (
+            <span class="seg-label"><b>{d.iso2}</b><span>{share(d.weight).toFixed(1)}%</span></span>
+          )}
+        </a>
       ))}
     </div>
-    <figcaption>
-      <span class="legend legend-heavy">
-        <b>{halfCount}</b> destinations carry half the world's weight
-      </span>
-      <span class="legend legend-tail">
-        the other <b>{ribbon.length - halfCount}</b> share the rest
-      </span>
-    </figcaption>
+    <div class="ribbon-tip" aria-hidden="true" hidden></div>
   </figure>
 
   <section class="statline" aria-label="Index coverage">
     <div><strong>{rankings.passports.length}</strong><span>passports ranked</span></div>
     <div><strong>{rankings.totalDestinations}</strong><span>destinations weighted</span></div>
     <div><strong>4</strong><span>weighting signals</span></div>
-    <div><strong>{formatBuiltDate(builtAt)}</strong><span>last built</span></div>
+    <div class="stat-end"><strong>{formatBuiltDate(builtAt)}</strong><span>last built</span></div>
   </section>
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
@@ -103,7 +120,9 @@ const tint = (w: number) => 22 + 78 * (w / maxWeight) ** 0.62;
 
   <script>
     import { initSortableTable } from '../lib/table-ui.ts';
+    import { initRibbonTip } from '../lib/ribbon-tip.ts';
 
+    initRibbonTip({ figure: '.ribbon-figure', ribbon: '.ribbon', tip: '.ribbon-tip' });
     initSortableTable({
       table: '#rankings',
       filter: '#filter',

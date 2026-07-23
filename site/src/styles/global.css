@@ -240,10 +240,12 @@ li { margin: 6px 0; }
 }
 .btn-ghost:hover { background: color-mix(in srgb, var(--color-sky-tint) 92%, var(--color-notion-blue)); }
 
-/* ---- Hero (rankings page): left-aligned editorial stack ----
+/* ---- Hero: an editorial front page ----
    The claim is about method, not about places: other indexes count doors,
    this one weighs them. The two verbs carry it typographically — "count" set
-   in the editorial serif, "weighs" in the signature peach pill. */
+   in the editorial serif, "weighs" in the signature peach pill. On the
+   rankings page the hero is a split masthead: headline low-left, serif deck
+   and actions bottom-right, the diagonal pointing down into the chart. */
 .hero {
   padding: 56px 0 40px;
 }
@@ -264,12 +266,21 @@ li { margin: 6px 0; }
   letter-spacing: -0.01em;
   color: var(--ink-40);
 }
-/* The signature device: a colored pill wrapping one word of the headline. */
+/* The signature device: a colored pill wrapping one word of the headline.
+   The fill is a gradient layer so it can sweep in like a highlighter stroke. */
 .hero .pill-word {
   display: inline-block;
-  background: var(--color-peach);
+  background: linear-gradient(var(--color-peach), var(--color-peach)) left / 100% 100% no-repeat;
   border-radius: var(--radius-pill);
   padding: 0.02em 0.32em 0.06em;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero .pill-word {
+    animation: ink-sweep 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) 0.4s backwards;
+  }
+}
+@keyframes ink-sweep {
+  from { background-size: 0% 100%; }
 }
 /* The pill's own padding would strand the full stop; pull it back onto the word. */
 .hero .stop { margin-left: -0.22em; }
@@ -286,117 +297,224 @@ li { margin: 6px 0; }
   flex-wrap: wrap;
   gap: 12px;
 }
-/* With no lede between them, the headline needs its own breathing room. */
-.hero h1 + .actions { margin-top: 8px; }
+
+/* Split masthead (rankings page). align-items: end drops the deck onto the
+   headline's baseline shelf, so the empty corner sits top-right, not bottom. */
+.hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  column-gap: 56px;
+  align-items: end;
+  padding: 64px 0 44px;
+}
+/* Sized so the headline holds its three composed lines inside the column. */
+.hero-split h1 {
+  margin: 0;
+  font-size: clamp(38px, 4.4vw, 60px);
+}
+.hero-deck {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  padding-bottom: 5px;
+}
+.hero-deck .tagline { margin: 0; }
+@media (max-width: 860px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+    row-gap: 28px;
+    align-items: start;
+    padding: 48px 0 36px;
+  }
+  .hero-deck { padding-bottom: 0; }
+}
 
 /* ---- Weight ribbon: the argument, drawn ----
-   Every destination as one proportional segment, heaviest first, tinted from
-   full marigold down to a pale wash. It replaces decoration with the datum
-   the whole index rests on. */
+   Every destination as one proportional slat, heaviest first, straight on
+   the paper like a newspaper chart. Exactly two fills — marigold for the
+   heavy head, a neutral wash for the tail — so the halfway claim is visible
+   as a color split, and a midnight bracket measures the marigold half. */
 .ribbon-figure {
-  margin: 8px 0 40px;
-  padding: 18px 20px 16px;
-  background: var(--color-white);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--radius-card);
+  position: relative;
+  margin: 12px 0 24px;
 }
-.ribbon {
-  display: flex;
-  gap: 1px;
-  height: 72px;
-  align-items: stretch;
-}
-.ribbon .seg {
-  flex: var(--grow) 1 0;
-  min-width: 1px;
-  border-radius: 1px;
-  background: color-mix(in srgb, var(--color-marigold) var(--tint), var(--color-white));
-  transition: background-color 160ms ease;
-}
-/* Everything past the halfway mark drops out of the warm ramp into a neutral
-   wash, so the caption's claim is visible in the bar itself. */
-.ribbon .seg-tail { background: rgba(0, 0, 0, 0.11); }
-.ribbon .seg-half { box-shadow: -2px 0 0 var(--color-midnight); }
-.ribbon .seg:first-child { border-radius: 3px 1px 1px 3px; }
-.ribbon .seg:last-child { border-radius: 1px 3px 3px 1px; }
-.ribbon .seg:hover { background: var(--color-midnight); }
-@media (prefers-reduced-motion: no-preference) {
-  .ribbon .seg {
-    animation: grow-seg 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-    /* Left-to-right sweep, capped so the tail never lags the fold. */
-    animation-delay: calc(var(--i, 0) * 3ms);
-    transform-origin: bottom;
-  }
-}
-@keyframes grow-seg {
-  from { transform: scaleY(0.08); opacity: 0; }
-}
-.ribbon-figure figcaption {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 20px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-faint);
+/* Annotation band: the caption sits inside the chart, anchored to the data.
+   --half (set inline from the pipeline data) is the head's share of width. */
+.ribbon-annot {
+  position: relative;
+  height: 46px;
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
   color: var(--color-slate);
 }
-.ribbon-figure figcaption b {
+.ribbon-annot b {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--ink-95);
 }
-/* Legends carry the ribbon's own two fills as swatches. */
-.legend { display: inline-flex; align-items: center; gap: 7px; }
-.legend::before {
-  content: '';
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
-  background: var(--swatch);
+.annot-half {
+  position: absolute;
+  left: 0;
+  bottom: 15px;
+  width: var(--half);
+  padding: 0 8px;
+  text-align: center;
 }
-.legend-heavy { --swatch: var(--color-marigold); }
-.legend-tail { --swatch: rgba(0, 0, 0, 0.11); margin-left: auto; }
-@media (max-width: 720px) {
-  .ribbon { gap: 0; height: 56px; }
-  .legend-tail { margin-left: 0; }
+.annot-tail {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  text-align: right;
+}
+/* The measuring bracket: a hairline ⌐‾¬ over the marigold half, ticks down. */
+.annot-bracket {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--half);
+  height: 7px;
+  border: 1px solid var(--color-midnight);
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  opacity: 0.75;
+}
+.ribbon {
+  display: flex;
+  height: 96px;
+  margin-top: 8px;
+  align-items: stretch;
+  /* Both fills are painted once, underneath the slats: half marigold, half
+     neutral, split at --half. Fractional slat edges land on the same color,
+     so the strip can never open a seam, and the split is the argument. */
+  background: linear-gradient(
+      to right,
+      var(--color-marigold) var(--half),
+      rgba(0, 0, 0, 0.11) var(--half)
+    )
+    left / 100% 100% no-repeat;
+  border-radius: 4px;
+  overflow: hidden;
+}
+/* Each transparent slat is its exact share of the width — no gaps, no
+   minimums — and links to its destination page. Separators are tone-on-tone
+   hairlines (a translucent ink shadow reads as a darker step of whichever
+   fill it sits on): the marigold mass must measure a true half, so no paper
+   white may subtract from it. Slats below ~a pixel fade out of the comb. */
+.ribbon .seg {
+  position: relative;
+  flex: 0 0 var(--w);
+  transition: background-color 160ms ease;
+}
+.ribbon .seg-sep:not(:last-child) { box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.14); }
+/* The tail's wash is far lighter than marigold, so its hairlines whisper. */
+.ribbon .seg-tail.seg-sep:not(:last-child) { box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06); }
+.ribbon .seg:hover { background: var(--color-midnight); text-decoration: none; }
+/* The strip inks in left to right, the same stroke as the headline pill. */
+@media (prefers-reduced-motion: no-preference) {
+  .ribbon { animation: ink-sweep 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.15s backwards; }
+}
+/* Direct label on the extreme only: the one slat wide enough to carry it. */
+.seg-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--ink-95);
+  transition: color 160ms ease;
+}
+.seg-label b { font-weight: 700; font-size: 11px; }
+.ribbon .seg:hover .seg-label { color: var(--color-white); }
+/* One shared tooltip, positioned by ribbon-tip.ts; nowrap keeps it measurable. */
+.ribbon-tip {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -100%);
+  background: var(--color-midnight);
+  color: var(--color-white);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-variant-numeric: tabular-nums;
+  padding: 7px 11px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.ribbon-tip[hidden] { display: none; }
+@media (max-width: 719px) {
+  /* Anchored annotations collide at phone widths: fall back to a stacked
+     legend keyed by swatches, and drop the bracket with the anchoring. */
+  .ribbon-annot { height: auto; display: flex; flex-direction: column; gap: 5px; }
+  .annot-half,
+  .annot-tail {
+    position: static;
+    width: auto;
+    padding: 0;
+    text-align: left;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .annot-half::before,
+  .annot-tail::before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--swatch);
+  }
+  .annot-half { --swatch: var(--color-marigold); }
+  .annot-tail { --swatch: rgba(0, 0, 0, 0.11); }
+  .annot-bracket { display: none; }
+  /* Sub-pixel slats leave no room for separators at phone widths. */
+  .ribbon { height: 64px; }
+  .ribbon .seg-sep:not(:last-child) { box-shadow: none; }
+  .seg-label { display: none; }
 }
 
-/* ---- Stat strip under the hero ---- */
+/* ---- Stat colophon: the plate's closing line ----
+   Number-and-label pairs on one baseline between hairlines, left-ragged like
+   the rest of the page; on the rankings page it closes the ribbon plate. */
 .statline {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 40px;
   border-top: 1px solid var(--border-hairline);
   border-bottom: 1px solid var(--border-hairline);
   margin: 0 0 48px;
-  padding: 20px 0;
+  padding: 16px 0;
 }
 .statline > div {
-  text-align: center;
-  padding: 4px 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
-.statline > div + div { border-left: 1px solid var(--border-hairline); }
 .statline strong {
-  display: block;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.2px;
-  font-variant-numeric: tabular-nums;
 }
 .statline span {
-  display: block;
-  margin-top: 2px;
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
   /* Slate, not Stone: captions sit on the paper canvas and need AA there. */
   color: var(--color-slate);
 }
+/* The build date reads as a colophon signature, pushed to the far margin. */
+.statline .stat-end { margin-left: auto; }
 @media (max-width: 640px) {
-  .statline { grid-template-columns: repeat(2, 1fr); row-gap: 16px; }
-  .statline > :nth-child(3) { border-left: 0; }
+  .statline { gap: 8px 28px; }
+  .statline .stat-end { margin-left: 0; }
 }
 
 .table-intro {
