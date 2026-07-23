@@ -195,6 +195,30 @@ const nav = [
       </div>
     </header>
     <main class={wide ? 'wide' : undefined}><slot /></main>
+    {/* The country drawer: passport/destination links open here instead of
+        navigating. Sits outside <main> so it survives the inert treatment the
+        open drawer applies to the page behind it; country-drawer.ts owns all
+        behavior, and without JS the links keep working as plain navigation. */}
+    <div class="drawer-root" id="country-drawer" hidden>
+      <div class="drawer-scrim"></div>
+      <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Country details">
+        <div class="drawer-bar">
+          <button class="drawer-back" id="drawer-back" type="button" hidden>
+            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M10.5 2.5 5 8l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            Back
+          </button>
+          <span class="drawer-chip" id="drawer-kind"></span>
+          <a class="drawer-full" id="drawer-full" href={base} aria-label="Open full page" data-drawer-bypass>
+            <span>Open full page</span>
+            <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3h8v8M13 3 3.5 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <button class="drawer-close" id="drawer-close" type="button" aria-label="Close">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m3.5 3.5 9 9m0-9-9 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+          </button>
+        </div>
+        <div class="drawer-content" id="drawer-content" tabindex="-1"></div>
+      </aside>
+    </div>
     <footer transition:persist="footer">
       <div class="footer-inner">
         <ul class="footer-links">
@@ -212,8 +236,10 @@ const nav = [
     <script>
       import { initNavElevation } from '../lib/nav-elevation.ts';
       import { initNavCurrent } from '../lib/nav-current.ts';
+      import { initCountryDrawer } from '../lib/country-drawer.ts';
       initNavElevation();
       initNavCurrent();
+      initCountryDrawer();
     </script>
   </body>
 </html>

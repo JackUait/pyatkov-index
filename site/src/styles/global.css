@@ -1256,3 +1256,228 @@ footer {
 @media (max-width: 411px) {
   header nav { max-width: 240px; }
 }
+
+/* ---- Country drawer: a page pulled out as a card ----
+   Passport and destination pages slide in from the right instead of
+   navigating away. The panel is the system's white card at overlay scale —
+   hairline border, 12px corners, floated a gutter off the viewport edge so it
+   reads as a sheet laid on the paper, not a wall bolted to it. The page
+   behind stays at full light: the scrim is only an invisible click-catcher,
+   and the hairline plus the midnight-cast shadow do all the separating. The
+   brand's weight ribbon runs across the panel's top edge: the site's
+   colophon mark, stamped on the pulled-out page. */
+.drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+.drawer-root[hidden] { display: none; }
+.drawer-scrim {
+  position: absolute;
+  inset: 0;
+}
+.drawer-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: min(620px, calc(100% - 24px));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+  /* A midnight-cast shadow, not a black one: overlay elevation on this canvas
+     should feel like the scrim gathering under the card. */
+  box-shadow: 0 24px 64px rgba(2, 9, 58, 0.28);
+  overflow: clip;
+  transform: translateX(calc(100% + 12px));
+}
+.drawer-root.is-open .drawer-panel { transform: none; }
+/* The brand mark's stepped ribbon, stretched across the top edge: solid
+   hard-stop fills (the strip from Base.astro at 32px, re-plotted in %). */
+.drawer-panel::before {
+  content: '';
+  flex: none;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--color-saffron) 0 18.75%,
+    var(--color-marigold) 0 32.5%,
+    rgba(255, 177, 16, 0.66) 0 42.5%,
+    rgba(255, 177, 16, 0.38) 0 50%,
+    rgba(0, 0, 0, 0.2) 0 66.25%,
+    rgba(0, 0, 0, 0.15) 0 80%,
+    rgba(0, 0, 0, 0.11) 0 91.25%,
+    rgba(0, 0, 0, 0.08) 0 100%
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .drawer-panel { transition: transform 380ms cubic-bezier(0.2, 0.7, 0.3, 1); }
+}
+
+/* Chrome bar: back, the kind chip, then the escape hatches on the far edge. */
+.drawer-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 16px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+.drawer-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  color: var(--ink-60);
+  border-radius: var(--radius-pill);
+  padding: 6px;
+  cursor: pointer;
+  transition: color 200ms ease, background-color 200ms ease;
+}
+.drawer-bar button:hover {
+  color: var(--ink-95);
+  background: rgba(0, 0, 0, 0.05);
+}
+.drawer-bar button:focus-visible {
+  outline: 2px solid var(--color-notion-blue);
+  outline-offset: 1px;
+}
+.drawer-back { padding: 6px 12px 6px 8px; }
+/* display: inline-flex above would otherwise defeat the hidden attribute. */
+.drawer-back[hidden] { display: none; }
+.drawer-close { padding: 8px; }
+/* The kind chip quotes the nav's current-page pill: peach for passports,
+   sky for destinations — the same pairing the access tags already speak. */
+.drawer-chip {
+  border-radius: var(--radius-pill);
+  padding: 3px 11px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.drawer-chip:empty { display: none; }
+.drawer-chip[data-kind='passport'] { background: var(--color-peach); color: var(--ink-95); }
+.drawer-chip[data-kind='destination'] { background: var(--color-sky-tint); color: var(--color-blue-deep); }
+/* The reference's outlined text button: the compact mid-priority action. */
+.drawer-full {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: var(--radius-btn);
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-95);
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+.drawer-full:hover {
+  text-decoration: none;
+  border-color: rgba(0, 0, 0, 0.32);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* The pulled-out page itself. */
+.drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 32px 56px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+.drawer-content:focus { outline: none; }
+/* The drawer supplies the context a standalone page needs breadcrumbs for. */
+.drawer-content .crumbs { display: none; }
+.drawer-content .passport-hero { padding: 26px 0 4px; }
+.drawer-content .passport-hero .mark { width: 64px; height: 64px; margin-bottom: 14px; }
+.drawer-content .passport-hero h1 { font-size: clamp(26px, 5vw, 32px); }
+.drawer-content h2 { margin-top: 40px; }
+/* Page grids assume the page column; at drawer width they re-rack. The
+   overrides must out-rank the viewport media queries, which still see a wide
+   window: the drawer is narrow at any viewport. */
+.drawer-content .stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.drawer-content .stats dd { font-size: 26px; }
+.drawer-content .rank-cols { grid-template-columns: 1fr; }
+/* Sticky headers offset against the drawer's own scrollport, not the nav. */
+.drawer-content thead th { top: 0; }
+/* Card headers can't hold title, count and filter on one drawer-width line:
+   title and count share the first row, the filter takes a full second one.
+   margin-top re-zeroed: the drawer's 40px h2 rhythm above outranks the
+   card-header's own reset and would shove the title out of its flex row. */
+.drawer-content .card-header h2 { flex: 1 1 auto; margin-top: 0; }
+.drawer-content .card-header #filter {
+  flex: 1 1 100%;
+  max-width: none;
+  margin-left: 0;
+}
+/* Load reveal, quoted from the page: the pulled-out page rises like one. */
+@media (prefers-reduced-motion: no-preference) {
+  .drawer-content > * { animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+  .drawer-content > :nth-child(2) { animation-delay: 0.05s; }
+  .drawer-content > :nth-child(3) { animation-delay: 0.1s; }
+  .drawer-content > :nth-child(4) { animation-delay: 0.15s; }
+  .drawer-content > :nth-child(n + 5) { animation-delay: 0.2s; }
+}
+
+/* Loading: the page's silhouette — mark, title, prose bars — pulsing flat. */
+.drawer-skel {
+  padding: 40px 0;
+  display: grid;
+  gap: 16px;
+}
+.drawer-skel i {
+  display: block;
+  height: 13px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.07);
+}
+.drawer-skel i:nth-child(1) {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  justify-self: center;
+}
+.drawer-skel i:nth-child(2) { width: 62%; height: 24px; justify-self: center; margin-bottom: 12px; }
+.drawer-skel i:nth-child(3) { width: 100%; height: 72px; border-radius: var(--radius-card); margin-bottom: 12px; }
+.drawer-skel i:nth-child(5) { width: 92%; }
+.drawer-skel i:nth-child(6) { width: 96%; }
+.drawer-skel i:nth-child(7) { width: 60%; }
+.drawer-skel i:nth-child(8) { width: 85%; }
+@media (prefers-reduced-motion: no-preference) {
+  .drawer-skel i { animation: skel-pulse 1.1s ease-in-out infinite; }
+  .drawer-skel i:nth-child(even) { animation-delay: 0.18s; }
+}
+@keyframes skel-pulse {
+  50% { opacity: 0.45; }
+}
+
+.drawer-error {
+  padding: 72px 24px;
+  text-align: center;
+  color: var(--color-graphite);
+}
+.drawer-error p { margin: 0 auto 16px; }
+
+/* Phone: the sheet takes the screen; the gutter and radius go with it. */
+@media (max-width: 660px) {
+  .drawer-panel {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    transform: translateX(100%);
+  }
+  .drawer-content { padding: 0 var(--pad) 48px; }
+  .drawer-full span { display: none; }
+}

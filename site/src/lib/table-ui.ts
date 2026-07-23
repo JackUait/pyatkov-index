@@ -46,16 +46,21 @@ export interface SortableTableOptions {
   noResults?: string;
   initialSort: string;
   defaultAsc: Record<string, boolean>;
+  /** Scope for the selectors. The country drawer injects a copy of a page whose
+   *  table/filter ids can also exist on the host page, so it passes its own
+   *  subtree; page scripts omit it and get the document as before. */
+  root?: ParentNode;
 }
 
 export function initSortableTable(opts: SortableTableOptions): void {
-  const table = document.querySelector(opts.table);
+  const scope = opts.root ?? document;
+  const table = scope.querySelector(opts.table);
   if (!table) return;
   const tbody = table.querySelector('tbody')!;
   const rows = [...tbody.querySelectorAll('tr')];
 
-  const input = opts.filter ? (document.querySelector(opts.filter) as HTMLInputElement | null) : null;
-  const noResults = opts.noResults ? document.querySelector(opts.noResults) : null;
+  const input = opts.filter ? (scope.querySelector(opts.filter) as HTMLInputElement | null) : null;
+  const noResults = opts.noResults ? scope.querySelector(opts.noResults) : null;
 
   if (input) {
     input.addEventListener('input', () => {
