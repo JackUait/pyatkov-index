@@ -12,11 +12,11 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Before setup-node: its yarn cache probe must resolve Yarn 4 via the
       # corepack shim, not the runner's global Yarn 1.
       - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: yarn
