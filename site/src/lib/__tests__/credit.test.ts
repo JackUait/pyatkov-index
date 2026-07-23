@@ -10,8 +10,11 @@ describe('CREDIT', () => {
     expect(CREDIT).toEqual(PIPELINE_CREDIT);
   });
 
-  it('is binary — nothing between 0 and 1', () => {
-    expect(Object.values(CREDIT).every((v) => v === 0 || v === 1)).toBe(true);
+  it('scores each tier on the graded ladder (1.0 border / 0.2 eVisa / 0 required)', () => {
+    expect(CREDIT['visa-free']).toBe(1.0);
+    expect(CREDIT['visa-on-arrival']).toBe(1.0);
+    expect(CREDIT['e-visa']).toBe(0.2);
+    expect(CREDIT['visa-required']).toBe(0);
   });
 });
 

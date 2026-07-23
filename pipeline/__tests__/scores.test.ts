@@ -44,29 +44,29 @@ describe('computeScores', () => {
     expect(byIso.AAA.score).toBeCloseTo((100 * (1.0 * 0.9 + 0 * 0.1 + 1.0 * 0.5)) / denom); // 93.33
     // BBB: free→AAA(0.5), free→CCC(0.1), plus free→self BBB(0.9)
     expect(byIso.BBB.score).toBeCloseTo((100 * (1.0 * 0.5 + 1.0 * 0.1 + 1.0 * 0.9)) / denom); // 100
-    // CCC: e-visa→AAA(0·0.5), voa→BBB(1.0·0.9), plus free→self CCC(0.1)
-    expect(byIso.CCC.score).toBeCloseTo((100 * (0 * 0.5 + 1.0 * 0.9 + 1.0 * 0.1)) / denom); // 66.67
+    // CCC: e-visa→AAA(0.2·0.5), voa→BBB(1.0·0.9), plus free→self CCC(0.1)
+    expect(byIso.CCC.score).toBeCloseTo((100 * (0.2 * 0.5 + 1.0 * 0.9 + 1.0 * 0.1)) / denom); // 73.33
   });
 
   it('computes equal-weight score, ranks, and delta (self counted, n denominator)', () => {
     const rows = computeScores(matrix, weights, names);
     const byIso = Object.fromEntries(rows.map((r) => [r.iso3, r]));
-    // equal over all n=3 destinations incl. self: AAA=100*2/3; BBB=100*3/3=100; CCC=100*2/3
-    // (CCC's eVisa to AAA is now worth nothing, so it lands on the same 2-of-3 as AAA.)
+    // equal over all n=3 destinations incl. self: AAA=100*2/3; BBB=100*3/3=100; CCC=100*2.2/3
+    // (CCC's eVisa to AAA is now worth 0.2, lifting it just above AAA's flat 2-of-3.)
     expect(byIso.AAA.equalScore).toBeCloseTo((100 * 2) / 3, 6); // 66.67
     expect(byIso.BBB.equalScore).toBeCloseTo(100, 6);
-    expect(byIso.CCC.equalScore).toBeCloseTo((100 * 2) / 3, 6); // 66.67
-    // weighted ranks: BBB 100 > AAA 93.33 > CCC 66.67
+    expect(byIso.CCC.equalScore).toBeCloseTo((100 * 2.2) / 3, 6); // 73.33
+    // weighted ranks: BBB 100 > AAA 93.33 > CCC 73.33
     expect(byIso.BBB.rank).toBe(1);
     expect(byIso.AAA.rank).toBe(2);
     expect(byIso.CCC.rank).toBe(3);
-    // equal ranks: BBB 100 > {AAA, CCC} 66.67 — a genuine tie under the binary ladder
+    // equal ranks: BBB 100 > CCC 73.33 > AAA 66.67 — the eVisa credit now breaks the old tie
     expect(byIso.BBB.equalRank).toBe(1);
-    expect(byIso.AAA.equalRank).toBe(2);
     expect(byIso.CCC.equalRank).toBe(2);
+    expect(byIso.AAA.equalRank).toBe(3);
     // delta = equalRank - rank
     expect(byIso.BBB.delta).toBe(0);
-    expect(byIso.AAA.delta).toBe(0);
+    expect(byIso.AAA.delta).toBe(1);
     expect(byIso.CCC.delta).toBe(-1);
     for (const r of rows) expect(r.delta).toBe(r.equalRank - r.rank);
   });
@@ -126,9 +126,9 @@ describe('B1: mathematically-tied passports tie (no float-equality split)', () =
   // AAA and BBB reach the same credit MULTISET over their four non-self destinations, but
   // assembled in different column orders. Under the earlier graded ladder those float sums
   // diverged (3.1 vs 3.0999999999999996) and the old exact-=== ranking split them into
-  // different equalRanks; integer-tenths accumulation ties them. The binary ladder now makes
-  // every credit an exact 1 or 0, so this is a regression guard on the accumulation path
-  // rather than a live float hazard — it must keep holding if the ladder is ever regraded.
+  // different equalRanks; integer-tenths accumulation ties them. The graded ladder keeps every
+  // credit an exact multiple of a tenth (0, 2, 10), so this is a regression guard on the
+  // accumulation path rather than a live float hazard — it must keep holding if the ladder is regraded.
   const csv = [
     'Passport,AAA,BBB,C1,C2,C3',
     'AAA,-1,visa on arrival,visa on arrival,e-visa,visa free', // BBB,C1,C2,C3 = [1,1,0,1]

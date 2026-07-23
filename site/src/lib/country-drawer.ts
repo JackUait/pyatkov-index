@@ -41,8 +41,6 @@ interface CountryPage {
   sheets: string[];
 }
 
-const KIND_LABEL: Record<CountryKind, string> = { passport: 'Passport', destination: 'Destination' };
-
 const pages = new Map<string, CountryPage>();
 const stack: string[] = [];
 let lastFocus: HTMLElement | null = null;
@@ -94,6 +92,37 @@ function ensureSheets(sheets: string[]): void {
   }
 }
 
+/** The topmost host-page section still in view — whatever the reader is looking
+ *  at. We hold its viewport position across the reflow so the shift is silent. */
+function topVisibleSection(): HTMLElement | null {
+  const main = document.querySelector('main');
+  if (!main) return null;
+  for (const child of main.children) {
+    if (child instanceof HTMLElement && child.getBoundingClientRect().bottom > 0) return child;
+  }
+  return main instanceof HTMLElement ? main : null;
+}
+
+/** Slide the host page left to clear the sheet (or restore it), re-pinning the
+ *  scroll so the reflow — the column narrows, so everything above the fold grows
+ *  taller — never moves what the reader is looking at. The reflow and the
+ *  correcting scroll are measured and applied in one synchronous pass, so they
+ *  land in a single paint; the scroll is forced `instant` because the page sets
+ *  `scroll-behavior: smooth`, which would otherwise animate the correction a
+ *  beat behind the reflow and surface exactly the jump we mean to hide. The CSS
+ *  shift is gated to wide viewports; below that this toggles a class that does
+ *  nothing, the delta is zero, and the call stays a safe no-op. */
+function shiftPage(on: boolean): void {
+  const body = document.body;
+  if (body.classList.contains('drawer-shifted') === on) return;
+  const anchor = topVisibleSection();
+  const before = anchor ? anchor.getBoundingClientRect().top : 0;
+  body.classList.toggle('drawer-shifted', on);
+  if (!anchor) return;
+  const delta = anchor.getBoundingClientRect().top - before;
+  if (delta) window.scrollBy({ top: delta, behavior: 'instant' });
+}
+
 function setModal(open: boolean): void {
   // inert makes the page behind the drawer truly unreachable — no focus trap
   // arithmetic. The drawer root sits outside all three, so it stays live.
@@ -126,12 +155,6 @@ function render(url: string, page: CountryPage): void {
   }
   dialog.setAttribute('aria-label', page.title);
 
-  const kind = countryPath(new URL(url).pathname, import.meta.env.BASE_URL);
-  const chip = $('#drawer-kind');
-  if (chip && kind) {
-    chip.textContent = KIND_LABEL[kind];
-    chip.dataset.kind = kind;
-  }
   const full = $<HTMLAnchorElement>('#drawer-full');
   if (full) full.href = url;
   const back = $('#drawer-back');
@@ -210,6 +233,7 @@ function open(url: string): void {
     lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     el.hidden = false;
     setModal(true);
+    shiftPage(true);
     // Two frames, not one: the panel must commit its off-screen transform
     // before is-open lands, or the slide-in plays as a pop.
     requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-open')));
@@ -224,6 +248,7 @@ function close(): void {
   stack.length = 0;
   loadSeq++;
   markActiveRow(null);
+  shiftPage(false);
   setModal(false);
   el.classList.remove('is-open');
   const panel = el.querySelector<HTMLElement>('.drawer-panel');
@@ -298,6 +323,9 @@ export function initCountryDrawer(): void {
     stack.length = 0;
     loadSeq++;
     markActiveRow(null);
+    // The new page lands unshifted; drop the class without re-pinning — there is
+    // no stable anchor across a body swap, and the fresh page starts at its top.
+    document.body.classList.remove('drawer-shifted');
     setModal(false);
     lastFocus = null;
   });

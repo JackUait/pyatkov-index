@@ -59,13 +59,15 @@
 
   /* Shape — rounded past the reference's 12px card cap, by request. The
      ramp orders the surfaces: buttons, then cards (the tables' shells),
-     then the stat plates, then the drawer sheet floating over it all. */
+     then the stat plates, then the drawer sheet floating over it all.
+     The pill cut is retired from rectangles, by request; --radius-round
+     survives only as the circle cut for the round marks and medals. */
   --radius-card: 16px;
   --radius-plate: 20px;
   --radius-sheet: 24px;
   --radius-btn: 8px;
   --radius-sm: 4px;
-  --radius-pill: 9999px;
+  --radius-round: 9999px;
 
   /* Elevation (DESIGN.md: nav + product-UI mockup only) */
   --shadow-nav: 0px 0.7px 1.462px 0px rgba(0, 0, 0, 0.015), 0px 3px 9px 0px rgba(0, 0, 0, 0.03);
@@ -168,16 +170,16 @@ header nav a {
   color: var(--ink-54);
   font-weight: 500;
   padding: 7px 14px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-btn);
   transition: color 200ms ease, background-color 200ms ease;
 }
-header nav a:focus-visible { border-radius: var(--radius-pill); }
+header nav a:focus-visible { border-radius: var(--radius-btn); }
 header nav a:hover {
   color: var(--ink-95);
   background: rgba(0, 0, 0, 0.05);
   text-decoration: none;
 }
-/* The current page is a highlighted word: the hero's peach pill, reused as
+/* The current page is a highlighted word: the hero's peach block, reused as
    the active state so the nav quotes the headline device. */
 header nav a[aria-current='page'] {
   color: var(--ink-95);
@@ -292,7 +294,7 @@ li { margin: 6px 0; }
 /* ---- Hero: an editorial front page ----
    The claim is about method, not about places: other indexes count doors,
    this one weighs them. The two verbs carry it typographically — "count" set
-   in the editorial serif, "weighs" in the signature peach pill. On the
+   in the editorial serif, "weighs" on the signature peach block. On the
    rankings page the hero is a split masthead: headline low-left, serif deck
    and actions bottom-right, the diagonal pointing down into the chart. */
 .hero {
@@ -309,7 +311,7 @@ li { margin: 6px 0; }
 /* The counting verb: the method this index argues against, set in the
    editorial serif so it reads as the quoted idea rather than the claim —
    and left bare. Every mark tried on it (tally, digits, outline capsule)
-   read as noise next to the pill; the voice change IS the device. Ink-54,
+   read as noise next to the block; the voice change IS the device. Ink-54,
    not 40: the word is real headline text and 40 misses the 3:1 large-text
    floor on the paper canvas. */
 .hero .count-word {
@@ -328,20 +330,22 @@ li { margin: 6px 0; }
   display: inline-block;
   font-style: inherit;
 }
-/* The signature device: a colored pill wrapping one word of the headline.
-   It hangs a shade below the baseline — the one word with weight sags. */
-.hero .pill-word {
+/* The signature device: a slab of peach ink behind one word of the headline —
+   cut square like the cards now, not as a capsule; the pill grammar is
+   retired sitewide. It hangs a shade below the baseline — the one word with
+   weight sags. The radius is em-cut so the corner scales with the type. */
+.hero .block-word {
   display: inline-block;
   vertical-align: -0.055em;
   background: var(--color-peach);
-  border-radius: var(--radius-pill);
+  border-radius: 0.14em;
   padding: 0.02em 0.32em 0.06em;
 }
 /* Load order tells the argument: "count" ticks itself in letter by letter
    on a metronome beat — counting — then "weighs" falls under gravity and
    lands hard — squashing against the baseline, rebounding once, and
    jolting the whole headline on impact. The last letter settles at 0.79s,
-   just as the pill begins its 0.72s fall. */
+   just as the block begins its 0.72s fall. */
 @media (prefers-reduced-motion: no-preference) {
   .hero .count-letters i { animation: drift-in 0.35s ease-out backwards; }
   .hero .count-letters i:nth-child(1) { animation-delay: 0.12s; }
@@ -349,20 +353,20 @@ li { margin: 6px 0; }
   .hero .count-letters i:nth-child(3) { animation-delay: 0.28s; }
   .hero .count-letters i:nth-child(4) { animation-delay: 0.36s; }
   .hero .count-letters i:nth-child(5) { animation-delay: 0.44s; }
-  .hero .pill-word {
+  .hero .block-word {
     transform-origin: 50% 100%;
     animation: weigh-drop 0.8s linear 0.72s backwards;
   }
   /* The ground reacts: the headline dips hard on first impact, recovers,
-     then flinches once more — smaller — when the pill's second, lower
-     bounce comes down. Delay = the pill's 0.72s start plus its 0.25s fall. */
+     then flinches once more — smaller — when the block's second, lower
+     bounce comes down. Delay = the block's 0.72s start plus its 0.25s fall. */
   .hero h1 { animation: land-jolt 0.5s ease-out 0.97s; }
 }
 @keyframes drift-in {
   from { opacity: 0; transform: translateY(-0.25em); }
 }
 /* Real weight, by the animator's physics: the fall accelerates the whole
-   way down and the pill stretches tall mid-flight (fast things smear along
+   way down and the block stretches tall mid-flight (fast things smear along
    their motion); contact comes stretched, then the mass piles into a squash
    within 50ms, near volume-preserving (1.13 × 0.83). What follows decays
    like a real bounce: a low first rebound — heavy things barely bounce — a
@@ -415,7 +419,7 @@ li { margin: 6px 0; }
   }
   100% { transform: translateY(0) scale(1, 1); }
 }
-/* Two thuds, one echo: the sharp dip is the pill's first landing, the small
+/* Two thuds, one echo: the sharp dip is the block's first landing, the small
    one at 46% is its second bounce coming down (0.97s + 0.21s), amplitudes
    matched to the bounce heights so ground and mass agree. */
 @keyframes land-jolt {
@@ -453,7 +457,7 @@ li { margin: 6px 0; }
   align-items: start;
   padding: 64px 0 44px;
 }
-/* 62px is the widest the pill line fits in the column — one notch more and
+/* 62px is the widest the block line fits in the column — one notch more and
    it wraps to four lines. 1.06 leading, not the base 1.08: the reference
    tightens as display type grows, and three lines this large read as one
    block only when the leading bites. */
@@ -723,21 +727,18 @@ li { margin: 6px 0; }
   font-size: 16px;
   letter-spacing: -0.1px;
 }
-/* The row count reads as a product chip beside the title — the reference's
-   kanban counter, in the neutral wash. */
-.card-header .chip {
-  background: var(--border-faint);
-  border-radius: var(--radius-pill);
-  padding: 3px 10px;
+/* The row count sits beside the title as bare caption ink — no chip around
+   it: the number is enough. */
+.card-header .count {
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
   font-variant-numeric: tabular-nums;
   color: var(--ink-60);
 }
-/* ---- Search inputs: the product mockup's search pill, made real ----
-   One cut shared by the table pages' pill (#filter) and the passport page's
-   squared field (.dest-search). The magnifier is inked in stone as a
+/* ---- Search inputs: the product mockup's search field, made real ----
+   One squared cut shared by the table pages' filter (#filter) and the
+   passport page's map search (.dest-search). The magnifier is inked in stone as a
    background so the input needs no extra markup. Focus retires the fat ring
    for the system's own grammar: the hairline inks to blue, a sky-tint halo
    blooms around it, and the magnifier wakes to the same blue. Chrome's stock
@@ -761,7 +762,7 @@ li { margin: 6px 0; }
   width: 100%;
   max-width: 280px;
   margin-left: auto;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-btn);
 }
 #filter::placeholder,
 .dest-search::placeholder { color: var(--color-stone); }
@@ -986,7 +987,7 @@ th[aria-sort] { color: var(--color-ink); }
   width: 24px;
   height: 24px;
   margin: -4px 0;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-round);
   font-size: var(--text-caption);
   font-weight: 600;
   color: var(--ink-95);
@@ -1017,22 +1018,6 @@ td.up::before, td.down::before {
 td.up::before { content: '\25B2'; }   /* up triangle */
 td.down::before { content: '\25BC'; } /* down triangle */
 
-/* ---- Access-tier pill tags (the reference's kanban status pills) ---- */
-.tag {
-  display: inline-block;
-  border-radius: var(--radius-pill);
-  padding: 2px 10px;
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  letter-spacing: var(--tracking-caption);
-  font-weight: 500;
-  white-space: nowrap;
-}
-.tag-visa-free { background: var(--color-sky-tint); color: var(--color-blue-deep); font-weight: 600; }
-.tag-visa-on-arrival { background: var(--color-marigold); color: var(--color-ink); }
-.tag-e-visa { background: var(--color-peach); color: var(--color-ink); }
-.tag-visa-required { background: var(--border-faint); color: var(--ink-60); }
-
 /* ---- Inline flag cards ----
    21x15 SVGs from react-svg-country-flags, inlined at build time. They size
    off the type around them so a flag in a table cell tracks the cell's font,
@@ -1054,7 +1039,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .mark {
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-round);
   background: var(--color-white);
   border: 2px solid var(--mark-color, var(--color-signal-blue));
   display: inline-flex;
@@ -1108,7 +1093,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
    tiles hold one row at every width, drawer and phone included. */
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 12px;
   margin: 24px 0 16px;
 }
@@ -1139,18 +1124,6 @@ td.down::before { content: '\25BC'; } /* down triangle */
   letter-spacing: -0.02em;
   font-weight: 650;
 }
-/* The count-rank tile carries the weighting delta as a one-line footnote —
-   the whole "lifts it 1 place" story, without a paragraph. */
-.stats .stat-note {
-  display: block;
-  margin-top: 6px;
-  font-size: 11px;
-  line-height: 1.35;
-  letter-spacing: 0.1px;
-  font-weight: 400;
-  font-variant-numeric: normal;
-  color: var(--ink-60);
-}
 /* The tiles deal themselves onto the plate left to right, behind the page
    rise; the plate element itself is a bare grid, so only the tiles show. */
 @media (prefers-reduced-motion: no-preference) {
@@ -1159,7 +1132,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .stats > div:nth-child(3) { animation-delay: 0.26s; }
 }
 
-/* ---- Tier color keys: the passport page speaks tiers in squared swatches,
+/* ---- Tier color keys: the whole site speaks tiers in squared swatches,
    not pills. One custom property carries the hue into swatches, bar segments
    and weight meters alike; the two earning tiers are saturated, the two
    closed ones pale — earning vs locked reads before any label does. ---- */
@@ -1304,6 +1277,12 @@ td.down::before { content: '\25BC'; } /* down triangle */
 }
 @media (min-width: 920px) {
   .rank-cols { grid-template-columns: 1fr 1fr; }
+}
+/* The passport page splits into three doors — border-open, eVisa, closed — so it needs a
+   third track once there is room; below that it falls back to the two- then one-column
+   stacking of the base rule. */
+@media (min-width: 1120px) {
+  .rank-cols.trio { grid-template-columns: 1fr 1fr 1fr; }
 }
 .rank-list {
   list-style: none;
@@ -1525,7 +1504,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .signal-grid { grid-template-columns: 1fr; }
 }
 
-/* Access-credit rows: pill tag + credit value in a white card. */
+/* Access-credit rows: tier swatch + credit value in a white card. */
 .credit-list {
   list-style: none;
   padding: 4px 0;
@@ -1619,7 +1598,7 @@ footer {
 @media (max-width: 660px) {
   /* Phone masthead: brand and four sections cannot share one readable row,
      so the bar becomes a nameplate — wordmark centered over a centered row
-     of section pills — and gives up stickiness rather than holding a
+     of section links — and gives up stickiness rather than holding a
      hundred pixels of a small screen. */
   header {
     position: static;
@@ -1644,7 +1623,7 @@ footer {
   header nav a { padding: 6px 11px; }
 }
 
-/* Below ~412px one pill row can no longer hold all four sections and would
+/* Below ~412px one nav row can no longer hold all four sections and would
    wrap 3+1; capping the row width turns the orphan into a balanced 2+2. */
 @media (max-width: 411px) {
   header nav { max-width: 240px; }
@@ -1689,7 +1668,26 @@ footer {
   .drawer-panel { transition: transform 380ms cubic-bezier(0.2, 0.7, 0.3, 1); }
 }
 
-/* Chrome bar: back, the kind chip, then the escape hatches on the far edge. */
+/* When the drawer opens, the page reflows left out from under the sheet so the
+   ranking and nav stay fully readable beside it. We reserve the sheet's footprint
+   (its width, its 12px right gutter, and a breathing gap) as right margin; the
+   column keeps its left edge and narrows to fill the strip that remains. Narrowing
+   makes the content above the fold taller, which would slide the table down at a
+   fixed scroll offset — so country-drawer.ts re-pins the scroll the instant the
+   class toggles, and the change is invisible. The move is deliberately un-animated:
+   the reflow (and its scroll re-pin) must land in one step, not drift across a
+   transition. Below 1280px the free strip is too narrow to seat a usable table,
+   so the sheet just overlays as before (drawer-shifted is a no-op there). */
+@media (min-width: 1280px) {
+  body.drawer-shifted main,
+  body.drawer-shifted .nav-inner {
+    margin-left: 0;
+    margin-right: calc(min(620px, 100vw - 24px) + 36px);
+  }
+}
+
+/* Chrome bar: back, then the escape hatches on the far edge. The kind chip
+   is gone — the pulled-out page's own h1 already says what it is. */
 .drawer-bar {
   display: flex;
   align-items: center;
@@ -1707,7 +1705,7 @@ footer {
   font-size: var(--text-body-sm);
   font-weight: 500;
   color: var(--ink-60);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-btn);
   padding: 6px;
   cursor: pointer;
   transition: color 200ms ease, background-color 200ms ease;
@@ -1724,20 +1722,6 @@ footer {
 /* display: inline-flex above would otherwise defeat the hidden attribute. */
 .drawer-back[hidden] { display: none; }
 .drawer-close { padding: 8px; }
-/* The kind chip quotes the nav's current-page pill: peach for passports,
-   sky for destinations — the same pairing the access tags already speak. */
-.drawer-chip {
-  border-radius: var(--radius-pill);
-  padding: 3px 11px;
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  letter-spacing: var(--tracking-caption);
-  font-weight: 600;
-  text-transform: uppercase;
-}
-.drawer-chip:empty { display: none; }
-.drawer-chip[data-kind='passport'] { background: var(--color-peach); color: var(--ink-95); }
-.drawer-chip[data-kind='destination'] { background: var(--color-sky-tint); color: var(--color-blue-deep); }
 /* The reference's outlined text button: the compact mid-priority action. */
 .drawer-full {
   margin-left: auto;
@@ -1782,8 +1766,15 @@ footer {
 .drawer-content .rank-cols { grid-template-columns: 1fr; }
 /* Sticky headers offset against the drawer's own scrollport, not the nav. */
 .drawer-content thead th { top: 0; }
-/* Card headers can't hold title, count and filter on one drawer-width line:
-   title and count share the first row, the filter takes a full second one.
+/* The sheet is phone-width at any viewport, so its tables take the same
+   tightened cell padding the phone breakpoint uses — which is what lets the
+   passport table's four columns fit the sheet without clipping. */
+.drawer-content thead th,
+.drawer-content tbody td,
+.drawer-content tfoot th,
+.drawer-content tfoot td { padding-left: 10px; padding-right: 10px; }
+/* Card headers can't hold title and filter on one drawer-width line: the
+   title keeps the first row, the filter takes a full second one.
    margin-top re-zeroed: the drawer's 40px h2 rhythm above outranks the
    card-header's own reset and would shove the title out of its flex row. */
 .drawer-content .card-header h2 { flex: 1 1 auto; margin-top: 0; }
@@ -1816,7 +1807,7 @@ footer {
 .drawer-skel i:nth-child(1) {
   width: 64px;
   height: 64px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-round);
   justify-self: center;
 }
 .drawer-skel i:nth-child(2) { width: 62%; height: 24px; justify-self: center; margin-bottom: 12px; }

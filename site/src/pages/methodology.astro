@@ -46,7 +46,7 @@ const dataset = {
   '@id': ID.dataset,
   name: 'The Pyatkov Index: weighted passport and destination-openness rankings',
   description:
-    `A weighted passport index over ${rankings.totalDestinations} destinations. Each destination's weight is exp(1.25 × Z), where Z is the mean of its available z-scores on log-scaled GDP, log-scaled tourism arrivals, HDI, and log-scaled migrant stock. Each passport scores 0-100 as the credit-weighted share of the world's destination weight it can reach, with full credit for visa-free and visa-on-arrival access and none for an eVisa or a visa requirement. The same credits run backwards to rate every destination's openness by the share of the world's foreign population it admits.`,
+    `A weighted passport index over ${rankings.totalDestinations} destinations. Each destination's weight is exp(1.25 × Z), where Z is the mean of its available z-scores on log-scaled GDP, log-scaled tourism arrivals, HDI, and log-scaled migrant stock. Each passport scores 0-100 as the credit-weighted share of the world's destination weight it can reach, with full credit for visa-free and visa-on-arrival access, a fifth for an eVisa, and none for a visa requirement. The same credits run backwards to rate every destination's openness by the share of the world's foreign population it admits.`,
   url: canonical,
   license: 'https://creativecommons.org/licenses/by/4.0/',
   creator: { '@id': ID.creator },
@@ -69,10 +69,10 @@ const dataset = {
     'Composite z-score: each signal is z-scored across the destinations that report it (GDP, arrivals, and migrant stock log-scaled first; HDI on its natural scale), averaged over the available signals, then exponentiated as exp(1.25 × Z) to give the destination weight.',
   variableMeasured: [
     { '@type': 'PropertyValue', name: 'Pyatkov score', description: "Share of the world's destination weight a passport can reach.", minValue: 0, maxValue: 100 },
-    { '@type': 'PropertyValue', name: 'Count rank', description: 'Rank from the same binary credits with every destination worth 1.' },
+    { '@type': 'PropertyValue', name: 'Count rank', description: 'Rank from the same tier credits with every destination weighted equally at 1.' },
     { '@type': 'PropertyValue', name: 'Delta from weighting', description: 'Count rank minus weighted rank: how far weighting moves a passport.' },
     { '@type': 'PropertyValue', name: 'Destination weight', description: 'exp(1.25 × Z) for a destination, in raw signal units, not a percentage.' },
-    { '@type': 'PropertyValue', name: 'Openness', description: "Share of the world's foreign population a destination admits without a prior visa.", minValue: 0, maxValue: 100 },
+    { '@type': 'PropertyValue', name: 'Openness', description: "Credit-weighted share of the world's foreign population a destination admits, an eVisa counting a fifth.", minValue: 0, maxValue: 100 },
   ],
   citation: [
     { '@type': 'CreativeWork', name: 'imorte/passport-index-data', url: 'https://github.com/imorte/passport-index-data' },
@@ -157,16 +157,17 @@ const article = {
 
   <h2>Access credit</h2>
   <ul class="credit-list">
-    <li><span class="tag tag-visa-free">Visa-free / freedom of movement</span> <span class="credit">1.0</span></li>
-    <li><span class="tag tag-visa-on-arrival">Visa on arrival / eTA</span> <span class="credit">1.0</span></li>
-    <li><span class="tag tag-e-visa">eVisa</span> <span class="credit">0</span></li>
-    <li><span class="tag tag-visa-required">Visa required / no admission</span> <span class="credit">0</span></li>
+    <li><span class="tier-key tier-visa-free">Visa-free / freedom of movement</span> <span class="credit">1.0</span></li>
+    <li><span class="tier-key tier-visa-on-arrival">Visa on arrival / eTA</span> <span class="credit">1.0</span></li>
+    <li><span class="tier-key tier-e-visa">eVisa</span> <span class="credit">0.2</span></li>
+    <li><span class="tier-key tier-visa-required">Visa required / no admission</span> <span class="credit">0</span></li>
   </ul>
   <p>
-    The test is binary: is entry decided <em>at the border</em>, or does it require permission <em>before
-    departure</em>? Visa on arrival and eTA need nothing to board a plane, so they count as fully open. An
-    eVisa is an application that can be refused and must clear before you fly — a booking constraint, not
-    freedom of movement — so it earns nothing.
+    The test starts binary: is entry decided <em>at the border</em>, or does it require permission <em>before
+    departure</em>? Visa on arrival and eTA need nothing to board a plane, so they count as fully open. A visa
+    arranged in advance at a consulate earns nothing. An eVisa sits between the two — it must still clear
+    before you fly, so it is not freedom of movement, but it is an online form that is granted far more
+    readily than a consular visa, so it earns a fifth of full credit rather than nothing.
   </p>
 
   <h2>The score</h2>
@@ -181,7 +182,7 @@ const article = {
     destination) rank higher than they would if their own weight were thrown away. Because numerator and
     denominator cover the same full pool, a passport with full visa-free access still scores exactly 100, and
     the score reads as "percent of the world's destination value this passport can reach". The <strong id="count-rank">Count
-    rank</strong>, shown on each passport's own page, is the ranking you get from the same binary credits over
+    rank</strong>, shown on each passport's own page, is the ranking you get from the same access credits over
     the same full set of destinations but with every destination worth 1, a plain "how many places can you go"
     count. The <strong id="delta">Δ from weighting</strong> beside it is the gap between the two, so a passport that
     reaches disproportionately valuable destinations rises and one skewed toward low-value destinations falls.
@@ -201,8 +202,8 @@ const article = {
     citizens, so including them would measure nothing except population size — handing large countries free
     points for a policy they all share. Because numerator and denominator cover the same foreign pool, a
     destination open to every foreign passport scores exactly 100 and one that admits none scores exactly 0.
-    The number reads as a percentage: the share of the world's people outside its borders who can arrive
-    without applying for a visa first, on the same binary credit ladder the passport score uses.
+    The number reads as a percentage: the credit-weighted share of the world's people outside its borders it
+    admits, on the same graded credit ladder the passport score uses — border access in full, an eVisa a fifth.
   </p>
   <p>
     Population comes from the World Bank series <code>SP.POP.TOTL</code>, latest available per country. It is

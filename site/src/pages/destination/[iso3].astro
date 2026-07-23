@@ -4,7 +4,7 @@ import openness from '../../data/openness.json';
 import rankings from '../../data/rankings.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { displayName, fmt, opennessBand, reconcilePoints, searchIndex, verbFor, withArticle } from '../../lib/format.ts';
+import { displayName, fmt, reconcilePoints, searchIndex, verbFor, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
@@ -18,9 +18,9 @@ const { dest: d } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const access = matrix as Record<string, Record<string, string>>;
-// Ladder position, not credit: the credit ladder is binary, so it cannot order the four
-// tiers for display. Higher = stronger access, which keeps the table's default sort
-// descending and its rows grouped by tier.
+// Ladder position, not credit: the credit ladder collapses visa-free and on-arrival onto
+// one value, so it cannot order the four tiers for display. Higher = stronger access, which
+// keeps the table's default sort descending and its rows grouped by tier.
 const ladder = (cat: Tier) => TIERS.length - TIERS.indexOf(cat);
 
 // Every FOREIGN passport, with the access it gets to THIS destination. The
@@ -61,13 +61,6 @@ const name = displayName(d.iso3, d.name);
 const theName = withArticle(d.iso3, d.name);
 const totalDests = openness.destinations.length;
 
-// Where this destination sits in the openness order — used to vary the table intro,
-// which would otherwise repeat the same sentence on all 199 pages. Derived from d.rank,
-// the number the same sentence prints: ranks tie densely, so a band read off the row's
-// array position disagreed with the printed rank on 128 of the 199 pages.
-const maxRank = Math.max(...openness.destinations.map((x) => x.rank));
-const band = opennessBand(d.rank, maxRank);
-
 // The "wide spread of nationalities" reading of a negative delta only holds if there IS a
 // spread: eighteen destinations with delta < 0 admit fewer than ten passports openly, and
 // three admit none at all, where the old sentence followed "0 enter visa-free" with a
@@ -89,40 +82,23 @@ const deltaWords =
             ? `Weighting each passport by the population behind it costs ${theName} ${places(-d.delta)} against its plain headcount rank of #${d.equalRank}: the few nationalities it does admit are comparatively small ones.`
             : `Weighting each passport by the population behind it costs ${theName} ${places(-d.delta)} against its plain headcount rank of #${d.equalRank}: it admits a wide spread of nationalities, but comparatively small ones.`;
 
-// rankings.passports is already rank-ordered, and ranks tie freely — so take the top 20
-// rows rather than filtering on rank <= 20, which would return far more than twenty.
-const topTwenty = holders.slice(0, 20);
-const topTwentyOpen = topTwenty.filter((p) => CREDIT[p.category] > 0).length;
-// "Has to apply in advance" is the credit ladder, not the tier name: an eVisa also has to
-// clear before departure and earns nothing here, so it belongs in this set. Filtering on
-// 'visa-required' alone named a weaker passport than the strongest closed one on 29 pages
-// (Myanmar named Liechtenstein #12 while Spain #4 needs an eVisa). Sorted by the
-// passport's own score, not by tier: "strongest" spans both closed tiers.
+// "Still needs permission before departure" spans both the eVisa and visa-required tiers:
+// an eVisa must clear before you fly just as a consular visa must. Filtering on
+// 'visa-required' alone named a weaker passport than the strongest such one on 29 pages
+// (Myanmar named Liechtenstein #12 while Spain #4 needs an eVisa). Sorted by the passport's
+// own score, not by tier, so "strongest" spans both apply-ahead tiers.
 const strongestClosed = holders
-  .filter((p) => CREDIT[p.category] === 0)
+  .filter((p) => CREDIT[p.category] < 1)
   .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))[0];
 
 // Assembled here, not inline: the template drops the whitespace between an expression
-// and the text on the next line, and these sentences wrap.
-const lede =
-  `${fmt(d.score)} out of 100 of the world's people outside ${theName} — weighted by the population behind ` +
-  `each passport, counting visa-free and visa on arrival as open and an eVisa as closed — can enter ` +
-  `without applying for a visa first. Of the ${holders.length} foreign passports, ` +
-  `${d.counts['visa-free']} ${verbFor(d.counts['visa-free'], 'enter')} visa-free and ` +
-  `${d.counts['visa-on-arrival']} on arrival, while ${d.counts['e-visa']} ` +
-  `${verbFor(d.counts['e-visa'], 'need')} an eVisa approved before boarding and ` +
-  `${d.counts['visa-required']} ${verbFor(d.counts['visa-required'], 'need')} a visa arranged in advance. ` +
+// and the text on the next line, and this sentence wraps. Only what no tile or table on
+// the page already shows earns a sentence: the score, rank, and tier counts live in the
+// stats and the tier table, so the prose carries just the weighting insight, the
+// strongest apply-ahead passport, and this cross-reference into the passport index.
+const weightLine =
   `As a destination in the passport index, ${theName} carries a weight of ${weight.weight.toFixed(3)}, ` +
   `${weightIdx === 0 ? 'the highest of them all' : `the ${ordinal(weightIdx + 1)} highest of ${weightsData.destinations.length}`}.`;
-const topTwentySentence =
-  topTwentyOpen === topTwenty.length
-    ? `All twenty of the highest-ranked passports get in without prior permission.`
-    : `Of the twenty highest-ranked passports, ${topTwentyOpen} ${verbFor(topTwentyOpen, 'get')} in without prior permission.`;
-const tableIntro =
-  `${theName} sits ${band}, at openness rank #${d.rank} of ${totalDests}. Every foreign passport in the ` +
-  `index and the access it gets is listed below, strongest access first and ordered by the passport's ` +
-  `own Pyatkov score within each tier. Its own passport is not listed: every country admits its ` +
-  `own citizens, so it says nothing about how open the destination is.`;
 
 const countryId = pageId(Astro.url.pathname, 'country');
 const country = countryNode({
@@ -165,23 +141,24 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
 
   <dl class="stats">
     <div><dt>Openness</dt><dd>{fmt(d.score)}</dd></div>
-    <div><dt>Openness rank</dt><dd>#{d.rank}</dd></div>
-    <div><dt>Count rank</dt><dd>#{d.equalRank}</dd></div>
+    <div><dt>Rank</dt><dd>#{d.rank}</dd></div>
   </dl>
 
   <p class="lede">
-    {lede}
-    {ownPassport && (
-      <Fragment> Its own passport ranks <a href={`${base}passport/${d.iso3.toLowerCase()}/`}>#{ownPassport.rank}</a>.</Fragment>
-    )}
+    {deltaWords}
+    {/* Muted when nothing enters openly: "the strongest passport that still needs
+        permission" is every passport there, and deltaWords already says so. */}
+    {openHolders > 0 && (strongestClosed ? (
+      <Fragment> The strongest passport that still needs permission before departure is <a href={`${base}passport/${strongestClosed.iso3.toLowerCase()}/`}>{withArticle(strongestClosed.iso3, strongestClosed.name)}</a>{`, ranked #${strongestClosed.rank} with a score of ${fmt(strongestClosed.score)}.`}</Fragment>
+    ) : (
+      <Fragment>{` No passport needs permission before departure: ${theName} admits every one of them at the border.`}</Fragment>
+    ))}
   </p>
 
   <p>
-    {`${deltaWords} ${topTwentySentence}`}
-    {strongestClosed ? (
-      <Fragment> The strongest passport that still needs permission before departure is <a href={`${base}passport/${strongestClosed.iso3.toLowerCase()}/`}>{withArticle(strongestClosed.iso3, strongestClosed.name)}</a>{`, ranked #${strongestClosed.rank} overall with a score of ${fmt(strongestClosed.score)}${strongestClosed.category === 'e-visa' ? ' — its holders need an eVisa rather than a consulate appointment, but that still has to clear before departure.' : ' — its holders have to apply at a consulate.'}`}</Fragment>
-    ) : (
-      <Fragment>{` No passport in the index needs permission before departure: ${theName} admits every one of them at the border.`}</Fragment>
+    {weightLine}
+    {ownPassport && (
+      <Fragment> Its own passport ranks <a href={`${base}passport/${d.iso3.toLowerCase()}/`}>#{ownPassport.rank}</a>.</Fragment>
     )}
   </p>
 
@@ -193,7 +170,7 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
     <thead><tr><th scope="col">Access tier</th><th scope="col">Passports</th><th scope="col">Points</th></tr></thead>
     <tbody>
       {tierRows.map((t) => (
-        <tr><td><span class={`tag tag-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
+        <tr><td><span class={`tier-key tier-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
       ))}
     </tbody>
     <tfoot>
@@ -203,12 +180,11 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   </div>
   </div>
 
-  <p class="table-intro">{tableIntro}</p>
+  <p class="table-intro">Its own passport is not listed: every country admits its own citizens.</p>
 
   <div class="card card-mockup">
   <div class="card-header">
     <h2>Every foreign passport</h2>
-    <span class="count">{holders.length} passports</span>
     <input type="search" id="filter" placeholder="Filter passports" aria-label="Filter passports" />
   </div>
   <div class="table-scroll">
@@ -217,14 +193,14 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
       <tr>
         <th scope="col" data-sort="credit" aria-sort="descending" tabindex="0">Access</th>
         <th scope="col" data-sort="name" tabindex="0">Passport</th>
-        <th scope="col" data-sort="rank" tabindex="0">Passport rank</th>
-        <th scope="col" data-sort="score" tabindex="0">Passport score</th>
+        <th scope="col" data-sort="rank" tabindex="0">Rank</th>
+        <th scope="col" data-sort="score" tabindex="0">Score</th>
       </tr>
     </thead>
     <tbody>
       {ordered.map((p) => (
         <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-credit={ladder(p.category)} data-rank={p.rank} data-score={p.score}>
-          <td><span class={`tag tag-${p.category}`}>{LABEL[p.category]}</span></td>
+          <td><span class={`tier-key tier-${p.category}`}>{LABEL[p.category]}</span></td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a></td>
           <td>{p.rank}</td>
           <td>{fmt(p.score)}</td>

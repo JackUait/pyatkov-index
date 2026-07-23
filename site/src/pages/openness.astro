@@ -32,15 +32,15 @@ const itemList = {
 ---
 <Base
   title="Openness: which passports get in - Pyatkov Index"
-  description="Every destination ranked by the share of the world's people who can enter it without a prior visa."
+  description="Every destination ranked by the share of the world's people it admits at the border, an eVisa counting a fifth."
   mainEntityId={rankingId}
   jsonld={itemList}
 >
   <section class="hero">
-    <h1>Who gets <span class="pill-word">in</span></h1>
+    <h1>Who gets <span class="block-word">in</span></h1>
     <p class="tagline">
       The index run backwards: every destination scored by the share of the world's people, outside
-      its own borders, who can enter it without applying for a visa first.
+      its own borders, it admits at the border — with an eVisa counting a fifth of the way.
     </p>
   </section>
 
@@ -50,18 +50,9 @@ const itemList = {
     <div><strong>{fmt(leastOpen.score)}</strong><span>least open ({displayName(leastOpen.iso3, leastOpen.name)})</span></div>
   </section>
 
-  <p class="table-intro">
-    Each destination scores 0 to 100 by the credit-weighted share of the world's foreign population
-    holding a passport that can enter it: full credit for visa-free and visa on arrival, nothing for an
-    eVisa or a visa requirement. A destination's own citizens are left out entirely — every
-    country admits them, so they measure nothing. Pick any destination to see exactly which
-    passports get which access.
-  </p>
-
   <div class="card card-mockup">
   <div class="card-header">
     <h2>Every destination, by openness</h2>
-    <span class="chip">{dests.length} destinations</span>
     <input type="search" id="filter" placeholder="Filter destinations" aria-label="Filter destinations" />
   </div>
   <div class="table-scroll">

@@ -8,7 +8,7 @@ export type Tier = (typeof TIERS)[number];
 export const CREDIT: Record<Tier, number> = {
   'visa-free': 1.0,
   'visa-on-arrival': 1.0,
-  'e-visa': 0,
+  'e-visa': 0.2,
   'visa-required': 0,
 };
 

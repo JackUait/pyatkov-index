@@ -163,7 +163,7 @@ const nav = [
       <script type="application/ld+json" is:inline set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
     )}
   </head>
-  <body>
+  <body class={wide ? 'layout-wide' : undefined}>
     <header transition:persist="header">
       <div class="nav-inner">
         <a href={base} class="brand" aria-label="Pyatkov Index home">
@@ -207,7 +207,6 @@ const nav = [
             <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M10.5 2.5 5 8l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
             Back
           </button>
-          <span class="drawer-chip" id="drawer-kind"></span>
           <a class="drawer-full" id="drawer-full" href={base} aria-label="Open full page" data-drawer-bypass>
             <span>Open full page</span>
             <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3h8v8M13 3 3.5 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
