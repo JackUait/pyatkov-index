@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Before setup-node: its yarn cache probe must resolve Yarn 4 via the
+      # corepack shim, not the runner's global Yarn 1.
+      - run: corepack enable
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -20,7 +23,6 @@ jobs:
           cache-dependency-path: |
             yarn.lock
             site/yarn.lock
-      - run: corepack enable
       - run: yarn install --immutable
       - run: yarn install --immutable
         working-directory: site
