@@ -73,6 +73,11 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--nav-h) + 16px);
+  /* Chrome restores reload scroll by re-anchoring to an element, and at
+     restore time the load reveal still holds the content 12px low — so a
+     reload at the top "restores" to ~12px. Anchoring off, the browser falls
+     back to the saved pixel offset, which transforms can't skew. */
+  overflow-anchor: none;
 }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
@@ -105,9 +110,12 @@ th[data-sort]:focus-visible {
 /* ---- Global nav: the masthead of the argument ----
    The bar rests transparent on the paper so the masthead and the hero share
    one canvas; the white fill and the one sticky elevation appear only once
-   content scrolls beneath it (data-top, set by nav-elevation.ts). The
-   elevated bar is the no-JS default so a failed script never leaves a
-   transparent bar over scrolled content. */
+   content scrolls beneath it. data-top lives on <html> — set in the head
+   before the header ever resolves style (Base.astro), kept current by
+   nav-elevation.ts — because a flag applied any later lets the elevated
+   default paint first and blink through the 200ms transition. The elevated
+   bar is the no-JS default so a failed script never leaves a transparent
+   bar over scrolled content. */
 header {
   position: sticky;
   top: 0;
@@ -116,7 +124,7 @@ header {
   box-shadow: var(--shadow-nav);
   transition: background-color 200ms ease, box-shadow 200ms ease;
 }
-header[data-top] {
+:root[data-top] header {
   background: transparent;
   box-shadow: none;
 }

@@ -29,6 +29,15 @@ const nav = [
         explicitly, first. */}
     <link rel="icon" href={`${base}favicon.ico?v=4`} sizes="32x32" />
     <link rel="icon" href={`${base}favicon.svg?v=4`} type="image/svg+xml" />
+    {/* First paint must already know whether the bar sits on an unscrolled
+        page: the elevation module is deferred, and Chrome can paint mid-parse,
+        so a same-element or after-the-header script is still too late. Set in
+        the head, on <html>, before the body exists. Threshold mirrors
+        TOP_THRESHOLD in nav-elevation.ts. Without JS this never runs and the
+        safe elevated default stands. */}
+    <script is:inline>
+      if (window.scrollY <= 8) document.documentElement.toggleAttribute('data-top', true);
+    </script>
   </head>
   <body>
     <header>
@@ -75,7 +84,7 @@ const nav = [
     </footer>
     <script>
       import { initNavElevation } from '../lib/nav-elevation.ts';
-      initNavElevation({ header: 'header' });
+      initNavElevation();
     </script>
   </body>
 </html>
