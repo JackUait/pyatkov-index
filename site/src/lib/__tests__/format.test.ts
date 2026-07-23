@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { displayName, formatBuiltDate, matchesSearch, reconcilePoints, searchIndex } from '../format.ts';
+import { displayName, formatBuiltDate, matchesSearch, reconcilePoints, searchIndex, tiedRanks } from '../format.ts';
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
@@ -41,6 +41,24 @@ describe('reconcilePoints (B5 — tier points sum to the displayed score)', () =
     expect(sum(out)).toBeCloseTo(84.8, 9);
     out.forEach((v) => expect(v).toBeGreaterThanOrEqual(0));
     expect(out[3]).toBe(0); // the zero tier stays zero, not -0.1
+  });
+});
+
+describe('tiedRanks (shared rank values get an "=" tie mark in the table)', () => {
+  it('returns the rank values that more than one row shares', () => {
+    expect(tiedRanks([1, 2, 3, 5, 5, 5, 5, 8])).toEqual(new Set([5]));
+  });
+
+  it('catches multiple independent tie groups', () => {
+    expect(tiedRanks([1, 1, 3, 4, 4, 6])).toEqual(new Set([1, 4]));
+  });
+
+  it('returns an empty set when every rank is unique', () => {
+    expect(tiedRanks([1, 2, 3])).toEqual(new Set());
+  });
+
+  it('handles an empty list', () => {
+    expect(tiedRanks([])).toEqual(new Set());
   });
 });
 

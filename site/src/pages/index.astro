@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
-import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex } from '../lib/format.ts';
+import { displayName, flagEmoji, fmt, formatBuiltDate, searchIndex, tiedRanks } from '../lib/format.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
 // B9: the pipeline now emits an honest build date (builtAt) plus per-signal
@@ -35,6 +35,9 @@ const labelShare = 4;
 const sepShare = 0.25;
 const tipFor = (d: (typeof ribbon)[number], i: number) =>
   `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · ${share(d.weight).toFixed(2)}% of world weight · #${i + 1} of ${ribbon.length}`;
+// Shared ranks are real ties, and the table says so: repeated rank values get
+// an "=" mark, computed from the data so it can never drift from it.
+const ties = tiedRanks(rankings.passports.map((p) => p.rank));
 ---
 <Base title="Pyatkov Index: the weighted passport ranking" description="A passport index that weights every destination by the economy, travel, development, and diaspora behind it.">
   <section class="hero hero-split">
@@ -87,8 +90,8 @@ const tipFor = (d: (typeof ribbon)[number], i: number) =>
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
     <h2>The ranking</h2>
-    <span class="count">{rankings.passports.length} passports</span>
-    <span class="count built">Last built {formatBuiltDate(builtAt)}</span>
+    <span class="chip">{rankings.passports.length} passports</span>
+    <span class="built">Last built {formatBuiltDate(builtAt)}</span>
     <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   </div>
   <div class="table-scroll">
@@ -103,9 +106,17 @@ const tipFor = (d: (typeof ribbon)[number], i: number) =>
     <tbody>
       {rankings.passports.map((p) => (
         <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score}>
-          <td>{p.rank}</td>
-          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a></td>
-          <td class="score-cell" style={`--w:${p.score}%`}>{fmt(p.score)}<span class="bar" aria-hidden="true"></span></td>
+          <td>
+            {p.rank <= 3 ? (
+              <span class={`medal medal-${p.rank}`}>{p.rank}</span>
+            ) : (
+              <>{ties.has(p.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{p.rank}</>
+            )}
+          </td>
+          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a><span class="code" aria-hidden="true">{p.iso3}</span></td>
+          <td class="score-cell" style={`--w:${p.score}%`}>
+            <span class="score-line"><span class="meter" aria-hidden="true"></span><span class="score-val">{fmt(p.score)}</span></span>
+          </td>
         </tr>
       ))}
     </tbody>

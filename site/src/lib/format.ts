@@ -18,6 +18,14 @@ export function formatBuiltDate(iso: string): string {
   return `${MONTHS[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
 }
 
+/** Rank values shared by more than one row — the table marks them "=5" style. */
+export function tiedRanks(ranks: number[]): Set<number> {
+  const seen = new Set<number>();
+  const tied = new Set<number>();
+  for (const r of ranks) (seen.has(r) ? tied : seen).add(r);
+  return tied;
+}
+
 export function deltaLabel(d: number): string {
   if (d === 0) return '=';
   return d > 0 ? `+${d}` : `−${Math.abs(d)}`;

@@ -643,6 +643,9 @@ li { margin: 6px 0; }
   background: var(--color-white);
   border: 1px solid var(--border-hairline);
   border-radius: var(--radius-card);
+  /* clip, not hidden: row hover fills stay inside the rounded corners, and
+     clip creates no scroll container, so the sticky thead keeps working. */
+  overflow: clip;
 }
 
 /* Product-UI card: the data table is this site's product mockup, the one
@@ -661,14 +664,24 @@ li { margin: 6px 0; }
   font-size: 16px;
   letter-spacing: -0.1px;
 }
-.card-header .count {
+/* The row count reads as a product chip beside the title — the reference's
+   kanban counter, in the neutral wash. */
+.card-header .chip {
+  background: var(--border-faint);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-60);
+}
+/* The build date stays a plain colophon note behind a hairline divider; the
+   divider goes when wrapping would strand it at the start of a line. */
+.card-header .built {
   color: var(--color-stone);
   font-size: var(--text-body-sm);
   font-variant-numeric: tabular-nums;
-}
-/* The build date joins the count behind a hairline divider; the divider goes
-   when wrapping would strand it at the start of a line. */
-.card-header .built {
   padding-left: 16px;
   border-left: 1px solid var(--border-hairline);
 }
@@ -679,19 +692,24 @@ li { margin: 6px 0; }
   }
 }
 
-/* ---- Filter input ---- */
+/* ---- Filter input: the product mockup's search pill ----
+   Pill radius quotes the nav and the headline device; the magnifier is inked
+   in stone as a background so the input needs no extra markup. */
 #filter {
   width: 100%;
-  max-width: 300px;
+  max-width: 280px;
   margin-left: auto;
-  padding: 7px 12px;
+  padding: 7px 16px 7px 35px;
   font: inherit;
   font-size: var(--text-body-sm);
   color: var(--color-ink);
-  background: var(--color-white);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20.5 20.5-4.8-4.8'/%3E%3C/svg%3E")
+    13px 50% / 14px no-repeat var(--color-white);
   border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: var(--radius-btn);
+  border-radius: var(--radius-pill);
   transition: border-color 200ms ease;
+  appearance: none;
 }
 #filter::placeholder { color: var(--color-stone); }
 #filter:focus-visible {
@@ -784,6 +802,20 @@ th[aria-sort] { color: var(--color-ink); }
 
 .rank-table td:nth-child(1) { color: var(--color-stone); }
 
+/* Fixed gutters give the table its charting room: a narrow rank rail, the
+   name column, and a wide score column for the meters to draw across. */
+.rank-table th:nth-child(1) { width: 64px; }
+.rank-table th:nth-child(3) { width: 45%; }
+
+/* ISO code after the name: quiet metadata texture, and a visible hint that
+   the filter matches codes too. */
+.rank-table .code {
+  margin-left: 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-stone);
+}
+
 /* Per-destination access table: passport rank + score are the numeric columns. */
 .access-table td:nth-child(3), .access-table th:nth-child(3),
 .access-table td:nth-child(4), .access-table th:nth-child(4) {
@@ -792,28 +824,97 @@ th[aria-sort] { color: var(--color-ink); }
 }
 .access-table td:nth-child(3) { color: var(--color-stone); }
 
-/* Score cell: the value, grounded by a thin magnitude bar in marigold, the
-   warm accent the reference reserves for callouts. */
-.rank-table td.score-cell {
-  min-width: 136px;
-  font-weight: 600;
+/* ---- Score meter: every row keeps charting the ribbon's argument ----
+   The dead middle of the table is the chart: a warm track spans the score
+   column (a lighter step of the same marigold ramp, so the meter reads as
+   one bar even where the fill ends), the marigold fill grows from a shared
+   left baseline, and the value sits right-anchored in tabular figures. The
+   number is the datum; the meter is its shadow — which is why the track may
+   run this pale on white. */
+.score-cell .score-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-.score-cell .bar {
-  display: block;
-  height: 3px;
-  margin-top: 5px;
-  border-radius: 2px;
-  background: var(--border-faint);
+.score-cell .meter {
+  position: relative;
+  flex: 1 1 auto;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-marigold) 18%, var(--color-white));
   overflow: hidden;
 }
-.score-cell .bar::before {
+.score-cell .meter::before {
   content: '';
-  display: block;
-  height: 100%;
+  position: absolute;
+  inset: 0 auto 0 0;
   width: var(--w, 0%);
-  border-radius: 2px;
+  /* Rounded data-end on the right; the left end is the baseline, squared and
+     clipped by the track's own curve. */
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
   background: var(--color-marigold);
+  transition: background-color 160ms ease;
 }
+/* Hovering a row deepens its fill one warm step — the ribbon's hover, quoted. */
+tbody tr:hover .score-cell .meter::before { background: var(--color-saffron); }
+.score-cell .score-val {
+  min-width: 40px;
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+/* The meters ink in left-to-right once the card has risen; the first rows
+   stagger like the tally strokes, everything below the fold lands together.
+   Rows past the stagger use the latest delay so no lower row ever fills
+   before a higher one on tall viewports. */
+@media (prefers-reduced-motion: no-preference) {
+  .score-cell .meter::before {
+    transform-origin: left;
+    animation: meter-ink 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) 0.85s backwards;
+  }
+  tbody tr:nth-child(1) .meter::before { animation-delay: 0.4s; }
+  tbody tr:nth-child(2) .meter::before { animation-delay: 0.45s; }
+  tbody tr:nth-child(3) .meter::before { animation-delay: 0.5s; }
+  tbody tr:nth-child(4) .meter::before { animation-delay: 0.55s; }
+  tbody tr:nth-child(5) .meter::before { animation-delay: 0.6s; }
+  tbody tr:nth-child(6) .meter::before { animation-delay: 0.65s; }
+  tbody tr:nth-child(7) .meter::before { animation-delay: 0.7s; }
+  tbody tr:nth-child(8) .meter::before { animation-delay: 0.75s; }
+  tbody tr:nth-child(9) .meter::before { animation-delay: 0.8s; }
+}
+@keyframes meter-ink {
+  from { transform: scaleX(0); }
+}
+
+/* ---- Podium medals: the top three ranks as character marks ----
+   Gold, silver, bronze drawn from the system's own cast — marigold, the
+   neutral wash, peach. The number stays inside the circle, so color never
+   carries the rank alone, and negative margins keep the row height even. */
+.medal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: -4px 0;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--ink-95);
+  background: var(--medal-fill, var(--border-faint));
+}
+.medal-1 { --medal-fill: var(--color-marigold); }
+.medal-2 { --medal-fill: rgba(0, 0, 0, 0.09); }
+.medal-3 { --medal-fill: var(--color-peach); }
+@media (prefers-reduced-motion: no-preference) {
+  .medal { animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .medal-1 { animation-delay: 0.5s; }
+  .medal-2 { animation-delay: 0.58s; }
+  .medal-3 { animation-delay: 0.66s; }
+}
+
+/* Tied ranks say so: "=5", with the mark kept quiet. */
+.tie-mark { color: var(--ink-40); margin-right: 2px; }
 
 /* ---- Delta column: direction carried by glyph and sign, ink stays ink ---- */
 .up, .down { font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -1109,11 +1210,16 @@ footer {
 .footer-links a:hover { color: var(--color-ink); }
 
 @media (max-width: 640px) {
-  /* The ranking must read without horizontal scrolling: the count-rank column
-     yields, cells tighten, and the score bar narrows. */
-  #rankings th:nth-child(5), #rankings td:nth-child(5) { display: none; }
-  #rankings td:nth-child(2) { white-space: normal; }
-  .rank-table td.score-cell { min-width: 76px; }
+  /* The ranking must read without horizontal scrolling: the rank rail and the
+     code yield, names wrap, and the score chart folds into a value over a
+     short meter. */
+  .rank-table td:nth-child(2) { white-space: normal; }
+  .rank-table .code { display: none; }
+  .rank-table th:nth-child(1) { width: 44px; }
+  .rank-table th:nth-child(3) { width: auto; }
+  .rank-table td.score-cell { min-width: 88px; }
+  .score-cell .score-line { flex-wrap: wrap; gap: 4px 0; justify-content: flex-end; }
+  .score-cell .meter { flex: 1 1 100%; order: 2; height: 4px; }
   thead th, tbody td, tfoot th, tfoot td { padding-left: 10px; padding-right: 10px; }
 }
 
