@@ -243,8 +243,8 @@ const article = {
         <span class="wx-name" aria-hidden="true"></span>
         <span class="wx-z" aria-hidden="true"></span>
         <span class="wx-track">
-          <span class="wx-half wx-neg"><b>{lowName}</b><br />the lightest</span>
-          <span class="wx-half wx-pos"><b>{highName}</b><br />the heaviest</span>
+          <span class="wx-half wx-neg"><b><a href={`${base}destination/${low.iso3.toLowerCase()}/`}>{lowName}</a></b><br />the lightest</span>
+          <span class="wx-half wx-pos"><b><a href={`${base}destination/${high.iso3.toLowerCase()}/`}>{highName}</a></b><br />the heaviest</span>
         </span>
         <span class="wx-z" aria-hidden="true"></span>
       </figcaption>
