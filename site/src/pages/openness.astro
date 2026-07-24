@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import openness from '../data/openness.json';
-import { displayName, fmt, searchIndex, tiedRanks } from '../lib/format.ts';
+import { displayName, flagEmoji, fmt, searchIndex, tiedRanks } from '../lib/format.ts';
+import { openToAllCount, openToHalfCount, openToNoneCount } from '../lib/doors.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
@@ -10,6 +11,15 @@ const dests = openness.destinations;
 const ties = tiedRanks(dests.map((d) => d.rank));
 const mostOpen = dests[0];
 const leastOpen = dests[dests.length - 1];
+
+// The wall's three readings — fully open, majority open, shut — are computed
+// from the data so the rail's copy can never drift from the wall it counts.
+const scores = dests.map((d) => d.score);
+const allCount = openToAllCount(scores);
+const halfCount = openToHalfCount(scores);
+const noneCount = openToNoneCount(scores);
+const tipFor = (d: (typeof dests)[number]) =>
+  `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · openness ${fmt(d.score)} · ${ties.has(d.rank) ? '=' : ''}#${d.rank} of ${dests.length}`;
 
 const rankingId = pageId(Astro.url.pathname, 'ranking');
 const itemList = {
@@ -39,20 +49,46 @@ const itemList = {
   <section class="hero">
     <h1>Who gets <span class="block-word">in</span></h1>
     <p class="tagline">
-      The index run backwards: every destination scored by the share of the world's people, outside
-      its own borders, it admits at the border — with an eVisa counting a fifth of the way.
+      {`The index run backwards: instead of asking where a passport gets to, ask whom a destination lets in. ${displayName(mostOpen.iso3, mostOpen.name)} lets practically the whole world walk in; ${displayName(leastOpen.iso3, leastOpen.name)} lets in no one.`}
     </p>
   </section>
 
-  <section class="statline" aria-label="Openness coverage">
-    <div><strong>{dests.length}</strong><span>destinations rated</span></div>
-    <div><strong>{fmt(mostOpen.score)}</strong><span>most open ({displayName(mostOpen.iso3, mostOpen.name)})</span></div>
-    <div><strong>{fmt(leastOpen.score)}</strong><span>least open ({displayName(leastOpen.iso3, leastOpen.name)})</span></div>
+  <section class="doors" aria-label="How open the world's destinations are">
+    <div class="doors-figure">
+      <div
+        class="doors-wall"
+        role="img"
+        aria-label={`All ${dests.length} destinations as doors, most open first. Each door fills with the share of the world's people, outside its own borders, the destination admits at the border, an eVisa counting a fifth: ${allCount} doors are open to practically everyone, ${halfCount} to more than half the world, and ${noneCount} to no one.`}
+      >
+        {dests.map((d, i) => (
+          <a
+            class:list={['door', d.score > 50 && 'd-half', d.score >= 99.95 && 'd-all', d.score < 0.05 && 'd-none']}
+            href={`${base}destination/${d.iso3.toLowerCase()}/`}
+            data-tip={tipFor(d)}
+            style={`--i:${i};--h:${d.score.toFixed(2)}%`}
+          >
+            <span class="sr-only">{displayName(d.iso3, d.name)} — openness {fmt(d.score)}</span>
+          </a>
+        ))}
+      </div>
+      <div class="ribbon-tip" aria-hidden="true" hidden></div>
+    </div>
+    <div class="doors-read">
+      <div class="ds ds-all"><span class="ds-door" aria-hidden="true"></span><strong>{allCount}</strong><span>doors open to practically everyone</span></div>
+      <div class="ds ds-half"><span class="ds-door" aria-hidden="true"></span><strong>{halfCount}</strong><span>open to more than half the world's people</span></div>
+      <div class="ds ds-none"><span class="ds-door" aria-hidden="true"></span><strong>{noneCount}</strong><span>open to no one at all</span></div>
+      <p class="doors-note">
+        Each door is one destination, most open first. The fill is the share of the
+        world's people, outside its own borders, it admits at the border — an eVisa
+        counting a fifth of the way. <a href={`${base}methodology/`}>How scores work</a>
+      </p>
+    </div>
   </section>
 
   <div class="card card-mockup">
   <div class="card-header">
     <h2>Every destination, by openness</h2>
+    <span class="count">{dests.length} destinations</span>
     <input type="search" id="filter" placeholder="Filter destinations" aria-label="Filter destinations" />
   </div>
   <div class="table-scroll">
@@ -80,11 +116,13 @@ const itemList = {
 
   <script>
     import { initSortableTable } from '../lib/table-ui.ts';
+    import { initRibbonTip } from '../lib/ribbon-tip.ts';
 
     // Module scripts run once per session under the client router; page-load
     // fires again after every swap, re-binding against the fresh DOM. On other
-    // pages the element guards make this call a no-op.
+    // pages the element guards make these calls no-ops.
     document.addEventListener('astro:page-load', () => {
+      initRibbonTip({ figure: '.doors-figure', ribbon: '.doors-wall', tip: '.doors-figure .ribbon-tip' });
       initSortableTable({
         table: '#openness-table',
         filter: '#filter',
@@ -94,4 +132,18 @@ const itemList = {
       });
     });
   </script>
+
+  <style>
+    /* global.css carries no visually-hidden utility; the doors' anchor text
+       needs one, defined here next to its only users — the same arrangement
+       as the front page's ribbon. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  </style>
 </Base>

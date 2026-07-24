@@ -15,19 +15,22 @@ export function initRibbonTip(opts: { figure: string; ribbon: string; tip: strin
 
   const show = (e: PointerEvent) => {
     const seg = (e.target as Element | null)?.closest<HTMLElement>('[data-tip]');
-    if (!seg?.dataset.tip) {
-      hide();
-      return;
-    }
+    // Between segments (the doors wall has gutters; the ribbon does not),
+    // keep the last tooltip rather than flickering it away: it only hides
+    // when the pointer leaves the strip itself.
+    if (!seg?.dataset.tip) return;
     tip.textContent = seg.dataset.tip;
     tip.hidden = false;
-    // Anchored just above the strip, horizontally clamped to the figure so
-    // the tooltip never spills past the page column at either extreme.
+    // Anchored just above the hovered segment, horizontally clamped to the
+    // figure so the tooltip never spills past the page column at either
+    // extreme. The segment's own top, not the strip's: in the ribbon the two
+    // coincide, but in the doors wall the segments sit in rows and the
+    // tooltip must follow the pointer's row down the grid.
     const bounds = figure.getBoundingClientRect();
     const half = tip.offsetWidth / 2;
     const x = Math.min(Math.max(e.clientX - bounds.left, half), bounds.width - half);
     tip.style.left = `${x}px`;
-    tip.style.top = `${ribbon.offsetTop - 8}px`;
+    tip.style.top = `${seg.offsetTop - 8}px`;
   };
 
   ribbon.addEventListener('pointermove', show);

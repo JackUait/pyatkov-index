@@ -659,9 +659,157 @@ li { margin: 6px 0; }
   .seg-label { display: none; }
 }
 
+/* ---- The wall of doors: the openness argument, drawn ----
+   The rankings pages draw strips; this page builds a wall. All 199
+   destinations stand as arched doorways in a grid, most open first, and
+   each fills with marigold to the share of the world's people it admits.
+   Three states get three drawings: a door open to practically everyone is
+   solid marigold with no frame at all — nothing left to knock on; a
+   part-open door is a framed arch holding its fill; a door open to no one
+   is a dashed outline, drawn but never opened. Every door, even a shut
+   one, stands on a solid sill. The rail beside the wall counts the three
+   states behind the same doors in miniature, and touching a count lights
+   those doors in the wall. */
+.doors {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 24px 48px;
+  align-items: start;
+  margin: 8px 0 64px;
+}
+.doors-figure { position: relative; }
+.doors-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(24px, 1fr));
+  gap: 6px;
+}
+/* The pour: --open scales every fill from the sill up, registered so the
+   load animation tweens it as a number. Declared on .door too, so engines
+   without @property still resolve the calc (they jump instead of tween). */
+@property --open {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+/* One destination, one doorway: two quarter-ellipses meet at the crown of
+   a hairline arch, marigold rising to the score with a hard gradient stop.
+   The whole arch is the link. */
+.door {
+  --open: 1;
+  aspect-ratio: 2 / 3;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-bottom-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50% 50% 2px 2px / 34% 34% 2px 2px;
+  background: linear-gradient(
+    to top,
+    var(--fill, var(--color-marigold)) 0 calc(var(--h) * var(--open)),
+    transparent calc(var(--h) * var(--open))
+  );
+  background-clip: padding-box;
+  transition: opacity 200ms ease, border-color 200ms ease;
+}
+/* A door open to practically everyone drops its frame: just the opening. */
+.door.d-all {
+  border-color: transparent;
+  background-clip: border-box;
+}
+/* A door open to no one holds no fill to frame: dashed, the dest-map's
+   grammar for doors drawn but not yet open — the sill stays solid. */
+.door.d-none { border-style: dashed; border-bottom-style: solid; }
+/* Hover inks the door midnight to its exact fill; the shared tooltip
+   carries the name, score and rank. */
+.door:hover {
+  --fill: var(--color-midnight);
+  border-color: var(--color-midnight);
+}
+/* Touching a count in the rail spotlights its doors: the rest of the wall
+   steps back so the group reads as one shape on the grid. */
+.doors:has(.ds-all:hover) .door:not(.d-all),
+.doors:has(.ds-half:hover) .door:not(.d-half),
+.doors:has(.ds-none:hover) .door:not(.d-none) { opacity: 0.16; }
+/* The reading rail: three counts on hairline shelves, then the key. */
+.doors-read { display: flex; flex-direction: column; }
+.ds {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-hairline);
+}
+.ds:first-child { padding-top: 4px; }
+/* Each count leads with its door drawn small — same three drawings as the
+   wall — standing on the number's baseline. An empty flex item's baseline
+   is its bottom edge, so no alignment fudge is needed. */
+.ds-door {
+  flex: none;
+  width: 15px;
+  height: 21px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-bottom-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50% 50% 1px 1px / 34% 34% 1px 1px;
+  background: var(--color-marigold);
+}
+.ds-all .ds-door { border-color: transparent; }
+.ds-half .ds-door {
+  background: linear-gradient(to top, var(--color-marigold) 0 58%, transparent 58%);
+  background-clip: padding-box;
+}
+.ds-none .ds-door {
+  background: none;
+  border-style: dashed;
+  border-bottom-style: solid;
+}
+.ds strong {
+  min-width: 2ch;
+  text-align: right;
+  font-size: 34px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.ds span {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-slate);
+  transition: color 200ms ease;
+}
+/* The shelf that is spotlighting the wall inks its own label up, so the
+   filter reads at both ends. */
+.ds:hover span { color: var(--ink-95); }
+.doors-note {
+  margin: 14px 0 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-slate);
+  max-width: 44ch;
+}
+/* The wall builds door by door, top-left to bottom-right, behind the page
+   rise; each door takes the load reveal's small lift while its marigold
+   pours up from the sill. */
+@media (prefers-reduced-motion: no-preference) {
+  .door {
+    animation:
+      rise 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) backwards,
+      door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: calc(0.25s + var(--i) * 3ms);
+  }
+}
+@keyframes door-open {
+  from { --open: 0; }
+}
+@media (max-width: 860px) {
+  /* The rail will not sit beside a readable wall: stack them, wall first,
+     and let the doors tighten a step so a phone row still holds a dozen. */
+  .doors { grid-template-columns: 1fr; gap: 20px; }
+  .doors-wall { grid-template-columns: repeat(auto-fill, minmax(20px, 1fr)); gap: 5px; }
+  .ds { padding: 11px 0; }
+  .ds strong { font-size: 28px; }
+}
+
 /* ---- Stat colophon: the plate's closing line ----
    Number-and-label pairs on one baseline between hairlines, left-ragged like
-   the rest of the page; used on the openness page. */
+   the rest of the page; used on the passport pages. */
 .statline {
   display: flex;
   flex-wrap: wrap;
