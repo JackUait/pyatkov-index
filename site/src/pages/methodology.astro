@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
-import { formatBuiltDate } from '../lib/format.ts';
+import weightsData from '../data/weights.json';
+import { displayName, formatBuiltDate } from '../lib/format.ts';
+import { impliedZ } from '../lib/weigh.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 
 // B9: honest build date + per-signal vintages emitted by the pipeline.
@@ -19,6 +21,85 @@ const builtAt = meta.builtAt ?? (meta as { generatedAt?: string }).generatedAt ?
 const v = meta.vintages ?? {};
 // Year-range strings from the pipeline use an en-dash; ranges render with a hyphen.
 const range = (s: string) => s.replace(/[–—]/g, '-');
+
+// The four signals, in the order the figure and the ledger both read them.
+// Every word about a signal lives here once, so the drawing and the prose can
+// never disagree about what it is or how it is scaled.
+const SIGNALS = [
+  {
+    key: 'gdp' as const,
+    label: 'GDP',
+    title: 'GDP',
+    source: 'World Bank, current US$',
+    series: null,
+    blurb: 'Economic mass, logged before z-scoring so the largest economies do not drown out everything else.',
+  },
+  {
+    key: 'arrivals' as const,
+    label: 'Arrivals',
+    title: 'Tourism arrivals',
+    source: 'World Bank / UN Tourism',
+    series: 'ST.INT.ARVL',
+    blurb: 'How much the world actually travels there, logged. A proxy, not a pure tourist count: it counts non-resident arrivals, and countries define them differently.',
+  },
+  {
+    key: 'hdi' as const,
+    label: 'HDI',
+    title: 'HDI',
+    source: 'UNDP Human Development Report',
+    series: null,
+    blurb: 'Development level, on its natural scale: the index is already bounded, so it is never logged.',
+  },
+  {
+    key: 'migrants' as const,
+    label: 'Migrants',
+    title: 'Migrant stock',
+    source: 'World Bank',
+    series: 'SM.POP.TOTL',
+    blurb: 'International migrant stock, logged: how much of the world has chosen to move there.',
+  },
+];
+
+// The worked example: the formula run end to end on two real destinations.
+// They are picked by SIGN, not by rank — the heaviest whose four signals all
+// sit above the world average, the lightest whose four all sit below it — so
+// the diverging figure can put one on each side of the axis and never have two
+// bars land on the same half. The fallbacks are the plain extremes.
+const wdests = weightsData.destinations;
+const zsOf = (d: (typeof wdests)[number]) => SIGNALS.map((s) => d.normalized[s.key]);
+const complete = (d: (typeof wdests)[number]) => d.signalsUsed === 4 && zsOf(d).every((z) => z !== null);
+const high = wdests.find((d) => complete(d) && zsOf(d).every((z) => (z ?? 0) > 0)) ?? wdests[0];
+const low =
+  [...wdests].reverse().find((d) => complete(d) && zsOf(d).every((z) => (z ?? 0) < 0)) ??
+  wdests[wdests.length - 1];
+// The composite read back out of the weight itself — ln(w)/1.25 — so the
+// figure's Z row can never drift from the weight row underneath it.
+const highZ = impliedZ(high.weight);
+const lowZ = impliedZ(low.weight);
+
+// One σ axis, shared by the worked example and the ledger's range strips: the
+// widest bar either of them draws, rounded up to the next half sigma so the
+// longest bar stops short of the margin.
+const spreads = SIGNALS.map((s) => {
+  const vals = wdests.map((d) => d.normalized[s.key]).filter((v): v is number => v !== null);
+  return { min: Math.min(...vals), max: Math.max(...vals) };
+});
+const axis =
+  Math.ceil(
+    Math.max(
+      ...spreads.flatMap((r) => [Math.abs(r.min), Math.abs(r.max)]),
+      ...[...zsOf(high), ...zsOf(low)].map((z) => Math.abs(z ?? 0)),
+      Math.abs(highZ),
+      Math.abs(lowZ),
+    ) * 2,
+  ) / 2;
+const barWidth = (z: number | null) => `${((Math.abs(z ?? 0) / axis) * 100).toFixed(1)}%`;
+// The same signed reading the destinations ledger uses for its z-score cells.
+const zText = (z: number | null) => (z === null ? '—' : (z >= 0 ? '+' : '') + z.toFixed(2));
+const highName = displayName(high.iso3, high.name);
+const lowName = displayName(low.iso3, low.name);
+const ratio = Math.round(high.weight / low.weight);
+const sigmaGap = (highZ - lowZ).toFixed(1);
 
 const base = import.meta.env.BASE_URL;
 // The four derived datasets are copied to public/data/ at build time; these are
@@ -104,41 +185,118 @@ const article = {
   description="The formula, data sources, and per-signal data vintages behind the Pyatkov Index."
   jsonld={[dataset, article]}
 >
-  <h1>Methodology</h1>
-  <p class="lede">How the score is computed, from destination weights to access credit.</p>
+  <section class="method" aria-label="How a destination's weight is computed">
+    <div class="hero method-lede">
+      <h1>How the number is made</h1>
+      <p class="tagline">
+        Other indexes count destinations: visa-free access to a micronation is worth exactly as much as
+        visa-free access to the United States. This one weighs them — four public signals per destination,
+        averaged as standard deviations from the world average, then raised to a power.
+      </p>
+      <p class="fx">
+        <span class="fx-lit">weight =</span>
+        <span class="fx-lit">exp(</span>
+        <span class="fx-part"><b>1.25</b><small>chosen</small></span>
+        <span class="fx-lit">×</span>
+        <span class="fx-part"><b>Z</b><small>measured</small></span>
+        <span class="fx-lit">)</span>
+      </p>
+      <p class="method-note">
+        One of those numbers is a decision and the other is data. Everything below is that line, worked out:
+        the four signals, the credit each kind of access earns, and the score they add up to.
+      </p>
+    </div>
 
-  <h2>The idea</h2>
-  <p>
-    Classic passport indexes count destinations: visa-free access to a micronation is worth exactly as much
-    as visa-free access to the United States. The Pyatkov Index weights every destination by how valuable
-    access to it actually is, so weak destinations fade toward zero and strong destinations dominate.
-  </p>
+    <figure class="wx">
+      <figcaption class="wx-row wx-key">
+        <span class="wx-name" aria-hidden="true"></span>
+        <span class="wx-z" aria-hidden="true"></span>
+        <span class="wx-track">
+          <span class="wx-half wx-neg"><b>{lowName}</b><br />the lightest</span>
+          <span class="wx-half wx-pos"><b>{highName}</b><br />the heaviest</span>
+        </span>
+        <span class="wx-z" aria-hidden="true"></span>
+      </figcaption>
+      <div class="wx-rows">
+        {SIGNALS.map((s, i) => (
+          <div class="wx-row" style={`--i:${i}`}>
+            <span class="wx-name">{s.label}</span>
+            <span class="wx-z">{zText(low.normalized[s.key])}</span>
+            <span class="wx-track">
+              <span class="wx-half wx-neg"><i class="wx-bar wx-low" style={`--w:${barWidth(low.normalized[s.key])}`} /></span>
+              <span class="wx-half wx-pos"><i class="wx-bar wx-high" style={`--w:${barWidth(high.normalized[s.key])}`} /></span>
+            </span>
+            <span class="wx-z">{zText(high.normalized[s.key])}</span>
+          </div>
+        ))}
+        <div class="wx-row wx-sum" style={`--i:4`}>
+          <span class="wx-name">mean Z</span>
+          <span class="wx-z">{zText(lowZ)}</span>
+          <span class="wx-track">
+            <span class="wx-half wx-neg"><i class="wx-bar wx-low" style={`--w:${barWidth(lowZ)}`} /></span>
+            <span class="wx-half wx-pos"><i class="wx-bar wx-high" style={`--w:${barWidth(highZ)}`} /></span>
+          </span>
+          <span class="wx-z">{zText(highZ)}</span>
+        </div>
+        <div class="wx-row wx-foot">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span class="wx-track"><span class="wx-axis-label">the world average</span></span>
+          <span aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="wx-out">
+        <div class="wx-row wx-lane" style={`--i:5`}>
+          <span class="wx-name">weight</span>
+          <span aria-hidden="true"></span>
+          <span class="wx-track"><i class="wx-bar wx-high" style="--w:100%" /></span>
+          <span class="wx-z">{high.weight.toFixed(2)}</span>
+        </div>
+        <div class="wx-row wx-lane" style={`--i:6`}>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span class="wx-track"><i class="wx-bar wx-low" style={`--w:${((low.weight / high.weight) * 100).toFixed(2)}%`} /></span>
+          <span class="wx-z">{low.weight.toFixed(2)}</span>
+        </div>
+        <p class="wx-punch">
+          <b>{ratio}×</b> the weight, out of {sigmaGap} standard deviations — the exponent is what lets
+          quality beat count.
+        </p>
+      </div>
+    </figure>
+  </section>
 
   <h2>Destination weights</h2>
-  <p>Each of the {rankings.totalDestinations} destinations gets a weight from four signals:</p>
-  <ul class="signal-grid">
-    <li class="signal-card signal-gdp">
-      <h3>GDP</h3>
-      <span class="source">World Bank, current US$</span>
-      <p>Economic mass, log-scaled before z-scoring so the largest economies don't drown out everything else.</p>
-    </li>
-    <li class="signal-card signal-arrivals">
-      <h3>Tourism arrivals</h3>
-      <span class="source">World Bank / UN Tourism, series <code>ST.INT.ARVL</code></span>
-      <p>How much the world travels there, log-scaled. Counts non-resident visitor arrivals and mixes overnight
-        tourists with same-day visitors, with definitions varying by country: a proxy, not a pure tourist count.</p>
-    </li>
-    <li class="signal-card signal-hdi">
-      <h3>HDI</h3>
-      <span class="source">UNDP Human Development Report</span>
-      <p>Development level, used on its natural scale: the index is already bounded, so it is never logged.</p>
-    </li>
-    <li class="signal-card signal-migrants">
-      <h3>Migrant stock</h3>
-      <span class="source">World Bank, series <code>SM.POP.TOTL</code></span>
-      <p>International migrant stock, log-scaled: how much of the world has chosen to move there.</p>
-    </li>
-  </ul>
+  <p>Each of the {rankings.totalDestinations} destinations gets a weight from four signals, and nothing else:</p>
+  <div class="sig-ledger">
+    <div class="sig-head" aria-hidden="true">
+      <span>Signal</span>
+      <span>What it measures</span>
+      <span>Where the world falls, in σ</span>
+    </div>
+    <ul class="sig-rows">
+      {SIGNALS.map((s, i) => (
+        <li class="sig">
+          <div class="sig-id">
+            <h3>{s.title}</h3>
+            <span class="sig-src">{s.source}{s.series && <Fragment>, series <code>{s.series}</code></Fragment>}</span>
+          </div>
+          <p class="sig-blurb">{s.blurb}</p>
+          <div
+            class="sig-spread"
+            role="img"
+            aria-label={`On ${s.title} the ${wdests.length} destinations run from ${zText(spreads[i].min)} to ${zText(spreads[i].max)} standard deviations around the world average.`}
+          >
+            <span class="wx-track">
+              <span class="wx-half wx-neg"><i class="wx-bar wx-low" style={`--w:${barWidth(spreads[i].min)}`} /></span>
+              <span class="wx-half wx-pos"><i class="wx-bar wx-high" style={`--w:${barWidth(spreads[i].max)}`} /></span>
+            </span>
+            <span class="sig-range">{zText(spreads[i].min)} to {zText(spreads[i].max)}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
   <p>
     Every signal is put on one common scale, a population <em>z-score</em> (how many standard deviations
     above or below the destination average it sits), computed only over the destinations that actually

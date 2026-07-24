@@ -1523,7 +1523,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  /* 75% ink, the signal-card rule: stone fails AA on the marigold fill. */
+  /* 75% ink: stone fails AA on the marigold fill. */
   color: rgba(0, 0, 0, 0.75);
 }
 /* Blue one step deep: the tinted fills eat the standard blue's AA margin. */
@@ -1864,50 +1864,335 @@ td.down::before { content: '\25BC'; } /* down triangle */
   color: var(--ink-95);
 }
 
-/* ---- Methodology: signal cards, credit card, midnight formula island ---- */
-.signal-grid {
+/* ---- Methodology: the worked example, the signal ledger, the credit
+   ladder, the midnight formula island ----
+   The one page where color stops being decoration and becomes measurement.
+   The four signals used to arrive as four saturated cards — marigold GDP,
+   sky arrivals — which put category color on the same page as the ledger's
+   value color and made the two mean different things. They are drawn here in
+   the site's own two-ink law instead: marigold above the world average, the
+   quiet wash below, and nothing colored that isn't a number. */
+
+/* The spread: headline, the formula stated once with its two halves named,
+   and on the right the same formula run end to end on two real destinations,
+   one standing on each side of the world average. */
+.method {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin: 24px 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 32px 56px;
+  align-items: start;
+  padding-top: 48px;
+  margin: 0 0 56px;
+}
+/* The lede column is the page's hero; the spread supplies the rhythm, so the
+   hero's own padding comes off and the headline holds a column. */
+.method .method-lede { padding: 0; }
+.method-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
+
+/* The page's own device: the equation, annotated by hand. No slab of color
+   behind a word — the front page owns that — just the two named parts
+   hanging their labels under a hairline, the way a derivation is marked up
+   in a margin. The whole argument is which of the two is a decision. */
+.fx {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 7px;
+  margin: 0 0 24px;
+  max-width: none;
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-95);
+}
+.fx-part {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.fx-part b { font-weight: 600; }
+.fx-part small {
+  width: 100%;
+  padding-top: 5px;
+  border-top: 1px solid rgba(0, 0, 0, 0.22);
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+}
+.method-note {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-slate);
+  max-width: 46ch;
+}
+
+/* ---- The worked example ----
+   Four signal rows on one σ axis, the lightest destination reading left of
+   the world average and the heaviest reading right; the four fold into the
+   mean Z under a rule; then the exponent takes over and the symmetry
+   explodes into a full bar and a 2px sliver. Every number on it is read off
+   weights.json at build time, so the figure cannot drift from the data. */
+.wx {
+  --wx-name: 76px;
+  --wx-z: 46px;
+  margin: 0;
+}
+.wx-row {
+  display: grid;
+  grid-template-columns: var(--wx-name) var(--wx-z) minmax(0, 1fr) var(--wx-z);
+  align-items: center;
+  column-gap: 10px;
+  min-height: 32px;
+}
+.wx-name,
+.wx-z {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--ink-60);
+}
+.wx-z {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+/* The two gutters read outward from the axis: the below-average score ends
+   at the line, the above-average one starts from it. */
+.wx-row > .wx-z:last-child { text-align: left; }
+.wx-track {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-self: stretch;
+}
+.wx-half {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.wx-neg { justify-content: flex-end; }
+/* The axis is the world average, drawn once as the left edge of every
+   positive half so the line runs unbroken from the key to the last bar. */
+.wx-pos { border-left: 1px solid rgba(0, 0, 0, 0.18); }
+.wx-bar {
+  display: block;
+  width: var(--w);
+  height: 13px;
+  border-radius: 2px;
+  transform-origin: 0 50%;
+}
+.wx-neg .wx-bar { transform-origin: 100% 50%; }
+.wx-high { background: var(--color-marigold); }
+/* The below-average wash, one step up from the weigh chart's 0.11: these
+   bars are 13px tall on paper, not 380px of column. */
+.wx-low { background: rgba(0, 0, 0, 0.14); }
+
+.wx-key {
+  align-items: end;
+  min-height: 30px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+  text-wrap: balance;
+}
+/* The two names run as text, not as flex items — a flex row would break
+   "United States" and ", the heaviest" into two independently wrapping
+   columns. Each label hangs from the bottom of the row, against the axis. */
+.wx-key .wx-half {
+  display: block;
+  align-self: end;
+}
+.wx-key .wx-neg { padding-right: 10px; text-align: right; }
+.wx-key .wx-pos { padding-left: 10px; }
+.wx-key b { font-weight: 600; color: var(--ink-95); }
+
+/* The four readings fold into one: a rule across the figure, then the same
+   two bars drawn thicker — the composite Z is all the exponent ever sees.
+   Padding, never margin: a margin here would break the axis line. */
+.wx-sum {
+  border-top: 1px solid var(--border-hairline);
+  padding-top: 8px;
+}
+.wx-sum .wx-name,
+.wx-sum .wx-z {
+  font-weight: 600;
+  color: var(--ink-95);
+}
+.wx-sum .wx-bar { height: 18px; }
+.wx-foot {
+  align-items: start;
+  min-height: 24px;
+}
+.wx-foot .wx-track { display: block; text-align: center; }
+.wx-axis-label {
+  display: inline-block;
+  padding-top: 7px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+}
+
+/* And out comes the weight. The lanes drop the σ axis for a plain linear one
+   — zero to the heaviest — which is the whole point: four rows of nearly
+   symmetric standard deviations, and then the exponent leaves one of them a
+   hairline. The sliver is floored at 2px so it draws at all. */
+.wx-out {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-hairline);
+}
+/* The lane's empty end is a tint, not white space: without it the lighter
+   destination's 2px of weight reads as a stray tick instead of as a bar that
+   has almost nothing in it. */
+.wx-lane .wx-track {
+  display: block;
+  align-self: center;
+  height: 20px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.045);
+}
+.wx-lane .wx-bar {
+  height: 20px;
+  min-width: 3px;
+}
+/* The 3px of weight has to survive being read against its own rail, so the
+   wash inks up here — it is the one bar on the page that must be seen to be
+   almost nothing. */
+.wx-lane .wx-low { background: rgba(0, 0, 0, 0.34); }
+.wx-lane .wx-name { font-weight: 600; color: var(--ink-95); }
+.wx-lane > .wx-z:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: var(--ink-95);
+}
+.wx-punch {
+  margin: 16px 0 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-slate);
+  max-width: 48ch;
+}
+.wx-punch b {
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-95);
+}
+/* The bars grow out of the axis in reading order, the mean after the four it
+   averages, the weight last — the figure states itself in the order the
+   formula runs. */
+@media (prefers-reduced-motion: no-preference) {
+  .wx-bar {
+    animation: wx-grow 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: calc(0.25s + var(--i, 0) * 80ms);
+  }
+}
+@keyframes wx-grow {
+  from { transform: scaleX(0); }
+}
+
+/* ---- The signal ledger ----
+   Name and source, one clause of what it measures, and the range the 199
+   destinations actually cover on that signal — drawn on the worked example's
+   σ axis, so the compressed signal (HDI, which reaches barely half as far
+   above the average as GDP does) shows why it moves the composite least. */
+.sig-ledger {
+  margin: 24px 0 28px;
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+  overflow: clip;
+}
+.sig-head,
+.sig {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.5fr) 184px;
+  align-items: start;
+  gap: 10px 24px;
+  padding: 15px 20px;
+}
+.sig-head {
+  padding-top: 11px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--border-hairline);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--ink-60);
+}
+.sig-head span:last-child { text-align: center; }
+.sig-rows {
+  margin: 0;
   padding: 0;
   max-width: none;
   list-style: none;
 }
-.signal-card {
-  margin: 0;
-  border-radius: var(--radius-card);
-  padding: 24px;
+.sig { margin: 0; }
+.sig + .sig { border-top: 1px solid var(--border-faint); }
+.sig-id h3 {
+  margin: 0 0 3px;
+  font-size: var(--text-body);
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.1px;
 }
-.signal-card h3 {
-  margin: 0 0 6px;
-  font-size: var(--text-heading-sm);
-  line-height: var(--leading-heading-sm);
-  letter-spacing: var(--tracking-heading-sm);
-  font-weight: 700;
-}
-.signal-card p {
-  margin: 0;
-  font-size: var(--text-body-sm);
-  line-height: var(--leading-body-sm);
-  /* 75% ink: 60% fails AA on the saturated sky-wash fill. */
-  color: rgba(0, 0, 0, 0.75);
-  max-width: none;
-}
-.signal-card .source {
+.sig-src {
   display: block;
-  margin: 0 0 10px;
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  color: rgba(0, 0, 0, 0.75);
+  color: var(--color-slate);
 }
-.signal-gdp { background: var(--color-marigold); }
-.signal-arrivals { background: var(--color-sky-wash); }
-.signal-hdi { background: var(--color-sky-tint); }
-.signal-migrants { background: var(--color-peach); }
-@media (max-width: 640px) {
-  .signal-grid { grid-template-columns: 1fr; }
+.sig-blurb {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--ink-60);
+  max-width: none;
+}
+.sig-spread .wx-track { height: 18px; }
+.sig-spread .wx-bar { height: 8px; }
+.sig-range {
+  display: block;
+  margin-top: 7px;
+  text-align: center;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-slate);
+}
+
+@media (max-width: 900px) {
+  /* The figure will not sit beside a readable column: stack them, and the
+     worked example takes the full measure it was drawn for. */
+  .method {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-top: 40px;
+  }
+  .method-note { max-width: none; }
+}
+@media (max-width: 760px) {
+  /* The ledger folds to one column, and the range strip lies down beside its
+     numbers instead of over them. */
+  .sig-head { display: none; }
+  .sig { grid-template-columns: 1fr; gap: 12px; }
+  .sig-spread { display: flex; align-items: center; gap: 14px; }
+  .sig-spread .wx-track { flex: 1 1 auto; }
+  .sig-range { margin: 0; }
+}
+@media (max-width: 560px) {
+  .wx { --wx-name: 58px; --wx-z: 40px; }
+  .wx-row { column-gap: 7px; }
+  .fx { font-size: 19px; }
 }
 
 /* Access-credit rows: tier swatch + credit value in a white card. */
