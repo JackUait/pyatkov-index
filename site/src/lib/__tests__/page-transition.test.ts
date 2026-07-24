@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { routePath, transitionKey } from '../page-transition.ts';
+import { routePath, stampFor, transitionKey } from '../page-transition.ts';
 
 describe('routePath', () => {
   it('passes a root-based path through unchanged', () => {
@@ -65,5 +65,30 @@ describe('transitionKey', () => {
   it('falls back to plain for anything with no argument of its own', () => {
     expect(transitionKey('/404/')).toBe('plain');
     expect(transitionKey('/nowhere/at/all')).toBe('plain');
+  });
+});
+
+describe('stampFor', () => {
+  it('carries the destination key and a forward reading', () => {
+    expect(stampFor('/openness/', 'forward')).toEqual({ to: 'doors', nav: 'forward' });
+  });
+
+  it('reads a popstate as back', () => {
+    expect(stampFor('/passport/prt/', 'back')).toEqual({ to: 'country', nav: 'back' });
+  });
+
+  it('treats any direction that is not back as forward', () => {
+    expect(stampFor('/', '').nav).toBe('forward');
+    expect(stampFor('/', 'unknown').nav).toBe('forward');
+  });
+
+  it('still lets the destination govern on a back navigation', () => {
+    // Direction only reverses the country gesture; every other page keeps its
+    // own instrument no matter which way you arrived.
+    expect(stampFor('/methodology/', 'back').to).toBe('rule');
+  });
+
+  it('resolves under a deploy base', () => {
+    expect(stampFor('/pyatkov-index/destinations/', 'forward', '/pyatkov-index/').to).toBe('scale');
   });
 });
