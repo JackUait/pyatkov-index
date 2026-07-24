@@ -3,7 +3,8 @@ import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weightsData from '../data/weights.json';
 import { displayName, formatBuiltDate } from '../lib/format.ts';
-import { impliedZ } from '../lib/weigh.ts';
+import { impliedZ, SIGMA_MULTIPLIER } from '../lib/weigh.ts';
+import { CREDIT } from '../lib/credit.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 
 // B9: honest build date + per-signal vintages emitted by the pipeline.
@@ -101,6 +102,23 @@ const lowName = displayName(low.iso3, low.name);
 const ratio = Math.round(high.weight / low.weight);
 const sigmaGap = (highZ - lowZ).toFixed(1);
 
+// The credit ladder, drawn. The four values come from lib/credit.ts — the same
+// table credit.test.ts holds byte-identical to the pipeline's — so the figure
+// cannot state a credit the scores were not computed with. `border` is the
+// binary the section argues: is entry decided at the border, or does it need
+// permission before departure? It splits the ladder, not the credit values.
+const LADDER = [
+  { tier: 'visa-free' as const, label: 'Visa-free / freedom of movement', border: true },
+  { tier: 'visa-on-arrival' as const, label: 'Visa on arrival / eTA', border: true },
+  { tier: 'e-visa' as const, label: 'eVisa', border: false },
+  { tier: 'visa-required' as const, label: 'Visa required / no admission', border: false },
+];
+const ZONES = [
+  { rule: 'Decided at the border', gloss: 'nothing to arrange before you fly', rows: LADDER.filter((r) => r.border) },
+  { rule: 'Permission before departure', gloss: 'cleared in advance, or not at all', rows: LADDER.filter((r) => !r.border) },
+];
+const creditText = (c: number) => (c === 0 ? '0' : c.toFixed(1));
+
 const base = import.meta.env.BASE_URL;
 // The four derived datasets are copied to public/data/ at build time; these are
 // both the Dataset's distribution URLs and the visible download links below.
@@ -120,6 +138,19 @@ const coverageYears = [v.gdp?.years, v.arrivals?.window]
 const temporalCoverage = coverageYears.length
   ? `${Math.min(...coverageYears)}/${Math.max(...coverageYears)}`
   : undefined;
+
+// The vintages, as a provenance ledger rather than a bullet list: what was
+// measured, the series it came from, and the years it actually observes. Built
+// defensively from whatever the pipeline emitted, in the order the signals are
+// argued above, so a missing vintage drops its row instead of breaking the page.
+const provenance = [
+  v.matrix && { what: 'Visa matrix', series: null, vintage: `${v.matrix.source} — ${v.matrix.note}` },
+  v.gdp && { what: v.gdp.label, series: v.gdp.series, vintage: `${v.gdp.selection}, ${range(v.gdp.years)} (modal ${v.gdp.modalYear})` },
+  v.arrivals && { what: v.arrivals.label, series: v.arrivals.series, vintage: `${range(v.arrivals.window)} window, preferring ${v.arrivals.preferredYear}; used ${range(v.arrivals.yearsUsed)}` },
+  v.hdi && { what: 'HDI', series: null, vintage: `${v.hdi.source}, reference year ${v.hdi.year}` },
+  v.migrants && { what: v.migrants.label, series: v.migrants.series, vintage: `${v.migrants.selection}, ${range(v.migrants.years)} (modal ${v.migrants.modalYear})` },
+  v.population && { what: v.population.label, series: v.population.series, vintage: `${v.population.selection}, ${range(v.population.years)} (modal ${v.population.modalYear}) — the openness denominator, not a weight signal` },
+].filter((r): r is { what: string; series: string | null; vintage: string } => Boolean(r));
 
 const canonical = absUrl(Astro.url.pathname);
 const dataset = {
@@ -266,9 +297,13 @@ const article = {
     </figure>
   </section>
 
-  <h2>Destination weights</h2>
+  <section class="step" aria-labelledby="h-weights">
+  <div class="step-rule" aria-hidden="true"><b>01</b></div>
+  <div class="step-body">
+  <h2 id="h-weights">Destination weights</h2>
   <p>Each of the {rankings.totalDestinations} destinations gets a weight from four signals, and nothing else:</p>
-  <div class="sig-ledger">
+  </div>
+  <div class="sig-ledger step-wide">
     <div class="sig-head" aria-hidden="true">
       <span>Signal</span>
       <span>What it measures</span>
@@ -297,6 +332,7 @@ const article = {
       ))}
     </ul>
   </div>
+  <div class="step-body">
   <p>
     Every signal is put on one common scale, a population <em>z-score</em> (how many standard deviations
     above or below the destination average it sits), computed only over the destinations that actually
@@ -312,14 +348,52 @@ const article = {
     of strong destinations (Germany, Japan, the United States) outweigh dozens of weak ones, while the score
     stays smooth, strictly monotonic in value, and bounded.
   </p>
+  </div>
+  <div class="step-note">
+    <b class="note-term">×{SIGMA_MULTIPLIER.toFixed(1)}</b>
+    <span class="note-label">
+      what one standard deviation of extra value buys, in weight. The exponent that sets it is the only
+      number on this page chosen rather than measured.
+    </span>
+  </div>
+  </section>
 
-  <h2>Access credit</h2>
-  <ul class="credit-list">
-    <li><span class="tier-key tier-visa-free">Visa-free / freedom of movement</span> <span class="credit">1.0</span></li>
-    <li><span class="tier-key tier-visa-on-arrival">Visa on arrival / eTA</span> <span class="credit">1.0</span></li>
-    <li><span class="tier-key tier-e-visa">eVisa</span> <span class="credit">0.2</span></li>
-    <li><span class="tier-key tier-visa-required">Visa required / no admission</span> <span class="credit">0</span></li>
-  </ul>
+  <section class="step" aria-labelledby="h-credit">
+  <div class="step-rule" aria-hidden="true"><b>02</b></div>
+  <div class="step-body">
+  <h2 id="h-credit">Access credit</h2>
+  </div>
+  <figure
+    class="ladder"
+    role="img"
+    aria-label={`The access credit ladder. Decided at the border: visa-free and visa on arrival or eTA each earn ${creditText(CREDIT['visa-free'])}. Permission before departure: an eVisa earns ${creditText(CREDIT['e-visa'])}, and a required visa or no admission earns ${creditText(CREDIT['visa-required'])}.`}
+  >
+    {ZONES.map((zone, zi) => (
+      <div class:list={['lad-zone', zi === 1 && 'lad-after']}>
+        <div class="lad-rule">
+          <span class="lad-rule-name">{zone.rule}</span>
+          <span class="lad-rule-gloss">{zone.gloss}</span>
+        </div>
+        {zone.rows.map((row, ri) => (
+          <div class={`lad-row tier-${row.tier}`} style={`--i:${zi * 2 + ri}`}>
+            <span class="lad-label">{row.label}</span>
+            <span class="lad-track">
+              <i class="lad-fill" style={`--w:${CREDIT[row.tier] * 100}%`} />
+            </span>
+            <span class="lad-credit">{creditText(CREDIT[row.tier])}</span>
+          </div>
+        ))}
+      </div>
+    ))}
+  </figure>
+  <div class="step-note">
+    <b class="note-term">{creditText(CREDIT['e-visa'])}</b>
+    <span class="note-label">
+      the only graded credit on the ladder. Every other kind of access is worth all of a destination or
+      none of it.
+    </span>
+  </div>
+  <div class="step-body">
   <p>
     The test starts binary: is entry decided <em>at the border</em>, or does it require permission <em>before
     departure</em>? Visa on arrival and eTA need nothing to board a plane, so they count as fully open. A visa
@@ -327,38 +401,111 @@ const article = {
     before you fly, so it is not freedom of movement, but it is an online form that is granted far more
     readily than a consular visa, so it earns a fifth of full credit rather than nothing.
   </p>
-
-  <h2>The score</h2>
-  <div class="formula-card">
-    <code>score = 100 × Σ credit(passport, d) × weight(d) / Σ weight(d)</code>
-    <span class="note">The share of the world's destination value this passport can reach.</span>
   </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-score">
+  <div class="step-rule" aria-hidden="true"><b>03</b></div>
+  <div class="step-body">
+  <h2 id="h-score">The score</h2>
+  </div>
+  <figure class="eq">
+    <div class="eq-line">
+      <span class="eq-lit">score</span>
+      <span class="eq-op">=</span>
+      <span class="eq-lit">100</span>
+      <span class="eq-op">×</span>
+      <span class="eq-frac">
+        <span class="eq-num">Σ credit(passport, d) × weight(d)</span>
+        <span class="eq-den">Σ weight(d)</span>
+      </span>
+    </div>
+    <figcaption class="eq-notes">
+      <span><b>above the line</b> — every destination this passport reaches, each one discounted by the credit its access earns</span>
+      <span><b>below the line</b> — the whole world's weight, this passport's own country included</span>
+    </figcaption>
+  </figure>
+  <div class="step-note">
+    <b class="note-term">100</b>
+    <span class="note-label">
+      a passport that reaches everywhere without a visa. The scale is a percentage of the world's
+      destination value, so the top of it is a real place to stand, not an asymptote.
+    </span>
+  </div>
+  <div class="step-body">
   <p>
     <strong>Both</strong> sums run over every destination <em>including the passport's own country</em>, which every passport
     admits visa-free (credit 1.0). A country's own destination value therefore accrues to its own score, so
     large, high-value home economies (the United States most of all, since it is the single most valuable
     destination) rank higher than they would if their own weight were thrown away. Because numerator and
     denominator cover the same full pool, a passport with full visa-free access still scores exactly 100, and
-    the score reads as "percent of the world's destination value this passport can reach". The <strong id="count-rank">Count
+    the score reads as "percent of the world's destination value this passport can reach".
+  </p>
+  <p>
+    The <strong id="count-rank">Count
     rank</strong>, shown on each passport's own page, is the ranking you get from the same access credits over
     the same full set of destinations but with every destination worth 1, a plain "how many places can you go"
     count. The <strong id="delta">Δ from weighting</strong> beside it is the gap between the two, so a passport that
     reaches disproportionately valuable destinations rises and one skewed toward low-value destinations falls.
   </p>
+  </div>
+  </section>
 
-  <h2>The openness rating</h2>
+  <section class="step" aria-labelledby="h-openness">
+  <div class="step-rule" aria-hidden="true"><b>04</b></div>
+  <div class="step-body">
+  <h2 id="h-openness">The openness rating</h2>
   <p>
-    The index also runs backwards. Where a passport score asks how much of the world's destination
-    <em>value</em> a passport opens, an <a href={`${import.meta.env.BASE_URL}openness/`}>openness score</a>
-    asks how much of the world's <em>people</em> a destination lets in from outside:
+    The index also runs backwards. Where a passport score asks how much of the world's destination <em>value</em> a
+    passport opens, an <a href={`${import.meta.env.BASE_URL}openness/`}>openness score</a> asks how much of
+    the world's <em>people</em> a destination lets in from outside — the same skeleton, read the other way down:
   </p>
-  <p><code>openness(d) = 100 × Σ<sub>p ≠ d</sub> credit(p, d) × population(p) / Σ<sub>p ≠ d</sub> population(p)</code></p>
+  </div>
+  <div class="step-note">
+    <b class="note-term">{rankings.totalDestinations - 1}</b>
+    <span class="note-label">
+      the foreign passports an openness score is measured over — every passport in the index except the
+      destination's own.
+    </span>
+  </div>
+  <figure class="mirror step-wide">
+    <div class="mirror-grid">
+      <span class="mir-name">score(p)</span>
+      <span class="mir-op">= 100 ×</span>
+      <span class="mir-sum">Σ<sub>d</sub></span>
+      <span class="mir-term">credit(p, d)</span>
+      <span class="mir-op">×</span>
+      <span class="mir-term mir-swap">weight(d)</span>
+      <span class="mir-op">/</span>
+      <span class="mir-sum">Σ<sub>d</sub></span>
+      <span class="mir-term mir-swap">weight(d)</span>
+
+      <span class="mir-name">openness(d)</span>
+      <span class="mir-op">= 100 ×</span>
+      <span class="mir-sum">Σ<sub>p ≠ d</sub></span>
+      <span class="mir-term">credit(p, d)</span>
+      <span class="mir-op">×</span>
+      <span class="mir-term mir-swap">population(p)</span>
+      <span class="mir-op">/</span>
+      <span class="mir-sum">Σ<sub>p ≠ d</sub></span>
+      <span class="mir-term mir-swap">population(p)</span>
+    </div>
+    <figcaption class="mirror-note">
+      One substitution, marked: where the passport score weighs a destination by what it is worth, the
+      openness rating weighs a passport by how many people stand behind it. The credit ladder in the middle
+      never moves — the same graded access, read from the other side of the border.
+    </figcaption>
+  </figure>
+  <div class="step-body">
   <p>
     Both sums run over the {rankings.totalDestinations - 1} <em>foreign</em> passports, excluding the
     destination's own. This is the one place the openness rating deliberately departs from the passport
     score, which counts a country's own destination value toward itself. Every country admits its own
     citizens, so including them would measure nothing except population size — handing large countries free
-    points for a policy they all share. Because numerator and denominator cover the same foreign pool, a
+    points for a policy they all share.
+  </p>
+  <p>
+    Because numerator and denominator cover the same foreign pool, a
     destination open to every foreign passport scores exactly 100 and one that admits none scores exactly 0.
     The number reads as a percentage: the credit-weighted share of the world's people outside its borders it
     admits, on the same graded credit ladder the passport score uses — border access in full, an eVisa a fifth.
@@ -370,8 +517,13 @@ const article = {
     mirror of the &Delta; on the rankings table — how far that destination moves once the passports it
     admits are weighted by the people behind them instead of counted one apiece.
   </p>
+  </div>
+  </section>
 
-  <h2>Sources &amp; data vintages</h2>
+  <section class="step" aria-labelledby="h-sources">
+  <div class="step-rule" aria-hidden="true"><b>05</b></div>
+  <div class="step-body">
+  <h2 id="h-sources">Sources &amp; data vintages</h2>
   <p>
     Visa matrix: the open <a href="https://github.com/imorte/passport-index-data">passport-index-data</a> dataset
     (the maintained successor to the archived <code>ilyankou/passport-index-dataset</code>, PassportIndex.org
@@ -381,55 +533,58 @@ const article = {
     sovereign states and SARs; dependent territories with their own visa regimes are out of scope, inherited
     from the upstream dataset.
   </p>
-  {meta.vintages && (
-    <Fragment>
-      <p>
-        Because the signals carry different observation years, we disclose each one's vintage rather than
-        a single snapshot label:
-      </p>
-      <ul class="vintages">
-        {v.matrix && <li><strong>Visa matrix</strong>: {v.matrix.source} ({v.matrix.note})</li>}
-        {v.gdp && <li><strong>{v.gdp.label}</strong> (<code>{v.gdp.series}</code>): {v.gdp.selection}, years {range(v.gdp.years)} (modal {v.gdp.modalYear})</li>}
-        {v.arrivals && <li><strong>{v.arrivals.label}</strong> (<code>{v.arrivals.series}</code>): {range(v.arrivals.window)} window, preferring {v.arrivals.preferredYear}; years used {range(v.arrivals.yearsUsed)}</li>}
-        {v.migrants && <li><strong>{v.migrants.label}</strong> (<code>{v.migrants.series}</code>): {v.migrants.selection}, years {range(v.migrants.years)} (modal {v.migrants.modalYear})</li>}
-        {v.population && <li><strong>{v.population.label}</strong> (<code>{v.population.series}</code>): {v.population.selection}, years {range(v.population.years)} (modal {v.population.modalYear}) — the openness denominator, not a weight signal</li>}
-        {v.hdi && <li><strong>HDI</strong>: {v.hdi.source}, reference year {v.hdi.year}</li>}
+  <p class="prov-why">
+    The signals carry different observation years, so each one's vintage is disclosed below rather than
+    flattened into a single snapshot label the data would not support.
+  </p>
+  </div>
+  <div class="step-note">
+    <b class="note-term note-date">{formatBuiltDate(builtAt)}</b>
+    <span class="note-label">
+      the date the pipeline last ran — not the vintage of any single signal. All raw data and code are in
+      the repo; the entire index is reproducible with one command.
+    </span>
+  </div>
+  {provenance.length > 0 && (
+    <div class="prov step-wide">
+      <div class="prov-head" aria-hidden="true">
+        <span>Measured</span>
+        <span>Series</span>
+        <span>What it observes</span>
+      </div>
+      <ul class="prov-rows">
+        {provenance.map((r) => (
+          <li class="prov-row">
+            <span class="prov-what">{r.what}</span>
+            <span class="prov-series">{r.series ? <code>{r.series}</code> : <i class="prov-none" aria-hidden="true" />}</span>
+            <span class="prov-vintage">{r.vintage}</span>
+          </li>
+        ))}
       </ul>
-    </Fragment>
+    </div>
   )}
-  <p>
-    Built {formatBuiltDate(builtAt)}, the date the pipeline last ran, not the vintage of any single signal. All raw data and
-    code are in the repo; the entire index is reproducible with one command.
-  </p>
+  </section>
 
-  <h2 id="download">Download the data</h2>
-  <p>
-    The four derived datasets are published alongside the site as plain JSON, under
-    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. They are the same files the
-    pages above are rendered from, rebuilt every time the pipeline runs.
-  </p>
-  <ul class="downloads">
-    {downloads.map((d) => (
-      <li>
-        <a href={`${base}data/${d.file}`} download><code>{d.file}</code> — {d.label}</a>
-        <span>{d.desc}</span>
-      </li>
-    ))}
-  </ul>
-
-  <style>
-    .downloads { list-style: none; margin: 0 0 8px; padding: 0; max-width: 65ch; }
-    .downloads li {
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border-hairline);
-    }
-    .downloads span {
-      display: block;
-      margin-top: 2px;
-      font-size: var(--text-caption);
-      line-height: var(--leading-caption);
-      letter-spacing: var(--tracking-caption);
-      color: var(--color-slate);
-    }
-  </style>
+  <section class="coda" aria-labelledby="download">
+    <div class="step-rule" aria-hidden="true"><b>&darr;</b></div>
+    <div class="coda-head">
+      <h2 id="download">Download the data</h2>
+      <p>
+        The four derived datasets are published alongside the site as plain JSON, under <a
+        href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. They are the same files the
+        pages above are rendered from, rebuilt every time the pipeline runs.
+      </p>
+    </div>
+    <ul class="downloads">
+      {downloads.map((d) => (
+        <li>
+          <a href={`${base}data/${d.file}`} download>
+            <code>{d.file}</code>
+            <span class="dl-label">{d.label}</span>
+            <span class="dl-desc">{d.desc}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
 </Base>
