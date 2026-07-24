@@ -62,10 +62,16 @@ otherwise strip `data-nav`, which no server render carries. `after-swap` fires
 inside the update callback, before the browser captures the new state, so the
 re-stamp lands in time.
 
-Both are cleared when `event.viewTransition.finished` resolves — the handle is
-taken from `astro:before-swap` — so no stale attribute outlives its animation.
-This matters because the stamp is also what retimes the ribbon's own sweep on an
-`ink` arrival; that override must not survive the transition.
+Neither is ever cleared. Every navigation overwrites both, and the gesture rules
+only match `::view-transition-*` pseudo-elements, which exist solely during a
+transition — a stamp left standing paints nothing.
+
+It has to stay for the one rule that outlives the transition: `data-to` also
+retimes the ribbon's own 0.9s ink-sweep on an `ink` arrival. Clearing the
+attribute when the transition finishes at 520ms would drop that override with
+the sweep still running, and the changed delay would snap the strip's fill
+forward. A cold load carries no stamp, so the ribbon keeps the timing the load
+choreography was tuned against.
 
 Stamping ahead of the swap, rather than letting the incoming page's stylesheet
 arrive and take over, is what makes the destination govern the gesture in *both*
@@ -78,10 +84,17 @@ in `global.css` holds every gesture and no page file carries transition CSS.
 
 ### The named regions
 
-Only two elements are named. The persisted `<header>` takes
-`view-transition-name: masthead`, which lifts it out of the root snapshot so the
-masthead holds still through every swap. The current nav item's peach block
-takes `nav-ink` (see below).
+Only two elements are named. The persisted masthead takes
+`view-transition-name: masthead`, which lifts it out of the root snapshot so it
+holds still through every swap. The current nav item's peach block takes
+`nav-ink` (see below).
+
+The masthead selector must be `body > header`, not `header`. A
+`view-transition-name` has to be unique per document, and the passport page
+heads each of its four destination groups with a `<header>`; a bare selector
+names all five the same thing, and the browser answers a duplicate name by
+aborting the entire transition — so leaving a passport page would not animate
+at all.
 
 Everything else — `<main>`, the footer, the paper background — stays in `root`,
 and the five gestures are declared on `::view-transition-old(root)` and
@@ -112,8 +125,15 @@ calls over pure functions that are. It is verified in the browser instead.
 `ink`, **520ms**, `cubic-bezier(0.2, 0.7, 0.3, 1)`.
 
 The new page is revealed by a left-to-right wipe, `clip-path: inset(0 100% 0 0)`
-to `inset(0 0 0 0)`, its leading edge carrying a 1px saffron hairline — the wet
-edge of the nib. The old page does not move or scale; ink covers paper.
+to `inset(0 0 0 0)`, its leading edge carrying a saffron hairline — the wet edge
+of the nib. The old page does not move or scale; ink covers paper.
+
+The hairline is drawn by clipping *both* snapshots on the same curve with a 2px
+gap between them, so the group's own fill shows through the gap and rides the
+edge. A filter on the new snapshot cannot do it: `clip-path` is applied after
+`filter`, so a drop-shadow at the clip edge is clipped away with everything
+else. Methodology's ruled edge is drawn the same way, in ink rather than
+saffron.
 
 The wipe runs on `.ribbon`'s own curve — `ink-sweep` is a left-to-right
 `background-size` fill on the same easing — and the ribbon's 0.15s delay is
@@ -131,6 +151,9 @@ at a time across the viewport. Its traversal rate is tuned to the wall's own
 `calc(0.25s + var(--i) * 3ms)` door stagger, making the eight leaves and the 199
 doors one motion at two scales. The old page fades beneath — paper behind a
 door.
+
+The wipe's soft zone is exactly one leaf wide. Any wider and the gradient spans
+two leaves at once, and the sweep stops reading as doors at all.
 
 The mask needs an `@property`-registered percentage to interpolate. Where that
 is unsupported, `@supports` falls the gesture back to the plain left-to-right
@@ -197,9 +220,16 @@ than being shortened.
 
 **Snapshot cost.** Routing the gestures through `root` bounds every snapshot to
 the viewport, which is what keeps the 199-door wall and the 199-column floor
-affordable. The residual risk is the doors mask, the only gesture that
-composites per frame; it gets measured in the browser, and falls back to the
-plain wipe if it janks.
+affordable. Measured on the production build: median frame 9ms for doors against
+8ms for the maskless gestures, and the occasional long frame belongs to the page
+swap rather than the mask — ink, which composites nothing, has the worst single
+frame of the three. The mask stays.
+
+**Overlap.** Every gesture that fades one page into another must also set
+`mix-blend-mode: normal`, and must clear the outgoing page early — a third of
+the duration at most. The UA's `plus-lighter` default is built for its own
+cross-fade and blows the overlap out to white; and two pages held at half
+opacity for long are two pages you cannot read.
 
 **Mask support.** The doors mask reads a registered custom property. Where
 `@property` is unsupported the `var()` is invalid at computed-value time, so
