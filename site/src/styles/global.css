@@ -180,13 +180,31 @@ header nav a:hover {
   text-decoration: none;
 }
 /* The current page is a highlighted word: the hero's peach block, reused as
-   the active state so the nav quotes the headline device. */
-header nav a[aria-current='page'] {
-  color: var(--ink-95);
+   the active state so the nav quotes the headline device. The block lives on a
+   pseudo-element rather than the link's own background so it can carry a
+   view-transition-name: only one nav item is current at a time, so the old and
+   new snapshots always pair and the highlight slides along the masthead toward
+   the page you are going to. The header is already a stacking context (sticky,
+   z-index 20), so the negative-z block paints over the bar's white fill and
+   under the link's own text. */
+header nav a { position: relative; }
+header nav a[aria-current='page'] { color: var(--ink-95); }
+header nav a[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius-btn);
   background: var(--color-peach);
 }
-header nav a[aria-current='page']:hover {
+header nav a[aria-current='page']:hover::before {
   background: color-mix(in srgb, var(--color-peach) 94%, var(--color-ink));
+}
+/* The bar itself is lifted out of the root snapshot so the five gestures at the
+   end of this file sweep the argument and never the masthead. */
+@media (prefers-reduced-motion: no-preference) {
+  header { view-transition-name: masthead; }
+  header nav a[aria-current='page']::before { view-transition-name: nav-ink; }
 }
 
 /* ---- Shell ---- */
