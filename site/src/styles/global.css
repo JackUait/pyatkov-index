@@ -201,10 +201,15 @@ header nav a[aria-current='page']:hover::before {
   background: color-mix(in srgb, var(--color-peach) 94%, var(--color-ink));
 }
 /* The bar itself is lifted out of the root snapshot so the five gestures at the
-   end of this file sweep the argument and never the masthead. */
+   end of this file sweep the argument and never the masthead.
+
+   `body >` is load-bearing. A view-transition-name must be unique per document,
+   and the passport page's destination groups are each headed by a <header> —
+   a bare `header` selector names all five, and the browser answers a duplicate
+   name by aborting the whole transition. */
 @media (prefers-reduced-motion: no-preference) {
-  header { view-transition-name: masthead; }
-  header nav a[aria-current='page']::before { view-transition-name: nav-ink; }
+  body > header { view-transition-name: masthead; }
+  body > header nav a[aria-current='page']::before { view-transition-name: nav-ink; }
 }
 
 /* ---- Shell ---- */
@@ -3014,4 +3019,217 @@ footer {
   }
   .drawer-content { padding: 0 var(--pad) 48px; }
   .drawer-full span { display: none; }
+}
+
+/* ---- Contextual page transitions ----
+   Every page here owns an instrument, and the arrival is that instrument: the
+   front page's strip of ink, openness's wall of doors, the destinations scale,
+   the derivation ruled down the page. lib/page-transition.ts stamps the page
+   being navigated TO onto <html data-to>, so these rules are always chosen by
+   where you are going, never by where you were.
+
+   The gestures ride ::view-transition-*(root) — viewport-sized however long the
+   page is — while the masthead is lifted out under its own name (see the nav
+   rules above). Each pair turns off the UA's plus-lighter blend: these paint one
+   page over another, and additive overlap would blow out to white. */
+
+/* The registered property the doors mask interpolates. Its initial value is the
+   END of the sweep on purpose: where @property is unsupported the var() is
+   invalid at computed-value time, mask-image falls back to its initial `none`,
+   and the page arrives unmasked. The failure mode is a plain fade, never a
+   blank screen. */
+@property --vt-edge {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 116%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* plain — the 404 has no argument, so it gets no instrument. */
+  :root[data-to='plain']::view-transition-old(root),
+  :root[data-to='plain']::view-transition-new(root) {
+    animation-duration: 200ms;
+  }
+
+  /* ink — the strip is drawn left to right. The old page does not move or
+     scale: ink covers paper.
+
+     The saffron hairline is the wet edge of the nib, and it is drawn by
+     clipping BOTH snapshots on the same curve with a 2px gap between them, so
+     the group's own fill shows through the gap and rides the edge. A filter on
+     the new snapshot cannot do this: clip-path is applied after filter, so a
+     drop-shadow at the clip edge is clipped away with everything else. */
+  :root[data-to='ink']::view-transition-old(root),
+  :root[data-to='ink']::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  :root[data-to='ink']::view-transition-group(root) {
+    background: var(--color-saffron);
+  }
+  :root[data-to='ink']::view-transition-old(root) {
+    animation: vt-ink-under 520ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  :root[data-to='ink']::view-transition-new(root) {
+    animation: vt-ink 520ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  @keyframes vt-ink {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes vt-ink-under {
+    from { clip-path: inset(0 0 0 2px); }
+    to { clip-path: inset(0 0 0 calc(100% + 2px)); }
+  }
+  /* The ribbon's own ink-sweep is delayed 0.15s on a cold load, where nothing
+     precedes it. On an ink arrival the page wipe reaches the strip first, so
+     the sweep is held until the edge gets there and the two read as one stroke
+     continued at a smaller scale. */
+  :root[data-to='ink'] .ribbon {
+    animation-delay: 0.22s;
+  }
+
+  /* doors — eight leaves opening left to right, tuned to the wall's own
+     0.25s + i × 3ms door stagger so the leaves and the 199 doors are one motion
+     at two scales. The second gradient cuts the sweep into leaves with hairline
+     jambs; the slivers it leaves behind at the end of the sweep vanish with the
+     pseudo-element itself. */
+  :root[data-to='doors']::view-transition-old(root),
+  :root[data-to='doors']::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  :root[data-to='doors']::view-transition-old(root) {
+    animation: vt-fade-out 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  :root[data-to='doors']::view-transition-new(root) {
+    animation: vt-doors 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    mask-image:
+      linear-gradient(90deg, #000 var(--vt-edge), transparent calc(var(--vt-edge) + 12.5%)),
+      repeating-linear-gradient(90deg, #000 0 calc(12.5% - 1px), transparent calc(12.5% - 1px) 12.5%);
+    mask-composite: intersect;
+  }
+  /* The soft zone is exactly one leaf wide, so at any instant one leaf is
+     mid-swing while the ones behind it stand open and the ones ahead stand
+     shut. Any wider and the gradient spans two leaves and the sweep stops
+     reading as doors at all. */
+  @keyframes vt-doors {
+    from { --vt-edge: -12.5%; }
+    to { --vt-edge: 112.5%; }
+  }
+
+  /* scale — two pans of one balance: the old page rises and lightens while the
+     new one drops in and lands. The settle after the landing is land-jolt's
+     profile, its beats and its damping, restated at page scale because
+     land-jolt's amplitudes are in em and would be sub-pixel on a whole page. */
+  :root[data-to='scale']::view-transition-old(root),
+  :root[data-to='scale']::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  :root[data-to='scale']::view-transition-old(root) {
+    animation: vt-lift 600ms cubic-bezier(0.4, 0, 0.6, 1) both;
+  }
+  :root[data-to='scale']::view-transition-new(root) {
+    animation: vt-drop 600ms both;
+  }
+  /* Both pans are only visible together for the first fifth of the gesture.
+     Longer and the two pages sit on top of each other at half opacity and you
+     read neither; that window is short enough that what you read is one page
+     rising as another falls. */
+  @keyframes vt-lift {
+    0% { transform: translateY(0); opacity: 1; }
+    22% { opacity: 0; }
+    100% { transform: translateY(-3%); opacity: 0; }
+  }
+  @keyframes vt-drop {
+    0% { transform: translateY(-4%); opacity: 0; animation-timing-function: cubic-bezier(0.4, 0, 0.35, 1); }
+    22% { opacity: 1; }
+    40% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(8px); }
+    63% { transform: translateY(-2.3px); }
+    68% { transform: translateY(2px); }
+    77% { transform: translateY(-0.7px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* rule — the derivation is ruled in top-down, the leading edge a hairline of
+     ink drawn the same way the nib edge is above. Near-linear on purpose: a
+     ruled line has no ease. The slowest of the five, because it is the page
+     that asks you to read. */
+  :root[data-to='rule']::view-transition-old(root),
+  :root[data-to='rule']::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  :root[data-to='rule']::view-transition-group(root) {
+    background: var(--ink-95);
+  }
+  :root[data-to='rule']::view-transition-old(root) {
+    animation: vt-rule-under 640ms cubic-bezier(0.15, 0, 0.25, 1) both;
+  }
+  :root[data-to='rule']::view-transition-new(root) {
+    animation: vt-rule 640ms cubic-bezier(0.15, 0, 0.25, 1) both;
+  }
+  @keyframes vt-rule {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes vt-rule-under {
+    from { clip-path: inset(2px 0 0 0); }
+    to { clip-path: inset(calc(100% + 2px) 0 0 0); }
+  }
+
+  /* country — a hierarchy move, not an instrument. Forward steps in a level;
+     back, read off the popstate, runs the same pair reversed. Fast, because
+     these pages are lookups. */
+  :root[data-to='country']::view-transition-old(root),
+  :root[data-to='country']::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  :root[data-to='country']::view-transition-old(root) {
+    animation: vt-recede 380ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  :root[data-to='country']::view-transition-new(root) {
+    animation: vt-advance 380ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  :root[data-to='country'][data-nav='back']::view-transition-old(root) {
+    animation-name: vt-advance-out;
+  }
+  :root[data-to='country'][data-nav='back']::view-transition-new(root) {
+    animation-name: vt-recede-in;
+  }
+  /* The page being left clears early and the page arriving is opaque by a
+     third, so the two are never both legible at once — the step reads as depth,
+     not as a dissolve. */
+  @keyframes vt-recede {
+    0% { transform: scale(1); opacity: 1; }
+    30% { opacity: 0; }
+    100% { transform: scale(1.01); opacity: 0; }
+  }
+  @keyframes vt-advance {
+    0% { transform: scale(0.985) translateY(8px); opacity: 0; }
+    30% { opacity: 1; }
+  }
+  @keyframes vt-advance-out {
+    0% { transform: scale(1); opacity: 1; }
+    30% { opacity: 0; }
+    100% { transform: scale(0.985) translateY(8px); opacity: 0; }
+  }
+  @keyframes vt-recede-in {
+    0% { transform: scale(1.01); opacity: 0; }
+    30% { opacity: 1; }
+  }
+
+  /* The page a door closes on. */
+  @keyframes vt-fade-out {
+    to { opacity: 0; }
+  }
+}
+
+/* Motion off: the gestures do not exist, and the UA's own cross-fade is
+   dropped with them — the same treatment every other animation on this site
+   gets under reduce. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
 }

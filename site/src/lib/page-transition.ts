@@ -49,10 +49,6 @@ export function initPageTransition(base = '/'): void {
     root.dataset.to = stamp.to;
     root.dataset.nav = stamp.nav;
   };
-  const clear = () => {
-    delete document.documentElement.dataset.to;
-    delete document.documentElement.dataset.nav;
-  };
 
   document.addEventListener('astro:before-preparation', (event) => {
     const e = event as Event & { to: URL; direction: string };
@@ -63,16 +59,20 @@ export function initPageTransition(base = '/'): void {
     write();
   });
 
-  document.addEventListener('astro:before-swap', (event) => {
-    const e = event as Event & { viewTransition?: { finished: Promise<void> } };
-    // Held until the animation is actually over: data-to also retimes the
-    // ribbon's own sweep, and that override must not outlive the transition.
-    e.viewTransition?.finished.then(clear, clear);
-  });
-
   // Astro copies the incoming document's <html> attributes over this one during
   // the swap, which drops data-nav — no server render carries it. after-swap
   // fires inside the update callback, so re-writing here still lands before the
   // browser captures the new state.
   document.addEventListener('astro:after-swap', write);
+
+  // The stamp is never cleared. Every navigation overwrites it, and the gesture
+  // rules only match ::view-transition-* pseudo-elements, which exist solely
+  // during a transition — so a stamp left standing paints nothing.
+  //
+  // It has to stay for the one rule that outlives the transition: data-to also
+  // retimes the ribbon's own 0.9s ink-sweep. Removing the attribute when the
+  // transition finishes would drop that override while the sweep is still
+  // running, and the changed delay would snap the strip's fill forward.
+  // A cold load carries no stamp at all, so the ribbon keeps its own timing
+  // there, which is what the load choreography was tuned against.
 }
