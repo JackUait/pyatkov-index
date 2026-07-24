@@ -660,32 +660,38 @@ li { margin: 6px 0; }
 }
 
 /* ---- The wall of doors: the openness argument, drawn ----
-   The rankings pages draw strips; this page builds a wall. All 199
-   destinations stand as arched doorways in a grid, most open first, and
-   each fills with marigold to the share of the world's people it admits.
-   Three states get three drawings: a door open to practically everyone is
-   solid marigold with no frame at all — nothing left to knock on; a
-   part-open door is a framed arch holding its fill; a door open to no one
-   is a dashed outline, drawn but never opened. Every door, even a shut
-   one, stands on a solid sill. The rail beside the wall counts the three
-   states behind the same doors in miniature, and touching a count lights
-   those doors in the wall. */
+   The rankings pages draw strips; this page is one spread: headline, one
+   line of deck, and the three counts stacked on the left; on the right,
+   all 199 destinations as a wall of flat door slabs, most open first,
+   rising to the top of the page. Each slab fills with marigold to the
+   share of the world's people it admits; the doors open to practically
+   everyone deepen to solid saffron, and the doors open to no one are
+   bricked up with a fine hatch. Touching a count in the lede lights its
+   doors in the wall. */
 .doors {
   /* The unfilled part of every door: paper warmed with a breath of
      marigold, so a nearly-full door caps in a soft tonal step instead of
-     a white slit. Shared by the wall and the rail's miniatures. */
-  --straw: color-mix(in srgb, var(--color-marigold) 16%, var(--color-paper));
+     a white slit. Shared by the wall and the lede's miniatures. */
+  --straw: color-mix(in srgb, var(--color-marigold) 20%, var(--color-paper));
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-  gap: 24px 48px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 32px 64px;
   align-items: start;
-  margin: 8px 0 64px;
+  padding-top: 48px;
+  margin: 0 0 64px;
 }
+/* The lede column is the page's hero; the spread supplies the rhythm, so
+   the hero's own padding comes off and the headline steps down a size to
+   hold a column, not a stage. */
+.doors .doors-lede { padding: 0; }
+.doors-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
 .doors-figure { position: relative; }
 .doors-wall {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
-  gap: 7px 6px;
+  grid-template-columns: repeat(auto-fill, minmax(24px, 1fr));
+  /* Rows breathe wider than columns so the wall reads in courses of
+     doors, not in vertical stripes of straw. */
+  gap: 9px 5px;
 }
 /* The pour: --open scales every fill from the sill up, registered so the
    load animation tweens it as a number. Declared on .door too, so engines
@@ -695,15 +701,15 @@ li { margin: 6px 0; }
   inherits: false;
   initial-value: 1;
 }
-/* One destination, one doorway, cut as a flat arch — no frame, no
-   hairline, just two tones meeting at the score: marigold up to the share
-   it admits, straw the rest of the way to the crown. The site talks in
-   solid blocks of color, and so does the wall. The whole arch is the
-   link. */
+/* One destination, one door slab — a plain tall rectangle, the shape a
+   door actually is. No frame, no hairline, no arch: just two tones
+   meeting at the score, marigold up to the share it admits, straw the
+   rest of the way. The site talks in solid blocks of color, and so does
+   the wall. The whole slab is the link. */
 .door {
   --open: 1;
-  aspect-ratio: 3 / 5;
-  border-radius: 50% 50% 2px 2px / 30% 30% 2px 2px;
+  aspect-ratio: 5 / 9;
+  border-radius: 3px;
   background: linear-gradient(
     to top,
     var(--fill, var(--color-marigold)) 0 calc(var(--h) * var(--open)),
@@ -734,8 +740,12 @@ li { margin: 6px 0; }
 .doors:has(.ds-all:hover) .door:not(.d-all),
 .doors:has(.ds-half:hover) .door:not(.d-half),
 .doors:has(.ds-none:hover) .door:not(.d-none) { opacity: 0.16; }
-/* The reading rail: three counts on hairline shelves, then the key. */
-.doors-read { display: flex; flex-direction: column; }
+/* The reading rail: three counts on hairline shelves under the deck. */
+.doors-read {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
 .ds {
   display: flex;
   align-items: baseline;
@@ -743,16 +753,15 @@ li { margin: 6px 0; }
   padding: 15px 0;
   border-bottom: 1px solid var(--border-hairline);
 }
-.ds:first-child { padding-top: 4px; }
 /* Between each count and its label stands the door it counts, drawn small
    in the wall's own three drawings and standing on the number's baseline.
    An empty flex item's baseline is its bottom edge, so no alignment fudge
    is needed. */
 .ds-door {
   flex: none;
-  width: 17px;
-  height: 26px;
-  border-radius: 50% 50% 1px 1px / 30% 30% 1px 1px;
+  width: 14px;
+  height: 24px;
+  border-radius: 2px;
   background: linear-gradient(to top, var(--color-marigold) 0 44%, var(--straw) 44%);
 }
 .ds-all .ds-door { background: var(--color-saffron); }
