@@ -1,0 +1,194 @@
+# Contextual page transitions
+
+Every page of the index owns an instrument: the front page lays a ribbon of ink,
+openness raises a wall of doors, destinations weighs columns on a floor,
+methodology rules a derivation down the page. Today all four arrive the same
+way — Astro's default root cross-fade — and only then does each page play its
+own choreography.
+
+This design makes the arrival itself belong to the page being arrived at. The
+destination page's instrument performs the transition, and the page's existing
+load choreography continues out of it rather than starting fresh behind it.
+
+## Goals
+
+- The gesture is chosen by the page navigated **to**, never by the page left.
+- The gesture and the destination's own load animation read as one motion at two
+  scales, not two animations stacked.
+- The masthead never moves. Only the argument changes.
+- Nothing regresses for reduced motion, for browsers without view transitions,
+  or for readers with JavaScript off.
+
+## Non-goals
+
+- Country pages get a hierarchy move, not an instrument. They are lookups.
+- The country drawer is untouched. It already intercepts passport and
+  destination links; this design governs the navigations that survive it —
+  "Open full page", breadcrumbs, browser back, and no-JS.
+- The existing per-page load choreography is not trimmed. It replays in full,
+  by request.
+
+## Mechanism
+
+### The key
+
+`src/lib/page-transition.ts` exposes a pure resolver:
+
+| pathname                  | key       |
+| ------------------------- | --------- |
+| `/` (base root)           | `ink`     |
+| `/openness/`              | `doors`   |
+| `/destinations/`          | `scale`   |
+| `/methodology/`           | `rule`    |
+| `/passport/*`             | `country` |
+| `/destination/*`          | `country` |
+| anything else             | `plain`   |
+
+Matching is trailing-slash-insensitive and base-aware, reusing `normalizePath`
+from `lib/nav-current.ts` so the two modules can never disagree about what a
+path is.
+
+### The stamp
+
+`initPageTransition()` listens on `astro:before-preparation`, reads the
+**incoming** URL and the event's `direction`, and sets on `<html>`:
+
+- `data-to="<key>"`
+- `data-nav="forward" | "back"`
+
+Both are cleared on `astro:page-load`.
+
+Stamping ahead of the swap, rather than letting the incoming page's stylesheet
+arrive and take over, is what makes the destination govern the gesture in *both*
+paths: native `document.startViewTransition` and Astro's fallback, where the
+old-phase animation would otherwise still be running under the outgoing page's
+styles.
+
+All transition CSS keys off `[data-to]` on the root element, so a single block
+in `global.css` holds every gesture and no page file carries transition CSS.
+
+### The named regions
+
+`<main>` takes `view-transition-name: page`. The persisted `<header>` and
+`<footer>` take their own names so they are lifted out of `page`'s snapshot and
+hold still through every swap.
+
+### Testing
+
+`transitionKey` and the stamp/clear pair are pure and get
+`src/lib/__tests__/page-transition.test.ts`, written first, in the shape of the
+existing `nav-current.test.ts`. Cases: each route to its key, trailing-slash
+insensitivity, base-prefixed paths, unknown paths to `plain`, back direction,
+and that `astro:page-load` clears both attributes.
+
+## The five arrivals
+
+### Rankings — the ink is drawn
+
+`ink`, **520ms**, `cubic-bezier(0.2, 0.7, 0.3, 1)`.
+
+The new page is revealed by a left-to-right wipe, `clip-path: inset(0 100% 0 0)`
+to `inset(0 0 0 0)`, its leading edge carrying a 1px saffron hairline — the wet
+edge of the nib. The old page does not move or scale; ink covers paper.
+
+The wipe runs on `.ribbon`'s own curve — `ink-sweep` is a left-to-right
+`background-size` fill on the same easing — and the ribbon's 0.15s delay is
+retimed so its sweep picks up where the page wipe's edge crosses it. One stroke
+continued at a smaller scale, not two strokes on one page. The rank table's
+row-by-row `ink-sweep` continues behind it.
+
+### Openness — the leaves open
+
+`doors`, **560ms**.
+
+The new page is revealed through an animated mask: a wipe intersected with eight
+vertical bands separated by hairline jambs, so the advancing edge opens one leaf
+at a time across the viewport. Its traversal rate is tuned to the wall's own
+`calc(0.25s + var(--i) * 3ms)` door stagger, making the eight leaves and the 199
+doors one motion at two scales. The old page fades beneath — paper behind a
+door.
+
+The mask needs an `@property`-registered percentage to interpolate. Where that
+is unsupported, `@supports` falls the gesture back to the plain left-to-right
+wipe, which still reads as a door opening.
+
+### Destinations — the scale tips
+
+`scale`, **600ms**.
+
+Two pans of one balance. The old page rises and lightens (`translateY(-3%)`,
+fading); the new page drops in from `translateY(-4%)` and lands with a short
+overshoot settle. The settle is `land-jolt`'s profile — its 16/38/46/62% beats,
+the same damped bounce — restated at page scale, because `land-jolt`'s
+amplitudes are in `em` and would be sub-pixel on `main`. The front page's
+dropped pill and this page's landing are then visibly the same physics. The
+columns' `door-open` stagger takes over from the landing.
+
+### Methodology — it is ruled in
+
+`rule`, **640ms**, near-linear.
+
+A top-down reveal, `clip-path: inset(0 0 100% 0)` to `inset(0 0 0 0)`, the
+leading edge a 1px ink hairline drawn at a constant rate — a ruled line has no
+ease. The old page holds and fades. The numbered spine pours as it already does.
+
+At 640ms this is the slowest of the five, deliberately: it is the page that asks
+you to read.
+
+### Country pages — one level down
+
+`country`, **380ms**.
+
+A hierarchy move, not an instrument. Forward: the new page steps in from
+`scale(0.985)` and `translateY(8px)` while the old recedes to `scale(1.01)` and
+fades. Back — breadcrumb, or `data-nav="back"` from a popstate — runs the pair
+reversed. Fast, because these are lookups.
+
+### Everything else
+
+`plain`, **200ms** cross-fade. The 404 has no argument, so it gets no
+instrument.
+
+## The nav block travels
+
+The peach `aria-current` highlight in the persisted masthead takes a
+`view-transition-name`, so it morphs from the old nav item to the new one and
+the highlight slides toward where you are going before the page paints.
+
+`initNavCurrent` already updates `aria-current` on `astro:after-swap`, which
+fires inside the view transition's update callback — the new state is therefore
+set before the browser captures it, and the morph needs no further wiring.
+
+Only one nav item carries the highlight at a time, so old and new snapshots
+always pair. Navigating to a page with no nav item (a country page, the 404)
+leaves no new snapshot; the highlight fades rather than morphing, which is the
+correct reading — you have left the four top-level pages.
+
+## Guardrails
+
+**Reduced motion.** Under `prefers-reduced-motion: reduce`, every named region
+drops to `view-transition-name: none` and the swap is instant. This matches how
+the rest of the site gates motion: the animation simply does not exist rather
+than being shortened.
+
+**Snapshot cost.** Openness snapshots a wall of 199 doors and destinations a
+floor of 199 columns. Clipping and masking a named `main` is materially cheaper
+than transforming the root, but this is the one real performance risk. It gets
+measured in the browser on both pages; if either janks, that gesture falls back
+to the plain wipe.
+
+**Scroll.** All wipes are viewport-relative, so arriving mid-page with restored
+scroll still reads correctly — the gesture describes the viewport, not the
+document.
+
+**No JavaScript.** `ClientRouter` does nothing, navigation is a full page load,
+and every page keeps the load choreography it has today.
+
+## Files
+
+| File                                        | Change                                            |
+| ------------------------------------------- | ------------------------------------------------- |
+| `src/lib/page-transition.ts`                | new — key resolver and the stamp/clear listeners  |
+| `src/lib/__tests__/page-transition.test.ts` | new — written first                               |
+| `src/layouts/Base.astro`                    | region names on main/header/footer; module init   |
+| `src/styles/global.css`                     | one block: the five gestures, keyed on `[data-to]` |
