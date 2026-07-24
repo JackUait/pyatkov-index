@@ -671,6 +671,10 @@ li { margin: 6px 0; }
    states behind the same doors in miniature, and touching a count lights
    those doors in the wall. */
 .doors {
+  /* The unfilled part of every door: paper warmed with a breath of
+     marigold, so a nearly-full door caps in a soft tonal step instead of
+     a white slit. Shared by the wall and the rail's miniatures. */
+  --straw: color-mix(in srgb, var(--color-marigold) 16%, var(--color-paper));
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
   gap: 24px 48px;
@@ -680,8 +684,8 @@ li { margin: 6px 0; }
 .doors-figure { position: relative; }
 .doors-wall {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(24px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(26px, 1fr));
+  gap: 7px 6px;
 }
 /* The pour: --open scales every fill from the sill up, registered so the
    load animation tweens it as a number. Declared on .door too, so engines
@@ -691,36 +695,39 @@ li { margin: 6px 0; }
   inherits: false;
   initial-value: 1;
 }
-/* One destination, one doorway: two quarter-ellipses meet at the crown of
-   a hairline arch, marigold rising to the score with a hard gradient stop.
-   The whole arch is the link. */
+/* One destination, one doorway, cut as a flat arch — no frame, no
+   hairline, just two tones meeting at the score: marigold up to the share
+   it admits, straw the rest of the way to the crown. The site talks in
+   solid blocks of color, and so does the wall. The whole arch is the
+   link. */
 .door {
   --open: 1;
-  aspect-ratio: 2 / 3;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-bottom-color: rgba(0, 0, 0, 0.3);
-  border-radius: 50% 50% 2px 2px / 34% 34% 2px 2px;
+  aspect-ratio: 3 / 5;
+  border-radius: 50% 50% 2px 2px / 30% 30% 2px 2px;
   background: linear-gradient(
     to top,
     var(--fill, var(--color-marigold)) 0 calc(var(--h) * var(--open)),
-    transparent calc(var(--h) * var(--open))
+    var(--straw) calc(var(--h) * var(--open))
   );
-  background-clip: padding-box;
-  transition: opacity 200ms ease, border-color 200ms ease;
+  transition: opacity 200ms ease;
 }
-/* A door open to practically everyone drops its frame: just the opening. */
-.door.d-all {
-  border-color: transparent;
-  background-clip: border-box;
+/* A door open to practically everyone deepens to saffron, crown and all:
+   the one state drawn in a single unbroken color. */
+.door.d-all { background: var(--fill, var(--color-saffron)); }
+/* A door open to no one is bricked up: straw crossed with a fine diagonal
+   hatch, no marigold anywhere. */
+.door.d-none {
+  background:
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.09) 0 1px, transparent 1px 4px),
+    linear-gradient(var(--straw), var(--straw));
 }
-/* A door open to no one holds no fill to frame: dashed, the dest-map's
-   grammar for doors drawn but not yet open — the sill stays solid. */
-.door.d-none { border-style: dashed; border-bottom-style: solid; }
 /* Hover inks the door midnight to its exact fill; the shared tooltip
-   carries the name, score and rank. */
-.door:hover {
-  --fill: var(--color-midnight);
-  border-color: var(--color-midnight);
+   carries the name, score and rank. Bricked doors ink their hatch. */
+.door:hover { --fill: var(--color-midnight); }
+.door.d-none:hover {
+  background:
+    repeating-linear-gradient(45deg, rgba(2, 9, 58, 0.4) 0 1px, transparent 1px 4px),
+    linear-gradient(var(--straw), var(--straw));
 }
 /* Touching a count in the rail spotlights its doors: the rest of the wall
    steps back so the group reads as one shape on the grid. */
@@ -737,32 +744,27 @@ li { margin: 6px 0; }
   border-bottom: 1px solid var(--border-hairline);
 }
 .ds:first-child { padding-top: 4px; }
-/* Each count leads with its door drawn small — same three drawings as the
-   wall — standing on the number's baseline. An empty flex item's baseline
-   is its bottom edge, so no alignment fudge is needed. */
+/* Between each count and its label stands the door it counts, drawn small
+   in the wall's own three drawings and standing on the number's baseline.
+   An empty flex item's baseline is its bottom edge, so no alignment fudge
+   is needed. */
 .ds-door {
   flex: none;
-  width: 15px;
-  height: 21px;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-bottom-color: rgba(0, 0, 0, 0.3);
-  border-radius: 50% 50% 1px 1px / 34% 34% 1px 1px;
-  background: var(--color-marigold);
+  width: 17px;
+  height: 26px;
+  border-radius: 50% 50% 1px 1px / 30% 30% 1px 1px;
+  background: linear-gradient(to top, var(--color-marigold) 0 44%, var(--straw) 44%);
 }
-.ds-all .ds-door { border-color: transparent; }
-.ds-half .ds-door {
-  background: linear-gradient(to top, var(--color-marigold) 0 58%, transparent 58%);
-  background-clip: padding-box;
-}
+.ds-all .ds-door { background: var(--color-saffron); }
 .ds-none .ds-door {
-  background: none;
-  border-style: dashed;
-  border-bottom-style: solid;
+  background:
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.09) 0 1px, transparent 1px 4px),
+    linear-gradient(var(--straw), var(--straw));
 }
 .ds strong {
   min-width: 2ch;
   text-align: right;
-  font-size: 34px;
+  font-size: 38px;
   font-weight: 650;
   line-height: 1;
   letter-spacing: -0.02em;
