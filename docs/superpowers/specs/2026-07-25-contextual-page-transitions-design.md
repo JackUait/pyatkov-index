@@ -56,7 +56,16 @@ path is.
 - `data-to="<key>"`
 - `data-nav="forward" | "back"`
 
-Both are cleared on `astro:page-load`.
+Both are re-stamped on `astro:after-swap`, because Astro copies the incoming
+document's `<html>` attributes over the current ones during the swap and would
+otherwise strip `data-nav`, which no server render carries. `after-swap` fires
+inside the update callback, before the browser captures the new state, so the
+re-stamp lands in time.
+
+Both are cleared when `event.viewTransition.finished` resolves — the handle is
+taken from `astro:before-swap` — so no stale attribute outlives its animation.
+This matters because the stamp is also what retimes the ribbon's own sweep on an
+`ink` arrival; that override must not survive the transition.
 
 Stamping ahead of the swap, rather than letting the incoming page's stylesheet
 arrive and take over, is what makes the destination govern the gesture in *both*
@@ -69,17 +78,32 @@ in `global.css` holds every gesture and no page file carries transition CSS.
 
 ### The named regions
 
-`<main>` takes `view-transition-name: page`. The persisted `<header>` and
-`<footer>` take their own names so they are lifted out of `page`'s snapshot and
-hold still through every swap.
+Only two elements are named. The persisted `<header>` takes
+`view-transition-name: masthead`, which lifts it out of the root snapshot so the
+masthead holds still through every swap. The current nav item's peach block
+takes `nav-ink` (see below).
+
+Everything else — `<main>`, the footer, the paper background — stays in `root`,
+and the five gestures are declared on `::view-transition-old(root)` and
+`::view-transition-new(root)`.
+
+Naming `<main>` instead would size its snapshot to `main`'s border box: on
+openness and destinations that is a texture holding 199 doors or 199 columns,
+most of it below the fold. The `root` snapshot is sized to the viewport no
+matter how long the page is, so routing the gestures through `root` is both
+simpler and strictly cheaper.
 
 ### Testing
 
 `transitionKey` and the stamp/clear pair are pure and get
 `src/lib/__tests__/page-transition.test.ts`, written first, in the shape of the
 existing `nav-current.test.ts`. Cases: each route to its key, trailing-slash
-insensitivity, base-prefixed paths, unknown paths to `plain`, back direction,
-and that `astro:page-load` clears both attributes.
+insensitivity, base-prefixed paths, a sibling path that merely shares the base's
+prefix, unknown paths to `plain`, and that direction reverses only the country
+gesture while every other page keeps its instrument whichever way you arrived.
+
+The listener wiring itself is not unit-tested — it is three `addEventListener`
+calls over pure functions that are. It is verified in the browser instead.
 
 ## The five arrivals
 
@@ -171,11 +195,16 @@ drops to `view-transition-name: none` and the swap is instant. This matches how
 the rest of the site gates motion: the animation simply does not exist rather
 than being shortened.
 
-**Snapshot cost.** Openness snapshots a wall of 199 doors and destinations a
-floor of 199 columns. Clipping and masking a named `main` is materially cheaper
-than transforming the root, but this is the one real performance risk. It gets
-measured in the browser on both pages; if either janks, that gesture falls back
-to the plain wipe.
+**Snapshot cost.** Routing the gestures through `root` bounds every snapshot to
+the viewport, which is what keeps the 199-door wall and the 199-column floor
+affordable. The residual risk is the doors mask, the only gesture that
+composites per frame; it gets measured in the browser, and falls back to the
+plain wipe if it janks.
+
+**Mask support.** The doors mask reads a registered custom property. Where
+`@property` is unsupported the `var()` is invalid at computed-value time, so
+`mask-image` resolves to its initial `none` and the page simply arrives
+unmasked — the failure is a plain fade, never a blank screen.
 
 **Scroll.** All wipes are viewport-relative, so arriving mid-page with restored
 scroll still reads correctly — the gesture describes the viewport, not the
