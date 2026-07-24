@@ -124,18 +124,12 @@ function shiftPage(on: boolean): void {
 }
 
 function setModal(open: boolean): void {
-  // inert makes the page behind the drawer truly unreachable — no focus trap
-  // arithmetic. The drawer root sits outside all three, so it stays live.
-  for (const el of document.querySelectorAll('header, main, footer')) el.toggleAttribute('inert', open);
-  const body = document.body;
-  if (open) {
-    // Compensate the scrollbar the lock removes, or the page shifts left.
-    body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
-    body.style.overflow = 'hidden';
-  } else {
-    body.style.paddingRight = '';
-    body.style.overflow = '';
-  }
+  // Header and footer go inert so focus and pointer stay on the sheet and the
+  // ranking — no focus-trap arithmetic. <main> is left live on purpose: the
+  // reader can scroll the ranking behind the sheet and click another row to
+  // swap the country showing, without the drawer closing. The scroll stays
+  // unlocked too; the sheet is fixed, so the page just moves underneath it.
+  for (const el of document.querySelectorAll('header, footer')) el.toggleAttribute('inert', open);
 }
 
 function render(url: string, page: CountryPage): void {
@@ -313,9 +307,17 @@ export function initCountryDrawer(): void {
   document.addEventListener('click', onClick, true);
   document.addEventListener('keydown', onKeydown);
   document.addEventListener('click', (e) => {
+    const el = root();
+    if (!el || el.hidden) return;
     const t = e.target as Element | null;
-    if (t?.closest?.('#drawer-close') || t?.closest?.('.drawer-scrim')) close();
-    if (t?.closest?.('#drawer-back')) back();
+    if (t?.closest?.('#drawer-back')) return void back();
+    if (t?.closest?.('#drawer-close')) return void close();
+    // A country link — a table row or an in-panel link — is caught in the
+    // capture handler, which swaps the sheet and stops the event before it
+    // reaches here. Anything else inside the sheet or the live page is left
+    // alone; only a click on the bare backdrop dismisses.
+    if (t?.closest?.('.drawer-panel') || t?.closest?.('main')) return;
+    close();
   });
   // A real navigation replaces the body: release the scroll lock and the inert
   // header/footer (both persist across swaps) before the new page lands.

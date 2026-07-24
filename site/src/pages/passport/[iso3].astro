@@ -31,8 +31,6 @@ const isBorder = (c: Tier) => CREDIT[c] === 1;
 const isConditional = (c: Tier) => CREDIT[c] > 0 && CREDIT[c] < 1;
 const open = foreignDests.filter((d) => isBorder(d.category));
 const topOpen = [...open].sort((a, b) => b.contribution - a.contribution).slice(0, 15);
-const conditional = foreignDests.filter((d) => isConditional(d.category));
-const topConditional = [...conditional].sort((a, b) => b.contribution - a.contribution).slice(0, 15);
 const topMissing = foreignDests.filter((d) => CREDIT[d.category] === 0).slice(0, 15); // already weight-desc
 // Self-inclusion, consistent with the pipeline score: the home country is counted
 // as a visa-free destination in BOTH numerator and denominator, so the tier points
@@ -69,8 +67,6 @@ const weightRank = (iso3: string) => weightsData.destinations.findIndex((w) => w
 // Weight as points: a border-open destination's share of the total weight is exactly what
 // it pays into the score — or, for a closed door, what it would pay if it opened.
 const sharePoints = (weight: number) => fmt((100 * weight) / denom);
-// What an eVisa destination actually pays now, at a fifth of its weight.
-const paidPoints = (weight: number) => fmt((100 * CREDIT['e-visa'] * weight) / denom);
 
 // Score anatomy bar spanning 100: each earning tier at its (reconciled) points, then one
 // locked segment for everything withheld (100 − score). The eVisa tier shows only the
@@ -94,7 +90,7 @@ const gap = topMissing[0];
 
 // Weight meters in the lists share one scale across both columns, so the
 // open/closed asymmetry stays visible.
-const maxListWeight = Math.max(...[...topOpen, ...topConditional, ...topMissing].map((d) => d.weight), ownWeight, 1e-9);
+const maxListWeight = Math.max(...[...topOpen, ...topMissing].map((d) => d.weight), ownWeight, 1e-9);
 const meterWidth = (weight: number) => `${Math.max(2, (100 * weight) / maxListWeight).toFixed(1)}%`;
 
 // The mirror view: how the country does as a destination. On near-identical
@@ -202,7 +198,7 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
     </div>
   </div>
 
-  <div class="rank-cols trio">
+  <div class="rank-cols">
     <section>
       <h2>The heaviest open doors</h2>
       <p class="list-intro">Top {topOpen.length} of {open.length} border-open destinations, by the points each pays into the score.</p>
@@ -218,26 +214,6 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
           </li>
         ))}
       </ol>
-    </section>
-    <section>
-      <h2>The heaviest eVisa doors</h2>
-      {topConditional.length === 0 ? <p class="list-intro">None — no destination admits this passport by eVisa.</p> : (
-        <Fragment>
-          <p class="list-intro">Approval before you fly, counted at a fifth — the points each pays now, of the full weight it would pay if opened.</p>
-          <ol class="rank-list">
-            {topConditional.map((d) => (
-              <li>
-                <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
-                <span class={`wt tier-${d.category}`} title={LABEL[d.category]}>
-                  <span class="sr-only">{LABEL[d.category]},</span>
-                  <i class="wt-meter" style={`--w:${meterWidth(d.weight)}`} aria-hidden="true"></i>
-                  <b class="wt-val">{paidPoints(d.weight)}</b>
-                </span>
-              </li>
-            ))}
-          </ol>
-        </Fragment>
-      )}
     </section>
     <section>
       <h2>The heaviest closed doors</h2>

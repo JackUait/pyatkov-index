@@ -1278,12 +1278,6 @@ td.down::before { content: '\25BC'; } /* down triangle */
 @media (min-width: 920px) {
   .rank-cols { grid-template-columns: 1fr 1fr; }
 }
-/* The passport page splits into three doors — border-open, eVisa, closed — so it needs a
-   third track once there is room; below that it falls back to the two- then one-column
-   stacking of the base rule. */
-@media (min-width: 1120px) {
-  .rank-cols.trio { grid-template-columns: 1fr 1fr 1fr; }
-}
 .rank-list {
   list-style: none;
   padding: 4px 0;
@@ -1640,6 +1634,11 @@ footer {
   position: fixed;
   inset: 0;
   z-index: 60;
+  /* A pass-through container: only the sheet takes pointer events, so a click on
+     a different row in the table behind it reaches that row and swaps the sheet's
+     contents instead of being swallowed. Clicks on the bare backdrop fall through
+     to the document handler, which dismisses. */
+  pointer-events: none;
 }
 .drawer-root[hidden] { display: none; }
 .drawer-scrim {
@@ -1652,6 +1651,8 @@ footer {
   right: 12px;
   bottom: 12px;
   width: min(620px, calc(100% - 24px));
+  /* Re-enable pointer events the pass-through root turned off. */
+  pointer-events: auto;
   display: flex;
   flex-direction: column;
   background: var(--color-white);
