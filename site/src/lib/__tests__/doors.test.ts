@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { openToAllCount, openToHalfCount, openToNoneCount } from '../doors.ts';
+import { averageOpenness, openToAllCount, openToHalfCount, openToNoneCount } from '../doors.ts';
 
 describe('openToHalfCount', () => {
   it('counts destinations strictly above the half-the-world line', () => {
@@ -20,5 +20,15 @@ describe('openToAllCount', () => {
 describe('openToNoneCount', () => {
   it('counts every score the site displays as 0.0', () => {
     expect(openToNoneCount([0, 0.04, 0.06, 42])).toBe(2);
+  });
+});
+
+describe('averageOpenness', () => {
+  it('is the mean of the scores', () => {
+    expect(averageOpenness([100, 50, 0])).toBe(50);
+  });
+
+  it('is zero for an empty table rather than NaN', () => {
+    expect(averageOpenness([])).toBe(0);
   });
 });

@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import openness from '../data/openness.json';
 import { displayName, flagEmoji, fmt, searchIndex, tiedRanks } from '../lib/format.ts';
-import { openToAllCount, openToHalfCount, openToNoneCount } from '../lib/doors.ts';
+import { averageOpenness, openToAllCount, openToHalfCount, openToNoneCount } from '../lib/doors.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
@@ -18,6 +18,9 @@ const scores = dests.map((d) => d.score);
 const allCount = openToAllCount(scores);
 const halfCount = openToHalfCount(scores);
 const noneCount = openToNoneCount(scores);
+// The headline's door is poured to the world's average — computed, like the
+// rail's counts, so the device can never drift from the wall it fronts.
+const avgOpen = Math.round(averageOpenness(scores));
 const tipFor = (d: (typeof dests)[number]) =>
   `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · openness ${fmt(d.score)} · ${ties.has(d.rank) ? '=' : ''}#${d.rank} of ${dests.length}`;
 
@@ -48,17 +51,18 @@ const itemList = {
 >
   <section class="doors" aria-label="How open the world's destinations are">
     <div class="hero doors-lede">
-      <h1>Who gets <span class="block-word">in</span></h1>
+      <h1>Who gets <span class="door-word" style={`--h:${avgOpen}%`}>in</span></h1>
       <p class="tagline">
         {`The index run backwards: not where a passport gets to, but whom a destination lets in. ${displayName(mostOpen.iso3, mostOpen.name)} admits practically everyone; ${displayName(leastOpen.iso3, leastOpen.name)}, no one.`}
       </p>
       <div class="doors-read">
-        <div class="ds ds-all"><strong>{allCount}</strong><span class="ds-door" aria-hidden="true"></span><span>open to practically everyone</span></div>
-        <div class="ds ds-half"><strong>{halfCount}</strong><span class="ds-door" aria-hidden="true"></span><span>open to more than half the world</span></div>
-        <div class="ds ds-none"><strong>{noneCount}</strong><span class="ds-door" aria-hidden="true"></span><span>open to no one</span></div>
+        <div class="ds ds-all"><span class="ds-plate"><strong>{allCount}</strong></span><span class="ds-label">open to practically everyone</span></div>
+        <div class="ds ds-half"><span class="ds-plate"><strong>{halfCount}</strong></span><span class="ds-label">open to more than half the world</span></div>
+        <div class="ds ds-none"><span class="ds-plate"><strong>{noneCount}</strong></span><span class="ds-label">open to no one</span></div>
         <p class="doors-note">
           One door per destination, most open first — the fill is the share of the
-          world it admits. <a href={`${base}methodology/`}>How scores work</a>
+          world it admits. The headline's door is the world average: {avgOpen}%
+          open. <a href={`${base}methodology/`}>How scores work</a>
         </p>
       </div>
     </div>

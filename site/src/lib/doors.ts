@@ -19,3 +19,10 @@ export function openToAllCount(scores: number[]): number {
 export function openToNoneCount(scores: number[]): number {
   return scores.filter((s) => s < 0.05).length;
 }
+
+/** The world's average door: the mean share of the world's people a
+ *  destination admits. Zero for an empty table, never NaN. */
+export function averageOpenness(scores: number[]): number {
+  if (scores.length === 0) return 0;
+  return scores.reduce((sum, s) => sum + s, 0) / scores.length;
+}

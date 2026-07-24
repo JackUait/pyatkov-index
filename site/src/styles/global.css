@@ -685,6 +685,23 @@ li { margin: 6px 0; }
    hold a column, not a stage. */
 .doors .doors-lede { padding: 0; }
 .doors-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
+/* The page's own headline device — no borrowed peach block: "in" stands
+   inside a door from its own wall, blown up to display scale. Marigold is
+   poured to the world-average share (--h, set from the data), straw the
+   rest of the way, and the slab rises past the cap height like a doorway
+   cut into the line, its sill a shade below the baseline. */
+.door-word {
+  --open: 1;
+  display: inline-block;
+  vertical-align: -0.12em;
+  padding: 0.46em 0.16em 0.12em;
+  border-radius: 0.09em;
+  background: linear-gradient(
+    to top,
+    var(--color-marigold) 0 calc(var(--h) * var(--open)),
+    var(--straw) calc(var(--h) * var(--open))
+  );
+}
 .doors-figure { position: relative; }
 .doors-wall {
   display: grid;
@@ -718,8 +735,15 @@ li { margin: 6px 0; }
   transition: opacity 200ms ease;
 }
 /* A door open to practically everyone deepens to saffron, crown and all:
-   the one state drawn in a single unbroken color. */
-.door.d-all { background: var(--fill, var(--color-saffron)); }
+   one unbroken color, but still poured through --open so it fills on load
+   like its neighbors instead of standing finished while they rise. */
+.door.d-all {
+  background: linear-gradient(
+    to top,
+    var(--fill, var(--color-saffron)) 0 calc(100% * var(--open)),
+    var(--straw) calc(100% * var(--open))
+  );
+}
 /* A door open to no one is bricked up: straw crossed with a fine diagonal
    hatch, no marigold anywhere. */
 .door.d-none {
@@ -740,54 +764,72 @@ li { margin: 6px 0; }
 .doors:has(.ds-all:hover) .door:not(.d-all),
 .doors:has(.ds-half:hover) .door:not(.d-half),
 .doors:has(.ds-none:hover) .door:not(.d-none) { opacity: 0.16; }
-/* The reading rail: three counts on hairline shelves under the deck. */
+/* The reading rail: no shelves, no hairlines — three doors pulled forward
+   from the wall to plate scale, each count stamped on its own door like a
+   house number, the label beside it. The number sits at the plate's
+   center, so on the majority door it straddles the fill line the same way
+   the headline's "in" stands in its tide. */
 .doors-read {
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
+  gap: 16px;
+  margin-top: 32px;
 }
 .ds {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 15px 0;
-  border-bottom: 1px solid var(--border-hairline);
+  align-items: center;
+  gap: 18px;
 }
-/* Between each count and its label stands the door it counts, drawn small
-   in the wall's own three drawings and standing on the number's baseline.
-   An empty flex item's baseline is its bottom edge, so no alignment fudge
-   is needed. */
-.ds-door {
+.ds-plate {
+  --open: 1;
   flex: none;
-  width: 14px;
-  height: 24px;
-  border-radius: 2px;
-  background: linear-gradient(to top, var(--color-marigold) 0 44%, var(--straw) 44%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 84px;
+  border-radius: 4px;
+  /* 56%, not the exact halfway line: the state it draws is "more than
+     half", so the fill must sit visibly past the middle of the slab. */
+  background: linear-gradient(
+    to top,
+    var(--color-marigold) 0 calc(56% * var(--open)),
+    var(--straw) calc(56% * var(--open))
+  );
 }
-.ds-all .ds-door { background: var(--color-saffron); }
-.ds-none .ds-door {
+/* The three states, in the wall's own three drawings: saffron poured to
+   the crown, marigold past the middle, and the bricked hatch — which
+   never pours, because nothing gets in. */
+.ds-all .ds-plate {
+  background: linear-gradient(
+    to top,
+    var(--color-saffron) 0 calc(100% * var(--open)),
+    var(--straw) calc(100% * var(--open))
+  );
+}
+.ds-none .ds-plate {
   background:
     repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.09) 0 1px, transparent 1px 4px),
     linear-gradient(var(--straw), var(--straw));
 }
-.ds strong {
-  min-width: 2ch;
-  text-align: right;
-  font-size: 38px;
+.ds-plate strong {
+  font-size: 24px;
   font-weight: 650;
   line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
-.ds span {
+.ds-label {
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
   color: var(--color-slate);
+  max-width: 22ch;
+  text-wrap: balance;
   transition: color 200ms ease;
 }
-/* The shelf that is spotlighting the wall inks its own label up, so the
+/* The plate that is spotlighting the wall inks its own label up, so the
    filter reads at both ends. */
-.ds:hover span { color: var(--ink-95); }
+.ds:hover .ds-label { color: var(--ink-95); }
 .doors-note {
   margin: 14px 0 0;
   font-size: var(--text-body-sm);
@@ -797,7 +839,8 @@ li { margin: 6px 0; }
 }
 /* The wall builds door by door, top-left to bottom-right, behind the page
    rise; each door takes the load reveal's small lift while its marigold
-   pours up from the sill. */
+   pours up from the sill. The headline's door pours first, then the three
+   plates fill in reading order while the wall is still rising. */
 @media (prefers-reduced-motion: no-preference) {
   .door {
     animation:
@@ -805,6 +848,10 @@ li { margin: 6px 0; }
       door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
     animation-delay: calc(0.25s + var(--i) * 3ms);
   }
+  .door-word { animation: door-open 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.2s backwards; }
+  .ds-plate { animation: door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
+  .ds-all .ds-plate { animation-delay: 0.35s; }
+  .ds-half .ds-plate { animation-delay: 0.45s; }
 }
 @keyframes door-open {
   from { --open: 0; }
@@ -814,8 +861,10 @@ li { margin: 6px 0; }
      and let the doors tighten a step so a phone row still holds a dozen. */
   .doors { grid-template-columns: 1fr; gap: 20px; }
   .doors-wall { grid-template-columns: repeat(auto-fill, minmax(20px, 1fr)); gap: 5px; }
-  .ds { padding: 11px 0; }
-  .ds strong { font-size: 28px; }
+  .doors-read { gap: 12px; margin-top: 24px; }
+  .ds { gap: 14px; }
+  .ds-plate { width: 40px; height: 70px; }
+  .ds-plate strong { font-size: 20px; }
 }
 
 /* ---- Stat colophon: the plate's closing line ----
