@@ -1,25 +1,48 @@
 ---
 import Base from '../layouts/Base.astro';
 import weightsData from '../data/weights.json';
-import { displayName } from '../lib/format.ts';
+import { displayName, flagEmoji, searchIndex, withArticle } from '../lib/format.ts';
+import { SIGMA_MULTIPLIER, aboveUnitCount, counterweightCount, impliedZ, zTint } from '../lib/weigh.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
+
+// weightsData.destinations arrives weight-sorted, so the row index is the position.
+const dests = weightsData.destinations;
+const weights = dests.map((d) => d.weight);
+const heaviest = dests[0];
+const lightest = dests[dests.length - 1];
+// The spread's counted claims, computed so the copy can never drift from the
+// chart: how many weigh under the unit, how many of the lightest it takes to
+// outweigh the heaviest, how many were weighed with a hole in the record.
+const belowCount = dests.length - aboveUnitCount(weights);
+const counterCount = counterweightCount(weights);
+const gappedCount = dests.filter((d) => d.signalsUsed < 4).length;
+// The hairline that marks weight 1, as a share of the heaviest column's height.
+const unitShare = ((1 / heaviest.weight) * 100).toFixed(2);
+
 // Signal columns are per-signal z-scores (standard deviations from the
-// destination average), so they are signed; a middle dot marks a missing signal.
-const z = (v: number | null) => (v === null ? '·' : (v >= 0 ? '+' : '') + v.toFixed(2));
+// destination average), so they are signed; a hatched cell marks a missing
+// signal. Each cell also wears its score as ink — see zTint.
+const SIGNALS = ['gdp', 'arrivals', 'hdi', 'migrants'] as const;
+const zText = (v: number) => (v >= 0 ? '+' : '') + v.toFixed(2);
+const tint = (v: number | null) => {
+  const t = zTint(v);
+  return t ? `background:${t}` : undefined;
+};
+const tipFor = (d: (typeof dests)[number], i: number) =>
+  `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · weight ${d.weight.toFixed(2)} · #${i + 1} of ${dests.length}`;
 
 const rankingId = pageId(Astro.url.pathname, 'ranking');
-// weightsData.destinations arrives weight-sorted, so the row index is the position.
 const itemList = {
   '@type': 'ItemList',
   '@id': rankingId,
   name: 'Destination weights',
   itemListOrder: 'https://schema.org/ItemListOrderDescending',
-  numberOfItems: weightsData.destinations.length,
+  numberOfItems: dests.length,
   // subjectOf rather than about — see the note on the same node in index.astro.
   subjectOf: { '@id': ID.dataset },
-  itemListElement: weightsData.destinations.map((d, i) => ({
+  itemListElement: dests.map((d, i) => ({
     '@type': 'ListItem',
     position: i + 1,
     url: absUrl(`${base}destination/${d.iso3.toLowerCase()}/`),
@@ -34,48 +57,145 @@ const itemList = {
   mainEntityId={rankingId}
   jsonld={itemList}
 >
-  <h1>Destination weights</h1>
-  <p class="lede">
-    How much each destination is worth, and why. This table is the entire recipe: nothing is hidden.
+  <section class="weigh" aria-label="How destination weights are built">
+    <div class="hero weigh-lede">
+      <h1>What tips the scale</h1>
+      <p class="tagline">
+        How much each destination is worth, and why: four signals — economy,
+        arrivals, development, diaspora — and nothing else. Averaged as
+        z-scores, raised to a power: the scale multiplies where other
+        rankings add.
+      </p>
+      <div class="weigh-read">
+        <div class="ws ws-sigma">
+          <span class="ws-plate">×{SIGMA_MULTIPLIER.toFixed(1)}</span>
+          <span class="ws-label">the multiplier one standard deviation above average buys</span>
+        </div>
+        <div class="ws ws-unit">
+          <span class="ws-plate">1</span>
+          <span class="ws-label">the weight of the perfectly average destination</span>
+        </div>
+        <div class="ws ws-gap">
+          <span class="ws-plate">{gappedCount}</span>
+          <span class="ws-label">destinations weighed with a signal missing</span>
+        </div>
+        <p class="weigh-note">
+          The plates are the ledger's key: marigold above the world average,
+          the gray wash below it, hatching where nothing was measured.{' '}
+          <a href={`${base}methodology/`}>How the formula works</a>
+        </p>
+      </div>
+    </div>
+    <figure class="weigh-figure" style={`--unit:${unitShare}%`}>
+      <figcaption class="weigh-annot">
+        <span class="annot-heavy">
+          <b>{withArticle(heaviest.iso3, heaviest.name)} weighs {heaviest.weight.toFixed(1)}</b> —
+          it takes the <b>{counterCount}</b> lightest together to outweigh it
+        </span>
+        <span class="annot-light"><b>{belowCount}</b> of {dests.length} weigh less than the average</span>
+      </figcaption>
+      <div
+        class="weigh-chart"
+        role="img"
+        aria-label={`All ${dests.length} destinations as columns on one floor, drawn to scale by weight, heaviest first. ${displayName(heaviest.iso3, heaviest.name)} is the heaviest at ${heaviest.weight.toFixed(1)}; the average destination weighs 1, and ${belowCount} weigh less than that, down to ${displayName(lightest.iso3, lightest.name)} at ${lightest.weight.toFixed(2)}.`}
+      >
+        {dests.map((d, i) => (
+          <a
+            class:list={['wcol', d.weight > 1 && 'w-above']}
+            href={`${base}destination/${d.iso3.toLowerCase()}/`}
+            data-tip={tipFor(d, i)}
+            style={`--i:${i};--hgt:${((d.weight / heaviest.weight) * 100).toFixed(3)}%`}
+          >
+            <span class="sr-only">{displayName(d.iso3, d.name)} — weight {d.weight.toFixed(2)}</span>
+          </a>
+        ))}
+        <i class="weigh-unit-line" aria-hidden="true"><span>the average destination weighs <b>1</b></span></i>
+      </div>
+      <div class="ribbon-tip" aria-hidden="true" hidden></div>
+    </figure>
+  </section>
+
+  <p class="table-intro">
+    Each weight is <code>exp(1.25 × Z)</code>, where <code>Z</code> is the mean of the
+    destination's available signal <em>z-scores</em>: how many standard deviations above or
+    below average it sits on log-scaled GDP, log-scaled arrivals, HDI, and log-scaled
+    migrant stock. This table is the entire recipe: nothing is hidden.
   </p>
-  <p>
-    Each destination's weight is <code>exp(1.25 × Z)</code>, where <code>Z</code> is the mean of its
-    available signal <em>z-scores</em>: how many standard deviations above or below average it sits on
-    log-scaled GDP, log-scaled arrivals, HDI, and log-scaled migrant stock. The signal columns below show
-    those z-scores (signed; <code>·</code> means that signal is missing for the destination).
-  </p>
+
   <div class="card card-mockup">
   <div class="card-header">
     <h2>Every destination, weighted</h2>
-    <span class="count">{weightsData.destinations.length} destinations</span>
+    <span class="count">{dests.length} destinations</span>
+    <input type="search" id="filter" placeholder="Filter destinations" aria-label="Filter destinations" />
   </div>
   <div class="table-scroll">
-  <table class="weights-table">
-    <caption class="sr-only">Every destination in the Pyatkov Index with its weight and the four z-scored signals behind it</caption>
+  <table id="weights-table" class="weights-table">
+    <caption class="sr-only">Every destination in the Pyatkov Index with its weight and the four z-scored signals behind it, each cell shaded by its score</caption>
     <thead>
-      <tr><th scope="col">#</th><th scope="col">Destination</th><th scope="col">Weight</th><th scope="col">GDP</th><th scope="col">Arrivals</th><th scope="col">HDI</th><th scope="col">Migrants</th><th scope="col">Signals</th></tr>
+      <tr>
+        <th scope="col" data-sort="rank" aria-sort="ascending" tabindex="0">#</th>
+        <th scope="col" data-sort="name" tabindex="0">Destination</th>
+        <th scope="col" data-sort="weight" tabindex="0">Weight</th>
+        <th scope="col" data-sort="gdp" tabindex="0">GDP</th>
+        <th scope="col" data-sort="arrivals" tabindex="0">Arrivals</th>
+        <th scope="col" data-sort="hdi" tabindex="0">HDI</th>
+        <th scope="col" data-sort="migrants" tabindex="0">Migrants</th>
+      </tr>
     </thead>
     <tbody>
-      {weightsData.destinations.map((d, i) => (
-        <tr>
+      {dests.map((d, i) => (
+        <tr
+          data-rank={i + 1}
+          data-name={displayName(d.iso3, d.name).toLowerCase()}
+          data-search={searchIndex(d)}
+          data-weight={d.weight}
+          data-gdp={d.normalized.gdp ?? -9}
+          data-arrivals={d.normalized.arrivals ?? -9}
+          data-hdi={d.normalized.hdi ?? -9}
+          data-migrants={d.normalized.migrants ?? -9}
+        >
           <td>{i + 1}</td>
-          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a></td>
-          <td>{d.weight.toFixed(3)}</td>
-          <td>{z(d.normalized.gdp)}</td>
-          <td>{z(d.normalized.arrivals)}</td>
-          <td>{z(d.normalized.hdi)}</td>
-          <td>{z(d.normalized.migrants)}</td>
-          <td>{d.signalsUsed}/4</td>
+          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
+          <td class="score-cell" style={tint(impliedZ(d.weight))}>{d.weight.toFixed(2)}</td>
+          {SIGNALS.map((k) => {
+            const v = d.normalized[k];
+            return v === null ? (
+              <td class="z-missing"><span aria-hidden="true">·</span><span class="sr-only">not measured</span></td>
+            ) : (
+              <td style={tint(v)}>{zText(v)}</td>
+            );
+          })}
         </tr>
       ))}
     </tbody>
   </table>
   </div>
+  <p id="no-results" hidden>No destinations match your filter. Try a country name like Japan, or a code like JPN.</p>
   </div>
 
+  <script>
+    import { initSortableTable } from '../lib/table-ui.ts';
+    import { initRibbonTip } from '../lib/ribbon-tip.ts';
+
+    // Module scripts run once per session under the client router; page-load
+    // fires again after every swap, re-binding against the fresh DOM. On other
+    // pages the element guards make these calls no-ops.
+    document.addEventListener('astro:page-load', () => {
+      initRibbonTip({ figure: '.weigh-figure', ribbon: '.weigh-chart', tip: '.weigh-figure .ribbon-tip' });
+      initSortableTable({
+        table: '#weights-table',
+        filter: '#filter',
+        noResults: '#no-results',
+        initialSort: 'rank',
+        defaultAsc: { rank: true, name: true, weight: false, gdp: false, arrivals: false, hdi: false, migrants: false },
+      });
+    });
+  </script>
+
   <style>
-    /* global.css carries no visually-hidden utility; the caption names the
-       table for assistive tech without repeating the heading on screen. */
+    /* global.css carries no visually-hidden utility; the chart's anchor text
+       and the table caption need one, defined here next to its only users —
+       the same arrangement as the front page's ribbon. */
     .sr-only {
       position: absolute;
       width: 1px;

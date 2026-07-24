@@ -867,6 +867,209 @@ li { margin: 6px 0; }
   .ds-plate strong { font-size: 20px; }
 }
 
+/* ---- The weigh-in: the destinations page's spread ----
+   The scale room. Headline, tagline and three stamped plates on the left;
+   on the right every destination as one column on a shared floor, heaviest
+   first, its height the weight itself. The exponential needs no caption to
+   be felt: a handful of towers, then a long shelf sinking under the
+   hairline that marks the average destination's weight of exactly 1.
+   Marigold above that line, the ribbon tail's gray below — the same
+   two-ink law the ledger's z-score cells wear underneath. */
+.weigh {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 32px 64px;
+  align-items: start;
+  padding-top: 48px;
+  margin: 0 0 40px;
+}
+/* The lede column is the page's hero; the spread supplies the rhythm, so
+   the hero's own padding comes off and the headline holds a column. */
+.weigh .weigh-lede { padding: 0; }
+.weigh-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
+/* The reading rail: the three numbers the formula pivots on, each stamped
+   on a plate lying flat — a weight resting on the bench, not a door
+   standing in a wall. The plates double as the ledger's key: marigold,
+   the below-average wash, and the nothing-measured hatch. */
+.weigh-read {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 30px;
+}
+.ws {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.ws-plate {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  height: 46px;
+  padding: 0 12px;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.ws-sigma .ws-plate { background: var(--color-marigold); }
+.ws-unit .ws-plate { background: rgba(0, 0, 0, 0.11); }
+.ws-gap .ws-plate {
+  background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.09) 0 1px, transparent 1px 4px);
+}
+.ws-label {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-slate);
+  max-width: 26ch;
+  text-wrap: balance;
+}
+.weigh-note {
+  margin: 14px 0 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-slate);
+  max-width: 44ch;
+}
+.weigh-figure {
+  position: relative;
+  margin: 0;
+}
+/* Annotation band: a spacer whose claims anchor to the figure, not to the
+   band — the heavy claim reads over the towers, and the light one drops
+   into the empty air the exponential leaves above the shelf, stacked on
+   the unit hairline's own label. The offset past --unit is eyeballed:
+   the two resolve against slightly different heights. */
+.weigh-annot {
+  height: 44px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+}
+.weigh-annot b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-95);
+}
+.annot-heavy {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.annot-light {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--unit) + 30px);
+  text-align: right;
+}
+/* One column per destination, no gaps: the silhouette is the datum, and
+   hover singles a column back out of the mass. Each column is a
+   full-height link — the fill is painted from the floor up, but the whole
+   strip above it is the hit area, because the tail renders at a pixel. */
+.weigh-chart {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 380px;
+  margin-top: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+}
+.wcol {
+  --open: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  background-image: linear-gradient(
+    to top,
+    var(--fill, rgba(0, 0, 0, 0.11)) 0 calc(var(--hgt) * var(--open)),
+    transparent calc(var(--hgt) * var(--open))
+  );
+  transition: background-color 160ms ease;
+}
+.wcol.w-above { --fill: var(--color-marigold); }
+/* Hover inks the column's fill midnight and breathes a faint cast into the
+   empty air above it, so even a hairline of tail shows where you are. */
+.wcol:hover {
+  --fill: var(--color-midnight);
+  background-color: rgba(2, 9, 58, 0.07);
+}
+/* The hairline of the unit: weight 1, the perfectly average destination.
+   The marigold mass stands above it, the gray shelf sinks below it — the
+   line is where the two inks change, drawn out loud. */
+.weigh-unit-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--unit);
+  border-top: 1px solid rgba(2, 9, 58, 0.45);
+  pointer-events: none;
+}
+.weigh-unit-line span {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  font-style: normal;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+}
+.weigh-unit-line b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-95);
+}
+/* The columns pour up from the floor left to right — the ribbon's sweep,
+   stood on end — and the unit hairline rises once the pour passes it. */
+@media (prefers-reduced-motion: no-preference) {
+  .wcol {
+    animation: door-open 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: calc(0.2s + var(--i) * 1.6ms);
+  }
+  .weigh-unit-line { animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.3, 1) 0.7s backwards; }
+}
+@media (max-width: 860px) {
+  /* The rail will not sit beside a readable chart: stack them, and the
+     anchored claims fall back to plain stacked lines. */
+  .weigh { grid-template-columns: 1fr; gap: 24px; }
+  .weigh-chart { height: 220px; }
+  .weigh-annot {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .annot-heavy,
+  .annot-light {
+    position: static;
+    text-align: left;
+    max-width: none;
+  }
+}
+
+/* ---- The ledger's inks: the weights table wears its z-scores ----
+   Every signal cell is tinted by its own score — the marigold mix above
+   the world average, the quiet ink wash below (zTint writes the mix
+   inline) — so the recipe reads as heat before it reads as numbers. A
+   missing signal is hatched like a bricked door: nothing to pour. The
+   hairline after the Weight column is the recipe's equals sign, keeping
+   the result apart from the four signals it is made of. */
+.weights-table td:nth-child(1) { color: var(--ink-60); }
+.weights-table th:nth-child(1) { width: 44px; }
+.weights-table tbody td a { font-weight: 500; }
+.weights-table td:nth-child(3),
+.weights-table th:nth-child(3) { border-right: 1px solid var(--border-hairline); }
+.weights-table .z-missing {
+  color: var(--ink-40);
+  background: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 4px);
+}
+
 /* ---- Stat colophon: the plate's closing line ----
    Number-and-label pairs on one baseline between hairlines, left-ragged like
    the rest of the page; used on the passport pages. */
@@ -1126,7 +1329,8 @@ th[aria-sort] { color: var(--color-ink); }
 /* ISO code after the name: quiet metadata texture, and a visible hint that
    the filter matches codes too. Slate, not stone: 11px on the wash needs
    the darker step to hold AA. */
-.rank-table .code {
+.rank-table .code,
+.weights-table .code {
   margin-left: 8px;
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -1791,7 +1995,8 @@ footer {
      the code yield and names wrap. The chart needs no folding — the row
      wash draws at any width. */
   .rank-table td:nth-child(2) { white-space: normal; }
-  .rank-table .code { display: none; }
+  .rank-table .code,
+  .weights-table .code { display: none; }
   .rank-table th:nth-child(1) { width: 44px; }
   .rank-table th:nth-child(3) { width: 72px; }
   thead th, tbody td, tfoot th, tfoot td { padding-left: 10px; padding-right: 10px; }
