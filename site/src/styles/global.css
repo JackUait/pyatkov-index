@@ -3097,8 +3097,11 @@ footer {
   :root[data-to='doors']::view-transition-new(root) {
     mix-blend-mode: normal;
   }
+  /* Gone by a quarter, like the other pages a gesture leaves behind. Faded
+     across the whole sweep it stays legible under the half-open leaves, and the
+     two pages read as one smeared page. */
   :root[data-to='doors']::view-transition-old(root) {
-    animation: vt-fade-out 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    animation: vt-clear 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
   }
   :root[data-to='doors']::view-transition-new(root) {
     animation: vt-doors 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
@@ -3218,9 +3221,92 @@ footer {
   }
 
   /* The page a door closes on. */
-  @keyframes vt-fade-out {
-    to { opacity: 0; }
+  @keyframes vt-clear {
+    0% { opacity: 1; }
+    25% { opacity: 0; }
+    100% { opacity: 0; }
   }
+}
+
+/* ---- Arrival sync ----
+   A cold load opens on blank paper, so each page's choreography is tuned to
+   build from nothing: the pill drops at 0.72s, the wall of doors waits 0.25s
+   before the first door moves, the rank rows ink in as late as 0.85s.
+
+   Arriving through a gesture is a different problem. The wipe has already
+   PRESENTED the page, so the same timings read as a finished page with pieces
+   missing — the front page's headline sat on "Most passport rankings / This
+   one" for 400ms with the peach word absent, and the leaves swept across a wall
+   whose doors had not started to open. The gesture revealed nothing, and then
+   the page assembled itself afterwards.
+
+   So on an arrival every one of those animations still runs, in full — it is
+   re-anchored to the gesture instead of trailing a second behind it. Nothing is
+   dropped and no curve is flattened; the pill still falls on its own physics,
+   it just falls while the ink is still crossing the page. These rules hang off
+   [data-to], which only exists on a navigation, so a cold load is untouched. */
+@media (prefers-reduced-motion: no-preference) {
+  /* The shell's own rise is the exception: it is the one animation the gesture
+     genuinely duplicates. Left in, content slides upward behind a clip edge
+     that is itself sweeping, and whatever is still mid-rise when the snapshot
+     is dropped jumps. The gesture is the reveal now. */
+  :root[data-to] main > * { animation: none; }
+
+  /* ink — the hero must be whole by the time the nib passes it. The drop keeps
+     its full 0.8s of physics and simply starts near zero, so the wipe uncovers
+     a pill already falling and the jolt lands just behind the edge. */
+  :root[data-to='ink'] .hero .count-letters i:nth-child(1) { animation-delay: 0.02s; }
+  :root[data-to='ink'] .hero .count-letters i:nth-child(2) { animation-delay: 0.06s; }
+  :root[data-to='ink'] .hero .count-letters i:nth-child(3) { animation-delay: 0.10s; }
+  :root[data-to='ink'] .hero .count-letters i:nth-child(4) { animation-delay: 0.14s; }
+  :root[data-to='ink'] .hero .count-letters i:nth-child(5) { animation-delay: 0.18s; }
+  :root[data-to='ink'] .hero .block-word { animation-delay: 0.06s; }
+  :root[data-to='ink'] .hero h1 { animation-delay: 0.31s; }
+  :root[data-to='ink'] .rank-table tbody tr { animation-delay: 0.42s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(1) { animation-delay: 0.10s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(2) { animation-delay: 0.14s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(3) { animation-delay: 0.18s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(4) { animation-delay: 0.22s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(5) { animation-delay: 0.26s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(6) { animation-delay: 0.30s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(7) { animation-delay: 0.34s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(8) { animation-delay: 0.38s; }
+  :root[data-to='ink'] .rank-table tbody tr:nth-child(9) { animation-delay: 0.42s; }
+  :root[data-to='ink'] .medal-1 { animation-delay: 0.26s; }
+  :root[data-to='ink'] .medal-2 { animation-delay: 0.32s; }
+  :root[data-to='ink'] .medal-3 { animation-delay: 0.38s; }
+
+  /* doors — the whole point of the leaves is that they open onto a wall that is
+     itself opening. The base delay goes to nothing and the stagger is stretched
+     to about the length of the sweep, so the doors come alive under the leaves
+     rather than after them. */
+  :root[data-to='doors'] .door {
+    animation-delay: calc(var(--i) * 2.6ms);
+    /* Two animations on this element — the lift and the pour — kept in the
+       same proportion they hold on a cold load. */
+    animation-duration: 0.28s, 0.42s;
+  }
+  :root[data-to='doors'] .door-word { animation-delay: 0.05s; }
+  :root[data-to='doors'] .ds-all .ds-plate { animation-delay: 0.15s; }
+  :root[data-to='doors'] .ds-half .ds-plate { animation-delay: 0.22s; }
+
+  /* scale — the floor of columns lands with the page it dropped in on. */
+  :root[data-to='scale'] .wcol { animation-delay: calc(0.02s + var(--i) * 1.4ms); }
+  :root[data-to='scale'] .weigh-unit-line { animation-delay: 0.38s; }
+
+  /* rule — the derivation's rows already appear roughly as the ruled edge
+     reaches them; they only need to start with it rather than after it. */
+  :root[data-to='rule'] .wx-bar { animation-delay: calc(0.12s + var(--i, 0) * 70ms); }
+
+  /* country — a lookup should be readable the moment it stops moving. */
+  :root[data-to='country'] .stats > div { animation-delay: 0.04s; }
+  :root[data-to='country'] .stats > div:nth-child(2) { animation-delay: 0.09s; }
+  :root[data-to='country'] .stats > div:nth-child(3) { animation-delay: 0.14s; }
+  :root[data-to='country'] .score-bar i:nth-child(1) { animation-delay: 0.12s; }
+  :root[data-to='country'] .score-bar i:nth-child(2) { animation-delay: 0.19s; }
+  :root[data-to='country'] .score-bar i:nth-child(3) { animation-delay: 0.25s; }
+  :root[data-to='country'] .score-bar i:nth-child(4) { animation-delay: 0.31s; }
+  :root[data-to='country'] .rank-list .wt-meter::before { animation-delay: 0.25s; }
 }
 
 /* Motion off: the gestures do not exist, and the UA's own cross-fade is
