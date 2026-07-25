@@ -3088,11 +3088,12 @@ footer {
     animation-delay: 0.22s;
   }
 
-  /* doors — eight leaves opening left to right, tuned to the wall's own
-     0.25s + i × 3ms door stagger so the leaves and the 199 doors are one motion
-     at two scales. The second gradient cuts the sweep into leaves with hairline
-     jambs; the slivers it leaves behind at the end of the sweep vanish with the
-     pseudo-element itself. */
+  /* doors — one soft edge crossing the viewport, left to right.
+     This used to cut the sweep into eight leaves with a banded mask, standing
+     in for doors opening in sequence. It no longer has to: lib/arrival.ts waves
+     the wall's own 199 doors across the same 560ms, each opening as the edge
+     reaches the x it actually occupies. The real doors do it now, at full
+     resolution and at any breakpoint, so the imitation came out. */
   :root[data-to='doors']::view-transition-old(root),
   :root[data-to='doors']::view-transition-new(root) {
     mix-blend-mode: normal;
@@ -3103,20 +3104,18 @@ footer {
   :root[data-to='doors']::view-transition-old(root) {
     animation: vt-clear 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
   }
+  /* Linear, alone among the gestures. arrival.ts delays each door by the x it
+     occupies, in a straight line — so the edge has to cross at a constant speed
+     or it outruns its own wall. A wave front does travel at constant speed; the
+     give in this gesture is in the doors, which each pour on an ease and land
+     on a spring. */
   :root[data-to='doors']::view-transition-new(root) {
-    animation: vt-doors 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
-    mask-image:
-      linear-gradient(90deg, #000 var(--vt-edge), transparent calc(var(--vt-edge) + 12.5%)),
-      repeating-linear-gradient(90deg, #000 0 calc(12.5% - 1px), transparent calc(12.5% - 1px) 12.5%);
-    mask-composite: intersect;
+    animation: vt-doors 560ms linear both;
+    mask-image: linear-gradient(90deg, #000 var(--vt-edge), transparent calc(var(--vt-edge) + 10%));
   }
-  /* The soft zone is exactly one leaf wide, so at any instant one leaf is
-     mid-swing while the ones behind it stand open and the ones ahead stand
-     shut. Any wider and the gradient spans two leaves and the sweep stops
-     reading as doors at all. */
   @keyframes vt-doors {
-    from { --vt-edge: -12.5%; }
-    to { --vt-edge: 112.5%; }
+    from { --vt-edge: -10%; }
+    to { --vt-edge: 110%; }
   }
 
   /* scale — two pans of one balance: the old page rises and lightens while the
@@ -3276,22 +3275,31 @@ footer {
   :root[data-to='ink'] .medal-2 { animation-delay: 0.32s; }
   :root[data-to='ink'] .medal-3 { animation-delay: 0.38s; }
 
-  /* doors — the whole point of the leaves is that they open onto a wall that is
-     itself opening. The base delay goes to nothing and the stagger is stretched
-     to about the length of the sweep, so the doors come alive under the leaves
-     rather than after them. */
-  :root[data-to='doors'] .door {
-    animation-delay: calc(var(--i) * 2.6ms);
-    /* Two animations on this element — the lift and the pour — kept in the
-       same proportion they hold on a cold load. */
-    animation-duration: 0.28s, 0.42s;
+  /* doors — the wall is handed to lib/arrival.ts, which waves it by measured
+     position instead of by DOM index. The CSS stagger steps aside so the two do
+     not fight, and the closed state is set here so no door is painted open for
+     the frame before the wave takes hold.
+
+     [data-wave] is the handover itself: arrival.ts sets it only once the
+     animation module is actually in hand. Until then — and forever, if the
+     fetch fails — none of this matches and the CSS choreography keeps the job.
+     A wall that is shut can therefore only be a wall something is about to
+     open. */
+  :root[data-wave][data-to='doors'] .door {
+    animation: none;
+    --open: 0;
+    opacity: 0;
   }
   :root[data-to='doors'] .door-word { animation-delay: 0.05s; }
   :root[data-to='doors'] .ds-all .ds-plate { animation-delay: 0.15s; }
   :root[data-to='doors'] .ds-half .ds-plate { animation-delay: 0.22s; }
 
-  /* scale — the floor of columns lands with the page it dropped in on. */
-  :root[data-to='scale'] .wcol { animation-delay: calc(0.02s + var(--i) * 1.4ms); }
+  /* scale — the floor of columns is waved by measured position too, for the
+     same reason the wall is. It only ever pours, so it gets no lift. */
+  :root[data-wave][data-to='scale'] .wcol {
+    animation: none;
+    --open: 0;
+  }
   :root[data-to='scale'] .weigh-unit-line { animation-delay: 0.38s; }
 
   /* rule — the derivation's rows already appear roughly as the ruled edge
