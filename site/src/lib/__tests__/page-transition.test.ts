@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { routePath, stampFor, transitionKey } from '../page-transition.ts';
+import { moveFor, routePath, stampFor, transitionKey } from '../page-transition.ts';
 
 describe('routePath', () => {
   it('passes a root-based path through unchanged', () => {
@@ -65,6 +65,43 @@ describe('transitionKey', () => {
   it('falls back to plain for anything with no argument of its own', () => {
     expect(transitionKey('/404/')).toBe('plain');
     expect(transitionKey('/nowhere/at/all')).toBe('plain');
+  });
+});
+
+describe('moveFor', () => {
+  it('wipes rightward toward a higher nav index', () => {
+    expect(moveFor('/', '/openness/')).toBe('right');
+    expect(moveFor('/openness/', '/methodology/')).toBe('right');
+  });
+
+  it('wipes leftward toward a lower nav index', () => {
+    expect(moveFor('/methodology/', '/')).toBe('left');
+    expect(moveFor('/destinations/', '/openness/')).toBe('left');
+  });
+
+  it('steps down into a country page from anywhere', () => {
+    expect(moveFor('/', '/passport/kor/')).toBe('down');
+    expect(moveFor('/openness/', '/destination/jpn/')).toBe('down');
+    expect(moveFor('/passport/kor/', '/destination/jpn/')).toBe('down');
+  });
+
+  it('steps up out of a country page to any top-level page', () => {
+    expect(moveFor('/passport/kor/', '/')).toBe('up');
+    expect(moveFor('/destination/jpn/', '/methodology/')).toBe('up');
+  });
+
+  it('reads a fresh entrance as forward', () => {
+    expect(moveFor('/nowhere/', '/destinations/')).toBe('right');
+  });
+
+  it('fades when the destination has no argument, or nothing moved', () => {
+    expect(moveFor('/', '/404/')).toBe('plain');
+    expect(moveFor('/openness/', '/openness/')).toBe('plain');
+  });
+
+  it('resolves under a deploy base', () => {
+    expect(moveFor('/pyatkov-index/', '/pyatkov-index/openness/', '/pyatkov-index/')).toBe('right');
+    expect(moveFor('/pyatkov-index/methodology/', '/pyatkov-index/', '/pyatkov-index/')).toBe('left');
   });
 });
 

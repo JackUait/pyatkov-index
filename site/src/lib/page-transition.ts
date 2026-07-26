@@ -29,7 +29,29 @@ export function transitionKey(pathname: string, base = '/'): TransitionKey {
   return 'plain';
 }
 
-/** The attribute pair a navigation writes onto <html>. */
+export type MoveKey = 'right' | 'left' | 'down' | 'up' | 'plain';
+
+/** The masthead's order, which is the site's map. A wipe travels toward the
+ *  page you are going to: right toward a higher seat, left toward a lower
+ *  one. Country pages sit below the map — going to one steps down, leaving
+ *  one steps up — and an origin the map does not know reads as a fresh
+ *  entrance, which moves forward. */
+const NAV_ORDER = ['/', '/openness', '/destinations', '/methodology'];
+
+export function moveFor(fromPathname: string, toPathname: string, base = '/'): MoveKey {
+  const toKey = transitionKey(toPathname, base);
+  const fromKey = transitionKey(fromPathname, base);
+  if (toKey === 'country') return 'down';
+  if (toKey === 'plain') return 'plain';
+  if (fromKey === 'country') return 'up';
+  const from = NAV_ORDER.indexOf(routePath(fromPathname, base));
+  const to = NAV_ORDER.indexOf(routePath(toPathname, base));
+  if (from === to) return 'plain';
+  if (from === -1) return 'right';
+  return to > from ? 'right' : 'left';
+}
+
+/** The attribute trio a navigation writes onto <html>. */
 export function stampFor(
   pathname: string,
   direction: string,
