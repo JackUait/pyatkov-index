@@ -60,8 +60,9 @@ export function waveDelays(
   return xs.map((x) => sweepDelay(x, left, right, span));
 }
 
-/** Sweep length per gesture, matching the CSS gesture of the same name. */
-const SWEEP = { doors: 0.56, scale: 0.6 } as const;
+/** Sweep lengths: viewport-framed waves match the shared 520ms wipe they
+ *  ride; self-framed pours keep their own measure. */
+const SWEEP = { doors: 0.52, scale: 0.6 } as const;
 
 type Wave = {
   /** Elements the sweep passes over. */
@@ -88,8 +89,18 @@ function runWave({ selector, span, fill, lift, frame }: Wave, { animate, spring 
   if (els.length === 0) return;
 
   // One layout read for the whole wall, before any write.
+  //
+  // A viewport-framed wave rides the page wipe, and the wipe travels toward
+  // the page you are going to — so under a leftward move the coordinates are
+  // mirrored and the wave runs from the right, following the edge in. The
+  // math never learns about direction; only the coordinates do. Self-framed
+  // pours ignore the move: their order is the data's order, not the gesture's.
+  const mirrored = frame === 'viewport' && document.documentElement.dataset.move === 'left';
   const delays = waveDelays(
-    els.map((el) => el.getBoundingClientRect().left),
+    els.map((el) => {
+      const r = el.getBoundingClientRect();
+      return mirrored ? window.innerWidth - r.right : r.left;
+    }),
     span,
     frame === 'viewport' ? { left: 0, right: window.innerWidth } : undefined,
   );
