@@ -219,6 +219,15 @@ header nav a[aria-current='page']:hover::before {
   body > header nav a:nth-child(2) { view-transition-name: nav-link-2; }
   body > header nav a:nth-child(3) { view-transition-name: nav-link-3; }
   body > header nav a:nth-child(4) { view-transition-name: nav-link-4; }
+  /* Labels above, block below — said outright, because the tree will not
+     promise it. Chromium orders the block's group by where its OLD
+     originating element sat, so leaving a later slot for an earlier one
+     would otherwise slide the block over the very label it travels to. */
+  ::view-transition-group(nav-ink) { z-index: 1; }
+  ::view-transition-group(nav-link-1),
+  ::view-transition-group(nav-link-2),
+  ::view-transition-group(nav-link-3),
+  ::view-transition-group(nav-link-4) { z-index: 2; }
   /* A page the drawer has squeezed aside has a masthead at half width. Held to
      its name it would morph across the viewport toward the incoming page's
      full-width bar — two ghosts of the logo sliding past each other. So a
