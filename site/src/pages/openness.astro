@@ -51,26 +51,21 @@ const itemList = {
 >
   <section class="doors" aria-label="How open the world's destinations are">
     <div class="hero doors-lede">
-      <h1>Who gets <span class="door-word" style={`--h:${avgOpen}%`}>in</span></h1>
+      <h1>Who gets in</h1>
       <p class="tagline">
-        {`The index run backwards: not where a passport gets to, but whom a destination lets in. ${displayName(mostOpen.iso3, mostOpen.name)} admits practically everyone; ${displayName(leastOpen.iso3, leastOpen.name)}, no one.`}
+        {`Every destination, scored by how much of the world it lets in. The average is ${avgOpen}%. ${displayName(mostOpen.iso3, mostOpen.name)} lets in nearly everyone. ${displayName(leastOpen.iso3, leastOpen.name)} lets in no one.`}
       </p>
       <div class="doors-read">
-        <div class="ds ds-all"><span class="ds-plate"><strong>{allCount}</strong></span><span class="ds-label">open to practically everyone</span></div>
-        <div class="ds ds-half"><span class="ds-plate"><strong>{halfCount}</strong></span><span class="ds-label">open to more than half the world</span></div>
+        <div class="ds ds-all"><span class="ds-plate"><strong>{allCount}</strong></span><span class="ds-label">open to nearly everyone</span></div>
+        <div class="ds ds-half"><span class="ds-plate"><strong>{halfCount}</strong></span><span class="ds-label">open to over half the world</span></div>
         <div class="ds ds-none"><span class="ds-plate"><strong>{noneCount}</strong></span><span class="ds-label">open to no one</span></div>
-        <p class="doors-note">
-          One door per destination, most open first — the fill is the share of the
-          world it admits. The headline's door is the world average: {avgOpen}%
-          open. <a href={`${base}methodology/`}>How scores work</a>
-        </p>
       </div>
     </div>
     <div class="doors-figure">
       <div
         class="doors-wall"
         role="img"
-        aria-label={`All ${dests.length} destinations as doors, most open first. Each door fills with the share of the world's people, outside its own borders, the destination admits at the border, an eVisa counting a fifth: ${allCount} doors are open to practically everyone, ${halfCount} to more than half the world, and ${noneCount} to no one.`}
+        aria-label={`${dests.length} destinations as doors, sorted from most open to least. Each door's fill is how much of the world it lets in: ${allCount} are open to nearly everyone, ${halfCount} to over half the world, and ${noneCount} to no one.`}
       >
         {dests.map((d, i) => (
           <a
@@ -84,6 +79,9 @@ const itemList = {
         ))}
       </div>
       <div class="ribbon-tip" aria-hidden="true" hidden></div>
+      <p class="doors-note">
+        One door per destination, sorted from most open to least. <a href={`${base}methodology/`}>How scores work</a>
+      </p>
     </div>
   </section>
 

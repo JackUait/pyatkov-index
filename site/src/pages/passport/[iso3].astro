@@ -88,11 +88,6 @@ const barLabel = [
 const best = topOpen[0];
 const gap = topMissing[0];
 
-// Weight meters in the lists share one scale across both columns, so the
-// open/closed asymmetry stays visible.
-const maxListWeight = Math.max(...[...topOpen, ...topMissing].map((d) => d.weight), ownWeight, 1e-9);
-const meterWidth = (weight: number) => `${Math.max(2, (100 * weight) / maxListWeight).toFixed(1)}%`;
-
 // The mirror view: how the country does as a destination. On near-identical
 // passports (the Schengen pairs) this is where the numbers actually diverge.
 const ownDest = openness.destinations.find((x) => x.iso3 === p.iso3);
@@ -204,11 +199,10 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       <p class="list-intro">Top {topOpen.length} of {open.length} border-open destinations, by the points each pays into the score.</p>
       <ol class="rank-list">
         {topOpen.map((d) => (
-          <li>
+          <li class={`tier-${d.category}`} title={LABEL[d.category]}>
             <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
-            <span class={`wt tier-${d.category}`} title={LABEL[d.category]}>
+            <span class="tier-key">
               <span class="sr-only">{LABEL[d.category]},</span>
-              <i class="wt-meter" style={`--w:${meterWidth(d.weight)}`} aria-hidden="true"></i>
               <b class="wt-val">{sharePoints(d.weight)}</b>
             </span>
           </li>
@@ -220,15 +214,14 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       {topMissing.length === 0 ? <p class="list-intro">None — this passport reaches every weighted destination.</p> : (
         <Fragment>
           <p class="list-intro">A visa arranged in advance, no credit — and the points each would add if it opened.</p>
+          {/* One tier fills this whole page of the ledger, priced once by the
+              intro above — so the rows carry no swatches and the column reads
+              locked-gray against the open page's inks. */}
           <ol class="rank-list">
             {topMissing.map((d) => (
-              <li>
+              <li class={`tier-${d.category}`}>
                 <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
-                <span class={`wt tier-${d.category}`} title={LABEL[d.category]}>
-                  <span class="sr-only">{LABEL[d.category]},</span>
-                  <i class="wt-meter" style={`--w:${meterWidth(d.weight)}`} aria-hidden="true"></i>
-                  <b class="wt-val">+{sharePoints(d.weight)}</b>
-                </span>
+                <b class="wt-val">+{sharePoints(d.weight)}</b>
               </li>
             ))}
           </ol>
@@ -257,10 +250,10 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       const points = tierContribution.find((t) => t.cat === cat)?.points ?? 0;
       return (
         items.length > 0 && (
-          <section class="dest-group">
+          <section class={`dest-group tier-${cat}`}>
             <header class="dest-head">
               <h3 class={`tier-key tier-${cat}`}>{LABEL[cat]} <span class="count">{items.length}</span></h3>
-              <span class="dest-pts">{fmt(points)} points</span>
+              <span class="dest-pts"><b>{fmt(points)}</b> points</span>
             </header>
             <ul class={`dest-flow tier-${cat}${CREDIT[cat] > 0 ? '' : ' is-locked'}`}>
               {items.map((d) => (

@@ -420,8 +420,12 @@ li { margin: 6px 0; }
   }
   /* The ground reacts: the headline dips hard on first impact, recovers,
      then flinches once more — smaller — when the block's second, lower
-     bounce comes down. Delay = the block's 0.72s start plus its 0.25s fall. */
-  .hero h1 { animation: land-jolt 0.5s ease-out 0.97s; }
+     bounce comes down. Delay = the block's 0.72s start plus its 0.25s fall.
+
+     Gated on the block actually being there. Every other hero borrows the
+     class but drops nothing, and a jolt with no mass behind it is just the
+     title twitching a second after the page has settled. */
+  .hero:has(.block-word) h1 { animation: land-jolt 0.5s ease-out 0.97s; }
 }
 @keyframes drift-in {
   from { opacity: 0; transform: translateY(-0.25em); }
@@ -740,29 +744,23 @@ li { margin: 6px 0; }
   align-items: start;
   padding-top: 48px;
   margin: 0 0 64px;
+  /* The spread opts out of the shell's load rise. That 12px lift is a
+     reveal when it carries a card onto the page; under a display headline
+     that is already the first thing on screen, it is just a jump. The
+     arrival rules kill the same animation on a gesture, for the same
+     reason — this makes a cold load agree with them. The wall inside still
+     builds door by door; only the spread itself holds still. */
+  animation: none;
 }
 /* The lede column is the page's hero; the spread supplies the rhythm, so
    the hero's own padding comes off and the headline steps down a size to
    hold a column, not a stage. */
 .doors .doors-lede { padding: 0; }
 .doors-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
-/* The page's own headline device — no borrowed peach block: "in" stands
-   inside a door from its own wall, blown up to display scale. Marigold is
-   poured to the world-average share (--h, set from the data), straw the
-   rest of the way, and the slab rises past the cap height like a doorway
-   cut into the line, its sill a shade below the baseline. */
-.door-word {
-  --open: 1;
-  display: inline-block;
-  vertical-align: -0.12em;
-  padding: 0.46em 0.16em 0.12em;
-  border-radius: 0.09em;
-  background: linear-gradient(
-    to top,
-    var(--color-marigold) 0 calc(var(--h) * var(--open)),
-    var(--straw) calc(var(--h) * var(--open))
-  );
-}
+/* The headline carries no device: "in" used to stand inside a door poured
+   to the world average, but the block cropped the word and its pour set
+   the line jumping on every load. The wall behind it is the drawing; the
+   headline just says the thing. */
 .doors-figure { position: relative; }
 .doors-wall {
   display: grid;
@@ -891,17 +889,26 @@ li { margin: 6px 0; }
 /* The plate that is spotlighting the wall inks its own label up, so the
    filter reads at both ends. */
 .ds:hover .ds-label { color: var(--ink-95); }
+/* The wall's caption, and only the wall's: it sits under the doors it
+   describes rather than in the rail, so the sentence and the thing it
+   names are never separated — least of all on a phone, where the rail
+   used to promise a wall that was still a screen away. */
 .doors-note {
-  margin: 14px 0 0;
+  margin: 16px 0 0;
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
   color: var(--color-slate);
-  max-width: 44ch;
+  /* No measure of its own: the caption is one sentence and a link, and the
+     wall it sits under is the only width it should answer to. Capping it
+     shorter than the wall broke a label into a paragraph. */
 }
+/* The link is two words; it wraps as one or not at all, never leaving
+   "work" alone on a line under the wall. */
+.doors-note a { white-space: nowrap; }
 /* The wall builds door by door, top-left to bottom-right, behind the page
    rise; each door takes the load reveal's small lift while its marigold
-   pours up from the sill. The headline's door pours first, then the three
-   plates fill in reading order while the wall is still rising. */
+   pours up from the sill. The three plates fill in reading order while the
+   wall is still rising. Nothing in the headline moves. */
 @media (prefers-reduced-motion: no-preference) {
   .door {
     animation:
@@ -909,7 +916,6 @@ li { margin: 6px 0; }
       door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
     animation-delay: calc(0.25s + var(--i) * 3ms);
   }
-  .door-word { animation: door-open 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.2s backwards; }
   .ds-plate { animation: door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
   .ds-all .ds-plate { animation-delay: 0.35s; }
   .ds-half .ds-plate { animation-delay: 0.45s; }
@@ -918,8 +924,9 @@ li { margin: 6px 0; }
   from { --open: 0; }
 }
 @media (max-width: 860px) {
-  /* The rail will not sit beside a readable wall: stack them, wall first,
-     and let the doors tighten a step so a phone row still holds a dozen. */
+  /* The rail will not sit beside a readable wall: stack them, lede then
+     wall, and let the doors tighten a step so a phone row still holds a
+     dozen. The caption travels with the wall, so nothing points offscreen. */
   .doors { grid-template-columns: 1fr; gap: 20px; }
   .doors-wall { grid-template-columns: repeat(auto-fill, minmax(20px, 1fr)); gap: 5px; }
   .doors-read { gap: 12px; margin-top: 24px; }
@@ -1742,10 +1749,20 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .hl-grid { grid-template-columns: 1fr; }
 }
 
-/* ---- Ranked destination lists on passport page ---- */
+/* ---- The heaviest doors: the score's own ledger ----
+   Two facing pages set bare on the paper — the doors that pay the score in,
+   and the doors that withhold it. No meters and no card shell: whichever
+   column is lighter always rendered as near-empty rails beside a full one,
+   and a rail that never fills reads as a stuck loader. The numeral carries
+   the weight instead, one step up like the openness table's score once its
+   meter went; the tier-key swatch says how each open door opens. The closed
+   page carries no swatches at all — one tier fills it, priced once by its
+   intro — so the spread reads earning ink against locked gray before any
+   label does. The name is the row's only link, stretched across the row as
+   in the tables; the row answers in its tier's wash. */
 .rank-cols {
   display: grid;
-  gap: 0 32px;
+  gap: 8px 48px;
   align-items: start;
 }
 @media (min-width: 920px) {
@@ -1753,79 +1770,72 @@ td.down::before { content: '\25BC'; } /* down triangle */
 }
 .rank-list {
   list-style: none;
-  padding: 4px 0;
+  padding: 0;
   margin: 0 0 16px;
   counter-reset: rankrow;
-  background: var(--color-white);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--radius-card);
+  border-top: 1px solid var(--border-hairline);
 }
 .rank-list li {
   counter-increment: rankrow;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-  margin: 0;
-  padding: 9px 16px 9px 48px;
   position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 9px 0;
   font-size: var(--text-body-sm);
   line-height: var(--leading-body-sm);
+  border-bottom: 1px solid var(--border-faint);
+  transition: background-color 150ms ease;
 }
-.rank-list li + li { border-top: 1px solid var(--border-faint); }
 .rank-list li::before {
   content: counter(rankrow);
-  position: absolute;
-  left: 16px;
+  justify-self: end;
   font-size: var(--text-caption);
   font-variant-numeric: tabular-nums;
   color: var(--ink-40);
 }
-/* Each row charts its destination: a tier-colored meter on the shared scale,
-   then the points value. The color IS the tier label (keyed by the table
-   above); an sr-only span says it in words. */
-.rank-list .wt {
-  margin-left: auto;
+.rank-list a {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  min-width: 0;
+  font-weight: 500;
+  color: var(--ink-95);
 }
-.rank-list .wt-meter {
-  position: relative;
-  width: 56px;
-  height: 5px;
-  border-radius: 2px;
-  background: rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-}
-.rank-list .wt-meter::before {
+.rank-list a:hover { text-decoration: none; }
+/* Whole-row click, the tables' overlay quoted: the anchor stays a real
+   link and the row becomes the target. */
+.rank-list a::after {
   content: '';
   position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--w, 0%);
-  border-radius: 2px;
-  background: var(--tier);
+  inset: 0;
 }
+.rank-list li:hover { background: color-mix(in srgb, var(--tier) 15%, transparent); }
+/* The locked tier's 18% black all but vanishes at that mix; it answers in
+   plain gray instead. */
+.rank-list li.tier-visa-required:hover { background: rgba(0, 0, 0, 0.04); }
+.rank-list .tier-key,
+.rank-list li > .wt-val { justify-self: end; }
 .rank-list .wt-val {
-  min-width: 34px;
+  min-width: 38px;
   text-align: right;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 650;
   font-variant-numeric: tabular-nums;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .rank-list .wt-meter::before {
-    transform-origin: left;
-    animation: meter-ink 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) 0.6s backwards;
-  }
+  color: var(--ink-95);
 }
 
-/* ---- Full destination map: the gazetteer at the back of the atlas ----
-   Every foreign destination, tier by tier — ruled sections on the canvas,
-   each roster a wrap of chips, alphabetized for lookup. Open tiers sit
-   raised as white cards; the closed tiers' chips are dashed outlines on the
-   bare paper — doors drawn, not yet open. Hover borrows the tier color from
-   the group, so the map answers to the same key as everything above it. */
+/* ---- Full destination map: the score bar, unpacked ----
+   Every foreign destination, tier by tier — each tier a plate washed in its
+   own hue, headed by the points it pays in: the anatomy bar at the top of
+   the page exploded into its chips, proportions stated once up there and
+   only priced down here. The single color-mix keeps the site's law by
+   itself — the earning tiers come out plainly colored, peach barely there —
+   and the locked tier overrides to the gray wash of the closed door card,
+   its zero muted. Chips sit white on the wash; closed doors are dashed
+   outlines that preview open on hover. */
 .dest-map { margin: 8px 0 48px; }
 .dest-map-head {
   display: flex;
@@ -1845,17 +1855,28 @@ td.down::before { content: '\25BC'; } /* down triangle */
 }
 .dest-empty {
   margin: 0;
-  padding: 20px 0 4px;
+  padding: 18px 22px;
   max-width: none;
-  border-top: 1px solid var(--border-hairline);
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  border-radius: var(--radius-plate);
   font-size: var(--text-body-sm);
   color: var(--color-slate);
 }
 .dest-group {
-  padding: 20px 0 24px;
-  border-top: 1px solid var(--border-hairline);
+  margin: 0 0 14px;
+  padding: 18px 22px 22px;
+  border-radius: var(--radius-plate);
+  background: color-mix(in srgb, var(--tier) 16%, var(--color-white));
 }
+.dest-group.tier-visa-required { background: rgba(0, 0, 0, 0.05); }
+/* A <header> inside the plate, so it sheds the site nav's element styles:
+   the bare `header` rule would otherwise pin it sticky, white and shadowed
+   mid-plate. */
 .dest-head {
+  position: static;
+  z-index: auto;
+  background: none;
+  box-shadow: none;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -1865,23 +1886,39 @@ td.down::before { content: '\25BC'; } /* down triangle */
 }
 .dest-group h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.1px;
+  font-weight: 650;
+  letter-spacing: -0.2px;
 }
+.dest-group h3::before { width: 12px; height: 12px; }
 .dest-group h3 .count {
+  margin-left: 2px;
   font-size: 13px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  color: var(--color-stone);
+  color: var(--ink-54);
 }
 .dest-pts {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
   font-size: var(--text-caption);
-  line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
+  color: rgba(0, 0, 0, 0.75);
+}
+.dest-pts b {
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  color: var(--color-slate);
+  color: var(--color-ink);
+}
+/* The locked tier's zero whispers, as on the methodology credit ladder. */
+.dest-group.tier-visa-required .dest-pts b { color: var(--ink-40); }
+@media (max-width: 640px) {
+  .dest-group { padding: 14px 16px 18px; }
 }
 .dest-flow {
   list-style: none;
@@ -1906,10 +1943,12 @@ td.down::before { content: '\25BC'; } /* down triangle */
   border-radius: var(--radius-btn);
   transition: border-color 150ms ease, background-color 150ms ease;
 }
+/* Deeper than the plate's own wash, so the hovered chip visibly takes the
+   tier's hue instead of dissolving into it. */
 .dest-flow a:hover {
   text-decoration: none;
   border-color: var(--tier);
-  background: color-mix(in srgb, var(--tier) 12%, var(--color-white));
+  background: color-mix(in srgb, var(--tier) 26%, var(--color-white));
 }
 .dest-flow.is-locked a {
   background: transparent;
@@ -3248,7 +3287,6 @@ footer {
     --open: 0;
     opacity: 0;
   }
-  :root[data-to='doors'] .door-word { animation-delay: 0.05s; }
   :root[data-to='doors'] .ds-all .ds-plate { animation-delay: 0.15s; }
   :root[data-to='doors'] .ds-half .ds-plate { animation-delay: 0.22s; }
 
@@ -3272,7 +3310,6 @@ footer {
   :root[data-to='country'] .score-bar i:nth-child(2) { animation-delay: 0.19s; }
   :root[data-to='country'] .score-bar i:nth-child(3) { animation-delay: 0.25s; }
   :root[data-to='country'] .score-bar i:nth-child(4) { animation-delay: 0.31s; }
-  :root[data-to='country'] .rank-list .wt-meter::before { animation-delay: 0.25s; }
 }
 
 /* Motion off: the gestures do not exist, and the UA's own cross-fade is
