@@ -53,28 +53,35 @@ export function moveFor(fromPathname: string, toPathname: string, base = '/'): M
 
 /** The attribute trio a navigation writes onto <html>. */
 export function stampFor(
-  pathname: string,
+  fromPathname: string,
+  toPathname: string,
   direction: string,
   base = '/',
-): { to: TransitionKey; nav: 'forward' | 'back' } {
+): { to: TransitionKey; nav: 'forward' | 'back'; move: MoveKey } {
   return {
-    to: transitionKey(pathname, base),
+    to: transitionKey(toPathname, base),
     nav: direction === 'back' ? 'back' : 'forward',
+    move: moveFor(fromPathname, toPathname, base),
   };
 }
 
 export function initPageTransition(base = '/'): void {
-  let stamp = { to: 'plain' as TransitionKey, nav: 'forward' as 'forward' | 'back' };
+  let stamp = {
+    to: 'plain' as TransitionKey,
+    nav: 'forward' as 'forward' | 'back',
+    move: 'plain' as MoveKey,
+  };
 
   const write = () => {
     const root = document.documentElement;
     root.dataset.to = stamp.to;
     root.dataset.nav = stamp.nav;
+    root.dataset.move = stamp.move;
   };
 
   document.addEventListener('astro:before-preparation', (event) => {
-    const e = event as Event & { to: URL; direction: string };
-    stamp = stampFor(e.to.pathname, e.direction, base);
+    const e = event as Event & { from?: URL; to: URL; direction: string };
+    stamp = stampFor(e.from?.pathname ?? location.pathname, e.to.pathname, e.direction, base);
     // Written here for Astro's non-native fallback, where the outgoing page's
     // animation runs before the swap and would otherwise read the page it is
     // leaving instead of the one it is going to.

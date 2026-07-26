@@ -106,26 +106,27 @@ describe('moveFor', () => {
 });
 
 describe('stampFor', () => {
-  it('carries the destination key and a forward reading', () => {
-    expect(stampFor('/openness/', 'forward')).toEqual({ to: 'doors', nav: 'forward' });
+  it('carries the destination key, the reading, and the move', () => {
+    expect(stampFor('/', '/openness/', 'forward')).toEqual({ to: 'doors', nav: 'forward', move: 'right' });
   });
 
-  it('reads a popstate as back', () => {
-    expect(stampFor('/passport/prt/', 'back')).toEqual({ to: 'country', nav: 'back' });
+  it('reads a popstate as back without changing the move', () => {
+    expect(stampFor('/', '/passport/prt/', 'back')).toEqual({ to: 'country', nav: 'back', move: 'down' });
   });
 
   it('treats any direction that is not back as forward', () => {
-    expect(stampFor('/', '').nav).toBe('forward');
-    expect(stampFor('/', 'unknown').nav).toBe('forward');
+    expect(stampFor('/', '/openness/', '').nav).toBe('forward');
+    expect(stampFor('/', '/openness/', 'unknown').nav).toBe('forward');
   });
 
-  it('still lets the destination govern on a back navigation', () => {
-    // Direction only reverses the country gesture; every other page keeps its
-    // own instrument no matter which way you arrived.
-    expect(stampFor('/methodology/', 'back').to).toBe('rule');
+  it('still lets the destination govern the arrival key on back', () => {
+    // Direction never changes what the page IS — the arrival-sync layer keys
+    // off the destination whichever way you got there.
+    expect(stampFor('/', '/methodology/', 'back').to).toBe('rule');
   });
 
   it('resolves under a deploy base', () => {
-    expect(stampFor('/pyatkov-index/destinations/', 'forward', '/pyatkov-index/').to).toBe('scale');
+    const s = stampFor('/pyatkov-index/', '/pyatkov-index/destinations/', 'forward', '/pyatkov-index/');
+    expect(s).toEqual({ to: 'scale', nav: 'forward', move: 'right' });
   });
 });
