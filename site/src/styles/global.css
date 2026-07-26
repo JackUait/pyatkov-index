@@ -3118,11 +3118,16 @@ footer {
   :root[data-to='doors']::view-transition-new(root) {
     mix-blend-mode: normal;
   }
-  /* Gone by a quarter, like the other pages a gesture leaves behind. Faded
-     across the whole sweep it stays legible under the half-open leaves, and the
-     two pages read as one smeared page. */
+  /* The old page is not faded — it is carved, the way ink and rule carve
+     theirs with clip-path. Faded, it was gone by 140ms while the first door
+     was still 250ms away, and the sweep spent half its life revealing paper
+     with paper. Held opaque behind the complementary mask, the old argument
+     stands until the edge reaches it and the doors replace it directly: at
+     any x exactly one page is solid, which is also what the overlap guardrail
+     actually wants. Same keyframes as the new snapshot — one edge, two masks. */
   :root[data-to='doors']::view-transition-old(root) {
-    animation: vt-clear 560ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    animation: vt-doors 560ms linear both;
+    mask-image: linear-gradient(90deg, transparent var(--vt-edge), #000 calc(var(--vt-edge) + 10%));
   }
   /* Linear, alone among the gestures. arrival.ts delays each door by the x it
      occupies, in a straight line — so the edge has to cross at a constant speed
@@ -3146,29 +3151,39 @@ footer {
   :root[data-to='scale']::view-transition-new(root) {
     mix-blend-mode: normal;
   }
+  /* The old pan is stacked ON TOP of the new one — z-index, because the
+     snapshots paint new-over-old by default, and an old page rising under an
+     opaque new page rises invisibly. That inversion is what made this gesture
+     read as a blink: both fades were done by 130ms and every pixel of travel
+     after that was hidden. On top, the old pan lifts away and thins, and the
+     new page is seen through it still dropping into its seat — the exchange
+     is watched, not implied. */
   :root[data-to='scale']::view-transition-old(root) {
     animation: vt-lift 600ms cubic-bezier(0.4, 0, 0.6, 1) both;
+    z-index: 1;
   }
   :root[data-to='scale']::view-transition-new(root) {
     animation: vt-drop 600ms both;
   }
-  /* Both pans are only visible together for the first fifth of the gesture.
-     Longer and the two pages sit on top of each other at half opacity and you
-     read neither; that window is short enough that what you read is one page
-     rising as another falls. */
+  /* The lift holds its ink for the first fifth — the wind-up — then thins
+     across the middle while rising a full 7%. The drop is solid almost at
+     once (it is under the old page; its reveal is the old page thinning) and
+     lands just before the halfway mark, so the settle beats play in the
+     clear. Same beats as land-jolt, restated at page scale. */
   @keyframes vt-lift {
     0% { transform: translateY(0); opacity: 1; }
-    22% { opacity: 0; }
-    100% { transform: translateY(-3%); opacity: 0; }
+    20% { opacity: 0.95; }
+    60% { opacity: 0; }
+    100% { transform: translateY(-7%); opacity: 0; }
   }
   @keyframes vt-drop {
-    0% { transform: translateY(-4%); opacity: 0; animation-timing-function: cubic-bezier(0.4, 0, 0.35, 1); }
-    22% { opacity: 1; }
-    40% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(8px); }
-    63% { transform: translateY(-2.3px); }
-    68% { transform: translateY(2px); }
-    77% { transform: translateY(-0.7px); }
+    0% { transform: translateY(-7%); opacity: 0; animation-timing-function: cubic-bezier(0.4, 0, 0.35, 1); }
+    15% { opacity: 1; }
+    48% { transform: translateY(0); }
+    56% { transform: translateY(8px); }
+    66% { transform: translateY(-2.3px); }
+    71% { transform: translateY(2px); }
+    79% { transform: translateY(-0.7px); }
     100% { transform: translateY(0); }
   }
 
@@ -3239,12 +3254,6 @@ footer {
     30% { opacity: 1; }
   }
 
-  /* The page a door closes on. */
-  @keyframes vt-clear {
-    0% { opacity: 1; }
-    25% { opacity: 0; }
-    100% { opacity: 0; }
-  }
 }
 
 /* ---- Arrival sync ----

@@ -156,31 +156,45 @@ row-by-row `ink-sweep` continues behind it.
 
 `doors`, **560ms**.
 
-The new page is revealed through an animated mask: a wipe intersected with eight
-vertical bands separated by hairline jambs, so the advancing edge opens one leaf
-at a time across the viewport. Its traversal rate is tuned to the wall's own
-`calc(0.25s + var(--i) * 3ms)` door stagger, making the eight leaves and the 199
-doors one motion at two scales. The old page fades beneath — paper behind a
-door.
+The new page is revealed through an animated mask: one soft edge crossing the
+viewport left to right at constant speed, linear alone among the gestures —
+`lib/arrival.ts` waves the wall's own 199 doors across the same 560ms, each
+door opening as the edge reaches the x it actually occupies, and a wave front
+travels at constant speed or it outruns its own wall. The give in the gesture
+is in the doors, which each pour on an ease and land on a spring. (An earlier
+draft cut the sweep into eight masked leaves standing in for doors; the real
+doors do it now, at full resolution and at any breakpoint, so the imitation
+came out.)
 
-The wipe's soft zone is exactly one leaf wide. Any wider and the gradient spans
-two leaves at once, and the sweep stops reading as doors at all.
+The old page is not faded — it is carved, with the complementary mask on the
+same `--vt-edge`, the way ink and rule carve theirs with clip-path. Faded, it
+was gone by 140ms while the first door was still 250ms away, and the sweep
+spent half its life revealing paper with paper — which is what made the arrival
+read as no animation at all. Held opaque behind the complementary mask, the old
+argument stands until the edge reaches it and the doors replace it directly: at
+any x exactly one page is solid.
 
 The mask needs an `@property`-registered percentage to interpolate. Where that
-is unsupported, `@supports` falls the gesture back to the plain left-to-right
-wipe, which still reads as a door opening.
+is unsupported the `var()` is invalid at computed-value time, both masks
+resolve to `none`, and the new page simply covers the old — an instant swap,
+never a blank screen.
 
 ### Destinations — the scale tips
 
 `scale`, **600ms**.
 
-Two pans of one balance. The old page rises and lightens (`translateY(-3%)`,
-fading); the new page drops in from `translateY(-4%)` and lands with a short
-overshoot settle. The settle is `land-jolt`'s profile — its 16/38/46/62% beats,
-the same damped bounce — restated at page scale, because `land-jolt`'s
-amplitudes are in `em` and would be sub-pixel on `main`. The front page's
-dropped pill and this page's landing are then visibly the same physics. The
-columns' `door-open` stagger takes over from the landing.
+Two pans of one balance, and the exchange must be watched, not implied. The
+old pan is stacked on top of the new one — `z-index` on its snapshot, because
+the pseudos paint new-over-old by default, and an old page rising under an
+opaque new page rises invisibly. On top, the old page holds its ink for the
+first fifth (the wind-up), then thins across the middle while rising a full
+7%; the new page is solid almost at once beneath it — its reveal is the old
+page thinning — and is seen through it still dropping from `-7%` into its
+seat, landing just before halfway so the settle beats play in the clear. The
+settle is `land-jolt`'s profile — the same damped bounce — restated at page
+scale, because `land-jolt`'s amplitudes are in `em` and would be sub-pixel on
+`main`. The front page's dropped pill and this page's landing are then visibly
+the same physics. The columns' wave takes over from the landing.
 
 ### Methodology — it is ruled in
 
@@ -236,11 +250,19 @@ affordable. Measured on the production build: median frame 9ms for doors against
 swap rather than the mask — ink, which composites nothing, has the worst single
 frame of the three. The mask stays.
 
-**Overlap.** Every gesture that fades one page into another must also set
-`mix-blend-mode: normal`, and must clear the outgoing page early — a third of
-the duration at most. The UA's `plus-lighter` default is built for its own
-cross-fade and blows the overlap out to white; and two pages held at half
-opacity for long are two pages you cannot read.
+**Overlap.** Every gesture that overlaps one page with another must set
+`mix-blend-mode: normal` — the UA's `plus-lighter` default is built for its own
+cross-fade and blows the overlap out to white. What the rule protects against
+is two STILL pages held at half opacity, which are two pages you cannot read:
+a static dissolve must clear the outgoing page within a third of the duration.
+Pages in visible counter-motion may overlap far longer — the scale's pans
+cross through the middle of its gesture and read as an exchange, not a smear —
+and pages that are carved rather than faded (ink, doors, rule) never overlap
+at all: at any point exactly one page is solid. The first draft cleared every
+old page early on this rule and it was a mistake twice over — the doors swept
+blank paper for half their life, and the scale was over before it began. The
+gestures that feel alive are the ones that keep full-contrast change on screen
+for their whole duration.
 
 **Mask support.** The doors mask reads a registered custom property. Where
 `@property` is unsupported the `var()` is invalid at computed-value time, so
