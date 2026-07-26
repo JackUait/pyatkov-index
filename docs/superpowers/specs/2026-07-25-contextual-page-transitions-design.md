@@ -84,10 +84,21 @@ in `global.css` holds every gesture and no page file carries transition CSS.
 
 ### The named regions
 
-Only two elements are named. The persisted masthead takes
-`view-transition-name: masthead`, which lifts it out of the root snapshot so it
-holds still through every swap. The current nav item's peach block takes
-`nav-ink` (see below).
+The persisted masthead takes `view-transition-name: masthead`, which lifts it
+out of the root snapshot so it holds still through every swap. The current nav
+item's peach block takes `nav-ink` (see below), and each of the four nav links
+takes its own `nav-link-N` name — the labels are lifted out with the bar so the
+peach block slides under the words, never over them. The pseudo paints at the
+header's negative z, below every label, and the view-transition tree preserves
+that paint order, so the name of the page you are going to stays readable while
+the highlight travels to it.
+
+A page the drawer has squeezed aside is the one exception. Its masthead is at
+half width, and held to its name it would morph across the viewport toward the
+incoming page's full-width bar — two ghosts of the logo sliding past each
+other. So under `body.drawer-shifted` every header name drops to `none`: the
+squeezed masthead leaves with the page it belongs to, and the destination's own
+bar fades in whole.
 
 The masthead selector must be `body > header`, not `header`. A
 `view-transition-name` has to be unique per document, and the passport page
