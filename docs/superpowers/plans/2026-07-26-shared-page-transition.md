@@ -27,7 +27,7 @@
 **Interfaces:**
 - Produces: `export type MoveKey = 'right' | 'left' | 'down' | 'up' | 'plain'`; `export function moveFor(fromPathname: string, toPathname: string, base = '/'): MoveKey`.
 
-- [ ] **Step 1: Write the failing tests** — append to the test file:
+- [x] **Step 1: Write the failing tests** — append to the test file:
 
 ```ts
 describe('moveFor', () => {
@@ -68,9 +68,9 @@ describe('moveFor', () => {
 });
 ```
 
-- [ ] **Step 2: Run to verify failure** — `cd site && yarn vitest run src/lib/__tests__/page-transition.test.ts` — expected: FAIL, `moveFor` not exported.
+- [x] **Step 2: Run to verify failure** — `cd site && yarn vitest run src/lib/__tests__/page-transition.test.ts` — expected: FAIL, `moveFor` not exported.
 
-- [ ] **Step 3: Implement** in `page-transition.ts`:
+- [x] **Step 3: Implement** in `page-transition.ts`:
 
 ```ts
 export type MoveKey = 'right' | 'left' | 'down' | 'up' | 'plain';
@@ -91,8 +91,8 @@ export function moveFor(fromPathname: string, toPathname: string, base = '/'): M
 }
 ```
 
-- [ ] **Step 4: Run to verify pass** — same command, all green.
-- [ ] **Step 5: Commit** — `feat(site): resolve every navigation to the direction it moves`.
+- [x] **Step 4: Run to verify pass** — same command, all green.
+- [x] **Step 5: Commit** — `feat(site): resolve every navigation to the direction it moves`.
 
 ---
 
@@ -106,7 +106,7 @@ export function moveFor(fromPathname: string, toPathname: string, base = '/'): M
 - Consumes: `moveFor` from Task 1.
 - Produces: `stampFor(fromPathname: string, toPathname: string, direction: string, base = '/'): { to: TransitionKey; nav: 'forward' | 'back'; move: MoveKey }`.
 
-- [ ] **Step 1: Revise the `stampFor` tests to the new shape** (replace the existing describe block):
+- [x] **Step 1: Revise the `stampFor` tests to the new shape** (replace the existing describe block):
 
 ```ts
 describe('stampFor', () => {
@@ -134,8 +134,8 @@ describe('stampFor', () => {
 });
 ```
 
-- [ ] **Step 2: Run to verify failure** — old signature, FAIL.
-- [ ] **Step 3: Implement** — extend `stampFor` and the listener:
+- [x] **Step 2: Run to verify failure** — old signature, FAIL.
+- [x] **Step 3: Implement** — extend `stampFor` and the listener:
 
 ```ts
 export function stampFor(
@@ -162,8 +162,8 @@ stamp = stampFor(e.from?.pathname ?? location.pathname, e.to.pathname, e.directi
 
 Initial stamp state gains `move: 'plain' as MoveKey`.
 
-- [ ] **Step 4: Run to verify pass.**
-- [ ] **Step 5: Commit** — `feat(site): stamp the move beside the destination on every swap`.
+- [x] **Step 4: Run to verify pass.**
+- [x] **Step 5: Commit** — `feat(site): stamp the move beside the destination on every swap`.
 
 ---
 
@@ -172,7 +172,7 @@ Initial stamp state gains `move: 'plain' as MoveKey`.
 **Files:**
 - Modify: `site/src/styles/global.css` (the `---- Contextual page transitions ----` block only; arrival-sync and reduce blocks untouched)
 
-- [ ] **Step 1: Replace the gesture rules.** Remove: `@property --vt-edge` and its comment, the doors block (`vt-doors`, masks), the scale block (`vt-lift`, `vt-drop`, `z-index`), the rule block (`vt-rule`, `vt-rule-under`, its group background). Keep and re-key:
+- [x] **Step 1: Replace the gesture rules.** Remove: `@property --vt-edge` and its comment, the doors block (`vt-doors`, masks), the scale block (`vt-lift`, `vt-drop`, `z-index`), the rule block (`vt-rule`, `vt-rule-under`, its group background). Keep and re-key:
 
 ```css
   /* plain — the 404 has no argument; nothing moved, nothing draws. */
@@ -228,8 +228,8 @@ back variant `[data-move='down'][data-nav='back']`, and gains:
 
 The `[data-to='ink'] .ribbon` retime survives as is (tuned in Task 5).
 
-- [ ] **Step 2: Build** — `cd site && BASE_PATH=/pyatkov-index/ yarn build` — clean.
-- [ ] **Step 3: Commit** — `feat(site): one wipe, drawn toward where you are going`.
+- [x] **Step 2: Build** — `cd site && BASE_PATH=/pyatkov-index/ yarn build` — clean.
+- [x] **Step 3: Commit** — `feat(site): one wipe, drawn toward where you are going`.
 
 ---
 
@@ -241,7 +241,7 @@ The `[data-to='ink'] .ribbon` retime survives as is (tuned in Task 5).
 **Interfaces:**
 - Consumes: `data-move` on `<html>` from Task 2.
 
-- [ ] **Step 1: Mirror viewport-framed coordinates under a left move**, in `runWave` (the pure helpers stay untouched):
+- [x] **Step 1: Mirror viewport-framed coordinates under a left move**, in `runWave` (the pure helpers stay untouched):
 
 ```ts
   const mirrored = frame === 'viewport' && document.documentElement.dataset.move === 'left';
@@ -257,8 +257,8 @@ The `[data-to='ink'] .ribbon` retime survives as is (tuned in Task 5).
 
 And `SWEEP` becomes `{ doors: 0.52, scale: 0.6 }` to match the shared 520ms.
 
-- [ ] **Step 2: Run the arrival tests** — `yarn vitest run src/lib/__tests__/arrival.test.ts` (if present; else typecheck via build) — green.
-- [ ] **Step 3: Commit** — `feat(site): the wall waves from whichever side the edge enters`.
+- [x] **Step 2: Run the arrival tests** — `yarn vitest run src/lib/__tests__/arrival.test.ts` (if present; else typecheck via build) — green.
+- [x] **Step 3: Commit** — `feat(site): the wall waves from whichever side the edge enters`.
 
 ---
 
@@ -266,16 +266,16 @@ And `SWEEP` becomes `{ doors: 0.52, scale: 0.6 }` to match the shared 520ms.
 
 **Files:** none unless findings; fixes fold into this task.
 
-- [ ] **Step 1:** `BASE_PATH=/pyatkov-index/ yarn build && BASE_PATH=/pyatkov-index/ yarn preview --port 4400`; playwright-cli session `-s=transitions`.
-- [ ] **Step 2:** For each: rankings→methodology (`right`), methodology→rankings (`left`), destinations→openness (`left`, doors wave from the right), openness→destinations (`right`), rankings→passport (`down`), passport→rankings via breadcrumb (`up`), browser back into the passport page (`down` reversed): sample `getAnimations()` on `viewTransition.ready` for the expected `vt-*` names, and stretch `animation-duration` 10× via injected style for composition screenshots where the read matters (left wipe seam, wave direction).
-- [ ] **Step 3:** Reduced motion: emulate, navigate all pairs, assert zero pseudo-element animations.
-- [ ] **Step 4:** Tune the `[data-to='ink'] .ribbon` delay against the leftward edge by eye; adjust only if the pickup reads broken.
-- [ ] **Step 5:** Commit anything changed — `fix(site): tune the shared wipe against the pages it arrives at`.
+- [x] **Step 1:** `BASE_PATH=/pyatkov-index/ yarn build && BASE_PATH=/pyatkov-index/ yarn preview --port 4400`; playwright-cli session `-s=transitions`.
+- [x] **Step 2:** For each: rankings→methodology (`right`), methodology→rankings (`left`), destinations→openness (`left`, doors wave from the right), openness→destinations (`right`), rankings→passport (`down`), passport→rankings via breadcrumb (`up`), browser back into the passport page (`down` reversed): sample `getAnimations()` on `viewTransition.ready` for the expected `vt-*` names, and stretch `animation-duration` 10× via injected style for composition screenshots where the read matters (left wipe seam, wave direction).
+- [x] **Step 3:** Reduced motion: emulate, navigate all pairs, assert zero pseudo-element animations.
+- [x] **Step 4:** Tune the `[data-to='ink'] .ribbon` delay against the leftward edge by eye; adjust only if the pickup reads broken.
+- [x] **Step 5:** Commit anything changed — `fix(site): tune the shared wipe against the pages it arrives at`.
 
 ---
 
 ### Task 6: Full verification and the fold-back
 
-- [ ] **Step 1:** `yarn verify` from the repo root — typecheck, all tests, pipeline, drift.
-- [ ] **Step 2:** Fold any findings back into the spec; commit docs.
-- [ ] **Step 3:** Do not push — pushing `main` deploys.
+- [x] **Step 1:** `yarn verify` from the repo root — typecheck, all tests, pipeline, drift.
+- [x] **Step 2:** Fold any findings back into the spec; commit docs.
+- [x] **Step 3:** Do not push — pushing `main` deploys.

@@ -111,9 +111,12 @@ gesture's.
 
 `SWEEP.doors` drops from 0.56 to 0.52 to match the shared duration.
 
-The ribbon's ink-sweep pickup on the front page keeps its retimed delay; every
-top-level arrival at Rankings is a `left` move (it is index 0), so the delay
-is tuned against the leftward edge in the browser, not assumed.
+The ribbon's ink-sweep pickup on the front page keeps its retimed delay. Every
+top-level arrival at Rankings is a `left` move (it is index 0), so the edge
+and the fill approach the strip from opposite ends: the strip is uncovered
+from the right while the fill pours from the left, and the two meet mid-strip.
+Verified in the browser — it reads as uncover-then-fill, not as a broken
+pickup, so the delay stands.
 
 ## Testing
 

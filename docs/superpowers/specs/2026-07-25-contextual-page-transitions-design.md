@@ -93,10 +93,11 @@ The persisted masthead takes `view-transition-name: masthead`, which lifts it
 out of the root snapshot so it holds still through every swap. The current nav
 item's peach block takes `nav-ink` (see below), and each of the four nav links
 takes its own `nav-link-N` name — the labels are lifted out with the bar so the
-peach block slides under the words, never over them. The pseudo paints at the
-header's negative z, below every label, and the view-transition tree preserves
-that paint order, so the name of the page you are going to stays readable while
-the highlight travels to it.
+peach block slides under the words, never over them. The stacking is stated
+outright — `z-index: 1` on the block's group, `2` on the labels' — because the
+tree will not promise it: Chromium orders the block's group by where its OLD
+originating element sat, so leaving a later slot for an earlier one would
+otherwise slide the block over the very label it travels to.
 
 A page the drawer has squeezed aside is the one exception. Its masthead is at
 half width, and held to its name it would morph across the viewport toward the
