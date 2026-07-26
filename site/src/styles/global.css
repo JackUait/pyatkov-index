@@ -179,6 +179,15 @@ header nav a:hover {
   background: rgba(0, 0, 0, 0.05);
   text-decoration: none;
 }
+/* The press lands NOW: the hover wash arrives on a 200ms ease, which on a tap
+   reads as a button that heard nothing. Deepened one step and with the ease
+   turned off, the finger gets its answer on the same frame; the release still
+   fades out on the base rule's timing. */
+header nav a:active {
+  color: var(--ink-95);
+  background: rgba(0, 0, 0, 0.08);
+  transition: none;
+}
 /* The current page is a highlighted word: the hero's peach block, reused as
    the active state so the nav quotes the headline device. The block lives on a
    pseudo-element rather than the link's own background so it can carry a

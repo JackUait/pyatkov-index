@@ -188,8 +188,12 @@ const nav = [
           <span>Pyatkov Index</span>
         </a>
         <nav>
+          {/* Prefetched at load, not hover: a decisive click beats the hover
+              debounce, and touch never hovers — either way the click then
+              stalls a full network round-trip before the wipe's first frame.
+              Four small pages, fetched once, cached for every later click. */}
           {nav.map((item) => (
-            <a href={item.href} aria-current={here === normalizePath(item.href) ? 'page' : undefined}>{item.label}</a>
+            <a href={item.href} data-astro-prefetch="load" aria-current={here === normalizePath(item.href) ? 'page' : undefined}>{item.label}</a>
           ))}
         </nav>
       </div>
