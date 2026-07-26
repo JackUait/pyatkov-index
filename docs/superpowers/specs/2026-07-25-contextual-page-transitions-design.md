@@ -1,5 +1,10 @@
 # Contextual page transitions
 
+> **Superseded in part** by `2026-07-26-shared-page-transition-design.md`:
+> the per-page gesture forms below (doors, scale, rule as root gestures) were
+> retired for one direction-aware wipe. The stamp mechanism, named regions,
+> drawer exception, arrival-sync layer, and guardrails all carry over.
+
 Every page of the index owns an instrument: the front page lays a ribbon of ink,
 openness raises a wall of doors, destinations weighs columns on a floor,
 methodology rules a derivation down the page. Today all four arrive the same
