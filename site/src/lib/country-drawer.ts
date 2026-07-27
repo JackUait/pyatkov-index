@@ -58,6 +58,39 @@ export function createPrefetcher(warm: (url: string) => void): (url: string) => 
   };
 }
 
+/** Crossing a link is not intent; resting on one is. A url fires only after the
+ *  pointer has held it for `dwellMs`; hovering anything newer — another link or
+ *  none at all — drops the pending ask, and jitter within the same link does not
+ *  restart the clock. Without this, one swipe across the weight ribbon's 199
+ *  slats reads as 199 separate intents and asks for dozens of full pages at
+ *  once — enough to stall the page (and, in dev, the server) mid-gesture. */
+export function createDwell(
+  dwellMs: number,
+  fire: (url: string) => void,
+): { hover: (url: string | null) => void; cancel: () => void } {
+  let pending: ReturnType<typeof setTimeout> | undefined;
+  let pendingUrl: string | null = null;
+  const cancel = () => {
+    if (pending !== undefined) clearTimeout(pending);
+    pending = undefined;
+    pendingUrl = null;
+  };
+  return {
+    hover(url) {
+      if (url !== null && url === pendingUrl) return;
+      cancel();
+      if (url === null) return;
+      pendingUrl = url;
+      pending = setTimeout(() => {
+        pending = undefined;
+        pendingUrl = null;
+        fire(url);
+      }, dwellMs);
+    },
+    cancel,
+  };
+}
+
 interface CountryPage {
   title: string;
   /** The page's <main>, detached and ready to adopt. */
@@ -532,15 +565,22 @@ const prefetch = createPrefetcher((url) => void fetchPage(url));
 
 /** A cold drawer waits on the network before it has anything to show, and that
  *  wait is longer than the whole opening gesture — so the row the pointer is
- *  resting on gets fetched before it is clicked. By the time the click lands the
- *  page is usually parsed and in the cache, and the drawer renders in the same
- *  frame it opens. `focusin` covers the keyboard: tabbing to a row is the same
- *  declaration of intent as hovering it. */
+ *  resting on gets fetched before it is clicked. Resting, literally: the url
+ *  goes through the dwell above, so a pointer merely passing through on its way
+ *  somewhere else asks for nothing. By the time a real click lands the page is
+ *  usually parsed and in the cache, and the drawer renders in the same frame it
+ *  opens. `focusin` covers the keyboard, and skips the dwell: tabbing moves at
+ *  key-repeat speed at worst, and landing on a row is already a settled intent. */
+const dwell = createDwell(80, prefetch);
 function onHover(e: Event): void {
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
   if (!shouldPrefetch(conn)) return;
   const url = hoveredCountryUrl(e);
-  if (url) prefetch(url);
+  if (e.type === 'focusin') {
+    if (url) prefetch(url);
+    return;
+  }
+  dwell.hover(url);
 }
 
 function onKeydown(e: KeyboardEvent): void {

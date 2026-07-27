@@ -7,17 +7,25 @@
 // color math and no color-mix() support question.
 export const RIBBON_FAINT = '#f5e7c9';
 export const RIBBON_MID = '#ffb110';
-export const RIBBON_DEEP = '#8a5200';
+// Darkening marigold in place lands in chocolate: hue held at ~66° with the
+// chroma sagging reads as mud next to the ramp's own body. The deep stop
+// instead bends toward orange (OKLCH ~52°) and keeps its chroma up, so the
+// line from marigold passes through saffron and burnt orange on its way
+// down — the heavy end burns instead of browning, and the white label on the
+// extreme slat keeps a 6.5:1 contrast.
+export const RIBBON_DEEP = '#964700';
 export const PAPER = '#f6f5f4';
-// The tail's grays, the brand mark's ink washes resolved flat against paper:
-// black at 36% and at 14%. The mark decays in four steps between 20% and 8%,
-// but it is 16px wide; the strip spends its neutral half on 166 slats, so it
-// needs both a wider range and a darker floor — the palest band still has to
-// hold its ground against the paper it sits on, not dissolve into it. Both
-// stops stay lighter than the deep amber, so the boundary steps down out of
-// the warm half rather than up into a second dark block.
-export const TAIL_DEEP = '#9d9d9c';
-export const TAIL_FAINT = '#d4d3d2';
+// The tail's grays keep the ink-wash luminance skeleton (black at ~36% and
+// ~14% over paper) but tip warm: a whisper of the amber hue (OKLCH C≈0.012,
+// H≈80°) folded into every band, because a dead-neutral gray sitting on warm
+// paper next to amber goes cold and dirty — greige, not concrete. The strip
+// spends its neutral half on 166 slats, so the range stays wider and the
+// floor darker than the 16px mark's own four washes — the palest band still
+// has to hold its ground against the paper, not dissolve into it. Both stops
+// stay lighter than the deep amber, so the boundary steps down out of the
+// warm half rather than up into a second dark block.
+export const TAIL_DEEP = '#a19c95';
+export const TAIL_FAINT = '#d7d3cb';
 // The tail is quantized rather than faded: 166 slats spread across a smooth
 // ramp move by a fraction of a value each, which reads as one gray wash with a
 // gradient over it. Six bands is the logotype's grammar at the strip's scale —

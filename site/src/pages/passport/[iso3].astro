@@ -9,6 +9,9 @@ import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { hundredCells } from '../../lib/hundred.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
+import updates from '../../data/updates.json';
+import { passportLede, passportLine, passportNews, stampLabel } from '../../lib/country-news.ts';
+import { accessPhrase, sourceHost, tierClass } from '../../lib/updates-copy.ts';
 import Flag from '../../components/Flag.astro';
 
 export function getStaticPaths() {
@@ -127,6 +130,10 @@ const country = countryNode({
 // The spread's figure: the score as 100 point-squares, one per hundredth of
 // the weighted world — earned marigold from the floor up, locked gray ceiling.
 const hundred = hundredCells(p.score);
+
+// The changelog, asked only what it says about this passport. Most passports were never
+// touched, so the section has to read as well empty as full.
+const news = passportNews(updates, p.iso3);
 ---
 <Base
   title={`${name} passport - Pyatkov Index`}
@@ -308,6 +315,43 @@ const hundred = hundredCells(p.score);
       </div>
     </Fragment>
   )}
+
+  {/* The ledger's own account of this passport. One line per policy, stamped with the day
+      it took effect and the government that settles it — the changelog's substance without
+      the changelog's cards, because a country page has only a handful of rows to set. */}
+  <section class="cnews" aria-label={`Changes affecting the ${bare} passport`}>
+    <h2>What changed for this passport</h2>
+    <p class="cnews-lede">{passportLede(updates, news)}</p>
+
+    {news.events.length > 0 && (
+      <ol class="cnews-log">
+        {news.events.map((e) => (
+          <li class={`cnews-row is-${e.direction}`}>
+            <time datetime={e.effective}>{stampLabel(e.effective)}</time>
+            <div class="cnews-say">
+              <a class="cnews-line" href={`${base}destination/${e.destination.iso3.toLowerCase()}/`} data-astro-prefetch="false">
+                <Flag iso2={e.destination.iso2} />{passportLine(e)}
+              </a>
+              <p class="cnews-shift">
+                <span class={`tier-key ${tierClass(e.from)}`}>{accessPhrase(e.from)}</span>
+                <span class="cnews-arrow" aria-hidden="true">→</span>
+                <span class={`tier-key ${tierClass(e.to)}`}>{accessPhrase(e.to)}</span>
+                {e.sunset && <span class="cnews-sunset">lapses {stampLabel(e.sunset)}</span>}
+              </p>
+            </div>
+            <a class="cnews-src" href={e.source} rel="nofollow noopener" target="_blank">
+              {sourceHost(e.source)}<span aria-hidden="true"> ↗</span>
+              <span class="sr-only"> — source for this change, opens in a new tab</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    <p class="cnews-all">
+      <a href={`${base}updates/`}>All {updates.totals.events} corrections across the index →</a>
+    </p>
+  </section>
 
   <style>
     .crumbs {

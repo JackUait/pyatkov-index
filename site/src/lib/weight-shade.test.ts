@@ -22,6 +22,31 @@ const luminance = (hex: string) => {
   );
 };
 
+// WCAG contrast ratio, for the one slat that carries a white in-mark label.
+const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
+// OKLCH chroma and hue, independently derived (Ottosson's reference matrices),
+// so the stops' character — burnt, not muddy — is pinned by measurement.
+const oklch = (hex: string) => {
+  const lin = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const n = parseInt(hex.slice(1), 16);
+  const r = lin(((n >> 16) & 255) / 255);
+  const g = lin(((n >> 8) & 255) / 255);
+  const b = lin((n & 255) / 255);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  const A = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s;
+  const B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
+  return {
+    C: Math.hypot(A, B),
+    H: ((Math.atan2(B, A) * 180) / Math.PI + 360) % 360,
+  };
+};
+
 describe('weightShade', () => {
   it('anchors the extremes: full strength is the deep stop, zero the faint one', () => {
     expect(weightShade(1)).toBe(RIBBON_DEEP);
@@ -41,6 +66,20 @@ describe('weightShade', () => {
 
   it('always returns a six-digit hex', () => {
     for (let i = 0; i <= 40; i++) expect(weightShade(i / 40)).toMatch(/^#[0-9a-f]{6}$/);
+  });
+
+  // Darkening yellow without bending it lands in mud: the deep stop must lean
+  // toward orange (hue well under marigold's 76°) and keep its fire (chroma),
+  // so the heavy end reads as burnt amber, never chocolate.
+  it('burns orange at the deep end instead of going muddy', () => {
+    const { C, H } = oklch(RIBBON_DEEP);
+    expect(H).toBeGreaterThan(40);
+    expect(H).toBeLessThan(62);
+    expect(C).toBeGreaterThanOrEqual(0.12);
+  });
+
+  it('keeps the extreme slat legible under its white label', () => {
+    expect(contrast('#ffffff', RIBBON_DEEP)).toBeGreaterThanOrEqual(4.5);
   });
 });
 
@@ -80,11 +119,17 @@ describe('tailShade', () => {
     expect(luminance(TAIL_FAINT)).toBeLessThan(luminance(PAPER) - 0.08);
   });
 
-  it('is neutral at every step: no channel strays from the others', () => {
+  // Dead-neutral gray goes cold and dirty against warm paper. Every band tips
+  // the same way the paper does — red over green over blue — with a tint wide
+  // enough to read as warmth but too quiet to ever read as a third color.
+  it('wears the paper\'s warmth at every step: greige, never concrete', () => {
     for (let i = 0; i <= 20; i++) {
       const n = parseInt(tailShade(i / 20).slice(1), 16);
       const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-      expect(Math.max(r, g, b) - Math.min(r, g, b)).toBeLessThanOrEqual(4);
+      expect(r).toBeGreaterThanOrEqual(g);
+      expect(g).toBeGreaterThanOrEqual(b);
+      expect(r - b).toBeGreaterThanOrEqual(6);
+      expect(r - b).toBeLessThanOrEqual(18);
     }
   });
 

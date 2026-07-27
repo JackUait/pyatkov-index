@@ -190,13 +190,13 @@ const nav = [
   <body class={wide ? 'layout-wide' : undefined}>
     <header transition:persist="header">
       <div class="nav-inner">
-        <a href={base} class="brand" aria-label="Pyatkov Index home">
+        <a href={base} class="brand" aria-label="The Pyatkov Index home">
           {/* The weight ribbon in miniature: one decaying spectrum, heaviest
               first. The head steps down through the yellows (saffron, then
               marigold thinning out), the tail fades on in ink washes, and the
               warm-to-neutral boundary still lands at exactly 50%. Slats are
               solid stepped fills throughout — no drawn seams. */}
-          <svg class="brand-mark" width="32" height="14" viewBox="0 0 32 14" aria-hidden="true">
+          <svg class="brand-mark" width="48" height="21" viewBox="0 0 32 14" aria-hidden="true">
             <defs><clipPath id="brand-clip"><rect width="32" height="14" rx="2.5" /></clipPath></defs>
             <g clip-path="url(#brand-clip)">
               <rect width="6" height="14" fill="var(--color-saffron)" />
@@ -209,7 +209,7 @@ const nav = [
               <rect x="29.2" width="2.8" height="14" fill="rgba(0, 0, 0, 0.08)" />
             </g>
           </svg>
-          <span>Pyatkov Index</span>
+          <span>The Pyatkov Index</span>
         </a>
         <nav>
           {/* Prefetched at load, not hover: a decisive click beats the hover
@@ -253,16 +253,59 @@ const nav = [
     </div>
     <footer transition:persist="footer">
       <div class="footer-inner">
-        <ul class="footer-links">
-          {nav.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
-          ))}
-        </ul>
-        {/* Visible counterpart to the Organization node — a structured-data claim with
-            nothing on the page behind it is a guidelines violation. */}
-        <p><a href="https://github.com/JackUait/pyatkov-index">The Pyatkov Index</a></p>
-        <p>{tagline}</p>
-        <p>Data: imorte/passport-index-data as a baseline, corrected cell by cell against government sources (see <a href={`${base}updates/`}>what changed</a>), plus the World Bank API and the UNDP Human Development Report. The index is fully reproducible from the repository.</p>
+        <div class="footer-grid">
+          <div class="footer-brand">
+            {/* The masthead's mark, one step up: same slats, same law. Its own
+                clip id — the header's copy already owns #brand-clip, and two
+                elements may not share one. */}
+            <p class="foot-wordmark">
+              <svg class="brand-mark" width="48" height="21" viewBox="0 0 32 14" aria-hidden="true">
+                <defs><clipPath id="foot-brand-clip"><rect width="32" height="14" rx="2.5" /></clipPath></defs>
+                <g clip-path="url(#foot-brand-clip)">
+                  <rect width="6" height="14" fill="var(--color-saffron)" />
+                  <rect x="6" width="4.4" height="14" fill="var(--color-marigold)" />
+                  <rect x="10.4" width="3.2" height="14" fill="rgba(255, 177, 16, 0.66)" />
+                  <rect x="13.6" width="2.4" height="14" fill="rgba(255, 177, 16, 0.38)" />
+                  <rect x="16" width="5.2" height="14" fill="rgba(0, 0, 0, 0.2)" />
+                  <rect x="21.2" width="4.4" height="14" fill="rgba(0, 0, 0, 0.15)" />
+                  <rect x="25.6" width="3.6" height="14" fill="rgba(0, 0, 0, 0.11)" />
+                  <rect x="29.2" width="2.8" height="14" fill="rgba(0, 0, 0, 0.08)" />
+                </g>
+              </svg>
+              <span>The Pyatkov Index</span>
+            </p>
+            {/* The tagline, spoken in the hero's two voices: the counted idea in
+                the quoted serif, the claim on the peach block. The words are the
+                WebSite node's description, verbatim — only the dress is added. */}
+            <p class="foot-tagline">Most passport rankings <span class="count-word">count</span> destinations. The Pyatkov Index <span class="block-word">weights</span> each one by the economy, travel, development, and diaspora behind it.</p>
+          </div>
+          <nav class="footer-col" aria-label="Site sections">
+            <p class="foot-head">The index</p>
+            <ul class="footer-links">
+              {nav.map((item) => (
+                <li><a href={item.href}>{item.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+          <div class="footer-col">
+            <p class="foot-head">The data</p>
+            <ul class="footer-links">
+              <li><code>imorte/passport-index-data</code></li>
+              <li><a href={`${base}updates/`}>Government corrections, cell by cell</a></li>
+              <li>World Bank API</li>
+              <li>UNDP Human Development Report</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-base">
+          <p>The index is fully reproducible from the repository.</p>
+          {/* Visible counterpart to the Organization node — a structured-data claim with
+              nothing on the page behind it is a guidelines violation. */}
+          <a class="foot-repo" href="https://github.com/JackUait/pyatkov-index">
+            The Pyatkov Index on GitHub
+            <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3h8v8M13 3 3.5 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </div>
       </div>
     </footer>
     <script>

@@ -8,6 +8,9 @@ import { LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { hundredCells } from '../../lib/hundred.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
+import updates from '../../data/updates.json';
+import { destinationLede, destinationLine, destinationNews, stampLabel } from '../../lib/country-news.ts';
+import { accessPhrase, sourceHost, tierClass } from '../../lib/updates-copy.ts';
 import Flag from '../../components/Flag.astro';
 
 export function getStaticPaths() {
@@ -71,6 +74,11 @@ const country = countryNode({
 // this destination lets in at (or before) the border.
 const hundred = hundredCells(d.score);
 const withheld = Math.max(0, 100 - d.score);
+
+// The changelog, asked only what was decided at this border. One decree can name dozens of
+// passports, so the row names a few and says how many it is holding back.
+const news = destinationNews(updates, d.iso3);
+const NAMED = 6;
 ---
 <Base
   title={`Who can enter ${theName} - Pyatkov Index`}
@@ -154,6 +162,55 @@ const withheld = Math.max(0, 100 - d.score);
   </div>
   <p id="no-results" hidden>No passports match your filter. Try a country name like Portugal, or a code like PRT.</p>
   </div>
+
+  {/* What this border itself decided, out of the ledger. The passport pages run the same
+      log from the other side: there the destination acts, here it is the given and the
+      passports are named. */}
+  <section class="cnews" aria-label={`Changes at ${theName}'s border`}>
+    <h2>What changed at this border</h2>
+    <p class="cnews-lede">{destinationLede(updates, news, theName)}</p>
+
+    {news.length > 0 && (
+      <ol class="cnews-log">
+        {news.map((e) => (
+          <li class={`cnews-row is-${e.direction}`}>
+            <time datetime={e.effective}>{stampLabel(e.effective)}</time>
+            <div class="cnews-say">
+              <p class="cnews-line">{destinationLine(e)}</p>
+              <p class="cnews-shift">
+                <span class={`tier-key ${tierClass(e.from)}`}>{accessPhrase(e.from)}</span>
+                <span class="cnews-arrow" aria-hidden="true">→</span>
+                <span class={`tier-key ${tierClass(e.to)}`}>{accessPhrase(e.to)}</span>
+                {e.sunset && <span class="cnews-sunset">lapses {stampLabel(e.sunset)}</span>}
+              </p>
+              <ul class="cnews-who">
+                {e.passports.slice(0, NAMED).map((p) => (
+                  <li>
+                    <a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false">
+                      <Flag iso2={p.iso2} />{displayName(p.iso3, p.name)}
+                    </a>
+                  </li>
+                ))}
+                {e.passports.length > NAMED && (
+                  <li class="cnews-rest">
+                    <a href={`${base}updates/`}>and {e.passports.length - NAMED} more →</a>
+                  </li>
+                )}
+              </ul>
+            </div>
+            <a class="cnews-src" href={e.source} rel="nofollow noopener" target="_blank">
+              {sourceHost(e.source)}<span aria-hidden="true"> ↗</span>
+              <span class="sr-only"> — source for this change, opens in a new tab</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    <p class="cnews-all">
+      <a href={`${base}updates/`}>All {updates.totals.events} corrections across the index →</a>
+    </p>
+  </section>
 
   <style>
     .crumbs {

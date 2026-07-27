@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   countryPath,
+  createDwell,
   createPrefetcher,
   createScrollPin,
   createScrollTuck,
@@ -142,6 +143,71 @@ describe('createPrefetcher', () => {
     prefetch('/destination/fra/');
     prefetch('/passport/usa/');
     expect(asked).toEqual(['/passport/usa/', '/destination/fra/']);
+  });
+});
+
+describe('createDwell', () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  const collect = () => {
+    const asked: string[] = [];
+    const dwell = createDwell(80, (url) => asked.push(url));
+    return { asked, dwell };
+  };
+
+  it('waits out the dwell before asking, so a resting pointer still warms its row', () => {
+    const { asked, dwell } = collect();
+    dwell.hover('/destination/usa/');
+    vi.advanceTimersByTime(79);
+    expect(asked).toEqual([]);
+    vi.advanceTimersByTime(1);
+    expect(asked).toEqual(['/destination/usa/']);
+  });
+
+  it('asks for nothing on a swipe across many links', () => {
+    const { asked, dwell } = collect();
+    for (const iso of ['usa', 'fra', 'deu', 'gbr', 'esp']) {
+      dwell.hover(`/destination/${iso}/`);
+      vi.advanceTimersByTime(20);
+    }
+    dwell.hover(null);
+    vi.advanceTimersByTime(500);
+    expect(asked).toEqual([]);
+  });
+
+  it('warms only the link the swipe settles on', () => {
+    const { asked, dwell } = collect();
+    dwell.hover('/destination/usa/');
+    vi.advanceTimersByTime(20);
+    dwell.hover('/destination/fra/');
+    vi.advanceTimersByTime(80);
+    expect(asked).toEqual(['/destination/fra/']);
+  });
+
+  it('does not restart the clock for jitter within the same link', () => {
+    const { asked, dwell } = collect();
+    dwell.hover('/destination/usa/');
+    vi.advanceTimersByTime(60);
+    dwell.hover('/destination/usa/');
+    vi.advanceTimersByTime(20);
+    expect(asked).toEqual(['/destination/usa/']);
+  });
+
+  it('hovering off every link cancels the pending ask', () => {
+    const { asked, dwell } = collect();
+    dwell.hover('/destination/usa/');
+    dwell.hover(null);
+    vi.advanceTimersByTime(500);
+    expect(asked).toEqual([]);
+  });
+
+  it('cancel drops whatever is pending', () => {
+    const { asked, dwell } = collect();
+    dwell.hover('/destination/usa/');
+    dwell.cancel();
+    vi.advanceTimersByTime(500);
+    expect(asked).toEqual([]);
   });
 });
 
