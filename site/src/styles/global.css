@@ -421,6 +421,18 @@ li { margin: 6px 0; }
      class but drops nothing, and a jolt with no mass behind it is just the
      title twitching a second after the page has settled. */
   .hero:has(.block-word) h1 { animation: land-jolt 0.5s ease-out 0.97s; }
+  /* The whole entrance waits for its dresser: the decode can only ride a
+     drift that hasn't run, so a pre-paint attribute (Base.astro, the
+     data-top pattern) holds every mark of this choreography at its
+     from-frame until count-scramble.ts releases them on one clock. The
+     block and jolt wait too — the argument is count first, then weight,
+     in any timeline. Scoped by :has to the hero that counts: no other
+     page's block may wait on a dresser its scripts never load. */
+  :root[data-count-hold] .hero:has(.count-letters) .count-letters i,
+  :root[data-count-hold] .hero:has(.count-letters) .block-word,
+  :root[data-count-hold] .hero:has(.count-letters) h1 {
+    animation-play-state: paused;
+  }
 }
 @keyframes drift-in {
   from { opacity: 0; transform: translateY(-0.25em); }

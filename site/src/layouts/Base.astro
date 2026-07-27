@@ -168,6 +168,19 @@ const nav = [
     <script is:inline>
       if (window.scrollY <= 8) document.documentElement.toggleAttribute('data-top', true);
     </script>
+    {/* The hero's counting verb must always enter as the Matrix decode, but
+        its drift-in runs on the CSS clock from first paint while the decode
+        (count-scramble.ts) runs from astro:page-load — a race the module lost
+        on slow loads, landing the letters plain. Held here, before first
+        paint, the same way data-top is; the module releases it so both clocks
+        start together. The CSS scopes the hold to the hero that counts, and
+        the timeout frees the word on any page whose scripts never come. */}
+    <script is:inline>
+      document.documentElement.toggleAttribute('data-count-hold', true);
+      window.__countHoldSafety = setTimeout(function () {
+        document.documentElement.removeAttribute('data-count-hold');
+      }, 3000);
+    </script>
     {/* is:inline keeps Astro's parser off the payload; set:html with a single
         JSON.stringify escapes it exactly once. */}
     {graph.length > 0 && (
@@ -253,11 +266,13 @@ const nav = [
       import { initCountryDrawer } from '../lib/country-drawer.ts';
       import { initPageTransition } from '../lib/page-transition.ts';
       import { initArrival } from '../lib/arrival.ts';
+      import { initCountHold } from '../lib/count-scramble.ts';
       initNavElevation();
       initNavCurrent();
       initCountryDrawer();
       initPageTransition(import.meta.env.BASE_URL);
       initArrival();
+      initCountHold();
     </script>
   </body>
 </html>
