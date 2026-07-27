@@ -405,8 +405,11 @@ li { margin: 6px 0; }
 /* Load order tells the argument: "count" ticks itself in letter by letter
    on a metronome beat — counting — then "weighs" falls under gravity and
    lands hard — squashing against the baseline, rebounding once, and
-   jolting the whole headline on impact. The last letter settles at 0.79s,
-   just as the block begins its 0.72s fall. */
+   jolting the whole headline on impact. The sentence's period is the sixth
+   tick, settling at 0.87s while the block is already mid-fall (0.72s).
+   Each tick arrives as a digit flickering through random numbers and locks
+   into its letter on landing — count-scramble.ts reads these delays back,
+   so this block stays the one clock for both effects. */
 @media (prefers-reduced-motion: no-preference) {
   .hero .count-letters i { animation: drift-in 0.35s ease-out backwards; }
   .hero .count-letters i:nth-child(1) { animation-delay: 0.12s; }
@@ -522,20 +525,21 @@ li { margin: 6px 0; }
   align-items: start;
   padding: 64px 0 44px;
 }
-/* 62px is the widest the block line fits in the column — one notch more and
-   it wraps to four lines. 1.06 leading, not the base 1.08: the reference
-   tightens as display type grows, and three lines this large read as one
-   block only when the leading bites. */
+/* The couplet: one sentence per line, so the longest line is now
+   "Most rankings count." — 54px is the widest it fits in the column; one
+   notch more and the sentence folds mid-line. The base hero's 16ch cap is
+   lifted: the column and the <br> own the breaks here. */
 .hero-split h1 {
   margin: 0;
-  font-size: clamp(38px, 5.9vw, 62px);
+  font-size: clamp(38px, 5.5vw, 54px);
   line-height: 1.06;
+  max-width: none;
 }
 /* The shell stops growing at 980px, so the columns — and the deck's height —
    are fixed from there up. The type must be too, or a vw-sized headline runs
-   short of the deck until the vw curve catches up at ~1050px. */
+   short of the deck until the vw curve catches up. */
 @media (min-width: 980px) {
-  .hero-split h1 { font-size: 62px; }
+  .hero-split h1 { font-size: 54px; }
 }
 .hero-deck {
   display: flex;
@@ -543,27 +547,12 @@ li { margin: 6px 0; }
   align-items: flex-start;
   gap: 12px;
 }
-/* The deck opens with the claim itself: the tagline's first sentence cut as
-   a standfirst — full ink, one serif step up — so the deck answers the
-   headline's weight instead of trailing it in gray. Same words, same serif;
-   only the hierarchy is new. */
-.deck-lede {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  line-height: 1.42;
-  letter-spacing: -0.1px;
-  color: var(--ink-95);
-  margin: 0;
-  /* Even rag: without it the first line ends on "isn't", splitting the
-     negation from its complement. */
-  text-wrap: balance;
-}
 .hero-deck .tagline {
   margin: 0;
   text-wrap: pretty;
 }
-/* One wider step before the actions than between the two serif blocks, so
-   the deck reads lede → support → do, not three even items. */
+/* One wider step before the actions than after the serif block, so the
+   deck reads say → do, not two even items. */
 .hero-deck .actions { margin-top: 14px; }
 @media (max-width: 860px) {
   .hero-split {
@@ -757,10 +746,41 @@ li { margin: 6px 0; }
    hold a column, not a stage. */
 .doors .doors-lede { padding: 0; }
 .doors-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
-/* The headline carries no device: "in" used to stand inside a door poured
-   to the world average, but the block cropped the word and its pour set
-   the line jumping on every load. The wall behind it is the drawing; the
-   headline just says the thing. */
+/* The headline's device: "in" spells itself with a door for an i. The
+   first try put the whole word inside a slab and died of it — cropped the
+   word, jumped the line — so now no letter wears anything and no glyph is
+   framed: one letter simply IS a door of the wall. The bar's box is fixed
+   and empty, so nothing can crop; only the paint pours, so the line
+   cannot jump. The whole phrase is drawn in the i's own hand — a
+   wordmark, not set type. Every letter is built from the same two shapes
+   the door-i is: flat bars wearing the wall's 3px corner, and true
+   circles for the bowls and the tittle. The words stay ink; the i alone
+   carries color — its stem the wall's 5:9 door poured to a clean half,
+   marigold below, straw above (a clip keeps the tide line square inside
+   the rounded slab): a door ajar as emblem, not datum — the tagline
+   alone says the measured average. The dot rides dry above the tide. An
+   sr-only twin holds the real words, the same arrangement as the front
+   page's counted letters; the drawing scales with the type it replaced:
+   100 viewBox units to the em, baseline at 72, so the cap line lands
+   where Inter's did. */
+.who-mark {
+  display: inline-block;
+  height: 0.97em; /* viewBox is 97 tall: cap 72 + the g's descender */
+  vertical-align: -0.25em; /* sinks the descender; baseline back on the line */
+}
+.who-mark .bar { fill: currentColor; }
+.who-mark .bowl {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 11;
+  stroke-linejoin: round;
+}
+.who-mark .straw { fill: var(--straw); }
+.doorway {
+  fill: var(--color-marigold);
+  transform-box: fill-box;
+  transform-origin: bottom;
+}
 .doors-figure { position: relative; }
 .doors-wall {
   display: grid;
@@ -827,7 +847,7 @@ li { margin: 6px 0; }
    from the wall to plate scale, each count stamped on its own door like a
    house number, the label beside it. The number sits at the plate's
    center, so on the majority door it straddles the fill line the same way
-   the headline's "in" stands in its tide. */
+   the headline's doorway holds its tide. */
 .doors-read {
   display: flex;
   flex-direction: column;
@@ -889,26 +909,12 @@ li { margin: 6px 0; }
 /* The plate that is spotlighting the wall inks its own label up, so the
    filter reads at both ends. */
 .ds:hover .ds-label { color: var(--ink-95); }
-/* The wall's caption, and only the wall's: it sits under the doors it
-   describes rather than in the rail, so the sentence and the thing it
-   names are never separated — least of all on a phone, where the rail
-   used to promise a wall that was still a screen away. */
-.doors-note {
-  margin: 16px 0 0;
-  font-size: var(--text-body-sm);
-  line-height: var(--leading-body-sm);
-  color: var(--color-slate);
-  /* No measure of its own: the caption is one sentence and a link, and the
-     wall it sits under is the only width it should answer to. Capping it
-     shorter than the wall broke a label into a paragraph. */
-}
-/* The link is two words; it wraps as one or not at all, never leaving
-   "work" alone on a line under the wall. */
-.doors-note a { white-space: nowrap; }
 /* The wall builds door by door, top-left to bottom-right, behind the page
    rise; each door takes the load reveal's small lift while its marigold
    pours up from the sill. The three plates fill in reading order while the
-   wall is still rising. Nothing in the headline moves. */
+   wall is still rising. The headline itself never moves — the old jump is
+   not invited back — but the door-drawn i pours with the wall's first
+   course: paint only, inside a box that never changes size. */
 @media (prefers-reduced-motion: no-preference) {
   .door {
     animation:
@@ -916,12 +922,18 @@ li { margin: 6px 0; }
       door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
     animation-delay: calc(0.25s + var(--i) * 3ms);
   }
+  .doorway { animation: pour-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.25s backwards; }
   .ds-plate { animation: door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
   .ds-all .ds-plate { animation-delay: 0.35s; }
   .ds-half .ds-plate { animation-delay: 0.45s; }
 }
 @keyframes door-open {
   from { --open: 0; }
+}
+/* The wordmark's pour is a transform, not a gradient sweep: the marigold
+   rect rises from the sill inside its clip — same tide, drawn in SVG. */
+@keyframes pour-rise {
+  from { transform: scaleY(0); }
 }
 @media (max-width: 860px) {
   /* The rail will not sit beside a readable wall: stack them, lede then
@@ -1749,24 +1761,46 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .hl-grid { grid-template-columns: 1fr; }
 }
 
-/* ---- The heaviest doors: the score's own ledger ----
+/* ---- The biggest doors: the score's own ledger ----
    Two facing pages set bare on the paper — the doors that pay the score in,
-   and the doors that withhold it. No meters and no card shell: whichever
-   column is lighter always rendered as near-empty rails beside a full one,
-   and a rail that never fills reads as a stuck loader. The numeral carries
-   the weight instead, one step up like the openness table's score once its
-   meter went; the tier-key swatch says how each open door opens. The closed
-   page carries no swatches at all — one tier fills it, priced once by its
-   intro — so the spread reads earning ink against locked gray before any
+   and the doors that withhold it — ruled like a spread: a hairline fold down
+   the gutter, both pages ruled to one shared baseline (the shorter keeps
+   blank ledger rows — the paper itself says "this is all"). No meters and no
+   card shell: whichever column is lighter always rendered as near-empty
+   rails beside a full one, and a rail that never fills reads as a stuck
+   loader. The numeral carries the weight instead, one step up like the
+   openness table's score once its meter went; the tier swatch trails the
+   name to say how each open door opens, priced by the row's hover tip — the
+   spread's one line of chrome. The closed page carries no swatches at all —
+   one tier fills it — and its rules run dashed like the map's closed-door
+   chips, so the spread reads earning ink against locked gray before any
    label does. The name is the row's only link, stretched across the row as
    in the tables; the row answers in its tier's wash. */
 .rank-cols {
+  position: relative;
   display: grid;
-  gap: 8px 48px;
+  gap: 0 64px;
   align-items: start;
 }
 @media (min-width: 920px) {
   .rank-cols { grid-template-columns: 1fr 1fr; }
+  /* The spread's fold. */
+  .rank-cols::before {
+    content: '';
+    position: absolute;
+    top: 56px;
+    bottom: 16px;
+    left: calc(50% - 0.5px);
+    width: 1px;
+    background: var(--border-hairline);
+  }
+  /* Facing pages share their ruling: title and list sit on the same two
+     subgrid rows, so the columns' tops always meet. */
+  .ledger-page {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 2;
+  }
 }
 .rank-list {
   list-style: none;
@@ -1816,9 +1850,16 @@ td.down::before { content: '\25BC'; } /* down triangle */
 /* The locked tier's 18% black all but vanishes at that mix; it answers in
    plain gray instead. */
 .rank-list li.tier-visa-required:hover { background: rgba(0, 0, 0, 0.04); }
-.rank-list .tier-key,
-.rank-list li > .wt-val { justify-self: end; }
+/* How the door opens, worn after the name — the numeral stands alone. */
+.door-how {
+  width: 9px;
+  height: 9px;
+  border-radius: 2.5px;
+  background: var(--tier);
+  flex: none;
+}
 .rank-list .wt-val {
+  justify-self: end;
   min-width: 38px;
   text-align: right;
   font-size: 15px;
@@ -1826,6 +1867,49 @@ td.down::before { content: '\25BC'; } /* down triangle */
   font-variant-numeric: tabular-nums;
   color: var(--ink-95);
 }
+/* Blank ledger rows: only the side-by-side spread rules its pages level.
+   The nbsp wears .wt-val so a blank row stands exactly one entry tall. */
+.rank-blank { pointer-events: none; }
+.rank-list .rank-blank { display: none; counter-increment: none; }
+@media (min-width: 920px) { .rank-list .rank-blank { display: grid; } }
+.rank-list .rank-blank::before { content: ''; }
+/* The row's hover tip: how this door opens, in the methodology's words —
+   the dark floating chrome the reference reserves for transient layers. It
+   waits 300ms so a pointer passing through the list doesn't strobe, and it
+   ignores the pointer so it never traps the row's own hover. */
+.rank-tip {
+  position: absolute;
+  left: 30px;
+  bottom: calc(100% - 4px);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 7px 11px;
+  border-radius: 6px;
+  background: var(--color-midnight);
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 140ms ease, transform 140ms ease;
+  pointer-events: none;
+}
+.rank-tip b { font-weight: 600; color: var(--color-white); }
+.rank-list li:hover .rank-tip {
+  opacity: 1;
+  transform: none;
+  transition-delay: 300ms;
+}
+/* The locked page's inks: numerals in gray, rules dashed — a shade denser
+   than the open page's solid hairlines, which dashing would halve. */
+.ledger-locked .rank-list { border-top: 1px dashed rgba(0, 0, 0, 0.16); }
+.ledger-locked .rank-list li { border-bottom: 1px dashed rgba(0, 0, 0, 0.12); }
+.ledger-locked .wt-val { color: var(--color-slate); }
 
 /* ---- Full destination map: the score bar, unpacked ----
    Every foreign destination, tier by tier — each tier a plate washed in its
@@ -3015,7 +3099,11 @@ footer {
    window: the drawer is narrow at any viewport. */
 .drawer-content .stats { gap: 10px; }
 .drawer-content .stats dd { font-size: 26px; }
+/* The drawer reads one page at a time: no fold, no shared baseline. */
 .drawer-content .rank-cols { grid-template-columns: 1fr; }
+.drawer-content .rank-cols::before { content: none; }
+.drawer-content .ledger-page { display: block; }
+.drawer-content .rank-list .rank-blank { display: none; }
 /* Sticky headers offset against the drawer's own scrollport, not the nav. */
 .drawer-content thead th { top: 0; }
 /* The sheet is phone-width at any viewport, so its tables take the same
@@ -3256,6 +3344,7 @@ footer {
   :root[data-to='ink'] .hero .count-letters i:nth-child(3) { animation-delay: 0.10s; }
   :root[data-to='ink'] .hero .count-letters i:nth-child(4) { animation-delay: 0.14s; }
   :root[data-to='ink'] .hero .count-letters i:nth-child(5) { animation-delay: 0.18s; }
+  :root[data-to='ink'] .hero .count-letters i:nth-child(6) { animation-delay: 0.22s; }
   :root[data-to='ink'] .hero .block-word { animation-delay: 0.06s; }
   :root[data-to='ink'] .hero h1 { animation-delay: 0.31s; }
   :root[data-to='ink'] .rank-table tbody tr { animation-delay: 0.42s; }
@@ -3287,6 +3376,9 @@ footer {
     --open: 0;
     opacity: 0;
   }
+  /* The headline is the first thing the edge uncovers, so its doorway pours
+     just behind the wipe — ahead of the plates, ahead of the wall. */
+  :root[data-to='doors'] .doorway { animation-delay: 0.08s; }
   :root[data-to='doors'] .ds-all .ds-plate { animation-delay: 0.15s; }
   :root[data-to='doors'] .ds-half .ds-plate { animation-delay: 0.22s; }
 

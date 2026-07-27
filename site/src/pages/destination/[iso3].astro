@@ -124,13 +124,13 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   title={`Who can enter ${theName} - Pyatkov Index`}
   description={`${name}: openness rank #${d.rank} of ${totalDests}, score ${fmt(d.score)}/100. Of ${holders.length} foreign passports, ${d.counts['visa-free']} ${verbFor(d.counts['visa-free'], 'enter')} visa-free and ${d.counts['visa-on-arrival']} on arrival; ${d.counts['e-visa'] + d.counts['visa-required']} must apply first.`}
   ogType="article"
-  breadcrumb={[{ name: 'Openness', href: `${base}openness/` }, { name: `Who can enter ${theName}` }]}
+  breadcrumb={[{ name: 'Who gets in', href: `${base}openness/` }, { name: `Who can enter ${theName}` }]}
   mainEntityId={countryId}
   basedOnId={ID.dataset}
   jsonld={country}
 >
   <nav class="crumbs" aria-label="Breadcrumb">
-    <a href={`${base}openness/`}>Openness</a> <span aria-hidden="true">/</span> <span aria-current="page">Who can enter {theName}</span>
+    <a href={`${base}openness/`}>Who gets in</a> <span aria-hidden="true">/</span> <span aria-current="page">Who can enter {theName}</span>
   </nav>
 
   <section class="passport-hero">
