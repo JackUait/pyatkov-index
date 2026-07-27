@@ -2,8 +2,8 @@
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
-import { displayName, flagEmoji, fmt, searchIndex, tiedRanks } from '../lib/format.ts';
-import { RIBBON_FAINT, weightShade } from '../lib/weight-shade.ts';
+import { displayName, flagEmoji, scoreParts, searchIndex, tiedRanks } from '../lib/format.ts';
+import { RIBBON_FAINT, TAIL_FAINT, rowBar, rowBarHover, tailShade, weightShade } from '../lib/weight-shade.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
@@ -28,15 +28,30 @@ for (const d of ribbon) {
 const halfShare = share(running);
 // Only the extreme gets an in-mark label; anything narrower can't fit one.
 const labelShare = 4;
-// Every slat wears its own step of the amber ramp: strength is the square
-// root of its share of the heaviest, which stretches the long tail's tiny
-// differences into visible steps instead of one flat wash. Build-time hex.
+// Two inks, the logotype's law: the heavy half runs the amber ramp, the tail
+// the neutral one, and the boundary at halfShare is a step between them.
+// Build-time hex, so no slat pays for color math at runtime.
+//
+// The two halves earn their shade differently because their weights are shaped
+// differently. Across the head, weight falls off steeply enough to drive the
+// ramp itself: strength is the square root of the slat's share of the heaviest,
+// which stretches the near-misses apart. The tail is 166 destinations packed
+// into a range so narrow that the same rule paints them all one flat gray —
+// there, order is the only signal left, so strength is the slat's place in the
+// tail, decaying evenly from the boundary to the last slat on the strip. The
+// ramp itself quantizes that into bands, so the decay reads as steps.
 const maxShare = share(ribbon[0].weight);
-const shadeFor = (w: number) => weightShade(Math.sqrt(share(w) / maxShare));
+const tailCount = ribbon.length - halfCount;
+const shadeFor = (w: number, i: number) =>
+  i < halfCount
+    ? weightShade(Math.sqrt(share(w) / maxShare))
+    : tailShade(1 - (i - halfCount) / (tailCount - 1));
 // The phone legend keys each caption with the shade of its group's median
 // destination, so the swatches follow the data instead of naming two fills.
-const headSwatch = shadeFor(ribbon[Math.floor(halfCount / 2)].weight);
-const tailSwatch = shadeFor(ribbon[halfCount + Math.floor((ribbon.length - halfCount) / 2)].weight);
+const headMedian = Math.floor(halfCount / 2);
+const tailMedian = halfCount + Math.floor((ribbon.length - halfCount) / 2);
+const headSwatch = shadeFor(ribbon[headMedian].weight, headMedian);
+const tailSwatch = shadeFor(ribbon[tailMedian].weight, tailMedian);
 const tipFor = (d: (typeof ribbon)[number], i: number) =>
   `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · ${share(d.weight).toFixed(2)}% of world weight · #${i + 1} of ${ribbon.length}`;
 // Shared ranks are real ties, and the table says so: repeated rank values get
@@ -83,7 +98,10 @@ const itemList = {
     </p>
   </section>
 
-  <figure class="ribbon-figure" style={`--half:${halfShare.toFixed(2)}%;--ribbon-faint:${RIBBON_FAINT}`}>
+  <figure
+    class="ribbon-figure"
+    style={`--half:${halfShare.toFixed(2)}%;--ribbon-faint:${RIBBON_FAINT};--tail-faint:${TAIL_FAINT}`}
+  >
     <figcaption class="ribbon-annot">
       <span class="annot-half" style={`--swatch:${headSwatch}`}><b>{halfCount} destinations</b> carry half the world's weight</span>
       <span class="annot-tail" style={`--swatch:${tailSwatch}`}>the other <b>{ribbon.length - halfCount}</b> share the rest</span>
@@ -99,7 +117,7 @@ const itemList = {
           class="seg"
           href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"
           data-tip={tipFor(d, i)}
-          style={`--w:${share(d.weight).toFixed(4)}%;--c:${shadeFor(d.weight)}`}
+          style={`--w:${share(d.weight).toFixed(4)}%;--c:${shadeFor(d.weight, i)}`}
         >
           {share(d.weight) >= labelShare && (
             <span class="seg-label"><b>{d.iso2}</b><span>{share(d.weight).toFixed(1)}%</span></span>
@@ -114,6 +132,7 @@ const itemList = {
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
     <h2>Passport ranking</h2>
+    <span class="count">{rankings.passports.length} passports</span>
     <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   </div>
   <div class="table-scroll">
@@ -127,7 +146,7 @@ const itemList = {
     </thead>
     <tbody>
       {rankings.passports.map((p) => (
-        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score} style={`--w:${p.score}%`}>
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score} style={`--bar:${rowBar(p.score)};--bar-h:${rowBarHover(p.score)}`}>
           <td>
             {p.rank <= 3 ? (
               <span class={`medal medal-${p.rank}`}>{p.rank}</span>
@@ -136,7 +155,7 @@ const itemList = {
             )}
           </td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a><span class="code" aria-hidden="true">{p.iso3}</span></td>
-          <td class="score-cell">{fmt(p.score)}</td>
+          <td class="score-cell">{scoreParts(p.score).int}<span class="dec">.{scoreParts(p.score).dec}</span></td>
         </tr>
       ))}
     </tbody>
@@ -160,6 +179,7 @@ const itemList = {
         table: '#rankings',
         filter: '#filter',
         noResults: '#no-results',
+        count: { el: '#rankings-card .count', noun: 'passports' },
         initialSort: 'rank',
         defaultAsc: { rank: true, name: true, score: false },
       });

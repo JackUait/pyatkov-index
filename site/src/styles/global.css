@@ -30,6 +30,7 @@
   --color-sky-wash: #62aef0;
   --color-midnight: #02093a;
   --color-peach: #f6d5b8;
+  --color-mocha: #b18164;
 
   --ink-95: rgba(0, 0, 0, 0.95);
   --ink-60: rgba(0, 0, 0, 0.6);
@@ -524,10 +525,12 @@ li { margin: 6px 0; }
 
 /* ---- Weight ribbon: the argument, drawn ----
    Every destination as one proportional slat, heaviest first, straight on
-   the paper like a newspaper chart. Each slat wears its own step of one
-   amber ramp — deepest for the heaviest, thinning to a pale wash down the
-   tail — so shade restates the weight its width already draws, and a
-   midnight bracket measures the heavy half. */
+   the paper like a newspaper chart. Two inks, the same law the logotype
+   wears: the heavy half steps down an amber ramp, the tail steps down a
+   neutral one, and the boundary between them is a hard step. Within each
+   half a slat wears its own step of that ramp, deepest for the heaviest,
+   so shade restates the weight its width already draws, and a midnight
+   bracket measures the heavy half. */
 .ribbon-figure {
   position: relative;
   /* The bottom margin alone separates the plate from the rankings card. */
@@ -580,9 +583,14 @@ li { margin: 6px 0; }
   height: 96px;
   margin-top: 8px;
   align-items: stretch;
-  /* The pale end of the ramp sits underneath, so any sub-pixel seam between
-     fractional slat edges reads as the lightest shade, never as paper. */
-  background: var(--ribbon-faint);
+  /* The pale end of each ramp sits underneath its own half, so any sub-pixel
+     seam between fractional slat edges reads as that half's lightest shade,
+     never as paper and never as the wrong ink. Two flat blocks, hard step. */
+  background: linear-gradient(
+    to right,
+    var(--ribbon-faint) 0 var(--half),
+    var(--tail-faint) var(--half) 100%
+  );
   border-radius: var(--radius-plate);
   overflow: hidden;
 }
@@ -1365,15 +1373,14 @@ th[aria-sort] { color: var(--color-ink); }
   font-variant-numeric: tabular-nums;
 }
 
-/* Ink-60, not stone: the rank digits sit on the marigold wash, which eats
-   stone's AA margin. */
+/* Ink-60: the rank is wayfinding, one step quieter than the name it ranks. */
 .rank-table td:nth-child(1) { color: var(--ink-60); }
 
-/* Fixed gutters: a narrow rank rail and a slim right rail for the values.
-   The name column takes all the rest — the chart needs no column of its
-   own, because the row itself draws it. */
+/* Fixed gutters: a narrow rank rail and a slim right rail for the values,
+   sized for the digits plus their tier-key chip. The name column takes
+   all the rest. */
 .rank-table th:nth-child(1) { width: 64px; }
-.rank-table th:nth-child(3) { width: 92px; }
+.rank-table th:nth-child(3) { width: 112px; }
 
 /* Names carry medium weight so they anchor the row over the wash. */
 .rank-table tbody td a { font-weight: 500; }
@@ -1397,69 +1404,93 @@ th[aria-sort] { color: var(--color-ink); }
 }
 .access-table td:nth-child(3) { color: var(--color-stone); }
 
-/* ---- Score bar: every row keeps charting the ribbon's argument ----
-   The row itself is the chart. Each <tr> carries --w, its score on the
-   0–100 scale that spans the full row, and its paper is washed marigold
-   exactly that far — under the rank, the name, everything. The wash edge
-   alone marks the score: every saturated end-tick tried here (full-height,
-   bottom notch, baseline dash) read as clutter against 199 rows of soft
-   edges, so the bar ends the way the paper does — quietly. The wash stays
-   this light so every ink on the row keeps its AA margin; the staircase of
-   edges down the table is the chart. */
-.rank-table tbody tr {
-  background:
-    linear-gradient(
-        color-mix(in srgb, var(--color-marigold) 13%, transparent),
-        color-mix(in srgb, var(--color-marigold) 13%, transparent)
-      )
-      left / var(--w, 0%) 100% no-repeat;
+/* ---- Score ink: every row keeps quoting the ribbon's argument ----
+   The rows are a ledger now, not a chart: every geometry that spanned
+   the row — the marigold wash, its slatted cut, the baseline bar — read
+   as spreadsheet highlighting or as heavy rules the moment the top of
+   the ranking stacked its near-equal scores. What survives is the ink:
+   each <tr> carries --bar, the ribbon's amber ramp read at its score
+   (weight-shade.ts, build-time hex), and the score wears it as a tier-key
+   chip after the digits. Deep amber at the podium, marigold mid-table,
+   pale straw at the tail — the strip above restated down the value rail,
+   in color alone, which no clustering can smear. */
+.score-cell::after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+  border-radius: 3px;
+  background: var(--bar, transparent);
+  /* Optically center the chip on the numerals: baseline-bottom sits low. */
+  vertical-align: 1px;
+}
+/* Under the pointer the chip presses strictly darker in its own hue; the
+   neutral film the generic row hover lays over the cells does the rest. */
+.rank-table tbody tr:hover .score-cell::after {
+  background: var(--bar-h, var(--bar, transparent));
 }
 /* The datum the bar shadows: one step up in size and weight, because the
-   number now speaks without a meter beside it. */
+   number now speaks without a meter beside it. The decimal steps back to
+   quiet ink — the integer is what separates ranks, and the tenth should
+   whisper the precision, not shout it. */
 .score-cell {
   font-size: 15px;
   font-weight: 650;
 }
-/* The rows ink in left-to-right once the card has risen — the ribbon's
-   sweep, quoted row by row. The first rows stagger in sequence; rows past
-   the stagger use the latest delay so no lower row ever fills before a
-   higher one on tall viewports. */
+.score-cell .dec {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-60);
+}
+/* The chips pop in once the card has risen — the medals' own entrance,
+   quoted down the value rail. Only the rows the load can show get the
+   entrance: staggering all 199 would fire invisibly below the fold and
+   hold every chip blank through the delay for nothing. */
 @media (prefers-reduced-motion: no-preference) {
-  .rank-table tbody tr { animation: ink-sweep 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) 0.85s backwards; }
-  .rank-table tbody tr:nth-child(1) { animation-delay: 0.4s; }
-  .rank-table tbody tr:nth-child(2) { animation-delay: 0.45s; }
-  .rank-table tbody tr:nth-child(3) { animation-delay: 0.5s; }
-  .rank-table tbody tr:nth-child(4) { animation-delay: 0.55s; }
-  .rank-table tbody tr:nth-child(5) { animation-delay: 0.6s; }
-  .rank-table tbody tr:nth-child(6) { animation-delay: 0.65s; }
-  .rank-table tbody tr:nth-child(7) { animation-delay: 0.7s; }
-  .rank-table tbody tr:nth-child(8) { animation-delay: 0.75s; }
-  .rank-table tbody tr:nth-child(9) { animation-delay: 0.8s; }
+  .rank-table tbody tr:nth-child(-n + 9) .score-cell::after {
+    animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s backwards;
+  }
+  .rank-table tbody tr:nth-child(2) .score-cell::after { animation-delay: 0.45s; }
+  .rank-table tbody tr:nth-child(3) .score-cell::after { animation-delay: 0.5s; }
+  .rank-table tbody tr:nth-child(4) .score-cell::after { animation-delay: 0.55s; }
+  .rank-table tbody tr:nth-child(5) .score-cell::after { animation-delay: 0.6s; }
+  .rank-table tbody tr:nth-child(6) .score-cell::after { animation-delay: 0.65s; }
+  .rank-table tbody tr:nth-child(7) .score-cell::after { animation-delay: 0.7s; }
+  .rank-table tbody tr:nth-child(8) .score-cell::after { animation-delay: 0.75s; }
+  .rank-table tbody tr:nth-child(9) .score-cell::after { animation-delay: 0.8s; }
 }
 @keyframes meter-ink {
   from { transform: scaleX(0); }
 }
 
 /* ---- Podium medals: the top three ranks as character marks ----
-   Gold, silver, bronze drawn from the system's own cast — marigold, the
-   neutral wash, peach. The number stays inside the circle, so color never
-   carries the rank alone, and negative margins keep the row height even. */
+   Gold, silver, bronze built the way the reference builds its avatar
+   marks: a flat fill inside a 2px circle of the same metal, one step
+   deeper — marigold in saffron, a pale neutral in the logotype's gray
+   ink, peach in mocha. Every step is opaque: the old translucent silver
+   let the row's amber wash grime it, and bronze all but dissolved into
+   the wash it nearly matched. The rim now carries the separation, so
+   each medal reads as its own object on any wash depth. The number
+   stays inside the circle, so color never carries the rank alone, and
+   negative margins keep the row height even. */
 .medal {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  margin: -4px 0;
+  width: 26px;
+  height: 26px;
+  margin: -5px 0;
+  border: 2px solid var(--medal-rim, var(--border-hairline));
   border-radius: var(--radius-round);
   font-size: var(--text-caption);
   font-weight: 600;
   color: var(--ink-95);
   background: var(--medal-fill, var(--border-faint));
 }
-.medal-1 { --medal-fill: var(--color-marigold); }
-.medal-2 { --medal-fill: rgba(0, 0, 0, 0.09); }
-.medal-3 { --medal-fill: var(--color-peach); }
+.medal-1 { --medal-fill: var(--color-marigold); --medal-rim: var(--color-saffron); }
+.medal-2 { --medal-fill: #e6e5e3; --medal-rim: #b1b0b0; }
+.medal-3 { --medal-fill: var(--color-peach); --medal-rim: var(--color-mocha); }
 @media (prefers-reduced-motion: no-preference) {
   .medal { animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
   .medal-1 { animation-delay: 0.5s; }

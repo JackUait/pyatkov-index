@@ -6,6 +6,13 @@ export function fmt(n: number): string {
   return n.toFixed(1);
 }
 
+/** The printed score split around its point, so the cell can set the decimal
+ *  as quiet ink. Derived from fmt, so the parts can never disagree with it. */
+export function scoreParts(n: number): { int: string; dec: string } {
+  const [int, dec] = fmt(n).split('.');
+  return { int, dec };
+}
+
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',

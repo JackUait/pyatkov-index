@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { displayName, formatBuiltDate, matchesSearch, opennessBand, reconcilePoints, searchIndex, tiedRanks, bareName, verbFor, withArticle } from '../format.ts';
+import { displayName, formatBuiltDate, matchesSearch, opennessBand, reconcilePoints, scoreParts, searchIndex, tiedRanks, bareName, verbFor, withArticle } from '../format.ts';
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
@@ -251,5 +251,24 @@ describe('bareName (slots that supply their own article)', () => {
 
   it('is what makes "The {name} passport" read correctly', () => {
     expect(`The ${bareName('BHS', 'Bahamas, The')} passport`).toBe('The Bahamas passport');
+  });
+});
+
+describe('scoreParts (the score cell sets its decimal as quiet ink)', () => {
+  it('splits the printed score around its point', () => {
+    expect(scoreParts(94.4)).toEqual({ int: '94', dec: '4' });
+    expect(scoreParts(8.2)).toEqual({ int: '8', dec: '2' });
+  });
+
+  it('keeps the decimal even when it is zero, so the column never ragged-edges', () => {
+    expect(scoreParts(100)).toEqual({ int: '100', dec: '0' });
+    expect(scoreParts(59)).toEqual({ int: '59', dec: '0' });
+  });
+
+  it('can never disagree with the printed score: the parts rejoin into fmt', () => {
+    for (const n of [94.35, 92.149999, 0, 33.333]) {
+      const { int, dec } = scoreParts(n);
+      expect(`${int}.${dec}`).toBe(n.toFixed(1));
+    }
   });
 });
