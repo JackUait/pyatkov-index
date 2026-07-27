@@ -189,7 +189,10 @@ header nav a:active {
   transition: none;
 }
 /* The current page is a highlighted word: the hero's peach block, reused as
-   the active state so the nav quotes the headline device. The block lives on a
+   the active state so the nav quotes the headline device. Any aria-current
+   takes it, not `page` alone — a country page marks its owning section as
+   'true' (nav-current.ts), and the reader is owed the same "you are here" on a
+   nested page as on a top-level one. The block lives on a
    pseudo-element rather than the link's own background so it can carry a
    view-transition-name: only one nav item is current at a time, so the old and
    new snapshots always pair and the highlight slides along the masthead toward
@@ -197,8 +200,8 @@ header nav a:active {
    z-index 20), so the negative-z block paints over the bar's white fill and
    under the link's own text. */
 header nav a { position: relative; }
-header nav a[aria-current='page'] { color: var(--ink-95); }
-header nav a[aria-current='page']::before {
+header nav a[aria-current] { color: var(--ink-95); }
+header nav a[aria-current]::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -206,7 +209,7 @@ header nav a[aria-current='page']::before {
   border-radius: var(--radius-btn);
   background: var(--color-peach);
 }
-header nav a[aria-current='page']:hover::before {
+header nav a[aria-current]:hover::before {
   background: color-mix(in srgb, var(--color-peach) 94%, var(--color-ink));
 }
 /* The bar itself is lifted out of the root snapshot so the five gestures at the
@@ -218,7 +221,7 @@ header nav a[aria-current='page']:hover::before {
    name by aborting the whole transition. */
 @media (prefers-reduced-motion: no-preference) {
   body > header { view-transition-name: masthead; }
-  body > header nav a[aria-current='page']::before { view-transition-name: nav-ink; }
+  body > header nav a[aria-current]::before { view-transition-name: nav-ink; }
   /* Each label is lifted out with the bar so the block slides under the words,
      never over them. The pseudo paints at the header's negative z — below every
      label — and the view-transition tree preserves that paint order, so the
@@ -245,7 +248,7 @@ header nav a[aria-current='page']:hover::before {
      the nth-child names on specificity and must win by order. */
   body.drawer-shifted > header,
   body.drawer-shifted > header nav a,
-  body.drawer-shifted > header nav a[aria-current='page']::before {
+  body.drawer-shifted > header nav a[aria-current]::before {
     view-transition-name: none;
   }
 }

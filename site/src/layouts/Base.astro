@@ -4,7 +4,7 @@ import '@fontsource/source-serif-pro/latin-400.css';
 import '@fontsource/source-serif-pro/latin-400-italic.css';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import { normalizePath } from '../lib/nav-current.ts';
+import { normalizePath, sectionHref } from '../lib/nav-current.ts';
 import { absUrl, ID } from '../lib/seo.ts';
 // The three faces the first screen actually paints. Imported for their URLs so the
 // build's content hash is never hardcoded.
@@ -104,6 +104,16 @@ const graph: unknown[] = [
 ];
 
 const here = normalizePath(Astro.url.pathname);
+// A country page is nobody's nav item, so the masthead would answer "nowhere".
+// It marks the section that owns the page instead — 'true', not 'page', because
+// you are inside that branch, not on that URL.
+const section = sectionHref(Astro.url.pathname, base);
+const currentOf = (href: string) => {
+  const target = normalizePath(href);
+  if (target === here) return 'page';
+  if (section !== null && target === normalizePath(section)) return 'true';
+  return undefined;
+};
 const nav = [
   { href: base, label: 'Passports' },
   { href: `${base}openness/`, label: 'Who gets in' },
@@ -193,7 +203,7 @@ const nav = [
               stalls a full network round-trip before the wipe's first frame.
               Four small pages, fetched once, cached for every later click. */}
           {nav.map((item) => (
-            <a href={item.href} data-astro-prefetch="load" aria-current={here === normalizePath(item.href) ? 'page' : undefined}>{item.label}</a>
+            <a href={item.href} data-astro-prefetch="load" aria-current={currentOf(item.href)}>{item.label}</a>
           ))}
         </nav>
       </div>
