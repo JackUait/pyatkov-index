@@ -23,28 +23,6 @@
    "iso2": "BI"
   },
   {
-   "iso3": "CPV",
-   "name": "Cabo Verde",
-   "score": 100,
-   "equalScore": 100,
-   "counts": {
-    "visa-free": 60,
-    "visa-on-arrival": 138,
-    "e-visa": 0,
-    "visa-required": 0
-   },
-   "points": {
-    "visa-free": 22.31836335969802,
-    "visa-on-arrival": 77.68163664030197,
-    "e-visa": 0,
-    "visa-required": 0
-   },
-   "rank": 1,
-   "equalRank": 1,
-   "delta": 0,
-   "iso2": "CV"
-  },
-  {
    "iso3": "KHM",
    "name": "Cambodia",
    "score": 99.98075229584953,
@@ -314,14 +292,14 @@
    "score": 99.876699466225,
    "equalScore": 99.4949494949495,
    "counts": {
-    "visa-free": 5,
-    "visa-on-arrival": 192,
+    "visa-free": 6,
+    "visa-on-arrival": 191,
     "e-visa": 0,
     "visa-required": 1
    },
    "points": {
-    "visa-free": 36.76517231061711,
-    "visa-on-arrival": 63.11152715560789,
+    "visa-free": 36.88998561092832,
+    "visa-on-arrival": 62.98671385529668,
     "e-visa": 0,
     "visa-required": 0
    },
@@ -419,6 +397,28 @@
    "iso2": "PW"
   },
   {
+   "iso3": "CPV",
+   "name": "Cabo Verde",
+   "score": 96.19595105526372,
+   "equalScore": 96.96969696969697,
+   "counts": {
+    "visa-free": 60,
+    "visa-on-arrival": 132,
+    "e-visa": 0,
+    "visa-required": 6
+   },
+   "points": {
+    "visa-free": 22.31836335969802,
+    "visa-on-arrival": 73.8775876955657,
+    "e-visa": 0,
+    "visa-required": 0
+   },
+   "rank": 7,
+   "equalRank": 7,
+   "delta": 0,
+   "iso2": "CV"
+  },
+  {
    "iso3": "LKA",
    "name": "Sri Lanka",
    "score": 95.76014633605924,
@@ -435,9 +435,9 @@
     "e-visa": 0.06257559212998093,
     "visa-required": 0
    },
-   "rank": 7,
+   "rank": 8,
    "equalRank": 5,
-   "delta": -2,
+   "delta": -3,
    "iso2": "LK"
   },
   {
@@ -457,8 +457,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 8,
-   "equalRank": 12,
+   "rank": 9,
+   "equalRank": 13,
    "delta": 4,
    "iso2": "BB"
   },
@@ -479,8 +479,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 9,
-   "equalRank": 9,
+   "rank": 10,
+   "equalRank": 10,
    "delta": 0,
    "iso2": "NP"
   },
@@ -501,8 +501,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 10,
-   "equalRank": 10,
+   "rank": 11,
+   "equalRank": 11,
    "delta": 0,
    "iso2": "MU"
   },
@@ -523,9 +523,9 @@
     "e-visa": 2.8279216553560316,
     "visa-required": 0
    },
-   "rank": 11,
+   "rank": 12,
    "equalRank": 27,
-   "delta": 16,
+   "delta": 15,
    "iso2": "SL"
   },
   {
@@ -545,8 +545,8 @@
     "e-visa": 2.8160665975787156,
     "visa-required": 0
    },
-   "rank": 11,
-   "equalRank": 13,
+   "rank": 12,
+   "equalRank": 14,
    "delta": 2,
    "iso2": "TZ"
   },
@@ -567,8 +567,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 12,
-   "equalRank": 8,
+   "rank": 13,
+   "equalRank": 9,
    "delta": -4,
    "iso2": "IR"
   },
@@ -589,8 +589,8 @@
     "e-visa": 3.370861318547355,
     "visa-required": 0
    },
-   "rank": 13,
-   "equalRank": 14,
+   "rank": 14,
+   "equalRank": 15,
    "delta": 1,
    "iso2": "MY"
   },
@@ -611,9 +611,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 14,
+   "rank": 15,
    "equalRank": 16,
-   "delta": 2,
+   "delta": 1,
    "iso2": "LA"
   },
   {
@@ -633,9 +633,9 @@
     "e-visa": 4.231700117920101,
     "visa-required": 0
    },
-   "rank": 15,
+   "rank": 16,
    "equalRank": 34,
-   "delta": 19,
+   "delta": 18,
    "iso2": "ET"
   },
   {
@@ -655,9 +655,9 @@
     "e-visa": 4.442681692057971,
     "visa-required": 0
    },
-   "rank": 16,
+   "rank": 17,
    "equalRank": 25,
-   "delta": 9,
+   "delta": 8,
    "iso2": "ZW"
   },
   {
@@ -677,9 +677,9 @@
     "e-visa": 4.640205098092785,
     "visa-required": 0
    },
-   "rank": 17,
+   "rank": 18,
    "equalRank": 31,
-   "delta": 14,
+   "delta": 13,
    "iso2": "KN"
   },
   {
@@ -699,9 +699,9 @@
     "e-visa": 4.674253139814972,
     "visa-required": 0
    },
-   "rank": 18,
+   "rank": 19,
    "equalRank": 32,
-   "delta": 14,
+   "delta": 13,
    "iso2": "VU"
   },
   {
@@ -721,9 +721,9 @@
     "e-visa": 4.745803963616461,
     "visa-required": 0
    },
-   "rank": 19,
+   "rank": 20,
    "equalRank": 5,
-   "delta": -14,
+   "delta": -15,
    "iso2": "MZ"
   },
   {
@@ -743,9 +743,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 20,
+   "rank": 21,
    "equalRank": 33,
-   "delta": 13,
+   "delta": 12,
    "iso2": "SN"
   },
   {
@@ -765,9 +765,9 @@
     "e-visa": 5.167015479305037,
     "visa-required": 0
    },
-   "rank": 21,
+   "rank": 22,
    "equalRank": 45,
-   "delta": 24,
+   "delta": 23,
    "iso2": "ID"
   },
   {
@@ -787,9 +787,9 @@
     "e-visa": 5.188664484833473,
     "visa-required": 0
    },
-   "rank": 22,
+   "rank": 23,
    "equalRank": 37,
-   "delta": 15,
+   "delta": 14,
    "iso2": "TH"
   },
   {
@@ -809,9 +809,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 23,
+   "rank": 24,
    "equalRank": 41,
-   "delta": 18,
+   "delta": 17,
    "iso2": "KI"
   },
   {
@@ -831,9 +831,9 @@
     "e-visa": 5.610111045118954,
     "visa-required": 0
    },
-   "rank": 24,
+   "rank": 25,
    "equalRank": 44,
-   "delta": 20,
+   "delta": 19,
    "iso2": "QA"
   },
   {
@@ -853,9 +853,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 25,
+   "rank": 26,
    "equalRank": 23,
-   "delta": -2,
+   "delta": -3,
    "iso2": "PS"
   },
   {
@@ -875,8 +875,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 26,
-   "equalRank": 9,
+   "rank": 27,
+   "equalRank": 10,
    "delta": -17,
    "iso2": "VC"
   },
@@ -897,9 +897,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 27,
+   "rank": 28,
    "equalRank": 51,
-   "delta": 24,
+   "delta": 23,
    "iso2": "FJ"
   },
   {
@@ -919,9 +919,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 28,
+   "rank": 29,
    "equalRank": 28,
-   "delta": 0,
+   "delta": -1,
    "iso2": "JO"
   },
   {
@@ -941,9 +941,9 @@
     "e-visa": 6.121798171260468,
     "visa-required": 0
    },
-   "rank": 28,
+   "rank": 29,
    "equalRank": 56,
-   "delta": 28,
+   "delta": 27,
    "iso2": "KZ"
   },
   {
@@ -963,9 +963,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 29,
+   "rank": 30,
    "equalRank": 29,
-   "delta": 0,
+   "delta": -1,
    "iso2": "LC"
   },
   {
@@ -985,8 +985,8 @@
     "e-visa": 6.592812265311526,
     "visa-required": 0
    },
-   "rank": 30,
-   "equalRank": 11,
+   "rank": 31,
+   "equalRank": 12,
    "delta": -19,
    "iso2": "SR"
   },
@@ -1007,30 +1007,30 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 31,
-   "equalRank": 7,
+   "rank": 32,
+   "equalRank": 8,
    "delta": -24,
    "iso2": "MO"
   },
   {
    "iso3": "SGP",
    "name": "Singapore",
-   "score": 70.26606028539166,
-   "equalScore": 86.26262626262626,
+   "score": 70.14720728012584,
+   "equalScore": 85.85858585858585,
    "counts": {
-    "visa-free": 164,
+    "visa-free": 163,
     "visa-on-arrival": 0,
-    "e-visa": 34,
+    "e-visa": 35,
     "visa-required": 0
    },
    "points": {
-    "visa-free": 62.83257535673958,
+    "visa-free": 62.6840091001573,
     "visa-on-arrival": 0,
-    "e-visa": 7.433484928652081,
+    "e-visa": 7.463198179968539,
     "visa-required": 0
    },
-   "rank": 32,
-   "equalRank": 15,
+   "rank": 33,
+   "equalRank": 16,
    "delta": -17,
    "iso2": "SG"
   },
@@ -1051,9 +1051,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 33,
+   "rank": 34,
    "equalRank": 40,
-   "delta": 7,
+   "delta": 6,
    "iso2": "JM"
   },
   {
@@ -1073,9 +1073,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 34,
+   "rank": 35,
    "equalRank": 41,
-   "delta": 7,
+   "delta": 6,
    "iso2": "GD"
   },
   {
@@ -1095,9 +1095,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 35,
+   "rank": 36,
    "equalRank": 64,
-   "delta": 29,
+   "delta": 28,
    "iso2": "AO"
   },
   {
@@ -1117,9 +1117,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 36,
+   "rank": 37,
    "equalRank": 20,
-   "delta": -16,
+   "delta": -17,
    "iso2": "PH"
   },
   {
@@ -1139,9 +1139,9 @@
     "e-visa": 8.593579635006476,
     "visa-required": 0
    },
-   "rank": 37,
+   "rank": 38,
    "equalRank": 21,
-   "delta": -16,
+   "delta": -17,
    "iso2": "MW"
   },
   {
@@ -1161,9 +1161,9 @@
     "e-visa": 9.071084980939395,
     "visa-required": 0
    },
-   "rank": 38,
+   "rank": 39,
    "equalRank": 24,
-   "delta": -14,
+   "delta": -15,
    "iso2": "ZM"
   },
   {
@@ -1183,9 +1183,9 @@
     "e-visa": 9.977559583238,
     "visa-required": 0
    },
-   "rank": 39,
+   "rank": 40,
    "equalRank": 30,
-   "delta": -9,
+   "delta": -10,
    "iso2": "BS"
   },
   {
@@ -1205,9 +1205,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 40,
+   "rank": 41,
    "equalRank": 35,
-   "delta": -5,
+   "delta": -6,
    "iso2": "GM"
   },
   {
@@ -1227,9 +1227,9 @@
     "e-visa": 10.382058407601537,
     "visa-required": 0
    },
-   "rank": 41,
+   "rank": 42,
    "equalRank": 59,
-   "delta": 18,
+   "delta": 17,
    "iso2": "OM"
   },
   {
@@ -1249,9 +1249,9 @@
     "e-visa": 10.405197443677764,
     "visa-required": 0
    },
-   "rank": 42,
+   "rank": 43,
    "equalRank": 36,
-   "delta": -6,
+   "delta": -7,
    "iso2": "AG"
   },
   {
@@ -1271,9 +1271,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 43,
+   "rank": 44,
    "equalRank": 17,
-   "delta": -26,
+   "delta": -27,
    "iso2": "BD"
   },
   {
@@ -1293,9 +1293,9 @@
     "e-visa": 10.714078064638407,
     "visa-required": 0
    },
-   "rank": 44,
+   "rank": 45,
    "equalRank": 50,
-   "delta": 6,
+   "delta": 5,
    "iso2": "AL"
   },
   {
@@ -1315,9 +1315,9 @@
     "e-visa": 6.715988058364446,
     "visa-required": 0
    },
-   "rank": 45,
+   "rank": 46,
    "equalRank": 47,
-   "delta": 2,
+   "delta": 1,
    "iso2": "PG"
   },
   {
@@ -1337,9 +1337,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 46,
+   "rank": 47,
    "equalRank": 53,
-   "delta": 7,
+   "delta": 6,
    "iso2": "MH"
   },
   {
@@ -1359,9 +1359,9 @@
     "e-visa": 5.587141447264016,
     "visa-required": 0
    },
-   "rank": 47,
+   "rank": 48,
    "equalRank": 65,
-   "delta": 18,
+   "delta": 17,
    "iso2": "AM"
   },
   {
@@ -1381,9 +1381,9 @@
     "e-visa": 7.013188340033611,
     "visa-required": 0
    },
-   "rank": 48,
-   "equalRank": 118,
-   "delta": 70,
+   "rank": 49,
+   "equalRank": 120,
+   "delta": 71,
    "iso2": "MM"
   },
   {
@@ -1403,9 +1403,9 @@
     "e-visa": 11.485303525192474,
     "visa-required": 0
    },
-   "rank": 48,
+   "rank": 49,
    "equalRank": 48,
-   "delta": 0,
+   "delta": -1,
    "iso2": "AE"
   },
   {
@@ -1425,9 +1425,9 @@
     "e-visa": 11.419738282239434,
     "visa-required": 0
    },
-   "rank": 49,
+   "rank": 50,
    "equalRank": 69,
-   "delta": 20,
+   "delta": 19,
    "iso2": "BH"
   },
   {
@@ -1447,9 +1447,9 @@
     "e-visa": 3.9121695742855875,
     "visa-required": 0
    },
-   "rank": 50,
-   "equalRank": 84,
-   "delta": 34,
+   "rank": 51,
+   "equalRank": 88,
+   "delta": 37,
    "iso2": "MA"
   },
   {
@@ -1469,9 +1469,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 51,
+   "rank": 52,
    "equalRank": 62,
-   "delta": 11,
+   "delta": 10,
    "iso2": "LB"
   },
   {
@@ -1491,9 +1491,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 52,
+   "rank": 53,
    "equalRank": 60,
-   "delta": 8,
+   "delta": 7,
    "iso2": "TT"
   },
   {
@@ -1513,9 +1513,9 @@
     "e-visa": 11.952647780042843,
     "visa-required": 0
    },
-   "rank": 53,
+   "rank": 54,
    "equalRank": 26,
-   "delta": -27,
+   "delta": -28,
    "iso2": "NA"
   },
   {
@@ -1535,9 +1535,9 @@
     "e-visa": 7.4656090821991565,
     "visa-required": 0
    },
-   "rank": 54,
+   "rank": 55,
    "equalRank": 80,
-   "delta": 26,
+   "delta": 25,
    "iso2": "MN"
   },
   {
@@ -1557,9 +1557,9 @@
     "e-visa": 3.7517536768019046,
     "visa-required": 0
    },
-   "rank": 55,
+   "rank": 56,
    "equalRank": 39,
-   "delta": -16,
+   "delta": -17,
    "iso2": "EG"
   },
   {
@@ -1579,9 +1579,9 @@
     "e-visa": 12.290941805846542,
     "visa-required": 0
    },
-   "rank": 56,
+   "rank": 57,
    "equalRank": 19,
-   "delta": -37,
+   "delta": -38,
    "iso2": "EC"
   },
   {
@@ -1601,9 +1601,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 57,
+   "rank": 58,
    "equalRank": 66,
-   "delta": 9,
+   "delta": 8,
    "iso2": "TN"
   },
   {
@@ -1623,9 +1623,9 @@
     "e-visa": 12.344621342021396,
     "visa-required": 0
    },
-   "rank": 58,
+   "rank": 59,
    "equalRank": 80,
-   "delta": 22,
+   "delta": 21,
    "iso2": "ST"
   },
   {
@@ -1645,9 +1645,9 @@
     "e-visa": 8.088560055007862,
     "visa-required": 0
    },
-   "rank": 59,
+   "rank": 60,
    "equalRank": 22,
-   "delta": -37,
+   "delta": -38,
    "iso2": "HK"
   },
   {
@@ -1667,10 +1667,32 @@
     "e-visa": 2.775957086507071,
     "visa-required": 0
    },
-   "rank": 60,
+   "rank": 61,
    "equalRank": 49,
-   "delta": -11,
+   "delta": -12,
    "iso2": "GE"
+  },
+  {
+   "iso3": "TUR",
+   "name": "Turkiye",
+   "score": 49.415398825869765,
+   "equalScore": 54.04040404040404,
+   "counts": {
+    "visa-free": 95,
+    "visa-on-arrival": 10,
+    "e-visa": 10,
+    "visa-required": 83
+   },
+   "points": {
+    "visa-free": 48.386095257931395,
+    "visa-on-arrival": 0.44564191999048824,
+    "e-visa": 0.5836616479478838,
+    "visa-required": 0
+   },
+   "rank": 62,
+   "equalRank": 57,
+   "delta": -5,
+   "iso2": "TR"
   },
   {
    "iso3": "UZB",
@@ -1689,9 +1711,9 @@
     "e-visa": 7.090600593792625,
     "visa-required": 0
    },
-   "rank": 61,
+   "rank": 62,
    "equalRank": 61,
-   "delta": 0,
+   "delta": -1,
    "iso2": "UZ"
   },
   {
@@ -1711,31 +1733,31 @@
     "e-visa": 12.691079565805863,
     "visa-required": 0
    },
-   "rank": 62,
+   "rank": 63,
    "equalRank": 78,
-   "delta": 16,
+   "delta": 15,
    "iso2": "BJ"
   },
   {
    "iso3": "SAU",
    "name": "Saudi Arabia",
-   "score": 49.040685079622165,
+   "score": 49.04068507962216,
    "equalScore": 48.08080808080808,
    "counts": {
-    "visa-free": 5,
-    "visa-on-arrival": 69,
+    "visa-free": 6,
+    "visa-on-arrival": 68,
     "e-visa": 106,
     "visa-required": 18
    },
    "points": {
-    "visa-free": 0.32355776046616586,
-    "visa-on-arrival": 38.09053639620424,
+    "visa-free": 2.0794128765523006,
+    "visa-on-arrival": 36.334681280118104,
     "e-visa": 10.626590922951758,
     "visa-required": 0
    },
-   "rank": 63,
+   "rank": 64,
    "equalRank": 70,
-   "delta": 7,
+   "delta": 6,
    "iso2": "SA"
   },
   {
@@ -1755,9 +1777,9 @@
     "e-visa": 11.500010676067006,
     "visa-required": 0
    },
-   "rank": 64,
+   "rank": 65,
    "equalRank": 52,
-   "delta": -12,
+   "delta": -13,
    "iso2": "TJ"
   },
   {
@@ -1777,9 +1799,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 65,
+   "rank": 66,
    "equalRank": 18,
-   "delta": -47,
+   "delta": -48,
    "iso2": "NI"
   },
   {
@@ -1799,9 +1821,9 @@
     "e-visa": 13.28416096437231,
     "visa-required": 0
    },
-   "rank": 66,
+   "rank": 67,
    "equalRank": 58,
-   "delta": -8,
+   "delta": -9,
    "iso2": "KG"
   },
   {
@@ -1821,9 +1843,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 67,
+   "rank": 68,
    "equalRank": 77,
-   "delta": 10,
+   "delta": 9,
    "iso2": "RS"
   },
   {
@@ -1843,10 +1865,32 @@
     "e-visa": 0.8505915397433245,
     "visa-required": 0
    },
-   "rank": 68,
+   "rank": 69,
    "equalRank": 72,
-   "delta": 4,
+   "delta": 3,
    "iso2": "BY"
+  },
+  {
+   "iso3": "BRA",
+   "name": "Brazil",
+   "score": 45.380354783426256,
+   "equalScore": 51.81818181818182,
+   "counts": {
+    "visa-free": 102,
+    "visa-on-arrival": 0,
+    "e-visa": 3,
+    "visa-required": 93
+   },
+   "points": {
+    "visa-free": 44.35241605352483,
+    "visa-on-arrival": 0,
+    "e-visa": 1.027938729901427,
+    "visa-required": 0
+   },
+   "rank": 70,
+   "equalRank": 63,
+   "delta": -7,
+   "iso2": "BR"
   },
   {
    "iso3": "COL",
@@ -1865,9 +1909,9 @@
     "e-visa": 13.809197725745838,
     "visa-required": 0
    },
-   "rank": 69,
+   "rank": 71,
    "equalRank": 43,
-   "delta": -26,
+   "delta": -28,
    "iso2": "CO"
   },
   {
@@ -1887,9 +1931,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 70,
-   "equalRank": 97,
-   "delta": 27,
+   "rank": 72,
+   "equalRank": 101,
+   "delta": 29,
    "iso2": "BN"
   },
   {
@@ -1909,9 +1953,9 @@
     "e-visa": 14.091096641334143,
     "visa-required": 0
    },
-   "rank": 71,
+   "rank": 73,
    "equalRank": 42,
-   "delta": -29,
+   "delta": -31,
    "iso2": "BW"
   },
   {
@@ -1931,9 +1975,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 72,
+   "rank": 74,
    "equalRank": 66,
-   "delta": -6,
+   "delta": -8,
    "iso2": "BA"
   },
   {
@@ -1953,9 +1997,9 @@
     "e-visa": 14.307404151429646,
     "visa-required": 0
    },
-   "rank": 73,
+   "rank": 75,
    "equalRank": 38,
-   "delta": -35,
+   "delta": -37,
    "iso2": "KR"
   },
   {
@@ -1975,9 +2019,9 @@
     "e-visa": 14.610091827777893,
     "visa-required": 0
    },
-   "rank": 74,
+   "rank": 76,
    "equalRank": 53,
-   "delta": -21,
+   "delta": -23,
    "iso2": "SV"
   },
   {
@@ -1997,9 +2041,9 @@
     "e-visa": 14.720013648006224,
     "visa-required": 0
    },
-   "rank": 75,
+   "rank": 77,
    "equalRank": 43,
-   "delta": -32,
+   "delta": -34,
    "iso2": "IL"
   },
   {
@@ -2019,9 +2063,9 @@
     "e-visa": 14.397488360765468,
     "visa-required": 0
    },
-   "rank": 76,
+   "rank": 78,
    "equalRank": 43,
-   "delta": -33,
+   "delta": -35,
    "iso2": "MD"
   },
   {
@@ -2041,9 +2085,9 @@
     "e-visa": 14.778328801656677,
     "visa-required": 0
    },
-   "rank": 77,
+   "rank": 79,
    "equalRank": 79,
-   "delta": 2,
+   "delta": 0,
    "iso2": "BO"
   },
   {
@@ -2063,9 +2107,9 @@
     "e-visa": 14.919245022473804,
     "visa-required": 0
    },
-   "rank": 78,
+   "rank": 80,
    "equalRank": 76,
-   "delta": -2,
+   "delta": -4,
    "iso2": "GY"
   },
   {
@@ -2085,31 +2129,31 @@
     "e-visa": 11.502341189122586,
     "visa-required": 0
    },
-   "rank": 79,
+   "rank": 81,
    "equalRank": 67,
-   "delta": -12,
+   "delta": -14,
    "iso2": "ZA"
   },
   {
    "iso3": "AZE",
    "name": "Azerbaijan",
-   "score": 38.366357653083995,
-   "equalScore": 22.828282828282827,
+   "score": 38.371525134515956,
+   "equalScore": 23.232323232323232,
    "counts": {
-    "visa-free": 21,
-    "visa-on-arrival": 9,
-    "e-visa": 76,
+    "visa-free": 25,
+    "visa-on-arrival": 6,
+    "e-visa": 75,
     "visa-required": 92
    },
    "points": {
-    "visa-free": 22.878961248389793,
-    "visa-on-arrival": 6.413796711333783,
-    "e-visa": 9.073599693360421,
+    "visa-free": 25.03967195771771,
+    "visa-on-arrival": 4.25954535379581,
+    "e-visa": 9.072307823002435,
     "visa-required": 0
    },
-   "rank": 80,
+   "rank": 82,
    "equalRank": 112,
-   "delta": 32,
+   "delta": 30,
    "iso2": "AZ"
   },
   {
@@ -2129,30 +2173,30 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 81,
-   "equalRank": 95,
-   "delta": 14,
+   "rank": 83,
+   "equalRank": 98,
+   "delta": 15,
    "iso2": "TO"
   },
   {
    "iso3": "RUS",
    "name": "Russian Federation",
-   "score": 36.8384379452096,
-   "equalScore": 39.494949494949495,
+   "score": 37.74906763766611,
+   "equalScore": 40.303030303030305,
    "counts": {
-    "visa-free": 66,
+    "visa-free": 68,
     "visa-on-arrival": 0,
-    "e-visa": 61,
+    "e-visa": 59,
     "visa-required": 71
    },
    "points": {
-    "visa-free": 28.967706849932018,
+    "visa-free": 30.10599396550266,
     "visa-on-arrival": 0,
-    "e-visa": 7.87073109527758,
+    "e-visa": 7.6430736721634505,
     "visa-required": 0
    },
-   "rank": 82,
-   "equalRank": 85,
+   "rank": 84,
+   "equalRank": 87,
    "delta": 3,
    "iso2": "RU"
   },
@@ -2173,8 +2217,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 83,
-   "equalRank": 89,
+   "rank": 85,
+   "equalRank": 91,
    "delta": 6,
    "iso2": "SB"
   },
@@ -2195,32 +2239,32 @@
     "e-visa": 16.004473556775423,
     "visa-required": 0
    },
-   "rank": 84,
-   "equalRank": 115,
+   "rank": 86,
+   "equalRank": 117,
    "delta": 31,
    "iso2": "BT"
   },
   {
-   "iso3": "TUR",
-   "name": "Turkiye",
-   "score": 35.57860895501411,
-   "equalScore": 54.04040404040404,
+   "iso3": "TGO",
+   "name": "Togo",
+   "score": 35.004378751957844,
+   "equalScore": 41.41414141414141,
    "counts": {
-    "visa-free": 94,
-    "visa-on-arrival": 11,
-    "e-visa": 10,
-    "visa-required": 83
-   },
-   "points": {
-    "visa-free": 31.07323608369991,
-    "visa-on-arrival": 0.4625137556524031,
-    "e-visa": 4.0428591156617975,
+    "visa-free": 53,
+    "visa-on-arrival": 0,
+    "e-visa": 145,
     "visa-required": 0
    },
-   "rank": 85,
-   "equalRank": 57,
-   "delta": -28,
-   "iso2": "TR"
+   "points": {
+    "visa-free": 18.755473439947306,
+    "visa-on-arrival": 0,
+    "e-visa": 16.248905312010542,
+    "visa-required": 0
+   },
+   "rank": 87,
+   "equalRank": 84,
+   "delta": -3,
+   "iso2": "TG"
   },
   {
    "iso3": "VNM",
@@ -2239,9 +2283,9 @@
     "e-visa": 16.368273359147352,
     "visa-required": 0
    },
-   "rank": 86,
-   "equalRank": 94,
-   "delta": 8,
+   "rank": 88,
+   "equalRank": 97,
+   "delta": 9,
    "iso2": "VN"
   },
   {
@@ -2261,8 +2305,8 @@
     "e-visa": 7.6547013192996305,
     "visa-required": 0
    },
-   "rank": 87,
-   "equalRank": 90,
+   "rank": 89,
+   "equalRank": 92,
    "delta": 3,
    "iso2": "JP"
   },
@@ -2283,9 +2327,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 88,
+   "rank": 90,
    "equalRank": 62,
-   "delta": -26,
+   "delta": -28,
    "iso2": "PE"
   },
   {
@@ -2305,9 +2349,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 89,
+   "rank": 91,
    "equalRank": 73,
-   "delta": -16,
+   "delta": -18,
    "iso2": "CL"
   },
   {
@@ -2327,9 +2371,9 @@
     "e-visa": 9.336765126102055,
     "visa-required": 0
    },
-   "rank": 90,
+   "rank": 92,
    "equalRank": 75,
-   "delta": -15,
+   "delta": -17,
    "iso2": "UA"
   },
   {
@@ -2349,8 +2393,8 @@
     "e-visa": 17.0845367873394,
     "visa-required": 0
    },
-   "rank": 91,
-   "equalRank": 88,
+   "rank": 93,
+   "equalRank": 90,
    "delta": -3,
    "iso2": "AU"
   },
@@ -2371,9 +2415,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 92,
+   "rank": 94,
    "equalRank": 46,
-   "delta": -46,
+   "delta": -48,
    "iso2": "PA"
   },
   {
@@ -2393,9 +2437,9 @@
     "e-visa": 8.863693030896929,
     "visa-required": 0
    },
-   "rank": 93,
-   "equalRank": 105,
-   "delta": 12,
+   "rank": 95,
+   "equalRank": 108,
+   "delta": 13,
    "iso2": "CU"
   },
   {
@@ -2415,9 +2459,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 94,
+   "rank": 96,
    "equalRank": 59,
-   "delta": -35,
+   "delta": -37,
    "iso2": "BZ"
   },
   {
@@ -2437,32 +2481,32 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 95,
+   "rank": 97,
    "equalRank": 55,
-   "delta": -40,
+   "delta": -42,
    "iso2": "DO"
   },
   {
-   "iso3": "BRA",
-   "name": "Brazil",
-   "score": 27.792713878974915,
-   "equalScore": 51.313131313131315,
+   "iso3": "GHA",
+   "name": "Ghana",
+   "score": 28.10653085337025,
+   "equalScore": 32.72727272727273,
    "counts": {
-    "visa-free": 101,
-    "visa-on-arrival": 0,
-    "e-visa": 3,
-    "visa-required": 94
+    "visa-free": 39,
+    "visa-on-arrival": 24,
+    "e-visa": 9,
+    "visa-required": 126
    },
    "points": {
-    "visa-free": 26.76477514907349,
-    "visa-on-arrival": 0,
-    "e-visa": 1.027938729901427,
+    "visa-free": 10.624639799233588,
+    "visa-on-arrival": 8.156842750295214,
+    "e-visa": 9.325048303841445,
     "visa-required": 0
    },
-   "rank": 96,
-   "equalRank": 63,
-   "delta": -33,
-   "iso2": "BR"
+   "rank": 98,
+   "equalRank": 100,
+   "delta": 2,
+   "iso2": "GH"
   },
   {
    "iso3": "ARG",
@@ -2481,9 +2525,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 97,
+   "rank": 99,
    "equalRank": 74,
-   "delta": -23,
+   "delta": -25,
    "iso2": "AR"
   },
   {
@@ -2503,9 +2547,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 98,
+   "rank": 100,
    "equalRank": 68,
-   "delta": -30,
+   "delta": -32,
    "iso2": "SZ"
   },
   {
@@ -2525,9 +2569,9 @@
     "e-visa": 18.299388948429293,
     "visa-required": 0
    },
-   "rank": 99,
-   "equalRank": 101,
-   "delta": 2,
+   "rank": 101,
+   "equalRank": 104,
+   "delta": 3,
    "iso2": "GN"
   },
   {
@@ -2547,9 +2591,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 100,
+   "rank": 102,
    "equalRank": 71,
-   "delta": -29,
+   "delta": -31,
    "iso2": "CR"
   },
   {
@@ -2569,9 +2613,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 100,
+   "rank": 102,
    "equalRank": 80,
-   "delta": -20,
+   "delta": -22,
    "iso2": "GT"
   },
   {
@@ -2591,9 +2635,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 101,
+   "rank": 103,
    "equalRank": 81,
-   "delta": -20,
+   "delta": -22,
    "iso2": "UY"
   },
   {
@@ -2613,9 +2657,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 102,
+   "rank": 104,
    "equalRank": 64,
-   "delta": -38,
+   "delta": -40,
    "iso2": "ME"
   },
   {
@@ -2635,9 +2679,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 103,
+   "rank": 105,
    "equalRank": 80,
-   "delta": -23,
+   "delta": -25,
    "iso2": "HN"
   },
   {
@@ -2657,9 +2701,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 103,
-   "equalRank": 93,
-   "delta": -10,
+   "rank": 105,
+   "equalRank": 96,
+   "delta": -9,
    "iso2": "PY"
   },
   {
@@ -2679,9 +2723,9 @@
     "e-visa": 18.592586689302916,
     "visa-required": 0
    },
-   "rank": 104,
-   "equalRank": 92,
-   "delta": -12,
+   "rank": 106,
+   "equalRank": 95,
+   "delta": -11,
    "iso2": "UG"
   },
   {
@@ -2701,32 +2745,10 @@
     "e-visa": 18.771385022448733,
     "visa-required": 0
    },
-   "rank": 105,
-   "equalRank": 102,
-   "delta": -3,
+   "rank": 107,
+   "equalRank": 105,
+   "delta": -2,
    "iso2": "BF"
-  },
-  {
-   "iso3": "TGO",
-   "name": "Togo",
-   "score": 24.77867653169168,
-   "equalScore": 26.060606060606062,
-   "counts": {
-    "visa-free": 15,
-    "visa-on-arrival": 0,
-    "e-visa": 183,
-    "visa-required": 0
-   },
-   "points": {
-    "visa-free": 5.973345664614605,
-    "visa-on-arrival": 0,
-    "e-visa": 18.805330867077075,
-    "visa-required": 0
-   },
-   "rank": 106,
-   "equalRank": 106,
-   "delta": 0,
-   "iso2": "TG"
   },
   {
    "iso3": "XKX",
@@ -2745,9 +2767,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 107,
+   "rank": 108,
    "equalRank": 54,
-   "delta": -53,
+   "delta": -54,
    "iso2": "XK"
   },
   {
@@ -2767,9 +2789,9 @@
     "e-visa": 18.505939116340585,
     "visa-required": 0
    },
-   "rank": 107,
-   "equalRank": 100,
-   "delta": -7,
+   "rank": 108,
+   "equalRank": 103,
+   "delta": -5,
    "iso2": "SY"
   },
   {
@@ -2789,9 +2811,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 107,
-   "equalRank": 91,
-   "delta": -16,
+   "rank": 108,
+   "equalRank": 94,
+   "delta": -14,
    "iso2": "VE"
   },
   {
@@ -2811,9 +2833,9 @@
     "e-visa": 18.858095485244906,
     "visa-required": 0
    },
-   "rank": 108,
-   "equalRank": 104,
-   "delta": -4,
+   "rank": 109,
+   "equalRank": 107,
+   "delta": -2,
    "iso2": "TD"
   },
   {
@@ -2833,9 +2855,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 109,
-   "equalRank": 83,
-   "delta": -26,
+   "rank": 110,
+   "equalRank": 86,
+   "delta": -24,
    "iso2": "MK"
   },
   {
@@ -2855,10 +2877,32 @@
     "e-visa": 19.207868509696322,
     "visa-required": 0
    },
-   "rank": 110,
-   "equalRank": 110,
-   "delta": 0,
+   "rank": 111,
+   "equalRank": 112,
+   "delta": 1,
    "iso2": "SO"
+  },
+  {
+   "iso3": "CHN",
+   "name": "China",
+   "score": 23.033275074788932,
+   "equalScore": 41.91919191919192,
+   "counts": {
+    "visa-free": 83,
+    "visa-on-arrival": 0,
+    "e-visa": 0,
+    "visa-required": 115
+   },
+   "points": {
+    "visa-free": 23.033275074788932,
+    "visa-on-arrival": 0,
+    "e-visa": 0,
+    "visa-required": 0
+   },
+   "rank": 112,
+   "equalRank": 83,
+   "delta": -29,
+   "iso2": "CN"
   },
   {
    "iso3": "AND",
@@ -2877,9 +2921,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "AD"
   },
   {
@@ -2899,9 +2943,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "BG"
   },
   {
@@ -2921,9 +2965,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "HR"
   },
   {
@@ -2943,9 +2987,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "CY"
   },
   {
@@ -2965,9 +3009,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "DK"
   },
   {
@@ -2987,9 +3031,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "EE"
   },
   {
@@ -3009,9 +3053,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "FI"
   },
   {
@@ -3031,9 +3075,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "IS"
   },
   {
@@ -3053,9 +3097,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "LV"
   },
   {
@@ -3075,9 +3119,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "LI"
   },
   {
@@ -3097,9 +3141,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "LT"
   },
   {
@@ -3119,9 +3163,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "LU"
   },
   {
@@ -3141,9 +3185,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "MT"
   },
   {
@@ -3163,9 +3207,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "MC"
   },
   {
@@ -3185,9 +3229,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "NO"
   },
   {
@@ -3207,9 +3251,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "SM"
   },
   {
@@ -3229,9 +3273,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "SK"
   },
   {
@@ -3251,9 +3295,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "SI"
   },
   {
@@ -3273,9 +3317,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 111,
+   "rank": 113,
    "equalRank": 73,
-   "delta": -38,
+   "delta": -40,
    "iso2": "VA"
   },
   {
@@ -3295,9 +3339,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "AT"
   },
   {
@@ -3317,9 +3361,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "BE"
   },
   {
@@ -3339,9 +3383,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "CZ"
   },
   {
@@ -3361,9 +3405,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "GR"
   },
   {
@@ -3383,9 +3427,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "HU"
   },
   {
@@ -3405,9 +3449,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "PT"
   },
   {
@@ -3427,9 +3471,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "SE"
   },
   {
@@ -3449,9 +3493,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 112,
+   "rank": 114,
    "equalRank": 73,
-   "delta": -39,
+   "delta": -41,
    "iso2": "CH"
   },
   {
@@ -3471,8 +3515,8 @@
     "e-visa": 19.327521662133996,
     "visa-required": 0
    },
-   "rank": 113,
-   "equalRank": 113,
+   "rank": 115,
+   "equalRank": 115,
    "delta": 0,
    "iso2": "CM"
   },
@@ -3493,9 +3537,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 113,
+   "rank": 115,
    "equalRank": 73,
-   "delta": -40,
+   "delta": -42,
    "iso2": "NL"
   },
   {
@@ -3515,9 +3559,9 @@
     "e-visa": 19.313653001652213,
     "visa-required": 0
    },
-   "rank": 113,
-   "equalRank": 103,
-   "delta": -10,
+   "rank": 115,
+   "equalRank": 106,
+   "delta": -9,
    "iso2": "NG"
   },
   {
@@ -3537,9 +3581,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 113,
+   "rank": 115,
    "equalRank": 73,
-   "delta": -40,
+   "delta": -42,
    "iso2": "RO"
   },
   {
@@ -3559,9 +3603,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 114,
+   "rank": 116,
    "equalRank": 73,
-   "delta": -41,
+   "delta": -43,
    "iso2": "PL"
   },
   {
@@ -3581,9 +3625,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 115,
+   "rank": 117,
    "equalRank": 73,
-   "delta": -42,
+   "delta": -44,
    "iso2": "ES"
   },
   {
@@ -3603,9 +3647,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 116,
+   "rank": 118,
    "equalRank": 73,
-   "delta": -43,
+   "delta": -45,
    "iso2": "IT"
   },
   {
@@ -3625,9 +3669,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 117,
+   "rank": 119,
    "equalRank": 73,
-   "delta": -44,
+   "delta": -46,
    "iso2": "FR"
   },
   {
@@ -3647,9 +3691,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 118,
+   "rank": 120,
    "equalRank": 73,
-   "delta": -45,
+   "delta": -47,
    "iso2": "DE"
   },
   {
@@ -3669,8 +3713,8 @@
     "e-visa": 19.491540586441417,
     "visa-required": 0
    },
-   "rank": 119,
-   "equalRank": 114,
+   "rank": 121,
+   "equalRank": 116,
    "delta": -5,
    "iso2": "SS"
   },
@@ -3691,8 +3735,8 @@
     "e-visa": 19.551181443182436,
     "visa-required": 0
    },
-   "rank": 120,
-   "equalRank": 112,
+   "rank": 122,
+   "equalRank": 114,
    "delta": -8,
    "iso2": "CD"
   },
@@ -3713,8 +3757,8 @@
     "e-visa": 19.557519206151778,
     "visa-required": 0
    },
-   "rank": 120,
-   "equalRank": 108,
+   "rank": 122,
+   "equalRank": 110,
    "delta": -12,
    "iso2": "GA"
   },
@@ -3735,8 +3779,8 @@
     "e-visa": 19.460214886973375,
     "visa-required": 0
    },
-   "rank": 120,
-   "equalRank": 109,
+   "rank": 122,
+   "equalRank": 111,
    "delta": -11,
    "iso2": "MR"
   },
@@ -3757,8 +3801,8 @@
     "e-visa": 0.49934161500682883,
     "visa-required": 0
    },
-   "rank": 121,
-   "equalRank": 87,
+   "rank": 123,
+   "equalRank": 89,
    "delta": -34,
    "iso2": "TW"
   },
@@ -3779,32 +3823,10 @@
     "e-visa": 19.08530127188031,
     "visa-required": 0
    },
-   "rank": 122,
-   "equalRank": 109,
+   "rank": 124,
+   "equalRank": 111,
    "delta": -13,
    "iso2": "IQ"
-  },
-  {
-   "iso3": "CHN",
-   "name": "China",
-   "score": 21.399796834026855,
-   "equalScore": 40.90909090909091,
-   "counts": {
-    "visa-free": 81,
-    "visa-on-arrival": 0,
-    "e-visa": 0,
-    "visa-required": 117
-   },
-   "points": {
-    "visa-free": 21.399796834026855,
-    "visa-on-arrival": 0,
-    "e-visa": 0,
-    "visa-required": 0
-   },
-   "rank": 123,
-   "equalRank": 82,
-   "delta": -41,
-   "iso2": "CN"
   },
   {
    "iso3": "GNQ",
@@ -3823,54 +3845,54 @@
     "e-visa": 19.659126306676157,
     "visa-required": 0
    },
-   "rank": 123,
-   "equalRank": 114,
+   "rank": 125,
+   "equalRank": 116,
    "delta": -9,
    "iso2": "GQ"
   },
   {
-   "iso3": "IRL",
-   "name": "Ireland",
-   "score": 21.019575997411014,
-   "equalScore": 39.39393939393939,
-   "counts": {
-    "visa-free": 78,
-    "visa-on-arrival": 0,
-    "e-visa": 0,
-    "visa-required": 120
-   },
-   "points": {
-    "visa-free": 21.019575997411014,
-    "visa-on-arrival": 0,
-    "e-visa": 0,
-    "visa-required": 0
-   },
-   "rank": 124,
-   "equalRank": 86,
-   "delta": -38,
-   "iso2": "IE"
-  },
-  {
    "iso3": "GBR",
    "name": "United Kingdom",
-   "score": 21.04203532871033,
-   "equalScore": 43.43434343434343,
+   "score": 20.953744728184873,
+   "equalScore": 42.42424242424242,
    "counts": {
     "visa-free": 1,
-    "visa-on-arrival": 85,
+    "visa-on-arrival": 83,
     "e-visa": 0,
-    "visa-required": 112
+    "visa-required": 114
    },
    "points": {
     "visa-free": 0.06736805333647893,
-    "visa-on-arrival": 20.97466727537385,
+    "visa-on-arrival": 20.886376674848393,
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 124,
-   "equalRank": 80,
+   "rank": 126,
+   "equalRank": 82,
    "delta": -44,
    "iso2": "GB"
+  },
+  {
+   "iso3": "IRL",
+   "name": "Ireland",
+   "score": 20.93140223321463,
+   "equalScore": 37.878787878787875,
+   "counts": {
+    "visa-free": 75,
+    "visa-on-arrival": 0,
+    "e-visa": 0,
+    "visa-required": 123
+   },
+   "points": {
+    "visa-free": 20.93140223321463,
+    "visa-on-arrival": 0,
+    "e-visa": 0,
+    "visa-required": 0
+   },
+   "rank": 127,
+   "equalRank": 93,
+   "delta": -34,
+   "iso2": "IE"
   },
   {
    "iso3": "NZL",
@@ -3889,8 +3911,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 125,
-   "equalRank": 99,
+   "rank": 128,
+   "equalRank": 102,
    "delta": -26,
    "iso2": "NZ"
   },
@@ -3911,8 +3933,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 126,
-   "equalRank": 96,
+   "rank": 129,
+   "equalRank": 99,
    "delta": -30,
    "iso2": "MX"
   },
@@ -3933,32 +3955,10 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 127,
-   "equalRank": 82,
+   "rank": 130,
+   "equalRank": 85,
    "delta": -45,
    "iso2": "LS"
-  },
-  {
-   "iso3": "GHA",
-   "name": "Ghana",
-   "score": 18.743651439254705,
-   "equalScore": 31.31313131313131,
-   "counts": {
-    "visa-free": 39,
-    "visa-on-arrival": 23,
-    "e-visa": 0,
-    "visa-required": 136
-   },
-   "points": {
-    "visa-free": 10.624639799233588,
-    "visa-on-arrival": 8.119011640021117,
-    "e-visa": 0,
-    "visa-required": 0
-   },
-   "rank": 128,
-   "equalRank": 98,
-   "delta": -30,
-   "iso2": "GH"
   },
   {
    "iso3": "LBY",
@@ -3977,9 +3977,9 @@
     "e-visa": 17.974740120382346,
     "visa-required": 0
    },
-   "rank": 128,
-   "equalRank": 116,
-   "delta": -12,
+   "rank": 131,
+   "equalRank": 118,
+   "delta": -13,
    "iso2": "LY"
   },
   {
@@ -3999,9 +3999,9 @@
     "e-visa": 12.289299172018637,
     "visa-required": 0
    },
-   "rank": 129,
-   "equalRank": 107,
-   "delta": -22,
+   "rank": 132,
+   "equalRank": 109,
+   "delta": -23,
    "iso2": "LR"
   },
   {
@@ -4021,9 +4021,9 @@
     "e-visa": 15.971308291780817,
     "visa-required": 0
    },
-   "rank": 130,
-   "equalRank": 111,
-   "delta": -19,
+   "rank": 133,
+   "equalRank": 113,
+   "delta": -20,
    "iso2": "PK"
   },
   {
@@ -4043,8 +4043,8 @@
     "e-visa": 0.015962767219957194,
     "visa-required": 0
    },
-   "rank": 131,
-   "equalRank": 101,
+   "rank": 134,
+   "equalRank": 104,
    "delta": -30,
    "iso2": "KW"
   },
@@ -4065,8 +4065,8 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 132,
-   "equalRank": 103,
+   "rank": 135,
+   "equalRank": 106,
    "delta": -29,
    "iso2": "CA"
   },
@@ -4087,9 +4087,9 @@
     "e-visa": 10.462228199421814,
     "visa-required": 0
    },
-   "rank": 133,
-   "equalRank": 117,
-   "delta": -16,
+   "rank": 136,
+   "equalRank": 119,
+   "delta": -17,
    "iso2": "IN"
   },
   {
@@ -4109,9 +4109,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 134,
-   "equalRank": 119,
-   "delta": -15,
+   "rank": 137,
+   "equalRank": 121,
+   "delta": -16,
    "iso2": "ML"
   },
   {
@@ -4131,9 +4131,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 135,
-   "equalRank": 110,
-   "delta": -25,
+   "rank": 138,
+   "equalRank": 112,
+   "delta": -26,
    "iso2": "US"
   },
   {
@@ -4153,9 +4153,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 136,
-   "equalRank": 120,
-   "delta": -16,
+   "rank": 139,
+   "equalRank": 122,
+   "delta": -17,
    "iso2": "NE"
   },
   {
@@ -4175,9 +4175,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 137,
-   "equalRank": 123,
-   "delta": -14,
+   "rank": 140,
+   "equalRank": 125,
+   "delta": -15,
    "iso2": "YE"
   },
   {
@@ -4197,9 +4197,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 138,
-   "equalRank": 125,
-   "delta": -13,
+   "rank": 141,
+   "equalRank": 127,
+   "delta": -14,
    "iso2": "ER"
   },
   {
@@ -4219,9 +4219,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 139,
-   "equalRank": 122,
-   "delta": -17,
+   "rank": 142,
+   "equalRank": 124,
+   "delta": -18,
    "iso2": "CG"
   },
   {
@@ -4241,9 +4241,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 139,
-   "equalRank": 121,
-   "delta": -18,
+   "rank": 142,
+   "equalRank": 123,
+   "delta": -19,
    "iso2": "NR"
   },
   {
@@ -4263,9 +4263,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 140,
-   "equalRank": 122,
-   "delta": -18,
+   "rank": 143,
+   "equalRank": 124,
+   "delta": -19,
    "iso2": "CF"
   },
   {
@@ -4285,9 +4285,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 140,
-   "equalRank": 124,
-   "delta": -16,
+   "rank": 143,
+   "equalRank": 126,
+   "delta": -17,
    "iso2": "SD"
   },
   {
@@ -4307,9 +4307,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 141,
-   "equalRank": 124,
-   "delta": -17,
+   "rank": 144,
+   "equalRank": 126,
+   "delta": -18,
    "iso2": "DZ"
   },
   {
@@ -4329,9 +4329,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 142,
-   "equalRank": 126,
-   "delta": -16,
+   "rank": 145,
+   "equalRank": 128,
+   "delta": -17,
    "iso2": "AF"
   },
   {
@@ -4351,9 +4351,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 142,
-   "equalRank": 126,
-   "delta": -16,
+   "rank": 145,
+   "equalRank": 128,
+   "delta": -17,
    "iso2": "KP"
   },
   {
@@ -4373,9 +4373,9 @@
     "e-visa": 0,
     "visa-required": 0
    },
-   "rank": 142,
-   "equalRank": 126,
-   "delta": -16,
+   "rank": 145,
+   "equalRank": 128,
+   "delta": -17,
    "iso2": "TM"
   }
  ]

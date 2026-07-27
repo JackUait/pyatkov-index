@@ -1,0 +1,1863 @@
+{
+ "baselineVintage": "2026-02-17",
+ "verifiedAsOf": "2026-07-27",
+ "events": [
+  {
+   "id": "aze-2026-07-01-1",
+   "effective": "2026-07-01",
+   "sunset": "2027-07-01",
+   "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+   "destination": {
+    "iso3": "AZE",
+    "name": "Azerbaijan",
+    "iso2": "AZ"
+   },
+   "passports": [
+    {
+     "iso3": "JPN",
+     "name": "Japan",
+     "iso2": "JP"
+    },
+    {
+     "iso3": "KOR",
+     "name": "Korea, Rep.",
+     "iso2": "KR"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "30",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). SOURCE UPGRADED: the proposal cited report.az, a news agency; the KOR->AZE verifier found Japan at Group IV entry 6 of the destination government's own MFA table on identical terms from the same date, so the citation is normalised to mfa.gov.az. SUNSET 2027-07-01."
+  },
+  {
+   "id": "sau-2026-07-01-15",
+   "effective": "2026-07-01",
+   "source": "https://www.gov.uk/foreign-travel-advice/saudi-arabia/entry-requirements",
+   "destination": {
+    "iso3": "SAU",
+    "name": "Saudi Arabia",
+    "iso2": "SA"
+   },
+   "passports": [
+    {
+     "iso3": "GBR",
+     "name": "United Kingdom",
+     "iso2": "GB"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "eta",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). DATE UNVERIFIED: FCDO confirms a Saudi ETA exists and is available to British ordinary passport holders (730-day validity, multiple entry, 180 days total) but carries no introduction date, so 2026-07-01 is the proposal's claim, unconfirmed. Also a channel addition rather than a policy change — the e-visa and airport-issued routes remain open. Weakest row in the set on both source tier and date; zero score risk."
+  },
+  {
+   "id": "sgp-2026-06-25-17",
+   "effective": "2026-06-25",
+   "source": "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements",
+   "destination": {
+    "iso3": "SGP",
+    "name": "Singapore",
+    "iso2": "SG"
+   },
+   "passports": [
+    {
+     "iso3": "SSD",
+     "name": "South Sudan",
+     "iso2": "SS"
+    }
+   ],
+   "from": "30",
+   "to": "e-visa",
+   "creditFrom": 1,
+   "creditTo": 0.2,
+   "direction": "closed",
+   "note": "BOUNDARY 1.0->0.2. NOT A POLICY CHANGE — this corrects a stale upstream cell. South Sudan has been an ICA assessment-level nationality for years; every other Singapore visa-required nationality in our matrix (RUS, IND, PAK, SDN, SOM, SYR, YEM, AFG, MLI, UZB, NGA, EGY, DZA) is already coded 'e-visa' and SSD was the lone outlier at '30'. DATE IS NOT AN EFFECTIVE DATE: 2026-06-25 is only the ICA page's last-updated stamp."
+  },
+  {
+   "id": "irl-2026-06-15-11",
+   "effective": "2026-06-15",
+   "source": "https://www.irishstatutebook.ie/eli/2026/si/242/made/en/html",
+   "destination": {
+    "iso3": "IRL",
+    "name": "Ireland",
+    "iso2": "IE"
+   },
+   "passports": [
+    {
+     "iso3": "KNA",
+     "name": "St. Kitts and Nevis",
+     "iso2": "KN"
+    },
+    {
+     "iso3": "LCA",
+     "name": "St. Lucia",
+     "iso2": "LC"
+    },
+    {
+     "iso3": "NIC",
+     "name": "Nicaragua",
+     "iso2": "NI"
+    }
+   ],
+   "from": "90",
+   "to": "visa required",
+   "creditFrom": 1,
+   "creditTo": 0,
+   "direction": "closed",
+   "note": "BOUNDARY 1.0->0.0. Same S.I. 242/2026 Schedule 1 deletion, confirmed in the instrument text quoted by the NIC->IRL verifier. Source URL normalised. KNA->GBR correctly left untouched (St Kitts is not on the UK visa-national list)."
+  },
+  {
+   "id": "tgo-2026-05-26-18",
+   "effective": "2026-05-26",
+   "source": "https://voyage.gouv.tg/",
+   "destination": {
+    "iso3": "TGO",
+    "name": "Togo",
+    "iso2": "TG"
+   },
+   "passports": [
+    {
+     "iso3": "AGO",
+     "name": "Angola",
+     "iso2": "AO"
+    },
+    {
+     "iso3": "BDI",
+     "name": "Burundi",
+     "iso2": "BI"
+    },
+    {
+     "iso3": "BWA",
+     "name": "Botswana",
+     "iso2": "BW"
+    },
+    {
+     "iso3": "CAF",
+     "name": "Central African Republic",
+     "iso2": "CF"
+    },
+    {
+     "iso3": "CMR",
+     "name": "Cameroon",
+     "iso2": "CM"
+    },
+    {
+     "iso3": "COD",
+     "name": "Congo, Dem. Rep.",
+     "iso2": "CD"
+    },
+    {
+     "iso3": "COG",
+     "name": "Congo, Rep.",
+     "iso2": "CG"
+    },
+    {
+     "iso3": "COM",
+     "name": "Comoros",
+     "iso2": "KM"
+    },
+    {
+     "iso3": "DJI",
+     "name": "Djibouti",
+     "iso2": "DJ"
+    },
+    {
+     "iso3": "DZA",
+     "name": "Algeria",
+     "iso2": "DZ"
+    },
+    {
+     "iso3": "EGY",
+     "name": "Egypt, Arab Rep.",
+     "iso2": "EG"
+    },
+    {
+     "iso3": "ERI",
+     "name": "Eritrea",
+     "iso2": "ER"
+    },
+    {
+     "iso3": "ETH",
+     "name": "Ethiopia",
+     "iso2": "ET"
+    },
+    {
+     "iso3": "GAB",
+     "name": "Gabon",
+     "iso2": "GA"
+    },
+    {
+     "iso3": "GNQ",
+     "name": "Equatorial Guinea",
+     "iso2": "GQ"
+    },
+    {
+     "iso3": "KEN",
+     "name": "Kenya",
+     "iso2": "KE"
+    },
+    {
+     "iso3": "LBY",
+     "name": "Libya",
+     "iso2": "LY"
+    },
+    {
+     "iso3": "LSO",
+     "name": "Lesotho",
+     "iso2": "LS"
+    },
+    {
+     "iso3": "MDG",
+     "name": "Madagascar",
+     "iso2": "MG"
+    },
+    {
+     "iso3": "MOZ",
+     "name": "Mozambique",
+     "iso2": "MZ"
+    },
+    {
+     "iso3": "MRT",
+     "name": "Mauritania",
+     "iso2": "MR"
+    },
+    {
+     "iso3": "MUS",
+     "name": "Mauritius",
+     "iso2": "MU"
+    },
+    {
+     "iso3": "MWI",
+     "name": "Malawi",
+     "iso2": "MW"
+    },
+    {
+     "iso3": "NAM",
+     "name": "Namibia",
+     "iso2": "NA"
+    },
+    {
+     "iso3": "RWA",
+     "name": "Rwanda",
+     "iso2": "RW"
+    },
+    {
+     "iso3": "SDN",
+     "name": "Sudan",
+     "iso2": "SD"
+    },
+    {
+     "iso3": "SOM",
+     "name": "Somalia, Fed. Rep.",
+     "iso2": "SO"
+    },
+    {
+     "iso3": "SSD",
+     "name": "South Sudan",
+     "iso2": "SS"
+    },
+    {
+     "iso3": "STP",
+     "name": "Sao Tome and Principe",
+     "iso2": "ST"
+    },
+    {
+     "iso3": "SWZ",
+     "name": "Eswatini",
+     "iso2": "SZ"
+    },
+    {
+     "iso3": "SYC",
+     "name": "Seychelles",
+     "iso2": "SC"
+    },
+    {
+     "iso3": "TCD",
+     "name": "Chad",
+     "iso2": "TD"
+    },
+    {
+     "iso3": "TUN",
+     "name": "Tunisia",
+     "iso2": "TN"
+    },
+    {
+     "iso3": "TZA",
+     "name": "Tanzania",
+     "iso2": "TZ"
+    },
+    {
+     "iso3": "UGA",
+     "name": "Uganda",
+     "iso2": "UG"
+    },
+    {
+     "iso3": "ZAF",
+     "name": "South Africa",
+     "iso2": "ZA"
+    },
+    {
+     "iso3": "ZMB",
+     "name": "Zambia",
+     "iso2": "ZM"
+    },
+    {
+     "iso3": "ZWE",
+     "name": "Zimbabwe",
+     "iso2": "ZW"
+    }
+   ],
+   "from": "e-visa",
+   "to": "30",
+   "creditFrom": 0.2,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+  },
+  {
+   "id": "gha-2026-05-25-7",
+   "effective": "2026-05-25",
+   "source": "https://evisa.immigration.gov.gh/",
+   "destination": {
+    "iso3": "GHA",
+    "name": "Ghana",
+    "iso2": "GH"
+   },
+   "passports": [
+    {
+     "iso3": "BRA",
+     "name": "Brazil",
+     "iso2": "BR"
+    },
+    {
+     "iso3": "CAN",
+     "name": "Canada",
+     "iso2": "CA"
+    },
+    {
+     "iso3": "CHN",
+     "name": "China",
+     "iso2": "CN"
+    },
+    {
+     "iso3": "DEU",
+     "name": "Germany",
+     "iso2": "DE"
+    },
+    {
+     "iso3": "FRA",
+     "name": "France",
+     "iso2": "FR"
+    },
+    {
+     "iso3": "GBR",
+     "name": "United Kingdom",
+     "iso2": "GB"
+    },
+    {
+     "iso3": "IND",
+     "name": "India",
+     "iso2": "IN"
+    },
+    {
+     "iso3": "JPN",
+     "name": "Japan",
+     "iso2": "JP"
+    },
+    {
+     "iso3": "USA",
+     "name": "United States",
+     "iso2": "US"
+    }
+   ],
+   "from": "visa required",
+   "to": "e-visa",
+   "creditFrom": 0,
+   "creditTo": 0.2,
+   "direction": "opened",
+   "note": "BOUNDARY 0.0->0.2. Same GIS e-Visa portal. Brazil's existing Ghana exemption covers diplomatic and official passports only, which is why the ordinary cell moves to e-visa and not visa-free. Same corroboration caveat as CHN and FRA."
+  },
+  {
+   "id": "gha-2026-05-25-8",
+   "effective": "2026-05-25",
+   "source": "https://mfa.gov.gh/index.php/ghana-launches-e-visa-portal/",
+   "destination": {
+    "iso3": "GHA",
+    "name": "Ghana",
+    "iso2": "GH"
+   },
+   "passports": [
+    {
+     "iso3": "CMR",
+     "name": "Cameroon",
+     "iso2": "CM"
+    },
+    {
+     "iso3": "EGY",
+     "name": "Egypt, Arab Rep.",
+     "iso2": "EG"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "eta",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). Same AU-ETA basis. Ghana's own wording is loose (the Presidency says free 'e-visa', the portal says ETA); the operative facts — no fee, issued in advance online — match our 'eta'."
+  },
+  {
+   "id": "gha-2026-05-25-9",
+   "effective": "2026-05-25",
+   "source": "https://evisa.immigration.gov.gh/",
+   "destination": {
+    "iso3": "GHA",
+    "name": "Ghana",
+    "iso2": "GH"
+   },
+   "passports": [
+    {
+     "iso3": "DZA",
+     "name": "Algeria",
+     "iso2": "DZ"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "eta",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). Best-evidenced of the AU-ETA rows: endpoint returns authorization_required=eta, eta_type=au-eta, fee=0, validity_days=30, 'African Union citizen - ETA replaces Visa on Arrival'. fee=0 is what distinguishes this from the e-visa rows."
+  },
+  {
+   "id": "gha-2026-05-25-10",
+   "effective": "2026-05-25",
+   "source": "https://mfa.gov.gh/index.php/ghana-launches-e-visa-portal/",
+   "destination": {
+    "iso3": "GHA",
+    "name": "Ghana",
+    "iso2": "GH"
+   },
+   "passports": [
+    {
+     "iso3": "NAM",
+     "name": "Namibia",
+     "iso2": "NA"
+    }
+   ],
+   "from": "visa required",
+   "to": "eta",
+   "creditFrom": 0,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.0->1.0 — the largest single-cell gain in the Ghana group, and the only Ghana row that crosses from 0.0 straight to 1.0, so it deserves a second look. AU passport holders get a fee-free pre-departure ETA. CONTRADICTION FLAGGED: this row's verifier describes the AU ETA as 90-day, while the DZA->GHA verifier's live endpoint response returns validity_days=30. Score-neutral (both 'eta'), but the two accounts of the same category disagree. Namibia was not itself endpoint-queried."
+  },
+  {
+   "id": "bra-2026-05-11-3",
+   "effective": "2026-05-11",
+   "sunset": "2026-12-31",
+   "source": "https://english.www.gov.cn/news/202605/08/content_WS69fd90b4c6d00ca5f9a0ad29.html",
+   "destination": {
+    "iso3": "BRA",
+    "name": "Brazil",
+    "iso2": "BR"
+   },
+   "passports": [
+    {
+     "iso3": "CHN",
+     "name": "China",
+     "iso2": "CN"
+    }
+   ],
+   "from": "visa required",
+   "to": "30",
+   "creditFrom": 0,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.0->1.0. PRC State Council portal; ordinary passports, 30 days non-extendable. SUNSET: valid only until 2026-12-31. Confirmed from the Chinese side only (gov.br/mre behind a CAPTCHA)."
+  },
+  {
+   "id": "rus-2026-05-11-14",
+   "effective": "2026-05-11",
+   "source": "https://discover.moscow/no-visa-needed-russia-saudi-agreement",
+   "destination": {
+    "iso3": "RUS",
+    "name": "Russian Federation",
+    "iso2": "RU"
+   },
+   "passports": [
+    {
+     "iso3": "SAU",
+     "name": "Saudi Arabia",
+     "iso2": "SA"
+    }
+   ],
+   "from": "e-visa",
+   "to": "90",
+   "creditFrom": 0.2,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.2->1.0. Inbound leg of the mutual exemption in force 2026-05-11. Source left as the Moscow city portal, but note the reverse row (RUS->SAU) cites the Saudi Press Agency text for the same instrument, which states it covers ordinary passports and grants 90 days — the two legs corroborate each other. Excludes work, study, residence and Hajj."
+  },
+  {
+   "id": "sau-2026-05-11-16",
+   "effective": "2026-05-11",
+   "source": "https://www.spa.gov.sa/en/N2582764",
+   "destination": {
+    "iso3": "SAU",
+    "name": "Saudi Arabia",
+    "iso2": "SA"
+   },
+   "passports": [
+    {
+     "iso3": "RUS",
+     "name": "Russian Federation",
+     "iso2": "RU"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "90",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). SPA article body: mutual exemption entered into force 11 May 2026, all passport types including ordinary, 90 days per visit or in multiple periods within a calendar year."
+  },
+  {
+   "id": "aze-2026-04-29-2",
+   "effective": "2026-04-29",
+   "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+   "destination": {
+    "iso3": "AZE",
+    "name": "Azerbaijan",
+    "iso2": "AZ"
+   },
+   "passports": [
+    {
+     "iso3": "MDV",
+     "name": "Maldives",
+     "iso2": "MV"
+    }
+   ],
+   "from": "e-visa",
+   "to": "90",
+   "creditFrom": 0.2,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.2->1.0. Azerbaijani MFA Group II (reciprocal bilateral, permanent — not the time-limited Group IV): Maldives, 90 days, ordinary passports named. DATE UNVERIFIED: the MFA page carries no commencement date; 2026-04-29 is carried over from the proposal."
+  },
+  {
+   "id": "mdv-2026-04-29-12",
+   "effective": "2026-04-29",
+   "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+   "destination": {
+    "iso3": "MDV",
+    "name": "Maldives",
+    "iso2": "MV"
+   },
+   "passports": [
+    {
+     "iso3": "AZE",
+     "name": "Azerbaijan",
+     "iso2": "AZ"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "90",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). Reverse leg; Group II is explicitly two-way ('on the basis of reciprocity', column heading 'period of visa-free stay between two countries'). Rests on the origin government's characterisation of the treaty — immigration.gov.mv could not be read. Same undated caveat as MDV->AZE."
+  },
+  {
+   "id": "gbr-2026-03-05-6",
+   "effective": "2026-03-05",
+   "source": "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list",
+   "destination": {
+    "iso3": "GBR",
+    "name": "United Kingdom",
+    "iso2": "GB"
+   },
+   "passports": [
+    {
+     "iso3": "LCA",
+     "name": "St. Lucia",
+     "iso2": "LC"
+    },
+    {
+     "iso3": "NIC",
+     "name": "Nicaragua",
+     "iso2": "NI"
+    }
+   ],
+   "from": "eta",
+   "to": "visa required",
+   "creditFrom": 1,
+   "creditTo": 0,
+   "direction": "closed",
+   "note": "BOUNDARY 1.0->0.0. St Lucia at item 93 of VN 1.1(a); same expired VN 2.2(t) transitional."
+  },
+  {
+   "id": "chn-2026-02-17-4",
+   "effective": "2026-02-17",
+   "sunset": "2026-12-31",
+   "source": "https://www.fmprc.gov.cn/eng/xw/fyrbt/fyrbt/202602/t20260215_11860467.html",
+   "destination": {
+    "iso3": "CHN",
+    "name": "China",
+    "iso2": "CN"
+   },
+   "passports": [
+    {
+     "iso3": "CAN",
+     "name": "Canada",
+     "iso2": "CA"
+    },
+    {
+     "iso3": "GBR",
+     "name": "United Kingdom",
+     "iso2": "GB"
+    }
+   ],
+   "from": "visa required",
+   "to": "30",
+   "creditFrom": 0,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.0->1.0. PRC MFA spokesperson, 15 Feb 2026, ordinary passports, 30 days. SUNSET: expires 2026-12-31 — re-check in January."
+  },
+  {
+   "id": "aze-2026-02-15-0",
+   "effective": "2026-02-15",
+   "sunset": "2027-02-15",
+   "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+   "destination": {
+    "iso3": "AZE",
+    "name": "Azerbaijan",
+    "iso2": "AZ"
+   },
+   "passports": [
+    {
+     "iso3": "BHR",
+     "name": "Bahrain",
+     "iso2": "BH"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "30",
+   "creditFrom": 1,
+   "creditTo": 1,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (1.0->1.0). Azerbaijani MFA Group IV (unilateral, ordinary passport holders): Bahrain, 15 Feb 2026 to 15 Feb 2027, 3 entries, 30 days each. SUNSET 2027-02-15."
+  },
+  {
+   "id": "rus-2026-01-27-13",
+   "effective": "2026-01-27",
+   "source": "https://www.mofa.gov.mm/wp-content/uploads/2026/07/List-of-Countries-Having-Bilateral-Visa-Exemption-Agreements-with-Myanmar-AS-of-8-7-2026-1-1.pdf",
+   "destination": {
+    "iso3": "RUS",
+    "name": "Russian Federation",
+    "iso2": "RU"
+   },
+   "passports": [
+    {
+     "iso3": "MMR",
+     "name": "Myanmar",
+     "iso2": "MM"
+    }
+   ],
+   "from": "e-visa",
+   "to": "30",
+   "creditFrom": 0.2,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.2->1.0. Myanmar MFA table dated 8 July 2026, row 17 Russia: ordinary-passport column populated at 30 days (contrast rows where it is blank). DATE UNVERIFIED: 2026-01-27 carried over from the proposal and not independently confirmed; the value in force today is confirmed. Origin-state source rather than destination, but a bilateral exemption is reciprocal by construction."
+  },
+  {
+   "id": "tur-2026-01-02-19",
+   "effective": "2026-01-02",
+   "source": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+   "destination": {
+    "iso3": "TUR",
+    "name": "Turkiye",
+    "iso2": "TR"
+   },
+   "passports": [
+    {
+     "iso3": "CHN",
+     "name": "China",
+     "iso2": "CN"
+    }
+   ],
+   "from": "e-visa",
+   "to": "90",
+   "creditFrom": 0.2,
+   "creditTo": 1,
+   "direction": "opened",
+   "note": "BOUNDARY 0.2->1.0. Turkish MFA states ordinary-passport PRC nationals are exempt up to 90 days in any 180-day period as of 2 January 2026. Largest score movement in the batch by passport volume. Same page also supplies the CYP->TUR change."
+  },
+  {
+   "id": "tur-2026-01-02-20",
+   "effective": "2026-01-02",
+   "source": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+   "destination": {
+    "iso3": "TUR",
+    "name": "Turkiye",
+    "iso2": "TR"
+   },
+   "passports": [
+    {
+     "iso3": "CYP",
+     "name": "Cyprus",
+     "iso2": "CY"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "e-visa",
+   "creditFrom": 1,
+   "creditTo": 0.2,
+   "direction": "closed",
+   "note": "BOUNDARY 1.0->0.2. Turkish MFA: border-gate visa issuance for Greek Cypriot passport holders terminated 2 January 2026; remaining route is evisa.gov.tr or a mission, and ordinary passports are named."
+  },
+  {
+   "id": "usa-2026-01-01-21",
+   "effective": "2026-01-01",
+   "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+   "destination": {
+    "iso3": "USA",
+    "name": "United States",
+    "iso2": "US"
+   },
+   "passports": [
+    {
+     "iso3": "BFA",
+     "name": "Burkina Faso",
+     "iso2": "BF"
+    },
+    {
+     "iso3": "LAO",
+     "name": "Lao PDR",
+     "iso2": "LA"
+    },
+    {
+     "iso3": "MLI",
+     "name": "Mali",
+     "iso2": "ML"
+    },
+    {
+     "iso3": "NER",
+     "name": "Niger",
+     "iso2": "NE"
+    },
+    {
+     "iso3": "PSE",
+     "name": "West Bank and Gaza",
+     "iso2": "PS"
+    },
+    {
+     "iso3": "SLE",
+     "name": "Sierra Leone",
+     "iso2": "SL"
+    },
+    {
+     "iso3": "SSD",
+     "name": "South Sudan",
+     "iso2": "SS"
+    },
+    {
+     "iso3": "SYR",
+     "name": "Syrian Arab Republic",
+     "iso2": "SY"
+    }
+   ],
+   "from": "visa required",
+   "to": "no admission",
+   "creditFrom": 0,
+   "creditTo": 0,
+   "direction": "unchanged",
+   "note": "IMPACT NONE (0.0->0.0). Source normalised NAFSA -> primary Federal Register."
+  },
+  {
+   "id": "cpv-2026-01-01-5",
+   "effective": "2026-01-01",
+   "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+   "destination": {
+    "iso3": "CPV",
+    "name": "Cabo Verde",
+    "iso2": "CV"
+   },
+   "passports": [
+    {
+     "iso3": "CRI",
+     "name": "Costa Rica",
+     "iso2": "CR"
+    },
+    {
+     "iso3": "EGY",
+     "name": "Egypt, Arab Rep.",
+     "iso2": "EG"
+    },
+    {
+     "iso3": "JAM",
+     "name": "Jamaica",
+     "iso2": "JM"
+    },
+    {
+     "iso3": "MEX",
+     "name": "Mexico",
+     "iso2": "MX"
+    },
+    {
+     "iso3": "UZB",
+     "name": "Uzbekistan",
+     "iso2": "UZ"
+    },
+    {
+     "iso3": "ZWE",
+     "name": "Zimbabwe",
+     "iso2": "ZW"
+    }
+   ],
+   "from": "visa on arrival",
+   "to": "visa required",
+   "creditFrom": 1,
+   "creditTo": 0,
+   "direction": "closed",
+   "note": "BOUNDARY 1.0->0.0. Same annex, item 21 (Costa Rica)."
+  }
+ ],
+ "passports": [
+  {
+   "iso3": "LCA",
+   "name": "St. Lucia",
+   "iso2": "LC",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "IRL",
+     "name": "Ireland",
+     "iso2": "IE"
+    },
+    {
+     "iso3": "GBR",
+     "name": "United Kingdom",
+     "iso2": "GB"
+    }
+   ],
+   "scoreDelta": -3.23,
+   "rankDelta": -6
+  },
+  {
+   "iso3": "NIC",
+   "name": "Nicaragua",
+   "iso2": "NI",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "IRL",
+     "name": "Ireland",
+     "iso2": "IE"
+    },
+    {
+     "iso3": "GBR",
+     "name": "United Kingdom",
+     "iso2": "GB"
+    }
+   ],
+   "scoreDelta": -3.23,
+   "rankDelta": -5
+  },
+  {
+   "iso3": "CHN",
+   "name": "China",
+   "iso2": "CN",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    },
+    {
+     "iso3": "BRA",
+     "name": "Brazil",
+     "iso2": "BR"
+    },
+    {
+     "iso3": "TUR",
+     "name": "Turkiye",
+     "iso2": "TR"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 2.1,
+   "rankDelta": 6
+  },
+  {
+   "iso3": "CAN",
+   "name": "Canada",
+   "iso2": "CA",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    },
+    {
+     "iso3": "CHN",
+     "name": "China",
+     "iso2": "CN"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 1.91,
+   "rankDelta": 4
+  },
+  {
+   "iso3": "GBR",
+   "name": "United Kingdom",
+   "iso2": "GB",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    },
+    {
+     "iso3": "CHN",
+     "name": "China",
+     "iso2": "CN"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 1.91,
+   "rankDelta": 5
+  },
+  {
+   "iso3": "CYP",
+   "name": "Cyprus",
+   "iso2": "CY",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "TUR",
+     "name": "Turkiye",
+     "iso2": "TR"
+    }
+   ],
+   "scoreDelta": -1.23,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "MMR",
+   "name": "Myanmar",
+   "iso2": "MM",
+   "gained": [
+    {
+     "iso3": "RUS",
+     "name": "Russian Federation",
+     "iso2": "RU"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 1.13,
+   "rankDelta": 7
+  },
+  {
+   "iso3": "SAU",
+   "name": "Saudi Arabia",
+   "iso2": "SA",
+   "gained": [
+    {
+     "iso3": "RUS",
+     "name": "Russian Federation",
+     "iso2": "RU"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 1.13,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "KNA",
+   "name": "St. Kitts and Nevis",
+   "iso2": "KN",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "IRL",
+     "name": "Ireland",
+     "iso2": "IE"
+    }
+   ],
+   "scoreDelta": -1.04,
+   "rankDelta": -2
+  },
+  {
+   "iso3": "SSD",
+   "name": "South Sudan",
+   "iso2": "SS",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [
+    {
+     "iso3": "SGP",
+     "name": "Singapore",
+     "iso2": "SG"
+    }
+   ],
+   "scoreDelta": -0.87,
+   "rankDelta": -4
+  },
+  {
+   "iso3": "NAM",
+   "name": "Namibia",
+   "iso2": "NA",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    },
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.42,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "MDV",
+   "name": "Maldives",
+   "iso2": "MV",
+   "gained": [
+    {
+     "iso3": "AZE",
+     "name": "Azerbaijan",
+     "iso2": "AZ"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.29,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "AGO",
+   "name": "Angola",
+   "iso2": "AO",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "BDI",
+   "name": "Burundi",
+   "iso2": "BI",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "BWA",
+   "name": "Botswana",
+   "iso2": "BW",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "CAF",
+   "name": "Central African Republic",
+   "iso2": "CF",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "CMR",
+   "name": "Cameroon",
+   "iso2": "CM",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "COD",
+   "name": "Congo, Dem. Rep.",
+   "iso2": "CD",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "COG",
+   "name": "Congo, Rep.",
+   "iso2": "CG",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "COM",
+   "name": "Comoros",
+   "iso2": "KM",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "DJI",
+   "name": "Djibouti",
+   "iso2": "DJ",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "DZA",
+   "name": "Algeria",
+   "iso2": "DZ",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "ERI",
+   "name": "Eritrea",
+   "iso2": "ER",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "ETH",
+   "name": "Ethiopia",
+   "iso2": "ET",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "GAB",
+   "name": "Gabon",
+   "iso2": "GA",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "GNQ",
+   "name": "Equatorial Guinea",
+   "iso2": "GQ",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 3
+  },
+  {
+   "iso3": "KEN",
+   "name": "Kenya",
+   "iso2": "KE",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "LBY",
+   "name": "Libya",
+   "iso2": "LY",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "LSO",
+   "name": "Lesotho",
+   "iso2": "LS",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "MDG",
+   "name": "Madagascar",
+   "iso2": "MG",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "MOZ",
+   "name": "Mozambique",
+   "iso2": "MZ",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "MRT",
+   "name": "Mauritania",
+   "iso2": "MR",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "MUS",
+   "name": "Mauritius",
+   "iso2": "MU",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "MWI",
+   "name": "Malawi",
+   "iso2": "MW",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "RWA",
+   "name": "Rwanda",
+   "iso2": "RW",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "SDN",
+   "name": "Sudan",
+   "iso2": "SD",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": -1
+  },
+  {
+   "iso3": "SOM",
+   "name": "Somalia, Fed. Rep.",
+   "iso2": "SO",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": -1
+  },
+  {
+   "iso3": "STP",
+   "name": "Sao Tome and Principe",
+   "iso2": "ST",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "SWZ",
+   "name": "Eswatini",
+   "iso2": "SZ",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "SYC",
+   "name": "Seychelles",
+   "iso2": "SC",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "TCD",
+   "name": "Chad",
+   "iso2": "TD",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "TUN",
+   "name": "Tunisia",
+   "iso2": "TN",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "TZA",
+   "name": "Tanzania",
+   "iso2": "TZ",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "UGA",
+   "name": "Uganda",
+   "iso2": "UG",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "ZAF",
+   "name": "South Africa",
+   "iso2": "ZA",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "ZMB",
+   "name": "Zambia",
+   "iso2": "ZM",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.12,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "CRI",
+   "name": "Costa Rica",
+   "iso2": "CR",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "CPV",
+     "name": "Cabo Verde",
+     "iso2": "CV"
+    }
+   ],
+   "scoreDelta": -0.1,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "JAM",
+   "name": "Jamaica",
+   "iso2": "JM",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "CPV",
+     "name": "Cabo Verde",
+     "iso2": "CV"
+    }
+   ],
+   "scoreDelta": -0.1,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "MEX",
+   "name": "Mexico",
+   "iso2": "MX",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "CPV",
+     "name": "Cabo Verde",
+     "iso2": "CV"
+    }
+   ],
+   "scoreDelta": -0.1,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "UZB",
+   "name": "Uzbekistan",
+   "iso2": "UZ",
+   "gained": [],
+   "lost": [
+    {
+     "iso3": "CPV",
+     "name": "Cabo Verde",
+     "iso2": "CV"
+    }
+   ],
+   "scoreDelta": -0.1,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "BRA",
+   "name": "Brazil",
+   "iso2": "BR",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.06,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "DEU",
+   "name": "Germany",
+   "iso2": "DE",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.06,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "FRA",
+   "name": "France",
+   "iso2": "FR",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.06,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "IND",
+   "name": "India",
+   "iso2": "IN",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.06,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "JPN",
+   "name": "Japan",
+   "iso2": "JP",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.06,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "USA",
+   "name": "United States",
+   "iso2": "US",
+   "gained": [
+    {
+     "iso3": "GHA",
+     "name": "Ghana",
+     "iso2": "GH"
+    }
+   ],
+   "lost": [],
+   "scoreDelta": 0.06,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "EGY",
+   "name": "Egypt, Arab Rep.",
+   "iso2": "EG",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [
+    {
+     "iso3": "CPV",
+     "name": "Cabo Verde",
+     "iso2": "CV"
+    }
+   ],
+   "scoreDelta": 0.02,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "ZWE",
+   "name": "Zimbabwe",
+   "iso2": "ZW",
+   "gained": [
+    {
+     "iso3": "TGO",
+     "name": "Togo",
+     "iso2": "TG"
+    }
+   ],
+   "lost": [
+    {
+     "iso3": "CPV",
+     "name": "Cabo Verde",
+     "iso2": "CV"
+    }
+   ],
+   "scoreDelta": 0.02,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "AZE",
+   "name": "Azerbaijan",
+   "iso2": "AZ",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "BFA",
+   "name": "Burkina Faso",
+   "iso2": "BF",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 2
+  },
+  {
+   "iso3": "BHR",
+   "name": "Bahrain",
+   "iso2": "BH",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "KOR",
+   "name": "Korea, Rep.",
+   "iso2": "KR",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "LAO",
+   "name": "Lao PDR",
+   "iso2": "LA",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "MLI",
+   "name": "Mali",
+   "iso2": "ML",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "NER",
+   "name": "Niger",
+   "iso2": "NE",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "PSE",
+   "name": "West Bank and Gaza",
+   "iso2": "PS",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 0
+  },
+  {
+   "iso3": "RUS",
+   "name": "Russian Federation",
+   "iso2": "RU",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "SLE",
+   "name": "Sierra Leone",
+   "iso2": "SL",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": 1
+  },
+  {
+   "iso3": "SYR",
+   "name": "Syrian Arab Republic",
+   "iso2": "SY",
+   "gained": [],
+   "lost": [],
+   "scoreDelta": 0,
+   "rankDelta": -1
+  }
+ ],
+ "totals": {
+  "cells": 85,
+  "events": 22,
+  "opened": 9,
+  "closed": 5,
+  "destinations": 14,
+  "passports": 69
+ }
+}

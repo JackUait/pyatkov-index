@@ -123,6 +123,15 @@ describe('README claims match the real data + the current pipeline (docs subsyst
     expect(README).not.toMatch(/Puerto Rico/);
   });
 
+  it('B11: the README documents the fork and its correction count matches the shipped file', () => {
+    // The visa matrix is no longer a straight copy of upstream: it is a frozen baseline
+    // plus our own sourced corrections. The count is data, so pin it to the data.
+    const file = JSON.parse(read('../visa-overrides.json')) as { overrides: unknown[]; verifiedAsOf: string };
+    expect(README).toMatch(/visa-overrides\.json/);
+    expect(README).toContain(`${file.overrides.length} cell`);
+    expect(README).toContain(file.verifiedAsOf);
+  });
+
   it('D1: the historical ilyankou dataset is called dormant, not archived', () => {
     // The GitHub API reports `"archived": false` for ilyankou/passport-index-dataset.
     // It is dormant (no push since 2026-02-18) and superseded, which is not the same claim.

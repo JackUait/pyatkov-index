@@ -117,8 +117,8 @@ destination-weight signal, and adding it moved no passport score.
 Alongside it sits the naive reading — every passport counted as one, regardless of how many
 people hold it — and the gap between the two is the argument again, pointed the other way. A
 destination open to fifty small countries but closed to India and China is not open. The
-biggest population-weighting fall is **Kosovo**: count rank #54, openness rank #107
-(Δ −53).
+biggest population-weighting fall is **Kosovo**: count rank #54, openness rank #108
+(Δ −54).
 
 ## Repo layout
 
@@ -194,9 +194,10 @@ latest figures, re-run `yarn fetch-data` (it overwrites the raw snapshots in pla
 re-run `yarn pipeline` to regenerate the JSON, then rebuild the site. `yarn fetch-data`
 downloads, from live sources:
 
-- the **visa matrix** from the maintained
-  [`imorte/passport-index-data`](https://github.com/imorte/passport-index-data) dataset
-  (the successor to the dormant `ilyankou/passport-index-dataset`);
+- the **visa matrix baseline** from
+  [`imorte/passport-index-data`](https://github.com/imorte/passport-index-data)
+  (the successor to the dormant `ilyankou/passport-index-dataset`) — see
+  [The visa matrix is ours now](#the-visa-matrix-is-ours-now) for what happens to it next;
 - **GDP** (`NY.GDP.MKTP.CD`) and **migrant stock** (`SM.POP.TOTL`) from the World Bank API
   at each country's latest available year;
 - **international arrivals** (`ST.INT.ARVL`) from the World Bank API over a fixed
@@ -215,6 +216,52 @@ Because those four signals carry different observation years, the generated
 data vintage) plus a per-signal `vintages` block (series id, selection rule, and the
 observation year each signal actually used). The site's methodology page renders that block
 so every published number discloses its own vintage instead of one misleading snapshot date.
+
+### The visa matrix is ours now
+
+The upstream matrix is a **2026-02-17 vintage and has stopped moving** — that repo's data
+blob has one commit, and nothing has been pushed to it since 2026-03-01. Refetching it
+changes nothing. So the visa data is a fork: `data/raw/passport-index-matrix-iso3.csv` is a
+frozen baseline that is never hand-edited, and `data/visa-overrides.json` is our own
+correction layer applied on top of it at build time. As of **2026-07-27** it carries
+**85 cells** re-sourced from primary government texts — UK and Irish statutory instruments,
+the US Federal Register, the PRC MFA, Togo's and Ghana's immigration portals, Cabo Verde's
+entry decree — of which 68 cross a scoring boundary. Keeping the baseline pristine means
+`yarn fetch-data` stays a clean refresh, and every edit keeps its reason, its source and
+its date instead of vanishing into a hand-patched CSV.
+
+The site reads the same ledger back as a changelog at `/updates/` — one card per policy
+rather than per cell, naming the passports it moved, what it did to their scores, and the
+government document that settles it. Nothing on that page is written by hand; the pipeline
+emits `updates.json` and the copy is generated from it.
+
+Each override names the value it expects the baseline to hold:
+
+```json
+{
+  "origin": "GBR", "destination": "CHN",
+  "from": "visa required", "to": "30",
+  "effective": "2026-02-17", "sunset": "2026-12-31",
+  "source": "https://www.fmprc.gov.cn/...",
+  "note": "BOUNDARY 0.0->1.0. PRC MFA spokesperson, ordinary passports, 30 days."
+}
+```
+
+`pipeline/overrides.ts` refuses to build on anything doubtful, and each refusal is a class
+of error we actually hit: a `from` that no longer matches the baseline (upstream moved, so
+the correction may no longer be one), a change dated in the future (announced is not in
+force), an expired `sunset` (China's visa-free trials and Azerbaijan's one-year grants all
+lapse on a date — an expired override pins a policy that no longer exists), an unknown ISO3
+code, a self-pair, a duplicate cell, a no-op, a value outside the cell vocabulary, or a
+missing source. The dataset cannot contain an unsourced opinion, and it cannot rot quietly:
+it fails the build instead.
+
+What this does *not* claim is per-cell freshness for all 39,601 pairs. Verifying those
+against primary sources is not a thing anyone can honestly assert, and we do not. The audit
+covered the delta since the baseline plus a column audit of the 30 highest-weighted
+destinations, which carry 47.7% of all destination value; everything else stands at its
+baseline value, and `vintages.matrix` publishes the baseline date, the verification date
+and the correction count so the site says exactly that.
 
 ### Manual overrides
 

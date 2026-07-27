@@ -2,6 +2,8 @@ import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseVisaMatrix } from './ingest.ts';
+import { applyVisaOverrides, type VisaOverrideFile } from './overrides.ts';
+import { buildUpdates } from './updates.ts';
 import { loadPopulations, loadSignals, parseArrivals, parseHdiCsv, parseWorldBankJson, type Override } from './signals.ts';
 import { computeWeights } from './weights.ts';
 import { computeScores } from './scores.ts';
@@ -300,7 +302,15 @@ function main(): void {
   sanityGuards(weights, rows, matrix.countries.length);
   opennessGuards(openness);
 
-  const meta = buildMetadata({ totalDestinations: matrix.countries.length, gdpBody, migrantsBody, populationBody, hdiCsv, arrivalsByIso });
+  const meta = buildMetadata({
+    totalDestinations: matrix.countries.length,
+    matrixOverrides: {
+      baselineVintage: overrideFile.baseline.vintage,
+      verifiedAsOf: overrideFile.verifiedAsOf,
+      applied: corrected.applied,
+    },
+    gdpBody, migrantsBody, populationBody, hdiCsv, arrivalsByIso,
+  });
 
   mkdirSync(OUT, { recursive: true });
   const withIso2 = <T extends { iso3: string }>(r: T) => ({ ...r, iso2: countries[r.iso3].iso2 });
@@ -317,6 +327,33 @@ function main(): void {
   for (const [p, row] of matrix.access) matrixOut[p] = Object.fromEntries(row);
   writeFileSync(join(OUT, 'matrix.json'), JSON.stringify(matrixOut));
   writeFileSync(join(OUT, 'openness.json'), JSON.stringify({ destinations: openness.map(withIso2) }, null, 1));
+
+  // The changelog. Scoring the untouched baseline too is what lets each card say what its
+  // policy actually did to the ranking — the counterfactual, not a guess.
+  const baseline = computeScores(parseVisaMatrix(read('passport-index-matrix-iso3.csv')), weights, names);
+  const was = new Map(baseline.map((r) => [r.iso3, r]));
+  const movers = rows.map((r) => ({
+    iso3: r.iso3,
+    scoreDelta: Number((r.score - was.get(r.iso3)!.score).toFixed(2)),
+    rankDelta: was.get(r.iso3)!.rank - r.rank,
+  }));
+  const updates = buildUpdates(overrideFile.overrides, {
+    names,
+    iso2: new Map(matrix.countries.map((c) => [c, countries[c].iso2])),
+    movers,
+  });
+  writeFileSync(
+    join(OUT, 'updates.json'),
+    JSON.stringify(
+      {
+        baselineVintage: overrideFile.baseline.vintage,
+        verifiedAsOf: overrideFile.verifiedAsOf,
+        ...updates,
+      },
+      null,
+      1,
+    ),
+  );
 
   console.log(`${rows.length} passports scored over ${matrix.countries.length} destinations`);
   console.log('top 5:', rows.slice(0, 5).map((r) => `${r.iso3} ${r.score.toFixed(1)}`).join('  '));

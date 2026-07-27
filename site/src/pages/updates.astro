@@ -1,0 +1,204 @@
+---
+import Base from '../layouts/Base.astro';
+import updates from '../data/updates.json';
+import Flag from '../components/Flag.astro';
+import { displayName, withArticle } from '../lib/format.ts';
+import { accessPhrase, dayLabel, effectLabel, headline, monthLabel, noteForCard, sourceHost, tierClass } from '../lib/updates-copy.ts';
+import { absUrl, pageId, ID } from '../lib/seo.ts';
+const base = import.meta.env.BASE_URL;
+
+const events = updates.events;
+const totals = updates.totals;
+// The passport ledger reads as consequence, so it carries only the passports whose
+// standing actually moved. The rest are already told by their destination's card.
+const moved = updates.passports.filter((p) => p.scoreDelta !== 0);
+
+// Month rules: the feed is grouped, and each group is titled once.
+const months: Array<{ label: string; events: typeof events }> = [];
+for (const e of events) {
+  const label = monthLabel(e.effective);
+  const last = months[months.length - 1];
+  if (last?.label === label) last.events.push(e);
+  else months.push({ label, events: [e] });
+}
+
+// ---- The year strip. One flat block per policy, standing on the date it took
+// effect, as tall as the number of passports it moved. The whole argument of the
+// page in one glyph: a few tall openings, a scatter of small corrections.
+const dates = events.map((e) => Date.parse(e.effective));
+const t0 = Math.min(...dates, Date.parse(`${updates.baselineVintage}`));
+const t1 = Date.parse(updates.verifiedAsOf);
+const span = Math.max(1, t1 - t0);
+const tallest = Math.max(...events.map((e) => e.passports.length), 1);
+const W = 320;
+const H = 116;
+const BASELINE = 96;
+const marks = events.map((e) => ({
+  x: 12 + (W - 28) * ((Date.parse(e.effective) - t0) / span),
+  h: 5 + 74 * (e.passports.length / tallest),
+  direction: e.direction,
+  title: `${headline(e)}, ${dayLabel(e.effective)}`,
+}));
+// Month ticks across the strip's own domain, so the axis cannot drift from the marks.
+const ticks: Array<{ x: number; label: string }> = [];
+for (let d = new Date(t0); d.getTime() <= t1; d.setUTCMonth(d.getUTCMonth() + 1)) {
+  const at = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1);
+  if (at < t0 || at > t1) continue;
+  ticks.push({ x: 12 + (W - 28) * ((at - t0) / span), label: monthLabel(new Date(at).toISOString().slice(0, 10)).slice(0, 3) });
+}
+
+const feedId = pageId(Astro.url.pathname, 'changelog');
+const itemList = {
+  '@type': 'ItemList',
+  '@id': feedId,
+  name: 'Corrections to the visa matrix',
+  itemListOrder: 'https://schema.org/ItemListOrderDescending',
+  numberOfItems: events.length,
+  subjectOf: { '@id': ID.dataset },
+  itemListElement: events.map((e, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: headline(e),
+    url: absUrl(`${base}destination/${e.destination.iso3.toLowerCase()}/`),
+  })),
+};
+---
+<Base
+  title="What changed - Pyatkov Index"
+  description="Every correction to the visa matrix since the upstream baseline: what moved, whom it moved, and the government source that settles it."
+  mainEntityId={feedId}
+  jsonld={itemList}
+>
+  <section class="ledger" aria-label="Corrections to the visa matrix">
+    {/* Headline, deck and count-ledger left; the year strip top-right. One spread. */}
+    <div class="hero upd-lede">
+      <div class="upd-say">
+        <h1>What changed</h1>
+        <p class="tagline">
+          Not news — bookkeeping. The upstream matrix stopped moving on {updates.baselineVintage},
+          so every cell below was re-sourced from the government that decided it. Each card is a
+          policy, the passports it moved, and the document that proves it.
+        </p>
+        <dl class="upd-tally">
+          <div><dt>cells corrected</dt><dd>{totals.cells}</dd></div>
+          <div><dt>policies</dt><dd>{totals.events}</dd></div>
+          <div><dt>destinations</dt><dd>{totals.destinations}</dd></div>
+          <div><dt>passports touched</dt><dd>{totals.passports}</dd></div>
+        </dl>
+      </div>
+
+      <figure class="upd-year">
+        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="year-strip-title">
+          <title id="year-strip-title">
+            {totals.events} policy changes between {monthLabel(updates.baselineVintage)} and {monthLabel(updates.verifiedAsOf)};
+            {totals.opened} opened access, {totals.closed} withdrew it.
+          </title>
+          {/* The stretch nobody has re-verified is a tint, not an absence. */}
+          <rect x="12" y={BASELINE - 82} width={W - 28} height="82" class="upd-void" />
+          {marks.map((m) => (
+            <rect x={m.x} y={BASELINE - m.h} width="5" height={m.h} class={`upd-mark is-${m.direction}`}>
+              <title>{m.title}</title>
+            </rect>
+          ))}
+          <line x1="12" y1={BASELINE} x2={W - 16} y2={BASELINE} class="upd-axis" />
+          {ticks.map((t) => (
+            <text x={t.x} y={BASELINE + 14} class="upd-tick">{t.label}</text>
+          ))}
+        </svg>
+        <figcaption>
+          One block per policy, standing on the day it took effect, as tall as the number of
+          passports it moved. Tallest is {tallest}.
+        </figcaption>
+      </figure>
+    </div>
+
+    {months.map((month) => (
+      <section class="upd-month" aria-label={month.label}>
+        <h2>{month.label}</h2>
+        <ol class="upd-feed">
+          {month.events.map((e) => (
+            <li class={`upd-card is-${e.direction}`}>
+              <div class="upd-head">
+                <time datetime={e.effective}>{dayLabel(e.effective)}</time>
+                <h3>{headline(e)}</h3>
+              </div>
+
+              <p class="upd-shift">
+                <span class={`tier-key ${tierClass(e.from)}`}>{accessPhrase(e.from)}</span>
+                <span class="upd-arrow" aria-hidden="true">→</span>
+                <span class={`tier-key ${tierClass(e.to)}`}>{accessPhrase(e.to)}</span>
+                {e.creditFrom === e.creditTo && (
+                  <span class="upd-flat">scores the same either way</span>
+                )}
+              </p>
+
+              <ul class="upd-who">
+                {e.passports.map((p) => (
+                  <li>
+                    <a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false">
+                      <Flag iso2={p.iso2} />{displayName(p.iso3, p.name)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <p class="upd-note">{noteForCard(e.note)}</p>
+
+              <p class="upd-cite">
+                <a href={e.source} rel="nofollow noopener" target="_blank">
+                  {sourceHost(e.source)}<span aria-hidden="true"> ↗</span>
+                  <span class="sr-only"> — source for this change, opens in a new tab</span>
+                </a>
+                {e.sunset && <span class="upd-sunset">lapses {e.sunset}</span>}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))}
+
+    <section class="upd-conseq" aria-label="What the corrections did to the ranking">
+      <h2>What it did to the ranking</h2>
+      <p class="upd-conseq-lede">
+        Scoring the untouched baseline alongside the corrected matrix says exactly what these
+        {' '}{totals.cells} cells were worth. {moved.length} passports moved; the rest were
+        corrected for accuracy and stayed where they were.
+      </p>
+      <ol class="upd-movers">
+        {moved.map((p) => (
+          <li>
+            <a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false">
+              <Flag iso2={p.iso2} />
+              <b>{displayName(p.iso3, p.name)}</b>
+            </a>
+            <span class={`upd-delta ${p.scoreDelta > 0 ? 'is-up' : 'is-down'}`}>
+              {effectLabel(p.scoreDelta, p.rankDelta)}
+            </span>
+            <span class="upd-because">
+              {p.gained.length > 0 && (
+                <>gained {p.gained.map((g) => withArticle(g.iso3, g.name)).join(', ')}</>
+              )}
+              {p.gained.length > 0 && p.lost.length > 0 && <>; </>}
+              {p.lost.length > 0 && (
+                <>lost {p.lost.map((g) => withArticle(g.iso3, g.name)).join(', ')}</>
+              )}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </section>
+
+  <style>
+    /* global.css has no visually-hidden utility; the source links need one for the
+       "opens in a new tab" note, the same arrangement as the other pages. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  </style>
+</Base>

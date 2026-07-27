@@ -1,0 +1,780 @@
+{
+  "baseline": {
+    "source": "imorte/passport-index-data (main), passport-index-matrix-iso3.csv",
+    "vintage": "2026-02-17"
+  },
+  "verifiedAsOf": "2026-07-27",
+  "overrides": [
+    {
+      "origin": "BHR",
+      "destination": "AZE",
+      "from": "visa on arrival",
+      "to": "30",
+      "effective": "2026-02-15",
+      "sunset": "2027-02-15",
+      "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+      "note": "IMPACT NONE (1.0->1.0). Azerbaijani MFA Group IV (unilateral, ordinary passport holders): Bahrain, 15 Feb 2026 to 15 Feb 2027, 3 entries, 30 days each. SUNSET 2027-02-15."
+    },
+    {
+      "origin": "JPN",
+      "destination": "AZE",
+      "from": "visa on arrival",
+      "to": "30",
+      "effective": "2026-07-01",
+      "sunset": "2027-07-01",
+      "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+      "note": "IMPACT NONE (1.0->1.0). SOURCE UPGRADED: the proposal cited report.az, a news agency; the KOR->AZE verifier found Japan at Group IV entry 6 of the destination government's own MFA table on identical terms from the same date, so the citation is normalised to mfa.gov.az. SUNSET 2027-07-01."
+    },
+    {
+      "origin": "KOR",
+      "destination": "AZE",
+      "from": "visa on arrival",
+      "to": "30",
+      "effective": "2026-07-01",
+      "sunset": "2027-07-01",
+      "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+      "note": "IMPACT NONE (1.0->1.0). Group IV entry 7: Republic of Korea, 1 July 2026 to 1 July 2027, 3 entries, 30 days each. SUNSET 2027-07-01."
+    },
+    {
+      "origin": "MDV",
+      "destination": "AZE",
+      "from": "e-visa",
+      "to": "90",
+      "effective": "2026-04-29",
+      "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+      "note": "BOUNDARY 0.2->1.0. Azerbaijani MFA Group II (reciprocal bilateral, permanent — not the time-limited Group IV): Maldives, 90 days, ordinary passports named. DATE UNVERIFIED: the MFA page carries no commencement date; 2026-04-29 is carried over from the proposal."
+    },
+    {
+      "origin": "CHN",
+      "destination": "BRA",
+      "from": "visa required",
+      "to": "30",
+      "effective": "2026-05-11",
+      "sunset": "2026-12-31",
+      "source": "https://english.www.gov.cn/news/202605/08/content_WS69fd90b4c6d00ca5f9a0ad29.html",
+      "note": "BOUNDARY 0.0->1.0. PRC State Council portal; ordinary passports, 30 days non-extendable. SUNSET: valid only until 2026-12-31. Confirmed from the Chinese side only (gov.br/mre behind a CAPTCHA)."
+    },
+    {
+      "origin": "CAN",
+      "destination": "CHN",
+      "from": "visa required",
+      "to": "30",
+      "effective": "2026-02-17",
+      "sunset": "2026-12-31",
+      "source": "https://www.fmprc.gov.cn/eng/xw/fyrbt/fyrbt/202602/t20260215_11860467.html",
+      "note": "BOUNDARY 0.0->1.0. PRC MFA spokesperson, 15 Feb 2026, ordinary passports, 30 days. SUNSET: expires 2026-12-31 — re-check in January."
+    },
+    {
+      "origin": "GBR",
+      "destination": "CHN",
+      "from": "visa required",
+      "to": "30",
+      "effective": "2026-02-17",
+      "sunset": "2026-12-31",
+      "source": "https://www.fmprc.gov.cn/eng/xw/fyrbt/fyrbt/202602/t20260215_11860467.html",
+      "note": "BOUNDARY 0.0->1.0. Same PRC MFA statement as CAN->CHN. SUNSET: expires 2026-12-31."
+    },
+    {
+      "origin": "CRI",
+      "destination": "CPV",
+      "from": "visa on arrival",
+      "to": "visa required",
+      "effective": "2026-01-01",
+      "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+      "note": "BOUNDARY 1.0->0.0. Same annex, item 21 (Costa Rica)."
+    },
+    {
+      "origin": "EGY",
+      "destination": "CPV",
+      "from": "visa on arrival",
+      "to": "visa required",
+      "effective": "2026-01-01",
+      "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+      "note": "BOUNDARY 1.0->0.0. Same annex, item 24 (Egito). Note the cross-current: Egypt loses Cabo Verde here but gains Togo in the same batch."
+    },
+    {
+      "origin": "JAM",
+      "destination": "CPV",
+      "from": "visa on arrival",
+      "to": "visa required",
+      "effective": "2026-01-01",
+      "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+      "note": "BOUNDARY 1.0->0.0. Same annex, item 40 (Jamaica)."
+    },
+    {
+      "origin": "MEX",
+      "destination": "CPV",
+      "from": "visa on arrival",
+      "to": "visa required",
+      "effective": "2026-01-01",
+      "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+      "note": "BOUNDARY 1.0->0.0. Same annex, item 50 (Mexico). PDF was downloaded and text-extracted by the verifier."
+    },
+    {
+      "origin": "UZB",
+      "destination": "CPV",
+      "from": "visa on arrival",
+      "to": "visa required",
+      "effective": "2026-01-01",
+      "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+      "note": "BOUNDARY 1.0->0.0. Same annex, item 86 (Uzbequistao)."
+    },
+    {
+      "origin": "ZWE",
+      "destination": "CPV",
+      "from": "visa on arrival",
+      "to": "visa required",
+      "effective": "2026-01-01",
+      "source": "https://www.ease.gov.cv/assets/lista_de_paises.pdf",
+      "note": "BOUNDARY 1.0->0.0. Annex to Despacho 244/GMAI/2025, item 91 (Zimbabue). Advance embassy visa on pain of refusal of entry; no online channel, so 'visa required' not 'e-visa'. Annex para.4 handles diplomatic/official/service passports separately, confirming ordinary-passport scope."
+    },
+    {
+      "origin": "LCA",
+      "destination": "GBR",
+      "from": "eta",
+      "to": "visa required",
+      "effective": "2026-03-05",
+      "source": "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list",
+      "note": "BOUNDARY 1.0->0.0. St Lucia at item 93 of VN 1.1(a); same expired VN 2.2(t) transitional."
+    },
+    {
+      "origin": "NIC",
+      "destination": "GBR",
+      "from": "eta",
+      "to": "visa required",
+      "effective": "2026-03-05",
+      "source": "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list",
+      "note": "BOUNDARY 1.0->0.0. Appendix Visitor visa-national list VN 1.1(a); transitional VN 2.2(t) grace window closed 2026-04-16."
+    },
+    {
+      "origin": "BRA",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Same GIS e-Visa portal. Brazil's existing Ghana exemption covers diplomatic and official passports only, which is why the ordinary cell moves to e-visa and not visa-free. Same corroboration caveat as CHN and FRA."
+    },
+    {
+      "origin": "CAN",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Eligibility endpoint returns authorization_required=evisa for CA."
+    },
+    {
+      "origin": "CHN",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Same GIS e-Visa portal. Weaker than the endpoint-queried rows: per-nationality category corroborated rather than read from an official table (gis.gov.gh/visa-requirements 404s). China's separate diplomatic/official exemption is NOT the basis."
+    },
+    {
+      "origin": "CMR",
+      "destination": "GHA",
+      "from": "visa on arrival",
+      "to": "eta",
+      "effective": "2026-05-25",
+      "source": "https://mfa.gov.gh/index.php/ghana-launches-e-visa-portal/",
+      "note": "IMPACT NONE (1.0->1.0). Same AU-ETA basis. Ghana's own wording is loose (the Presidency says free 'e-visa', the portal says ETA); the operative facts — no fee, issued in advance online — match our 'eta'."
+    },
+    {
+      "origin": "DEU",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Same GIS e-Visa portal; Germany named among eligible nationalities."
+    },
+    {
+      "origin": "DZA",
+      "destination": "GHA",
+      "from": "visa on arrival",
+      "to": "eta",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "IMPACT NONE (1.0->1.0). Best-evidenced of the AU-ETA rows: endpoint returns authorization_required=eta, eta_type=au-eta, fee=0, validity_days=30, 'African Union citizen - ETA replaces Visa on Arrival'. fee=0 is what distinguishes this from the e-visa rows."
+    },
+    {
+      "origin": "EGY",
+      "destination": "GHA",
+      "from": "visa on arrival",
+      "to": "eta",
+      "effective": "2026-05-25",
+      "source": "https://mfa.gov.gh/index.php/ghana-launches-e-visa-portal/",
+      "note": "IMPACT NONE (1.0->1.0). Visa-on-arrival discontinued for African passport holders in favour of a mandatory free pre-travel authorisation. Not endpoint-queried individually; see the 30-vs-90-day discrepancy noted on NAM->GHA."
+    },
+    {
+      "origin": "FRA",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Same GIS e-Visa portal. Flagged by its verifier as one of the three to re-check first if a stricter bar is wanted — category not read from an official per-country table."
+    },
+    {
+      "origin": "GBR",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Ghana Immigration Service e-Visa portal on a gov.gh domain, launched 25 May 2026; paid, document-backed, adjudicated pre-departure application, so 'e-visa' not 'eta'."
+    },
+    {
+      "origin": "IND",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Eligibility endpoint returns authorization_required=evisa for IN."
+    },
+    {
+      "origin": "JPN",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Same GIS e-Visa portal; Japan named among eligible nationalities."
+    },
+    {
+      "origin": "NAM",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "eta",
+      "effective": "2026-05-25",
+      "source": "https://mfa.gov.gh/index.php/ghana-launches-e-visa-portal/",
+      "note": "BOUNDARY 0.0->1.0 — the largest single-cell gain in the Ghana group, and the only Ghana row that crosses from 0.0 straight to 1.0, so it deserves a second look. AU passport holders get a fee-free pre-departure ETA. CONTRADICTION FLAGGED: this row's verifier describes the AU ETA as 90-day, while the DZA->GHA verifier's live endpoint response returns validity_days=30. Score-neutral (both 'eta'), but the two accounts of the same category disagree. Namibia was not itself endpoint-queried."
+    },
+    {
+      "origin": "USA",
+      "destination": "GHA",
+      "from": "visa required",
+      "to": "e-visa",
+      "effective": "2026-05-25",
+      "source": "https://evisa.immigration.gov.gh/",
+      "note": "BOUNDARY 0.0->0.2. Strongest of the Ghana rows: POST /api/eta/check-eligibility {\"nationality\":\"US\"} returns authorization_required=evisa, application_flow=visa_application."
+    },
+    {
+      "origin": "KNA",
+      "destination": "IRL",
+      "from": "90",
+      "to": "visa required",
+      "effective": "2026-06-15",
+      "source": "https://www.irishstatutebook.ie/eli/2026/si/242/made/en/html",
+      "note": "BOUNDARY 1.0->0.0. Same S.I. 242/2026 Schedule 1 deletion, confirmed in the instrument text quoted by the NIC->IRL verifier. Source URL normalised. KNA->GBR correctly left untouched (St Kitts is not on the UK visa-national list)."
+    },
+    {
+      "origin": "LCA",
+      "destination": "IRL",
+      "from": "90",
+      "to": "visa required",
+      "effective": "2026-06-15",
+      "source": "https://www.irishstatutebook.ie/eli/2026/si/242/made/en/html",
+      "note": "BOUNDARY 1.0->0.0. Source URL normalised to the canonical ELI form (was a hand-built /2026/en/si/0242.html link). The first verifier rated this row weak because every .ie domain 403'd, but the NIC->IRL verifier retrieved the operative text of the same S.I. 242/2026 and it deletes 'Nicaragua', 'Saint Kitts and Nevis' AND 'Saint Lucia' from Schedule 1 — so this row is now primary-sourced and the weak-confirmation flag is resolved."
+    },
+    {
+      "origin": "NIC",
+      "destination": "IRL",
+      "from": "90",
+      "to": "visa required",
+      "effective": "2026-06-15",
+      "source": "https://www.irishstatutebook.ie/eli/2026/si/242/made/en/html",
+      "note": "BOUNDARY 1.0->0.0. Primary text retrieved: S.I. 242/2026 art.1(2) commences 15 June 2026 and deletes the three states from Schedule 1 (the visa-exempt class under art.3(a) of S.I. 473/2014), inserting them into Schedule 5 (transit visas). Source URL normalised from the /print variant to /html."
+    },
+    {
+      "origin": "AZE",
+      "destination": "MDV",
+      "from": "visa on arrival",
+      "to": "90",
+      "effective": "2026-04-29",
+      "source": "https://mfa.gov.az/en/category/visa/visa-free-countries",
+      "note": "IMPACT NONE (1.0->1.0). Reverse leg; Group II is explicitly two-way ('on the basis of reciprocity', column heading 'period of visa-free stay between two countries'). Rests on the origin government's characterisation of the treaty — immigration.gov.mv could not be read. Same undated caveat as MDV->AZE."
+    },
+    {
+      "origin": "MMR",
+      "destination": "RUS",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-01-27",
+      "source": "https://www.mofa.gov.mm/wp-content/uploads/2026/07/List-of-Countries-Having-Bilateral-Visa-Exemption-Agreements-with-Myanmar-AS-of-8-7-2026-1-1.pdf",
+      "note": "BOUNDARY 0.2->1.0. Myanmar MFA table dated 8 July 2026, row 17 Russia: ordinary-passport column populated at 30 days (contrast rows where it is blank). DATE UNVERIFIED: 2026-01-27 carried over from the proposal and not independently confirmed; the value in force today is confirmed. Origin-state source rather than destination, but a bilateral exemption is reciprocal by construction."
+    },
+    {
+      "origin": "SAU",
+      "destination": "RUS",
+      "from": "e-visa",
+      "to": "90",
+      "effective": "2026-05-11",
+      "source": "https://discover.moscow/no-visa-needed-russia-saudi-agreement",
+      "note": "BOUNDARY 0.2->1.0. Inbound leg of the mutual exemption in force 2026-05-11. Source left as the Moscow city portal, but note the reverse row (RUS->SAU) cites the Saudi Press Agency text for the same instrument, which states it covers ordinary passports and grants 90 days — the two legs corroborate each other. Excludes work, study, residence and Hajj."
+    },
+    {
+      "origin": "GBR",
+      "destination": "SAU",
+      "from": "visa on arrival",
+      "to": "eta",
+      "effective": "2026-07-01",
+      "source": "https://www.gov.uk/foreign-travel-advice/saudi-arabia/entry-requirements",
+      "note": "IMPACT NONE (1.0->1.0). DATE UNVERIFIED: FCDO confirms a Saudi ETA exists and is available to British ordinary passport holders (730-day validity, multiple entry, 180 days total) but carries no introduction date, so 2026-07-01 is the proposal's claim, unconfirmed. Also a channel addition rather than a policy change — the e-visa and airport-issued routes remain open. Weakest row in the set on both source tier and date; zero score risk."
+    },
+    {
+      "origin": "RUS",
+      "destination": "SAU",
+      "from": "visa on arrival",
+      "to": "90",
+      "effective": "2026-05-11",
+      "source": "https://www.spa.gov.sa/en/N2582764",
+      "note": "IMPACT NONE (1.0->1.0). SPA article body: mutual exemption entered into force 11 May 2026, all passport types including ordinary, 90 days per visit or in multiple periods within a calendar year."
+    },
+    {
+      "origin": "SSD",
+      "destination": "SGP",
+      "from": "30",
+      "to": "e-visa",
+      "effective": "2026-06-25",
+      "source": "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements",
+      "note": "BOUNDARY 1.0->0.2. NOT A POLICY CHANGE — this corrects a stale upstream cell. South Sudan has been an ICA assessment-level nationality for years; every other Singapore visa-required nationality in our matrix (RUS, IND, PAK, SDN, SOM, SYR, YEM, AFG, MLI, UZB, NGA, EGY, DZA) is already coded 'e-visa' and SSD was the lone outlier at '30'. DATE IS NOT AN EFFECTIVE DATE: 2026-06-25 is only the ICA page's last-updated stamp."
+    },
+    {
+      "origin": "AGO",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "BDI",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver; date corrected to the 2026-05-26 Cabinet decree."
+    },
+    {
+      "origin": "BWA",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Source normalised to the canonical portal domain; the per-country membership was read off the hard-coded exemptedCountries array (55 African states) in the application bundle at beta.voyage.gouv.tg, where BOTSWANA appears."
+    },
+    {
+      "origin": "CAF",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'REPUBLIQUE CENTRAFRICAINE' in the exemptedCountries array at beta.voyage.gouv.tg; source normalised to the canonical portal domain."
+    },
+    {
+      "origin": "CMR",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "COD",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver; 'REPUBLIQUE DEMOCRATIQUE DU CONGO' is a distinct entry from Congo-Brazzaville on the portal's exempted list."
+    },
+    {
+      "origin": "COG",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Both 'CONGO' and 'REPUBLIQUE DU CONGO' appear in the exemptedCountries array, distinct from the DRC entry; source normalised."
+    },
+    {
+      "origin": "COM",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "DJI",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "DZA",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. All-African 30-day visa waiver, Cabinet decree 2026-05-26 (date corrected from the proposed 2026-05-18). 24h pre-arrival bordereau is a declaration, not an adjudication, so a day-count rather than 'eta' — score-identical either way."
+    },
+    {
+      "origin": "EGY",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'EGYPTE' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "ERI",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver; exemption is drawn by continent, with no AU-membership condition that would exclude Eritrea."
+    },
+    {
+      "origin": "ETH",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "GAB",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "GNQ",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "KEN",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'KENYA' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "LBY",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver; the decree's security/public-health refusal power is ordinary border discretion, not a nationality exclusion."
+    },
+    {
+      "origin": "LSO",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "MDG",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'MADAGASCAR' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "MOZ",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "MRT",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver; continental scope, so Mauritania's ECOWAS withdrawal is irrelevant."
+    },
+    {
+      "origin": "MUS",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'MAURICE' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "MWI",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "NAM",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "RWA",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'RWANDA' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "SDN",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'SOUDAN' in the exemptedCountries array, listed separately from 'SOUDAN DU SUD'; source normalised."
+    },
+    {
+      "origin": "SOM",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'SOMALIE' is explicitly in the exemptedCountries array — no security carve-out, only an individual-discretion refusal clause; source normalised."
+    },
+    {
+      "origin": "SSD",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver; 'SOUDAN DU SUD' is a separate entry from Sudan on the portal's exempted list."
+    },
+    {
+      "origin": "STP",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "SWZ",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'ESWATINI' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "SYC",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "TCD",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "TUN",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "TZA",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "UGA",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. 'OUGANDA' in the exemptedCountries array; source normalised."
+    },
+    {
+      "origin": "ZAF",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "ZMB",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver."
+    },
+    {
+      "origin": "ZWE",
+      "destination": "TGO",
+      "from": "e-visa",
+      "to": "30",
+      "effective": "2026-05-26",
+      "source": "https://voyage.gouv.tg/",
+      "note": "BOUNDARY 0.2->1.0. Same Togo all-African waiver. Zimbabwe gains Togo in the same batch in which it loses Cabo Verde."
+    },
+    {
+      "origin": "CHN",
+      "destination": "TUR",
+      "from": "e-visa",
+      "to": "90",
+      "effective": "2026-01-02",
+      "source": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+      "note": "BOUNDARY 0.2->1.0. Turkish MFA states ordinary-passport PRC nationals are exempt up to 90 days in any 180-day period as of 2 January 2026. Largest score movement in the batch by passport volume. Same page also supplies the CYP->TUR change."
+    },
+    {
+      "origin": "CYP",
+      "destination": "TUR",
+      "from": "visa on arrival",
+      "to": "e-visa",
+      "effective": "2026-01-02",
+      "source": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+      "note": "BOUNDARY 1.0->0.2. Turkish MFA: border-gate visa issuance for Greek Cypriot passport holders terminated 2 January 2026; remaining route is evisa.gov.tr or a mission, and ordinary passports are named."
+    },
+    {
+      "origin": "BFA",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Source normalised NAFSA -> primary Federal Register."
+    },
+    {
+      "origin": "LAO",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Raw FR text read (Vol. 90 No. 242, pp. 59717-59729); Federal Register API queried for later amending proclamations, none found."
+    },
+    {
+      "origin": "MLI",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Source normalised from the NAFSA reproduction to the primary Federal Register text, which another verifier retrieved successfully and which names Mali in the full-suspension sentence."
+    },
+    {
+      "origin": "NER",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Source normalised NAFSA -> primary Federal Register."
+    },
+    {
+      "origin": "PSE",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Document-based rather than nationality-based restriction on PA-issued travel documents, which matches how the PSE row works in this matrix."
+    },
+    {
+      "origin": "SLE",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Named in the partial-to-full sentence alongside Burkina Faso, Laos, Mali, Niger, South Sudan and Syria."
+    },
+    {
+      "origin": "SSD",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Source normalised NAFSA -> primary Federal Register (FR Doc 2025-23570)."
+    },
+    {
+      "origin": "SYR",
+      "destination": "USA",
+      "from": "visa required",
+      "to": "no admission",
+      "effective": "2026-01-01",
+      "source": "https://www.federalregister.gov/documents/2025/12/19/2025-23570/restricting-and-limiting-the-entry-of-foreign-nationals-to-protect-the-security-of-the-united-states",
+      "note": "IMPACT NONE (0.0->0.0). Source normalised NAFSA -> primary Federal Register. Verifier specifically checked Syria had not been moved off the full list post-2024; it had not."
+    }
+  ]
+}

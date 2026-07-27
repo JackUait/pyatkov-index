@@ -118,6 +118,7 @@ const nav = [
   { href: base, label: 'Passports' },
   { href: `${base}openness/`, label: 'Who gets in' },
   { href: `${base}destinations/`, label: 'What counts' },
+  { href: `${base}updates/`, label: 'What changed' },
   { href: `${base}methodology/`, label: 'How it works' },
 ];
 ---
@@ -243,7 +244,7 @@ const nav = [
             nothing on the page behind it is a guidelines violation. */}
         <p><a href="https://github.com/JackUait/pyatkov-index">The Pyatkov Index</a></p>
         <p>{tagline}</p>
-        <p>Data: imorte/passport-index-data, the World Bank API, and the UNDP Human Development Report. The index is fully reproducible from the repository.</p>
+        <p>Data: imorte/passport-index-data as a baseline, corrected cell by cell against government sources (see <a href={`${base}updates/`}>what changed</a>), plus the World Bank API and the UNDP Human Development Report. The index is fully reproducible from the repository.</p>
       </div>
     </footer>
     <script>

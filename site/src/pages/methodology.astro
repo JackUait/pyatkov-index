@@ -10,7 +10,13 @@ import { absUrl, pageId, ID } from '../lib/seo.ts';
 // B9: honest build date + per-signal vintages emitted by the pipeline.
 // Coded defensively so the page still renders against pre-regen data.
 type Vintages = {
-  matrix?: { source: string; note: string };
+  matrix?: {
+    source: string;
+    note: string;
+    baselineVintage?: string;
+    verifiedAsOf?: string;
+    overridesApplied?: number;
+  };
   gdp?: { series: string; label: string; selection: string; years: string; modalYear: number };
   arrivals?: { series: string; label: string; window: string; preferredYear: number; yearsUsed: string };
   migrants?: { series: string; label: string; selection: string; years: string; modalYear: number };
@@ -144,7 +150,19 @@ const temporalCoverage = coverageYears.length
 // defensively from whatever the pipeline emitted, in the order the signals are
 // argued above, so a missing vintage drops its row instead of breaking the page.
 const provenance = [
-  v.matrix && { what: 'Visa matrix', series: null, vintage: `${v.matrix.source} — ${v.matrix.note}` },
+  // The matrix is the one input whose vintage is not an observation year: an upstream
+  // baseline frozen at a date, plus however many cells we have since re-sourced ourselves.
+  v.matrix && {
+    what: 'Visa matrix',
+    series: null,
+    vintage: [
+      v.matrix.baselineVintage ? `baseline ${v.matrix.baselineVintage}` : v.matrix.source,
+      v.matrix.verifiedAsOf ? `re-verified ${v.matrix.verifiedAsOf}` : null,
+      typeof v.matrix.overridesApplied === 'number'
+        ? `${v.matrix.overridesApplied} cell${v.matrix.overridesApplied === 1 ? '' : 's'} corrected since`
+        : null,
+    ].filter(Boolean).join(', ') || `${v.matrix.source} — ${v.matrix.note}`,
+  },
   v.gdp && { what: v.gdp.label, series: v.gdp.series, vintage: `${v.gdp.selection}, ${range(v.gdp.years)} (modal ${v.gdp.modalYear})` },
   v.arrivals && { what: v.arrivals.label, series: v.arrivals.series, vintage: `${range(v.arrivals.window)} window, preferring ${v.arrivals.preferredYear}; used ${range(v.arrivals.yearsUsed)}` },
   v.hdi && { what: 'HDI', series: null, vintage: `${v.hdi.source}, reference year ${v.hdi.year}` },

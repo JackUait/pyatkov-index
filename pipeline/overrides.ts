@@ -18,6 +18,12 @@ export type VisaOverride = {
   from: string;
   to: string;
   effective: string;
+  /**
+   * For time-limited policies only (China's visa-free trials, Azerbaijan's one-year
+   * grants): the date the policy lapses. Once it passes, the override is no longer a
+   * correction but a stale opinion, so the build fails until someone re-verifies it.
+   */
+  sunset?: string;
   source: string;
   note: string;
 };
@@ -65,6 +71,20 @@ export function applyVisaOverrides(
     }
     if (o.effective > asOf) {
       throw new Error(`override ${pair}: not in force — effective ${o.effective} is after ${asOf}`);
+    }
+    if (o.sunset !== undefined) {
+      if (!ISO_DATE.test(o.sunset)) {
+        throw new Error(`override ${pair}: sunset must be YYYY-MM-DD, got "${o.sunset}"`);
+      }
+      if (o.sunset < o.effective) {
+        throw new Error(`override ${pair}: sunset ${o.sunset} is before effective ${o.effective}`);
+      }
+      if (o.sunset < asOf) {
+        throw new Error(
+          `override ${pair}: expired — the policy lapsed ${o.sunset}, before ${asOf}. ` +
+            `Re-verify against the current source and either update or drop this row.`,
+        );
+      }
     }
 
     const row = rowOf.get(o.origin);

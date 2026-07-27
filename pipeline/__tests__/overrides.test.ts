@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { applyVisaOverrides, type VisaOverride } from '../overrides.ts';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { applyVisaOverrides, type VisaOverride, type VisaOverrideFile } from '../overrides.ts';
+import { parseVisaMatrix } from '../ingest.ts';
+
+const REPO = join(import.meta.dirname, '..', '..');
+const REAL_CSV = readFileSync(join(REPO, 'data', 'raw', 'passport-index-matrix-iso3.csv'), 'utf8');
+const REAL: VisaOverrideFile = JSON.parse(readFileSync(join(REPO, 'data', 'visa-overrides.json'), 'utf8'));
 
 // A 3x3 toy matrix in the real file's shape: header starts with "Passport", the diagonal
 // is "-1", and (as in the real file) the column order is NOT the row order.
@@ -89,9 +96,73 @@ describe('applyVisaOverrides', () => {
       .toThrow(/not in force/i);
   });
 
+  it('applies a time-limited correction while it is still in force', () => {
+    const { applied } = applyVisaOverrides(CSV, [ok({ sunset: '2026-12-31' })], asOf);
+    expect(applied).toBe(1);
+  });
+
+  it('refuses a time-limited correction that has expired', () => {
+    // China's visa-free trials, Azerbaijan's one-year Group IV grants and the like all
+    // lapse on a date. An expired override silently pins a policy that no longer exists —
+    // the exact staleness this dataset exists to fix — so it must fail the build instead.
+    expect(() => applyVisaOverrides(CSV, [ok({ sunset: '2026-06-30' })], asOf))
+      .toThrow(/expired.*2026-06-30.*re-verify/i);
+  });
+
+  it('rejects a sunset that is not a real date, or precedes the effective date', () => {
+    expect(() => applyVisaOverrides(CSV, [ok({ sunset: 'end of year' })], asOf)).toThrow(/sunset/i);
+    expect(() => applyVisaOverrides(CSV, [ok({ effective: '2026-04-01', sunset: '2026-03-01' })], asOf))
+      .toThrow(/sunset.*before.*effective/i);
+  });
+
   it('is a no-op on an empty override set', () => {
     const { csv, applied } = applyVisaOverrides(CSV, [], asOf);
     expect(applied).toBe(0);
     expect(csv).toBe(CSV);
+  });
+});
+
+describe('the shipped override file (our fork of the upstream matrix)', () => {
+  it('applies cleanly against the real baseline — every `from` still matches upstream', () => {
+    // This is the integration guard. If `yarn fetch-data` pulls a refreshed upstream and
+    // any baseline value we corrected has moved, this fails with the offending pair.
+    const { applied } = applyVisaOverrides(REAL_CSV, REAL.overrides, REAL.verifiedAsOf);
+    expect(applied).toBe(REAL.overrides.length);
+  });
+
+  it('declares the baseline vintage it forked and the date it was verified', () => {
+    expect(REAL.baseline.vintage).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(REAL.verifiedAsOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(REAL.verifiedAsOf >= REAL.baseline.vintage).toBe(true);
+  });
+
+  it('sources every correction to a URL — no unsourced opinions in the dataset', () => {
+    for (const o of REAL.overrides) {
+      expect(o.source, `${o.origin}->${o.destination} has no URL`).toMatch(/^https?:\/\//);
+      expect(o.note.trim().length, `${o.origin}->${o.destination} has no note`).toBeGreaterThan(0);
+    }
+  });
+
+  it('touches only codes that exist in the roster', () => {
+    const roster = new Set(parseVisaMatrix(REAL_CSV).countries);
+    for (const o of REAL.overrides) {
+      expect(roster.has(o.origin), `unknown origin ${o.origin}`).toBe(true);
+      expect(roster.has(o.destination), `unknown destination ${o.destination}`).toBe(true);
+    }
+  });
+
+  it('keeps every time-limited correction in force, so none can rot unnoticed', () => {
+    for (const o of REAL.overrides.filter((x) => x.sunset)) {
+      expect(o.sunset! >= REAL.verifiedAsOf, `${o.origin}->${o.destination} lapsed ${o.sunset}`).toBe(true);
+    }
+  });
+
+  it('promotes a SUNSET mentioned in prose into the enforced field', () => {
+    // A sunset that lives only in the note is decoration: nothing fails when it passes.
+    for (const o of REAL.overrides) {
+      if (/sunset/i.test(o.note)) {
+        expect(o.sunset, `${o.origin}->${o.destination} mentions a sunset but declares none`).toBeDefined();
+      }
+    }
   });
 });

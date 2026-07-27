@@ -3,8 +3,11 @@
  "totalDestinations": 199,
  "vintages": {
   "matrix": {
-   "source": "imorte/passport-index-data (main)",
-   "note": "maintained successor to the dormant ilyankou/passport-index-dataset"
+   "source": "imorte/passport-index-data (main), corrected by data/visa-overrides.json",
+   "note": "upstream baseline is frozen; corrections are our own, each sourced and dated",
+   "baselineVintage": "2026-02-17",
+   "verifiedAsOf": "2026-07-27",
+   "overridesApplied": 85
   },
   "gdp": {
    "series": "NY.GDP.MKTP.CD",
@@ -46,8 +49,8 @@
    "score": 94.37105397932747,
    "equalScore": 84.52261306532664,
    "counts": {
-    "visa-free": 115,
-    "visa-on-arrival": 49,
+    "visa-free": 116,
+    "visa-on-arrival": 48,
     "e-visa": 21,
     "visa-required": 14
    },
@@ -59,13 +62,13 @@
   {
    "iso3": "JPN",
    "name": "Japan",
-   "score": 93.22092544185344,
-   "equalScore": 84.02010050251256,
+   "score": 93.27968685514591,
+   "equalScore": 84.12060301507537,
    "counts": {
-    "visa-free": 115,
-    "visa-on-arrival": 48,
-    "e-visa": 21,
-    "visa-required": 15
+    "visa-free": 116,
+    "visa-on-arrival": 47,
+    "e-visa": 22,
+    "visa-required": 14
    },
    "rank": 2,
    "equalRank": 4,
@@ -139,33 +142,33 @@
   {
    "iso3": "FRA",
    "name": "France",
-   "score": 92.06414512935659,
-   "equalScore": 83.31658291457286,
+   "score": 92.12290654264906,
+   "equalScore": 83.41708542713567,
    "counts": {
     "visa-free": 124,
     "visa-on-arrival": 37,
-    "e-visa": 24,
-    "visa-required": 14
+    "e-visa": 25,
+    "visa-required": 13
    },
    "rank": 4,
-   "equalRank": 7,
-   "delta": 3,
+   "equalRank": 6,
+   "delta": 2,
    "iso2": "FR"
   },
   {
    "iso3": "DEU",
    "name": "Germany",
-   "score": 92.0641451293566,
-   "equalScore": 83.31658291457286,
+   "score": 92.12290654264908,
+   "equalScore": 83.41708542713567,
    "counts": {
     "visa-free": 123,
     "visa-on-arrival": 38,
-    "e-visa": 24,
-    "visa-required": 14
+    "e-visa": 25,
+    "visa-required": 13
    },
    "rank": 4,
-   "equalRank": 7,
-   "delta": 3,
+   "equalRank": 6,
+   "delta": 2,
    "iso2": "DE"
   },
   {
@@ -500,8 +503,8 @@
     "visa-required": 14
    },
    "rank": 11,
-   "equalRank": 15,
-   "delta": 4,
+   "equalRank": 16,
+   "delta": 5,
    "iso2": "IS"
   },
   {
@@ -516,8 +519,8 @@
     "visa-required": 16
    },
    "rank": 12,
-   "equalRank": 14,
-   "delta": 2,
+   "equalRank": 15,
+   "delta": 3,
    "iso2": "LI"
   },
   {
@@ -548,9 +551,25 @@
     "visa-required": 17
    },
    "rank": 13,
-   "equalRank": 17,
-   "delta": 4,
+   "equalRank": 18,
+   "delta": 5,
    "iso2": "MC"
+  },
+  {
+   "iso3": "GBR",
+   "name": "United Kingdom",
+   "score": 90.69246824875057,
+   "equalScore": 81.90954773869346,
+   "counts": {
+    "visa-free": 117,
+    "visa-on-arrival": 41,
+    "e-visa": 25,
+    "visa-required": 16
+   },
+   "rank": 14,
+   "equalRank": 13,
+   "delta": -1,
+   "iso2": "GB"
   },
   {
    "iso3": "AUS",
@@ -563,9 +582,9 @@
     "e-visa": 27,
     "visa-required": 14
    },
-   "rank": 14,
+   "rank": 15,
    "equalRank": 12,
-   "delta": -2,
+   "delta": -3,
    "iso2": "AU"
   },
   {
@@ -579,10 +598,26 @@
     "e-visa": 26,
     "visa-required": 14
    },
-   "rank": 15,
+   "rank": 16,
    "equalRank": 11,
-   "delta": -4,
+   "delta": -5,
    "iso2": "CZ"
+  },
+  {
+   "iso3": "CAN",
+   "name": "Canada",
+   "score": 89.62330910394111,
+   "equalScore": 81.60804020100502,
+   "counts": {
+    "visa-free": 115,
+    "visa-on-arrival": 42,
+    "e-visa": 27,
+    "visa-required": 15
+   },
+   "rank": 17,
+   "equalRank": 14,
+   "delta": -3,
+   "iso2": "CA"
   },
   {
    "iso3": "LTU",
@@ -595,9 +630,9 @@
     "e-visa": 27,
     "visa-required": 14
    },
-   "rank": 16,
+   "rank": 17,
    "equalRank": 12,
-   "delta": -4,
+   "delta": -5,
    "iso2": "LT"
   },
   {
@@ -611,9 +646,9 @@
     "e-visa": 32,
     "visa-required": 22
    },
-   "rank": 17,
+   "rank": 18,
    "equalRank": 23,
-   "delta": 6,
+   "delta": 5,
    "iso2": "SM"
   },
   {
@@ -627,26 +662,10 @@
     "e-visa": 18,
     "visa-required": 11
    },
-   "rank": 18,
-   "equalRank": 1,
-   "delta": -17,
-   "iso2": "AE"
-  },
-  {
-   "iso3": "GBR",
-   "name": "United Kingdom",
-   "score": 88.78077290291648,
-   "equalScore": 81.30653266331659,
-   "counts": {
-    "visa-free": 116,
-    "visa-on-arrival": 41,
-    "e-visa": 24,
-    "visa-required": 18
-   },
    "rank": 19,
-   "equalRank": 15,
-   "delta": -4,
-   "iso2": "GB"
+   "equalRank": 1,
+   "delta": -18,
+   "iso2": "AE"
   },
   {
    "iso3": "CHL",
@@ -665,22 +684,6 @@
    "iso2": "CL"
   },
   {
-   "iso3": "CAN",
-   "name": "Canada",
-   "score": 87.71161375810702,
-   "equalScore": 81.00502512562814,
-   "counts": {
-    "visa-free": 114,
-    "visa-on-arrival": 42,
-    "e-visa": 26,
-    "visa-required": 17
-   },
-   "rank": 21,
-   "equalRank": 16,
-   "delta": -5,
-   "iso2": "CA"
-  },
-  {
    "iso3": "BGR",
    "name": "Bulgaria",
    "score": 87.61660835968526,
@@ -691,9 +694,9 @@
     "e-visa": 26,
     "visa-required": 14
    },
-   "rank": 22,
+   "rank": 21,
    "equalRank": 11,
-   "delta": -11,
+   "delta": -10,
    "iso2": "BG"
   },
   {
@@ -707,9 +710,9 @@
     "e-visa": 26,
     "visa-required": 14
    },
-   "rank": 22,
+   "rank": 21,
    "equalRank": 11,
-   "delta": -11,
+   "delta": -10,
    "iso2": "RO"
   },
   {
@@ -723,42 +726,42 @@
     "e-visa": 24,
     "visa-required": 21
    },
-   "rank": 23,
+   "rank": 22,
    "equalRank": 19,
-   "delta": -4,
+   "delta": -3,
    "iso2": "HK"
-  },
-  {
-   "iso3": "CYP",
-   "name": "Cyprus",
-   "score": 86.8301009805057,
-   "equalScore": 81.60804020100502,
-   "counts": {
-    "visa-free": 122,
-    "visa-on-arrival": 35,
-    "e-visa": 27,
-    "visa-required": 15
-   },
-   "rank": 24,
-   "equalRank": 13,
-   "delta": -11,
-   "iso2": "CY"
   },
   {
    "iso3": "USA",
    "name": "United States",
-   "score": 86.80838576879655,
-   "equalScore": 80.10050251256281,
+   "score": 86.86714718208904,
+   "equalScore": 80.20100502512562,
    "counts": {
     "visa-free": 113,
     "visa-on-arrival": 41,
-    "e-visa": 27,
-    "visa-required": 18
+    "e-visa": 28,
+    "visa-required": 17
+   },
+   "rank": 23,
+   "equalRank": 18,
+   "delta": -5,
+   "iso2": "US"
+  },
+  {
+   "iso3": "CYP",
+   "name": "Cyprus",
+   "score": 85.59797960842533,
+   "equalScore": 81.20603015075378,
+   "counts": {
+    "visa-free": 122,
+    "visa-on-arrival": 34,
+    "e-visa": 28,
+    "visa-required": 15
    },
    "rank": 24,
-   "equalRank": 18,
-   "delta": -6,
-   "iso2": "US"
+   "equalRank": 17,
+   "delta": -7,
+   "iso2": "CY"
   },
   {
    "iso3": "MYS",
@@ -811,13 +814,13 @@
   {
    "iso3": "BRA",
    "name": "Brazil",
-   "score": 80.30661161171498,
-   "equalScore": 78.09045226130654,
+   "score": 80.36537302500749,
+   "equalScore": 78.19095477386935,
    "counts": {
     "visa-free": 111,
     "visa-on-arrival": 39,
-    "e-visa": 27,
-    "visa-required": 22
+    "e-visa": 28,
+    "visa-required": 21
    },
    "rank": 28,
    "equalRank": 20,
@@ -868,8 +871,8 @@
     "visa-required": 35
    },
    "rank": 31,
-   "equalRank": 38,
-   "delta": 7,
+   "equalRank": 37,
+   "delta": 6,
    "iso2": "MO"
   },
   {
@@ -916,8 +919,8 @@
     "visa-required": 33
    },
    "rank": 34,
-   "equalRank": 32,
-   "delta": -2,
+   "equalRank": 33,
+   "delta": -1,
    "iso2": "VA"
   },
   {
@@ -948,8 +951,8 @@
     "visa-required": 32
    },
    "rank": 36,
-   "equalRank": 43,
-   "delta": 7,
+   "equalRank": 41,
+   "delta": 5,
    "iso2": "PA"
   },
   {
@@ -964,20 +967,20 @@
     "visa-required": 31
    },
    "rank": 36,
-   "equalRank": 41,
-   "delta": 5,
+   "equalRank": 40,
+   "delta": 4,
    "iso2": "PY"
   },
   {
    "iso3": "MEX",
    "name": "Mexico",
-   "score": 74.85758486163752,
-   "equalScore": 72.46231155778895,
+   "score": 74.7562579820907,
+   "equalScore": 71.95979899497488,
    "counts": {
     "visa-free": 97,
-    "visa-on-arrival": 40,
+    "visa-on-arrival": 39,
     "e-visa": 36,
-    "visa-required": 26
+    "visa-required": 27
    },
    "rank": 37,
    "equalRank": 29,
@@ -996,40 +999,40 @@
     "visa-required": 41
    },
    "rank": 38,
-   "equalRank": 53,
-   "delta": 15,
+   "equalRank": 50,
+   "delta": 12,
    "iso2": "TW"
   },
   {
    "iso3": "CRI",
    "name": "Costa Rica",
-   "score": 73.98958178813741,
-   "equalScore": 69.04522613065326,
+   "score": 73.8882549085906,
+   "equalScore": 68.5427135678392,
    "counts": {
     "visa-free": 91,
-    "visa-on-arrival": 38,
+    "visa-on-arrival": 37,
     "e-visa": 42,
-    "visa-required": 28
+    "visa-required": 29
    },
    "rank": 39,
-   "equalRank": 37,
-   "delta": -2,
+   "equalRank": 38,
+   "delta": -1,
    "iso2": "CR"
   },
   {
    "iso3": "SYC",
    "name": "Seychelles",
-   "score": 73.34109482264361,
-   "equalScore": 71.25628140703517,
+   "score": 73.46288321232232,
+   "equalScore": 71.65829145728644,
    "counts": {
-    "visa-free": 100,
+    "visa-free": 101,
     "visa-on-arrival": 35,
-    "e-visa": 34,
+    "e-visa": 33,
     "visa-required": 30
    },
    "rank": 40,
-   "equalRank": 33,
-   "delta": -7,
+   "equalRank": 32,
+   "delta": -8,
    "iso2": "SC"
   },
   {
@@ -1060,41 +1063,25 @@
     "visa-required": 28
    },
    "rank": 42,
-   "equalRank": 31,
-   "delta": -11,
+   "equalRank": 30,
+   "delta": -12,
    "iso2": "VC"
   },
   {
    "iso3": "MUS",
    "name": "Mauritius",
-   "score": 71.01396928135887,
-   "equalScore": 67.93969849246231,
+   "score": 71.13575767103757,
+   "equalScore": 68.34170854271356,
    "counts": {
-    "visa-free": 95,
+    "visa-free": 96,
     "visa-on-arrival": 33,
-    "e-visa": 36,
+    "e-visa": 35,
     "visa-required": 35
    },
    "rank": 43,
-   "equalRank": 42,
-   "delta": -1,
+   "equalRank": 40,
+   "delta": -3,
    "iso2": "MU"
-  },
-  {
-   "iso3": "KNA",
-   "name": "St. Kitts and Nevis",
-   "score": 70.76201752536696,
-   "equalScore": 72.26130653266331,
-   "counts": {
-    "visa-free": 104,
-    "visa-on-arrival": 33,
-    "e-visa": 34,
-    "visa-required": 28
-   },
-   "rank": 44,
-   "equalRank": 30,
-   "delta": -14,
-   "iso2": "KN"
   },
   {
    "iso3": "ATG",
@@ -1107,9 +1094,9 @@
     "e-visa": 36,
     "visa-required": 30
    },
-   "rank": 45,
+   "rank": 44,
    "equalRank": 35,
-   "delta": -10,
+   "delta": -9,
    "iso2": "AG"
   },
   {
@@ -1123,8 +1110,8 @@
     "e-visa": 37,
     "visa-required": 33
    },
-   "rank": 45,
-   "equalRank": 39,
+   "rank": 44,
+   "equalRank": 38,
    "delta": -6,
    "iso2": "GD"
   },
@@ -1139,9 +1126,9 @@
     "e-visa": 40,
     "visa-required": 38
    },
-   "rank": 46,
-   "equalRank": 46,
-   "delta": 0,
+   "rank": 45,
+   "equalRank": 43,
+   "delta": -2,
    "iso2": "RS"
   },
   {
@@ -1155,10 +1142,26 @@
     "e-visa": 42,
     "visa-required": 39
    },
-   "rank": 47,
-   "equalRank": 49,
-   "delta": 2,
+   "rank": 46,
+   "equalRank": 46,
+   "delta": 0,
    "iso2": "ME"
+  },
+  {
+   "iso3": "KNA",
+   "name": "St. Kitts and Nevis",
+   "score": 69.72313004365233,
+   "equalScore": 71.75879396984925,
+   "counts": {
+    "visa-free": 103,
+    "visa-on-arrival": 33,
+    "e-visa": 34,
+    "visa-required": 29
+   },
+   "rank": 46,
+   "equalRank": 31,
+   "delta": -15,
+   "iso2": "KN"
   },
   {
    "iso3": "GEO",
@@ -1171,9 +1174,9 @@
     "e-visa": 36,
     "visa-required": 43
    },
-   "rank": 48,
-   "equalRank": 47,
-   "delta": -1,
+   "rank": 47,
+   "equalRank": 44,
+   "delta": -3,
    "iso2": "GE"
   },
   {
@@ -1187,9 +1190,9 @@
     "e-visa": 49,
     "visa-required": 35
    },
-   "rank": 49,
-   "equalRank": 51,
-   "delta": 2,
+   "rank": 48,
+   "equalRank": 48,
+   "delta": 0,
    "iso2": "GT"
   },
   {
@@ -1203,9 +1206,9 @@
     "e-visa": 45,
     "visa-required": 37
    },
-   "rank": 50,
-   "equalRank": 50,
-   "delta": 0,
+   "rank": 49,
+   "equalRank": 47,
+   "delta": -2,
    "iso2": "SV"
   },
   {
@@ -1219,9 +1222,9 @@
     "e-visa": 44,
     "visa-required": 37
    },
-   "rank": 51,
-   "equalRank": 48,
-   "delta": -3,
+   "rank": 50,
+   "equalRank": 45,
+   "delta": -5,
    "iso2": "CO"
   },
   {
@@ -1235,9 +1238,9 @@
     "e-visa": 40,
     "visa-required": 41
    },
-   "rank": 52,
-   "equalRank": 50,
-   "delta": -2,
+   "rank": 51,
+   "equalRank": 47,
+   "delta": -4,
    "iso2": "MK"
   },
   {
@@ -1251,9 +1254,9 @@
     "e-visa": 46,
     "visa-required": 38
    },
-   "rank": 53,
-   "equalRank": 52,
-   "delta": -1,
+   "rank": 52,
+   "equalRank": 49,
+   "delta": -3,
    "iso2": "HN"
   },
   {
@@ -1267,26 +1270,10 @@
     "e-visa": 41,
     "visa-required": 30
    },
-   "rank": 54,
-   "equalRank": 40,
+   "rank": 53,
+   "equalRank": 39,
    "delta": -14,
    "iso2": "TT"
-  },
-  {
-   "iso3": "LCA",
-   "name": "St. Lucia",
-   "score": 65.63835539866655,
-   "equalScore": 67.33668341708542,
-   "counts": {
-    "visa-free": 94,
-    "visa-on-arrival": 32,
-    "e-visa": 40,
-    "visa-required": 33
-   },
-   "rank": 55,
-   "equalRank": 44,
-   "delta": -11,
-   "iso2": "LC"
   },
   {
    "iso3": "BIH",
@@ -1299,9 +1286,9 @@
     "e-visa": 44,
     "visa-required": 44
    },
-   "rank": 56,
-   "equalRank": 58,
-   "delta": 2,
+   "rank": 54,
+   "equalRank": 54,
+   "delta": 0,
    "iso2": "BA"
   },
   {
@@ -1315,9 +1302,9 @@
     "e-visa": 40,
     "visa-required": 35
    },
-   "rank": 57,
-   "equalRank": 45,
-   "delta": -12,
+   "rank": 55,
+   "equalRank": 42,
+   "delta": -13,
    "iso2": "DM"
   },
   {
@@ -1331,9 +1318,9 @@
     "e-visa": 43,
     "visa-required": 49
    },
-   "rank": 58,
-   "equalRank": 63,
-   "delta": 5,
+   "rank": 56,
+   "equalRank": 60,
+   "delta": 4,
    "iso2": "AL"
   },
   {
@@ -1347,26 +1334,10 @@
     "e-visa": 46,
     "visa-required": 42
    },
-   "rank": 59,
-   "equalRank": 57,
-   "delta": -2,
-   "iso2": "MH"
-  },
-  {
-   "iso3": "NIC",
-   "name": "Nicaragua",
-   "score": 63.98659873558449,
-   "equalScore": 60.50251256281407,
-   "counts": {
-    "visa-free": 75,
-    "visa-on-arrival": 36,
-    "e-visa": 47,
-    "visa-required": 41
-   },
-   "rank": 60,
-   "equalRank": 56,
+   "rank": 57,
+   "equalRank": 53,
    "delta": -4,
-   "iso2": "NI"
+   "iso2": "MH"
   },
   {
    "iso3": "PLW",
@@ -1379,8 +1350,8 @@
     "e-visa": 51,
     "visa-required": 42
    },
-   "rank": 61,
-   "equalRank": 62,
+   "rank": 58,
+   "equalRank": 59,
    "delta": 1,
    "iso2": "PW"
   },
@@ -1395,8 +1366,8 @@
     "e-visa": 45,
     "visa-required": 34
    },
-   "rank": 62,
-   "equalRank": 46,
+   "rank": 59,
+   "equalRank": 43,
    "delta": -16,
    "iso2": "SB"
   },
@@ -1411,10 +1382,26 @@
     "e-visa": 44,
     "visa-required": 39
    },
-   "rank": 63,
-   "equalRank": 51,
+   "rank": 60,
+   "equalRank": 48,
    "delta": -12,
    "iso2": "WS"
+  },
+  {
+   "iso3": "LCA",
+   "name": "St. Lucia",
+   "score": 62.408576434076934,
+   "equalScore": 66.33165829145729,
+   "counts": {
+    "visa-free": 93,
+    "visa-on-arrival": 31,
+    "e-visa": 40,
+    "visa-required": 35
+   },
+   "rank": 61,
+   "equalRank": 42,
+   "delta": -19,
+   "iso2": "LC"
   },
   {
    "iso3": "FSM",
@@ -1427,9 +1414,9 @@
     "e-visa": 50,
     "visa-required": 44
    },
-   "rank": 64,
-   "equalRank": 64,
-   "delta": 0,
+   "rank": 62,
+   "equalRank": 61,
+   "delta": -1,
    "iso2": "FM"
   },
   {
@@ -1443,9 +1430,9 @@
     "e-visa": 41,
     "visa-required": 48
    },
-   "rank": 65,
-   "equalRank": 59,
-   "delta": -6,
+   "rank": 63,
+   "equalRank": 56,
+   "delta": -7,
    "iso2": "VE"
   },
   {
@@ -1459,10 +1446,26 @@
     "e-visa": 44,
     "visa-required": 42
    },
-   "rank": 66,
-   "equalRank": 55,
-   "delta": -11,
+   "rank": 64,
+   "equalRank": 52,
+   "delta": -12,
    "iso2": "TO"
+  },
+  {
+   "iso3": "NIC",
+   "name": "Nicaragua",
+   "score": 60.75681977099487,
+   "equalScore": 59.49748743718593,
+   "counts": {
+    "visa-free": 74,
+    "visa-on-arrival": 35,
+    "e-visa": 47,
+    "visa-required": 43
+   },
+   "rank": 65,
+   "equalRank": 55,
+   "delta": -10,
+   "iso2": "NI"
   },
   {
    "iso3": "MDA",
@@ -1475,9 +1478,9 @@
     "e-visa": 40,
     "visa-required": 49
    },
-   "rank": 67,
-   "equalRank": 60,
-   "delta": -7,
+   "rank": 66,
+   "equalRank": 57,
+   "delta": -9,
    "iso2": "MD"
   },
   {
@@ -1491,9 +1494,9 @@
     "e-visa": 47,
     "visa-required": 39
    },
-   "rank": 68,
-   "equalRank": 54,
-   "delta": -14,
+   "rank": 67,
+   "equalRank": 51,
+   "delta": -16,
    "iso2": "KI"
   },
   {
@@ -1507,9 +1510,9 @@
     "e-visa": 46,
     "visa-required": 38
    },
-   "rank": 68,
-   "equalRank": 52,
-   "delta": -16,
+   "rank": 67,
+   "equalRank": 49,
+   "delta": -18,
    "iso2": "TV"
   },
   {
@@ -1523,9 +1526,9 @@
     "e-visa": 29,
     "visa-required": 64
    },
-   "rank": 69,
-   "equalRank": 65,
-   "delta": -4,
+   "rank": 68,
+   "equalRank": 62,
+   "delta": -6,
    "iso2": "QA"
   },
   {
@@ -1539,9 +1542,9 @@
     "e-visa": 46,
     "visa-required": 72
    },
-   "rank": 70,
-   "equalRank": 75,
-   "delta": 5,
+   "rank": 69,
+   "equalRank": 73,
+   "delta": 4,
    "iso2": "XK"
   },
   {
@@ -1555,9 +1558,9 @@
     "e-visa": 52,
     "visa-required": 61
    },
-   "rank": 71,
-   "equalRank": 68,
-   "delta": -3,
+   "rank": 70,
+   "equalRank": 65,
+   "delta": -5,
    "iso2": "TL"
   },
   {
@@ -1566,14 +1569,14 @@
    "score": 45.853732022559825,
    "equalScore": 60.20100502512563,
    "counts": {
-    "visa-free": 80,
-    "visa-on-arrival": 35,
+    "visa-free": 81,
+    "visa-on-arrival": 34,
     "e-visa": 24,
     "visa-required": 60
    },
-   "rank": 72,
-   "equalRank": 58,
-   "delta": -14,
+   "rank": 71,
+   "equalRank": 54,
+   "delta": -17,
    "iso2": "RU"
   },
   {
@@ -1587,10 +1590,26 @@
     "e-visa": 29,
     "visa-required": 58
    },
-   "rank": 73,
-   "equalRank": 61,
-   "delta": -12,
+   "rank": 72,
+   "equalRank": 58,
+   "delta": -14,
    "iso2": "TR"
+  },
+  {
+   "iso3": "SAU",
+   "name": "Saudi Arabia",
+   "score": 41.26933540783298,
+   "equalScore": 47.73869346733668,
+   "counts": {
+    "visa-free": 55,
+    "visa-on-arrival": 33,
+    "e-visa": 35,
+    "visa-required": 76
+   },
+   "rank": 73,
+   "equalRank": 67,
+   "delta": -6,
+   "iso2": "SA"
   },
   {
    "iso3": "KWT",
@@ -1604,8 +1623,8 @@
     "visa-required": 72
    },
    "rank": 74,
-   "equalRank": 66,
-   "delta": -8,
+   "equalRank": 63,
+   "delta": -11,
    "iso2": "KW"
   },
   {
@@ -1620,25 +1639,9 @@
     "visa-required": 81
    },
    "rank": 75,
-   "equalRank": 76,
-   "delta": 1,
+   "equalRank": 74,
+   "delta": -1,
    "iso2": "OM"
-  },
-  {
-   "iso3": "SAU",
-   "name": "Saudi Arabia",
-   "score": 40.135986288477554,
-   "equalScore": 47.336683417085425,
-   "counts": {
-    "visa-free": 54,
-    "visa-on-arrival": 33,
-    "e-visa": 36,
-    "visa-required": 76
-   },
-   "rank": 75,
-   "equalRank": 70,
-   "delta": -5,
-   "iso2": "SA"
   },
   {
    "iso3": "BHR",
@@ -1646,14 +1649,14 @@
    "score": 39.63608049337373,
    "equalScore": 47.03517587939699,
    "counts": {
-    "visa-free": 51,
-    "visa-on-arrival": 36,
+    "visa-free": 52,
+    "visa-on-arrival": 35,
     "e-visa": 33,
     "visa-required": 79
    },
    "rank": 76,
-   "equalRank": 71,
-   "delta": -5,
+   "equalRank": 68,
+   "delta": -8,
    "iso2": "BH"
   },
   {
@@ -1668,8 +1671,8 @@
     "visa-required": 76
    },
    "rank": 77,
-   "equalRank": 72,
-   "delta": -5,
+   "equalRank": 69,
+   "delta": -8,
    "iso2": "EC"
   },
   {
@@ -1684,24 +1687,24 @@
     "visa-required": 79
    },
    "rank": 78,
-   "equalRank": 79,
-   "delta": 1,
+   "equalRank": 77,
+   "delta": -1,
    "iso2": "TH"
   },
   {
    "iso3": "MDV",
    "name": "Maldives",
-   "score": 36.64550339427205,
-   "equalScore": 47.63819095477387,
+   "score": 36.9323925631223,
+   "equalScore": 48.040201005025125,
    "counts": {
-    "visa-free": 55,
+    "visa-free": 56,
     "visa-on-arrival": 32,
-    "e-visa": 39,
+    "e-visa": 38,
     "visa-required": 73
    },
    "rank": 79,
-   "equalRank": 69,
-   "delta": -10,
+   "equalRank": 66,
+   "delta": -13,
    "iso2": "MV"
   },
   {
@@ -1716,24 +1719,24 @@
     "visa-required": 84
    },
    "rank": 80,
-   "equalRank": 81,
-   "delta": 1,
+   "equalRank": 80,
+   "delta": 0,
    "iso2": "KZ"
   },
   {
    "iso3": "ZAF",
    "name": "South Africa",
-   "score": 35.90608925953439,
-   "equalScore": 51.256281407035175,
+   "score": 36.02787764921309,
+   "equalScore": 51.65829145728643,
    "counts": {
-    "visa-free": 61,
+    "visa-free": 62,
     "visa-on-arrival": 34,
-    "e-visa": 35,
+    "e-visa": 34,
     "visa-required": 69
    },
    "rank": 81,
-   "equalRank": 67,
-   "delta": -14,
+   "equalRank": 64,
+   "delta": -17,
    "iso2": "ZA"
   },
   {
@@ -1748,8 +1751,8 @@
     "visa-required": 81
    },
    "rank": 82,
-   "equalRank": 78,
-   "delta": -4,
+   "equalRank": 76,
+   "delta": -6,
    "iso2": "BY"
   },
   {
@@ -1764,24 +1767,24 @@
     "visa-required": 69
    },
    "rank": 83,
-   "equalRank": 68,
-   "delta": -15,
+   "equalRank": 65,
+   "delta": -18,
    "iso2": "BZ"
   },
   {
    "iso3": "JAM",
    "name": "Jamaica",
-   "score": 34.19340324512569,
-   "equalScore": 47.03517587939699,
+   "score": 34.09207636557887,
+   "equalScore": 46.53266331658291,
    "counts": {
     "visa-free": 56,
-    "visa-on-arrival": 29,
+    "visa-on-arrival": 28,
     "e-visa": 43,
-    "visa-required": 71
+    "visa-required": 72
    },
    "rank": 84,
-   "equalRank": 71,
-   "delta": -13,
+   "equalRank": 70,
+   "delta": -14,
    "iso2": "JM"
   },
   {
@@ -1796,8 +1799,8 @@
     "visa-required": 74
    },
    "rank": 85,
-   "equalRank": 73,
-   "delta": -12,
+   "equalRank": 71,
+   "delta": -14,
    "iso2": "GY"
   },
   {
@@ -1812,9 +1815,25 @@
     "visa-required": 72
    },
    "rank": 86,
-   "equalRank": 74,
-   "delta": -12,
+   "equalRank": 72,
+   "delta": -14,
    "iso2": "FJ"
+  },
+  {
+   "iso3": "CHN",
+   "name": "China",
+   "score": 32.22656682191342,
+   "equalScore": 43.91959798994975,
+   "counts": {
+    "visa-free": 45,
+    "visa-on-arrival": 35,
+    "e-visa": 37,
+    "visa-required": 82
+   },
+   "rank": 87,
+   "equalRank": 78,
+   "delta": -9,
+   "iso2": "CN"
   },
   {
    "iso3": "SUR",
@@ -1828,8 +1847,8 @@
     "visa-required": 82
    },
    "rank": 87,
-   "equalRank": 88,
-   "delta": 1,
+   "equalRank": 86,
+   "delta": -1,
    "iso2": "SR"
   },
   {
@@ -1844,8 +1863,8 @@
     "visa-required": 79
    },
    "rank": 88,
-   "equalRank": 85,
-   "delta": -3,
+   "equalRank": 83,
+   "delta": -5,
    "iso2": "BO"
   },
   {
@@ -1860,8 +1879,8 @@
     "visa-required": 86
    },
    "rank": 89,
-   "equalRank": 98,
-   "delta": 9,
+   "equalRank": 95,
+   "delta": 6,
    "iso2": "MN"
   },
   {
@@ -1876,8 +1895,8 @@
     "visa-required": 79
    },
    "rank": 90,
-   "equalRank": 80,
-   "delta": -10,
+   "equalRank": 79,
+   "delta": -11,
    "iso2": "ID"
   },
   {
@@ -1892,8 +1911,8 @@
     "visa-required": 90
    },
    "rank": 91,
-   "equalRank": 95,
-   "delta": 4,
+   "equalRank": 92,
+   "delta": 1,
    "iso2": "AM"
   },
   {
@@ -1908,25 +1927,9 @@
     "visa-required": 85
    },
    "rank": 92,
-   "equalRank": 93,
-   "delta": 1,
+   "equalRank": 91,
+   "delta": -1,
    "iso2": "DO"
-  },
-  {
-   "iso3": "CHN",
-   "name": "China",
-   "score": 30.121726671600754,
-   "equalScore": 42.914572864321606,
-   "counts": {
-    "visa-free": 43,
-    "visa-on-arrival": 35,
-    "e-visa": 37,
-    "visa-required": 84
-   },
-   "rank": 93,
-   "equalRank": 82,
-   "delta": -11,
-   "iso2": "CN"
   },
   {
    "iso3": "AZE",
@@ -1934,30 +1937,30 @@
    "score": 29.896852522718767,
    "equalScore": 40.20100502512563,
    "counts": {
-    "visa-free": 36,
-    "visa-on-arrival": 36,
+    "visa-free": 37,
+    "visa-on-arrival": 35,
     "e-visa": 40,
     "visa-required": 87
    },
-   "rank": 94,
-   "equalRank": 89,
-   "delta": -5,
+   "rank": 93,
+   "equalRank": 87,
+   "delta": -6,
    "iso2": "AZ"
   },
   {
    "iso3": "UZB",
    "name": "Uzbekistan",
-   "score": 27.57640275689928,
-   "equalScore": 35.175879396984925,
+   "score": 27.475075877352467,
+   "equalScore": 34.67336683417086,
    "counts": {
     "visa-free": 29,
-    "visa-on-arrival": 32,
+    "visa-on-arrival": 31,
     "e-visa": 45,
-    "visa-required": 93
+    "visa-required": 94
    },
-   "rank": 95,
-   "equalRank": 105,
-   "delta": 10,
+   "rank": 94,
+   "equalRank": 103,
+   "delta": 9,
    "iso2": "UZ"
   },
   {
@@ -1971,9 +1974,9 @@
     "e-visa": 45,
     "visa-required": 80
    },
-   "rank": 96,
-   "equalRank": 83,
-   "delta": -13,
+   "rank": 95,
+   "equalRank": 81,
+   "delta": -14,
    "iso2": "NR"
   },
   {
@@ -1987,9 +1990,9 @@
     "e-visa": 45,
     "visa-required": 81
    },
-   "rank": 96,
-   "equalRank": 84,
-   "delta": -12,
+   "rank": 95,
+   "equalRank": 82,
+   "delta": -13,
    "iso2": "PG"
   },
   {
@@ -2003,10 +2006,26 @@
     "e-visa": 43,
     "visa-required": 75
    },
-   "rank": 97,
-   "equalRank": 77,
-   "delta": -20,
+   "rank": 96,
+   "equalRank": 75,
+   "delta": -21,
    "iso2": "VU"
+  },
+  {
+   "iso3": "TUN",
+   "name": "Tunisia",
+   "score": 25.17752202402417,
+   "equalScore": 37.78894472361809,
+   "counts": {
+    "visa-free": 38,
+    "visa-on-arrival": 29,
+    "e-visa": 41,
+    "visa-required": 91
+   },
+   "rank": 97,
+   "equalRank": 94,
+   "delta": -3,
+   "iso2": "TN"
   },
   {
    "iso3": "MAR",
@@ -2020,40 +2039,24 @@
     "visa-required": 85
    },
    "rank": 98,
-   "equalRank": 87,
-   "delta": -11,
+   "equalRank": 85,
+   "delta": -13,
    "iso2": "MA"
-  },
-  {
-   "iso3": "TUN",
-   "name": "Tunisia",
-   "score": 25.05573363434548,
-   "equalScore": 37.38693467336683,
-   "counts": {
-    "visa-free": 37,
-    "visa-on-arrival": 29,
-    "e-visa": 42,
-    "visa-required": 91
-   },
-   "rank": 98,
-   "equalRank": 99,
-   "delta": 1,
-   "iso2": "TN"
   },
   {
    "iso3": "BWA",
    "name": "Botswana",
-   "score": 24.695763238628185,
-   "equalScore": 40.50251256281407,
+   "score": 24.817551628306884,
+   "equalScore": 40.904522613065325,
    "counts": {
-    "visa-free": 47,
+    "visa-free": 48,
     "visa-on-arrival": 26,
-    "e-visa": 38,
+    "e-visa": 37,
     "visa-required": 88
    },
    "rank": 99,
-   "equalRank": 86,
-   "delta": -13,
+   "equalRank": 84,
+   "delta": -15,
    "iso2": "BW"
   },
   {
@@ -2068,8 +2071,8 @@
     "visa-required": 89
    },
    "rank": 100,
-   "equalRank": 102,
-   "delta": 2,
+   "equalRank": 101,
+   "delta": 1,
    "iso2": "KG"
   },
   {
@@ -2084,56 +2087,56 @@
     "visa-required": 88
    },
    "rank": 101,
-   "equalRank": 101,
-   "delta": 0,
+   "equalRank": 98,
+   "delta": -3,
    "iso2": "PH"
   },
   {
    "iso3": "LSO",
    "name": "Lesotho",
-   "score": 23.729207621069797,
-   "equalScore": 39.698492462311556,
+   "score": 23.850996010748496,
+   "equalScore": 40.10050251256281,
    "counts": {
-    "visa-free": 43,
+    "visa-free": 44,
     "visa-on-arrival": 28,
-    "e-visa": 40,
+    "e-visa": 39,
     "visa-required": 88
    },
    "rank": 102,
-   "equalRank": 90,
-   "delta": -12,
+   "equalRank": 88,
+   "delta": -14,
    "iso2": "LS"
   },
   {
    "iso3": "NAM",
    "name": "Namibia",
-   "score": 23.329867238210415,
-   "equalScore": 39.39698492462311,
+   "score": 23.74546269435154,
+   "equalScore": 40.301507537688444,
    "counts": {
-    "visa-free": 44,
-    "visa-on-arrival": 26,
-    "e-visa": 42,
-    "visa-required": 87
+    "visa-free": 45,
+    "visa-on-arrival": 27,
+    "e-visa": 41,
+    "visa-required": 86
    },
    "rank": 103,
-   "equalRank": 91,
-   "delta": -12,
+   "equalRank": 86,
+   "delta": -17,
    "iso2": "NA"
   },
   {
    "iso3": "SWZ",
    "name": "Eswatini",
-   "score": 21.75203924334255,
-   "equalScore": 38.994974874371856,
+   "score": 21.87382763302125,
+   "equalScore": 39.39698492462311,
    "counts": {
-    "visa-free": 42,
+    "visa-free": 43,
     "visa-on-arrival": 27,
-    "e-visa": 43,
+    "e-visa": 42,
     "visa-required": 87
    },
    "rank": 104,
-   "equalRank": 92,
-   "delta": -12,
+   "equalRank": 89,
+   "delta": -15,
    "iso2": "SZ"
   },
   {
@@ -2148,8 +2151,8 @@
     "visa-required": 90
    },
    "rank": 105,
-   "equalRank": 100,
-   "delta": -5,
+   "equalRank": 97,
+   "delta": -8,
    "iso2": "CV"
   },
   {
@@ -2164,8 +2167,8 @@
     "visa-required": 94
    },
    "rank": 105,
-   "equalRank": 114,
-   "delta": 9,
+   "equalRank": 112,
+   "delta": 7,
    "iso2": "TJ"
   },
   {
@@ -2180,24 +2183,24 @@
     "visa-required": 97
    },
    "rank": 106,
-   "equalRank": 126,
-   "delta": 20,
+   "equalRank": 123,
+   "delta": 17,
    "iso2": "JO"
   },
   {
    "iso3": "MWI",
    "name": "Malawi",
-   "score": 20.922613340809033,
-   "equalScore": 38.49246231155779,
+   "score": 21.04440173048773,
+   "equalScore": 38.89447236180904,
    "counts": {
-    "visa-free": 42,
+    "visa-free": 43,
     "visa-on-arrival": 26,
-    "e-visa": 43,
+    "e-visa": 42,
     "visa-required": 88
    },
    "rank": 107,
-   "equalRank": 94,
-   "delta": -13,
+   "equalRank": 90,
+   "delta": -17,
    "iso2": "MW"
   },
   {
@@ -2212,9 +2215,25 @@
     "visa-required": 93
    },
    "rank": 108,
-   "equalRank": 120,
-   "delta": 12,
+   "equalRank": 117,
+   "delta": 9,
    "iso2": "VN"
+  },
+  {
+   "iso3": "STP",
+   "name": "Sao Tome and Principe",
+   "score": 20.354195760125844,
+   "equalScore": 35.07537688442211,
+   "counts": {
+    "visa-free": 30,
+    "visa-on-arrival": 31,
+    "e-visa": 44,
+    "visa-required": 94
+   },
+   "rank": 109,
+   "equalRank": 102,
+   "delta": -7,
+   "iso2": "ST"
   },
   {
    "iso3": "KHM",
@@ -2227,42 +2246,26 @@
     "e-visa": 56,
     "visa-required": 92
    },
-   "rank": 109,
-   "equalRank": 123,
-   "delta": 14,
+   "rank": 110,
+   "equalRank": 120,
+   "delta": 10,
    "iso2": "KH"
   },
   {
    "iso3": "KEN",
    "name": "Kenya",
-   "score": 20.196017857219484,
-   "equalScore": 37.88944723618091,
+   "score": 20.317806246898186,
+   "equalScore": 38.29145728643216,
    "counts": {
-    "visa-free": 39,
+    "visa-free": 40,
     "visa-on-arrival": 28,
-    "e-visa": 42,
+    "e-visa": 41,
     "visa-required": 90
    },
    "rank": 110,
-   "equalRank": 96,
-   "delta": -14,
+   "equalRank": 92,
+   "delta": -18,
    "iso2": "KE"
-  },
-  {
-   "iso3": "STP",
-   "name": "Sao Tome and Principe",
-   "score": 20.23240737044714,
-   "equalScore": 34.67336683417086,
-   "counts": {
-    "visa-free": 29,
-    "visa-on-arrival": 31,
-    "e-visa": 45,
-    "visa-required": 94
-   },
-   "rank": 110,
-   "equalRank": 106,
-   "delta": -4,
-   "iso2": "ST"
   },
   {
    "iso3": "BTN",
@@ -2276,8 +2279,8 @@
     "visa-required": 95
    },
    "rank": 111,
-   "equalRank": 125,
-   "delta": 14,
+   "equalRank": 122,
+   "delta": 11,
    "iso2": "BT"
   },
   {
@@ -2292,8 +2295,8 @@
     "visa-required": 93
    },
    "rank": 111,
-   "equalRank": 111,
-   "delta": 0,
+   "equalRank": 110,
+   "delta": -1,
    "iso2": "CU"
   },
   {
@@ -2308,40 +2311,40 @@
     "visa-required": 97
    },
    "rank": 111,
-   "equalRank": 134,
-   "delta": 23,
+   "equalRank": 130,
+   "delta": 19,
    "iso2": "LA"
   },
   {
    "iso3": "TZA",
    "name": "Tanzania",
-   "score": 19.888340918055533,
-   "equalScore": 37.58793969849246,
+   "score": 20.010129307734235,
+   "equalScore": 37.98994974874372,
    "counts": {
-    "visa-free": 43,
+    "visa-free": 44,
     "visa-on-arrival": 24,
-    "e-visa": 39,
+    "e-visa": 38,
     "visa-required": 93
    },
    "rank": 112,
-   "equalRank": 97,
-   "delta": -15,
+   "equalRank": 93,
+   "delta": -19,
    "iso2": "TZ"
   },
   {
    "iso3": "ZWE",
    "name": "Zimbabwe",
-   "score": 19.526450343456172,
-   "equalScore": 34.57286432160804,
+   "score": 19.546911853588067,
+   "equalScore": 34.472361809045225,
    "counts": {
-    "visa-free": 37,
-    "visa-on-arrival": 23,
-    "e-visa": 44,
-    "visa-required": 95
+    "visa-free": 38,
+    "visa-on-arrival": 22,
+    "e-visa": 43,
+    "visa-required": 96
    },
    "rank": 113,
-   "equalRank": 107,
-   "delta": -6,
+   "equalRank": 104,
+   "delta": -9,
    "iso2": "ZW"
   },
   {
@@ -2356,57 +2359,73 @@
     "visa-required": 101
    },
    "rank": 114,
-   "equalRank": 137,
-   "delta": 23,
+   "equalRank": 131,
+   "delta": 17,
    "iso2": "HT"
   },
   {
    "iso3": "IND",
    "name": "India",
-   "score": 19.13015758839769,
-   "equalScore": 33.66834170854271,
+   "score": 19.188919001690177,
+   "equalScore": 33.768844221105525,
    "counts": {
     "visa-free": 27,
     "visa-on-arrival": 29,
-    "e-visa": 55,
-    "visa-required": 88
+    "e-visa": 56,
+    "visa-required": 87
    },
-   "rank": 115,
-   "equalRank": 110,
-   "delta": -5,
+   "rank": 114,
+   "equalRank": 108,
+   "delta": -6,
    "iso2": "IN"
   },
   {
    "iso3": "ZMB",
    "name": "Zambia",
-   "score": 19.0344857578608,
-   "equalScore": 35.879396984924625,
+   "score": 19.156274147539502,
+   "equalScore": 36.28140703517588,
    "counts": {
-    "visa-free": 39,
+    "visa-free": 40,
     "visa-on-arrival": 24,
-    "e-visa": 42,
+    "e-visa": 41,
     "visa-required": 94
    },
-   "rank": 116,
-   "equalRank": 103,
-   "delta": -13,
+   "rank": 114,
+   "equalRank": 99,
+   "delta": -15,
    "iso2": "ZM"
   },
   {
    "iso3": "MDG",
    "name": "Madagascar",
-   "score": 18.94384915006613,
+   "score": 19.065637539744827,
+   "equalScore": 34.2713567839196,
+   "counts": {
+    "visa-free": 31,
+    "visa-on-arrival": 28,
+    "e-visa": 46,
+    "visa-required": 94
+   },
+   "rank": 115,
+   "equalRank": 106,
+   "delta": -9,
+   "iso2": "MG"
+  },
+  {
+   "iso3": "GAB",
+   "name": "Gabon",
+   "score": 18.826484629360454,
    "equalScore": 33.869346733668344,
    "counts": {
-    "visa-free": 30,
-    "visa-on-arrival": 28,
+    "visa-free": 29,
+    "visa-on-arrival": 29,
     "e-visa": 47,
     "visa-required": 94
    },
-   "rank": 117,
-   "equalRank": 109,
-   "delta": -8,
-   "iso2": "MG"
+   "rank": 116,
+   "equalRank": 107,
+   "delta": -9,
+   "iso2": "GA"
   },
   {
    "iso3": "BEN",
@@ -2419,41 +2438,41 @@
     "e-visa": 45,
     "visa-required": 94
    },
-   "rank": 118,
-   "equalRank": 106,
-   "delta": -12,
+   "rank": 117,
+   "equalRank": 103,
+   "delta": -14,
    "iso2": "BJ"
   },
   {
-   "iso3": "GAB",
-   "name": "Gabon",
-   "score": 18.70469623968176,
-   "equalScore": 33.46733668341709,
+   "iso3": "MMR",
+   "name": "Myanmar",
+   "score": 18.340551269634556,
+   "equalScore": 27.1356783919598,
    "counts": {
-    "visa-free": 28,
-    "visa-on-arrival": 29,
-    "e-visa": 48,
-    "visa-required": 94
+    "visa-free": 15,
+    "visa-on-arrival": 28,
+    "e-visa": 55,
+    "visa-required": 101
    },
    "rank": 118,
-   "equalRank": 112,
-   "delta": -6,
-   "iso2": "GA"
+   "equalRank": 134,
+   "delta": 16,
+   "iso2": "MM"
   },
   {
    "iso3": "UGA",
    "name": "Uganda",
-   "score": 18.218146452105948,
-   "equalScore": 35.879396984924625,
+   "score": 18.33993484178465,
+   "equalScore": 36.28140703517588,
    "counts": {
-    "visa-free": 35,
+    "visa-free": 36,
     "visa-on-arrival": 28,
-    "e-visa": 42,
+    "e-visa": 41,
     "visa-required": 94
    },
-   "rank": 119,
-   "equalRank": 103,
-   "delta": -16,
+   "rank": 118,
+   "equalRank": 99,
+   "delta": -19,
    "iso2": "UG"
   },
   {
@@ -2467,10 +2486,26 @@
     "e-visa": 44,
     "visa-required": 90
    },
-   "rank": 120,
-   "equalRank": 100,
-   "delta": -20,
+   "rank": 119,
+   "equalRank": 97,
+   "delta": -22,
    "iso2": "GH"
+  },
+  {
+   "iso3": "MOZ",
+   "name": "Mozambique",
+   "score": 17.858471967036365,
+   "equalScore": 33.66834170854271,
+   "counts": {
+    "visa-free": 34,
+    "visa-on-arrival": 24,
+    "e-visa": 45,
+    "visa-required": 96
+   },
+   "rank": 120,
+   "equalRank": 109,
+   "delta": -11,
+   "iso2": "MZ"
   },
   {
    "iso3": "GIN",
@@ -2484,40 +2519,40 @@
     "visa-required": 96
    },
    "rank": 121,
-   "equalRank": 119,
-   "delta": -2,
+   "equalRank": 116,
+   "delta": -5,
    "iso2": "GN"
   },
   {
-   "iso3": "MOZ",
-   "name": "Mozambique",
-   "score": 17.736683577357663,
-   "equalScore": 33.266331658291456,
+   "iso3": "DZA",
+   "name": "Algeria",
+   "score": 17.663827719107704,
+   "equalScore": 33.165829145728644,
    "counts": {
-    "visa-free": 33,
-    "visa-on-arrival": 24,
-    "e-visa": 46,
-    "visa-required": 96
+    "visa-free": 23,
+    "visa-on-arrival": 33,
+    "e-visa": 50,
+    "visa-required": 93
    },
    "rank": 122,
-   "equalRank": 113,
-   "delta": -9,
-   "iso2": "MZ"
+   "equalRank": 111,
+   "delta": -11,
+   "iso2": "DZ"
   },
   {
    "iso3": "COM",
    "name": "Comoros",
-   "score": 17.568021466934866,
-   "equalScore": 30.954773869346734,
+   "score": 17.689809856613564,
+   "equalScore": 31.35678391959799,
    "counts": {
-    "visa-free": 20,
+    "visa-free": 21,
     "visa-on-arrival": 32,
-    "e-visa": 48,
+    "e-visa": 47,
     "visa-required": 99
    },
-   "rank": 123,
-   "equalRank": 124,
-   "delta": 1,
+   "rank": 122,
+   "equalRank": 119,
+   "delta": -3,
    "iso2": "KM"
   },
   {
@@ -2532,73 +2567,57 @@
     "visa-required": 91
    },
    "rank": 123,
-   "equalRank": 99,
-   "delta": -24,
+   "equalRank": 96,
+   "delta": -27,
    "iso2": "GM"
-  },
-  {
-   "iso3": "DZA",
-   "name": "Algeria",
-   "score": 17.542039329429006,
-   "equalScore": 32.76381909547739,
-   "counts": {
-    "visa-free": 22,
-    "visa-on-arrival": 33,
-    "e-visa": 51,
-    "visa-required": 93
-   },
-   "rank": 124,
-   "equalRank": 115,
-   "delta": -9,
-   "iso2": "DZ"
   },
   {
    "iso3": "RWA",
    "name": "Rwanda",
-   "score": 17.524922633015652,
-   "equalScore": 35.778894472361806,
+   "score": 17.64671102269435,
+   "equalScore": 36.18090452261306,
    "counts": {
-    "visa-free": 30,
+    "visa-free": 31,
     "visa-on-arrival": 33,
-    "e-visa": 41,
+    "e-visa": 40,
     "visa-required": 95
    },
-   "rank": 124,
-   "equalRank": 104,
-   "delta": -20,
+   "rank": 123,
+   "equalRank": 100,
+   "delta": -23,
    "iso2": "RW"
-  },
-  {
-   "iso3": "MMR",
-   "name": "Myanmar",
-   "score": 17.207202150279137,
-   "equalScore": 26.733668341708544,
-   "counts": {
-    "visa-free": 14,
-    "visa-on-arrival": 28,
-    "e-visa": 56,
-    "visa-required": 101
-   },
-   "rank": 125,
-   "equalRank": 140,
-   "delta": 15,
-   "iso2": "MM"
   },
   {
    "iso3": "MRT",
    "name": "Mauritania",
-   "score": 17.045605795889255,
-   "equalScore": 31.55778894472362,
+   "score": 17.167394185567957,
+   "equalScore": 31.959798994974875,
    "counts": {
-    "visa-free": 27,
+    "visa-free": 28,
     "visa-on-arrival": 26,
-    "e-visa": 49,
+    "e-visa": 48,
     "visa-required": 97
    },
-   "rank": 126,
-   "equalRank": 122,
-   "delta": -4,
+   "rank": 124,
+   "equalRank": 117,
+   "delta": -7,
    "iso2": "MR"
+  },
+  {
+   "iso3": "GNQ",
+   "name": "Equatorial Guinea",
+   "score": 16.786716081737097,
+   "equalScore": 32.76381909547739,
+   "counts": {
+    "visa-free": 26,
+    "visa-on-arrival": 30,
+    "e-visa": 46,
+    "visa-required": 97
+   },
+   "rank": 125,
+   "equalRank": 113,
+   "delta": -12,
+   "iso2": "GQ"
   },
   {
    "iso3": "SEN",
@@ -2611,9 +2630,9 @@
     "e-visa": 49,
     "visa-required": 93
    },
-   "rank": 127,
-   "equalRank": 111,
-   "delta": -16,
+   "rank": 125,
+   "equalRank": 110,
+   "delta": -15,
    "iso2": "SN"
   },
   {
@@ -2627,26 +2646,10 @@
     "e-visa": 48,
     "visa-required": 96
    },
-   "rank": 128,
-   "equalRank": 116,
+   "rank": 126,
+   "equalRank": 114,
    "delta": -12,
    "iso2": "BF"
-  },
-  {
-   "iso3": "GNQ",
-   "name": "Equatorial Guinea",
-   "score": 16.664927692058395,
-   "equalScore": 32.36180904522613,
-   "counts": {
-    "visa-free": 25,
-    "visa-on-arrival": 30,
-    "e-visa": 47,
-    "visa-required": 97
-   },
-   "rank": 128,
-   "equalRank": 117,
-   "delta": -11,
-   "iso2": "GQ"
   },
   {
    "iso3": "LBN",
@@ -2659,41 +2662,41 @@
     "e-visa": 51,
     "visa-required": 104
    },
-   "rank": 129,
-   "equalRank": 138,
-   "delta": 9,
+   "rank": 127,
+   "equalRank": 133,
+   "delta": 6,
    "iso2": "LB"
   },
   {
    "iso3": "TCD",
    "name": "Chad",
-   "score": 16.302101427002302,
-   "equalScore": 30.35175879396985,
+   "score": 16.423889816681005,
+   "equalScore": 30.753768844221106,
    "counts": {
-    "visa-free": 25,
+    "visa-free": 26,
     "visa-on-arrival": 26,
-    "e-visa": 47,
+    "e-visa": 46,
     "visa-required": 101
    },
-   "rank": 130,
-   "equalRank": 126,
-   "delta": -4,
+   "rank": 128,
+   "equalRank": 121,
+   "delta": -7,
    "iso2": "TD"
   },
   {
    "iso3": "EGY",
    "name": "Egypt, Arab Rep.",
-   "score": 16.33697962313468,
-   "equalScore": 29.949748743718594,
+   "score": 16.35744113326657,
+   "equalScore": 29.849246231155778,
    "counts": {
-    "visa-free": 20,
-    "visa-on-arrival": 29,
-    "e-visa": 53,
-    "visa-required": 97
+    "visa-free": 21,
+    "visa-on-arrival": 28,
+    "e-visa": 52,
+    "visa-required": 98
    },
-   "rank": 130,
-   "equalRank": 128,
-   "delta": -2,
+   "rank": 128,
+   "equalRank": 125,
+   "delta": -3,
    "iso2": "EG"
   },
   {
@@ -2707,9 +2710,9 @@
     "e-visa": 51,
     "visa-required": 108
    },
-   "rank": 130,
-   "equalRank": 145,
-   "delta": 15,
+   "rank": 129,
+   "equalRank": 141,
+   "delta": 12,
    "iso2": "IR"
   },
   {
@@ -2723,9 +2726,9 @@
     "e-visa": 46,
     "visa-required": 99
    },
-   "rank": 130,
-   "equalRank": 121,
-   "delta": -9,
+   "rank": 129,
+   "equalRank": 118,
+   "delta": -11,
    "iso2": "NE"
   },
   {
@@ -2739,9 +2742,9 @@
     "e-visa": 46,
     "visa-required": 97
    },
-   "rank": 130,
-   "equalRank": 115,
-   "delta": -15,
+   "rank": 129,
+   "equalRank": 113,
+   "delta": -16,
    "iso2": "TG"
   },
   {
@@ -2755,41 +2758,41 @@
     "e-visa": 42,
     "visa-required": 97
    },
-   "rank": 131,
-   "equalRank": 108,
-   "delta": -23,
+   "rank": 130,
+   "equalRank": 105,
+   "delta": -25,
    "iso2": "SL"
   },
   {
    "iso3": "DJI",
    "name": "Djibouti",
-   "score": 15.718500404495483,
-   "equalScore": 28.542713567839197,
+   "score": 15.840288794174183,
+   "equalScore": 28.944723618090453,
    "counts": {
-    "visa-free": 18,
+    "visa-free": 19,
     "visa-on-arrival": 28,
-    "e-visa": 54,
+    "e-visa": 53,
     "visa-required": 99
    },
-   "rank": 132,
-   "equalRank": 136,
-   "delta": 4,
+   "rank": 131,
+   "equalRank": 129,
+   "delta": -2,
    "iso2": "DJ"
   },
   {
    "iso3": "AGO",
    "name": "Angola",
-   "score": 15.580601137631929,
-   "equalScore": 29.44723618090452,
+   "score": 15.70238952731063,
+   "equalScore": 29.849246231155778,
    "counts": {
-    "visa-free": 24,
+    "visa-free": 25,
     "visa-on-arrival": 24,
-    "e-visa": 53,
+    "e-visa": 52,
     "visa-required": 98
    },
-   "rank": 133,
-   "equalRank": 130,
-   "delta": -3,
+   "rank": 132,
+   "equalRank": 125,
+   "delta": -7,
    "iso2": "AO"
   },
   {
@@ -2803,9 +2806,9 @@
     "e-visa": 49,
     "visa-required": 99
    },
-   "rank": 134,
-   "equalRank": 125,
-   "delta": -9,
+   "rank": 133,
+   "equalRank": 122,
+   "delta": -11,
    "iso2": "ML"
   },
   {
@@ -2819,9 +2822,9 @@
     "e-visa": 55,
     "visa-required": 97
    },
-   "rank": 134,
-   "equalRank": 131,
-   "delta": -3,
+   "rank": 133,
+   "equalRank": 127,
+   "delta": -6,
    "iso2": "TM"
   },
   {
@@ -2835,58 +2838,74 @@
     "e-visa": 50,
     "visa-required": 95
    },
-   "rank": 135,
-   "equalRank": 118,
-   "delta": -17,
+   "rank": 134,
+   "equalRank": 115,
+   "delta": -19,
    "iso2": "CI"
   },
   {
    "iso3": "BDI",
    "name": "Burundi",
-   "score": 14.683718090713677,
-   "equalScore": 29.045226130653266,
+   "score": 14.80550648039238,
+   "equalScore": 29.44723618090452,
    "counts": {
-    "visa-free": 19,
+    "visa-free": 20,
     "visa-on-arrival": 29,
-    "e-visa": 49,
+    "e-visa": 48,
     "visa-required": 102
    },
-   "rank": 136,
-   "equalRank": 132,
-   "delta": -4,
+   "rank": 135,
+   "equalRank": 126,
+   "delta": -9,
    "iso2": "BI"
   },
   {
    "iso3": "CAF",
    "name": "Central African Republic",
-   "score": 14.659396601282092,
-   "equalScore": 29.64824120603015,
+   "score": 14.78118499096079,
+   "equalScore": 30.050251256281406,
    "counts": {
-    "visa-free": 22,
+    "visa-free": 23,
     "visa-on-arrival": 27,
-    "e-visa": 50,
+    "e-visa": 49,
     "visa-required": 100
    },
-   "rank": 136,
-   "equalRank": 129,
-   "delta": -7,
+   "rank": 135,
+   "equalRank": 124,
+   "delta": -11,
    "iso2": "CF"
   },
   {
    "iso3": "COG",
    "name": "Congo, Rep.",
-   "score": 14.437559903143994,
-   "equalScore": 28.64321608040201,
+   "score": 14.559348292822694,
+   "equalScore": 29.045226130653266,
    "counts": {
-    "visa-free": 21,
+    "visa-free": 22,
     "visa-on-arrival": 26,
-    "e-visa": 50,
+    "e-visa": 49,
     "visa-required": 102
    },
-   "rank": 137,
-   "equalRank": 135,
-   "delta": -2,
+   "rank": 136,
+   "equalRank": 128,
+   "delta": -8,
    "iso2": "CG"
+  },
+  {
+   "iso3": "ETH",
+   "name": "Ethiopia",
+   "score": 14.371658023206829,
+   "equalScore": 27.33668341708543,
+   "counts": {
+    "visa-free": 14,
+    "visa-on-arrival": 30,
+    "e-visa": 52,
+    "visa-required": 103
+   },
+   "rank": 137,
+   "equalRank": 132,
+   "delta": -5,
+   "iso2": "ET"
   },
   {
    "iso3": "GNB",
@@ -2900,8 +2919,8 @@
     "visa-required": 100
    },
    "rank": 137,
-   "equalRank": 127,
-   "delta": -10,
+   "equalRank": 124,
+   "delta": -13,
    "iso2": "GW"
   },
   {
@@ -2916,57 +2935,25 @@
     "visa-required": 103
    },
    "rank": 137,
-   "equalRank": 133,
-   "delta": -4,
+   "equalRank": 129,
+   "delta": -8,
    "iso2": "LR"
-  },
-  {
-   "iso3": "SSD",
-   "name": "South Sudan",
-   "score": 14.253806501084794,
-   "equalScore": 26.13065326633166,
-   "counts": {
-    "visa-free": 18,
-    "visa-on-arrival": 24,
-    "e-visa": 50,
-    "visa-required": 107
-   },
-   "rank": 138,
-   "equalRank": 141,
-   "delta": 3,
-   "iso2": "SS"
   },
   {
    "iso3": "CMR",
    "name": "Cameroon",
-   "score": 14.157537352643796,
-   "equalScore": 28.64321608040201,
+   "score": 14.279325742322495,
+   "equalScore": 29.045226130653266,
    "counts": {
-    "visa-free": 22,
+    "visa-free": 23,
     "visa-on-arrival": 25,
-    "e-visa": 50,
+    "e-visa": 49,
     "visa-required": 102
    },
-   "rank": 139,
-   "equalRank": 135,
-   "delta": -4,
+   "rank": 138,
+   "equalRank": 128,
+   "delta": -10,
    "iso2": "CM"
-  },
-  {
-   "iso3": "ETH",
-   "name": "Ethiopia",
-   "score": 14.249869633528128,
-   "equalScore": 26.934673366834172,
-   "counts": {
-    "visa-free": 13,
-    "visa-on-arrival": 30,
-    "e-visa": 53,
-    "visa-required": 103
-   },
-   "rank": 139,
-   "equalRank": 139,
-   "delta": 0,
-   "iso2": "ET"
   },
   {
    "iso3": "NPL",
@@ -2979,42 +2966,58 @@
     "e-visa": 61,
     "visa-required": 101
    },
-   "rank": 140,
-   "equalRank": 147,
-   "delta": 7,
+   "rank": 139,
+   "equalRank": 143,
+   "delta": 4,
    "iso2": "NP"
   },
   {
    "iso3": "LBY",
    "name": "Libya",
-   "score": 13.69901685798568,
-   "equalScore": 25.829145728643216,
+   "score": 13.820805247664378,
+   "equalScore": 26.231155778894472,
    "counts": {
-    "visa-free": 15,
+    "visa-free": 16,
     "visa-on-arrival": 26,
-    "e-visa": 52,
+    "e-visa": 51,
     "visa-required": 106
    },
-   "rank": 141,
-   "equalRank": 143,
-   "delta": 2,
+   "rank": 140,
+   "equalRank": 136,
+   "delta": -4,
    "iso2": "LY"
   },
   {
    "iso3": "COD",
    "name": "Congo, Dem. Rep.",
-   "score": 13.610165363949076,
+   "score": 13.731953753627774,
+   "equalScore": 26.532663316582916,
+   "counts": {
+    "visa-free": 18,
+    "visa-on-arrival": 25,
+    "e-visa": 49,
+    "visa-required": 107
+   },
+   "rank": 141,
+   "equalRank": 135,
+   "delta": -6,
+   "iso2": "CD"
+  },
+  {
+   "iso3": "SSD",
+   "name": "South Sudan",
+   "score": 13.385718748518428,
    "equalScore": 26.13065326633166,
    "counts": {
-    "visa-free": 17,
-    "visa-on-arrival": 25,
+    "visa-free": 18,
+    "visa-on-arrival": 24,
     "e-visa": 50,
     "visa-required": 107
    },
    "rank": 142,
-   "equalRank": 141,
-   "delta": -1,
-   "iso2": "CD"
+   "equalRank": 137,
+   "delta": -5,
+   "iso2": "SS"
   },
   {
    "iso3": "PSE",
@@ -3028,24 +3031,24 @@
     "visa-required": 110
    },
    "rank": 143,
-   "equalRank": 150,
-   "delta": 7,
+   "equalRank": 145,
+   "delta": 2,
    "iso2": "PS"
   },
   {
    "iso3": "ERI",
    "name": "Eritrea",
-   "score": 12.856256217651735,
-   "equalScore": 24.42211055276382,
+   "score": 12.978044607330435,
+   "equalScore": 24.824120603015075,
    "counts": {
-    "visa-free": 13,
+    "visa-free": 14,
     "visa-on-arrival": 24,
-    "e-visa": 58,
+    "e-visa": 57,
     "visa-required": 104
    },
    "rank": 144,
-   "equalRank": 149,
-   "delta": 5,
+   "equalRank": 142,
+   "delta": -2,
    "iso2": "ER"
   },
   {
@@ -3059,9 +3062,9 @@
     "e-visa": 55,
     "visa-required": 104
    },
-   "rank": 144,
-   "equalRank": 144,
-   "delta": 0,
+   "rank": 145,
+   "equalRank": 139,
+   "delta": -6,
    "iso2": "LK"
   },
   {
@@ -3075,25 +3078,25 @@
     "e-visa": 54,
     "visa-required": 107
    },
-   "rank": 145,
-   "equalRank": 148,
-   "delta": 3,
+   "rank": 146,
+   "equalRank": 144,
+   "delta": -2,
    "iso2": "KP"
   },
   {
    "iso3": "SDN",
    "name": "Sudan",
-   "score": 12.224794934354595,
-   "equalScore": 25.12562814070352,
+   "score": 12.346583324033293,
+   "equalScore": 25.527638190954775,
    "counts": {
-    "visa-free": 14,
+    "visa-free": 15,
     "visa-on-arrival": 26,
-    "e-visa": 50,
+    "e-visa": 49,
     "visa-required": 109
    },
-   "rank": 146,
-   "equalRank": 146,
-   "delta": 0,
+   "rank": 147,
+   "equalRank": 140,
+   "delta": -7,
    "iso2": "SD"
   },
   {
@@ -3107,9 +3110,9 @@
     "e-visa": 57,
     "visa-required": 112
    },
-   "rank": 147,
-   "equalRank": 155,
-   "delta": 8,
+   "rank": 148,
+   "equalRank": 150,
+   "delta": 2,
    "iso2": "IQ"
   },
   {
@@ -3123,9 +3126,9 @@
     "e-visa": 53,
     "visa-required": 112
    },
-   "rank": 148,
-   "equalRank": 152,
-   "delta": 4,
+   "rank": 149,
+   "equalRank": 147,
+   "delta": -2,
    "iso2": "YE"
   },
   {
@@ -3139,25 +3142,25 @@
     "e-visa": 48,
     "visa-required": 109
    },
-   "rank": 149,
-   "equalRank": 142,
-   "delta": -7,
+   "rank": 150,
+   "equalRank": 138,
+   "delta": -12,
    "iso2": "NG"
   },
   {
    "iso3": "SOM",
    "name": "Somalia, Fed. Rep.",
-   "score": 10.230026596254676,
-   "equalScore": 21.809045226130653,
+   "score": 10.351814985933373,
+   "equalScore": 22.21105527638191,
    "counts": {
-    "visa-free": 12,
+    "visa-free": 13,
     "visa-on-arrival": 21,
-    "e-visa": 52,
+    "e-visa": 51,
     "visa-required": 114
    },
-   "rank": 150,
-   "equalRank": 153,
-   "delta": 3,
+   "rank": 151,
+   "equalRank": 148,
+   "delta": -3,
    "iso2": "SO"
   },
   {
@@ -3171,9 +3174,9 @@
     "e-visa": 53,
     "visa-required": 119
    },
-   "rank": 151,
-   "equalRank": 156,
-   "delta": 5,
+   "rank": 152,
+   "equalRank": 151,
+   "delta": -1,
    "iso2": "SY"
   },
   {
@@ -3187,9 +3190,9 @@
     "e-visa": 58,
     "visa-required": 111
    },
-   "rank": 152,
-   "equalRank": 154,
-   "delta": 2,
+   "rank": 153,
+   "equalRank": 149,
+   "delta": -4,
    "iso2": "PK"
   },
   {
@@ -3203,9 +3206,9 @@
     "e-visa": 54,
     "visa-required": 111
    },
-   "rank": 153,
-   "equalRank": 151,
-   "delta": -2,
+   "rank": 154,
+   "equalRank": 146,
+   "delta": -8,
    "iso2": "BD"
   },
   {
@@ -3219,9 +3222,9 @@
     "e-visa": 58,
     "visa-required": 118
    },
-   "rank": 154,
-   "equalRank": 157,
-   "delta": 3,
+   "rank": 155,
+   "equalRank": 152,
+   "delta": -3,
    "iso2": "AF"
   }
  ]

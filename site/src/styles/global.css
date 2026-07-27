@@ -3447,3 +3447,257 @@ body.drawer-shifted { --drawer-shift: 1; }
     mix-blend-mode: normal;
   }
 }
+
+
+/* ==========================================================================
+   The changelog. Its device is a dated ledger: a month rule, then one card
+   per policy — the shift stated in the tier swatches the rest of the site
+   already reads, the passports it moved, and the document that settles it.
+   Nothing here borrows the front page's masthead or the weighing figure.
+   ========================================================================== */
+.ledger {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 var(--pad) var(--section-gap);
+}
+
+/* Hero and figure share one spread: the claim and its tally left, the year
+   strip top-right, never a band over a void with the figure below the fold. */
+.upd-lede {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 56px);
+  align-items: start;
+}
+.upd-say h1 {
+  margin: 0 0 20px;
+  font-weight: 600;
+  font-size: clamp(38px, 6.4vw, var(--text-display));
+  line-height: 1.06;
+  letter-spacing: var(--tracking-display);
+}
+.upd-say .tagline {
+  margin-bottom: 26px;
+  max-width: 46ch;
+}
+.upd-tally {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 28px;
+  margin: 0;
+  max-width: 30rem;
+}
+.upd-tally div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-hairline);
+}
+.upd-tally dt {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+}
+.upd-tally dd {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-95);
+}
+
+.upd-year {
+  margin: 0;
+}
+.upd-year svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* The unverified stretch is a tint, not an absence. */
+.upd-void { fill: color-mix(in srgb, var(--color-ink) 3%, transparent); }
+.upd-axis { stroke: var(--border-hairline); stroke-width: 1; }
+.upd-tick {
+  fill: var(--ink-40);
+  font-size: 9px;
+  font-family: var(--font-sans);
+  text-anchor: middle;
+}
+/* Flat-topped, frameless blocks — the site's figure grammar. */
+.upd-mark { fill: rgba(0, 0, 0, 0.18); }
+.upd-mark.is-opened { fill: var(--color-sky-wash); }
+.upd-mark.is-closed { fill: var(--color-coral); }
+.upd-year figcaption {
+  margin-top: 12px;
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+  max-width: 34ch;
+}
+
+.upd-month {
+  margin-top: 56px;
+}
+.upd-month h2 {
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-ink);
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-95);
+}
+.upd-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.upd-card {
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  padding: 20px 22px;
+}
+/* The one chromatic tell: which way the door swung, on the card's own edge. */
+.upd-card.is-opened { border-left: 3px solid var(--color-sky-wash); }
+.upd-card.is-closed { border-left: 3px solid var(--color-coral); }
+.upd-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.upd-head time {
+  flex: none;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-slate);
+  min-width: 3.5rem;
+}
+.upd-head h3 {
+  margin: 0;
+  font-size: var(--text-heading-sm);
+  line-height: var(--leading-heading-sm);
+  letter-spacing: var(--tracking-heading-sm);
+  font-weight: 600;
+  color: var(--ink-95);
+}
+.upd-shift {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 14px 0 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-graphite);
+}
+.upd-arrow { color: var(--ink-40); }
+.upd-flat {
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--ink-40);
+}
+.upd-who {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  font-size: var(--text-body-sm);
+}
+.upd-who a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-graphite);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast, 160ms) ease, border-color var(--dur-fast, 160ms) ease;
+}
+.upd-who a:hover {
+  color: var(--ink-95);
+  border-bottom-color: var(--border-hairline);
+}
+.upd-note {
+  margin: 16px 0 0;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-graphite);
+}
+.upd-cite {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 14px 0 0;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+}
+.upd-cite a { color: var(--color-notion-blue); text-decoration: none; }
+.upd-cite a:hover { text-decoration: underline; }
+.upd-sunset { color: var(--color-saffron); }
+
+.upd-conseq { margin-top: 64px; }
+.upd-conseq h2 {
+  margin: 0 0 12px;
+  font-size: var(--text-heading-sm);
+  line-height: var(--leading-heading-sm);
+  letter-spacing: var(--tracking-heading-sm);
+  font-weight: 600;
+}
+.upd-conseq-lede {
+  margin: 0 0 20px;
+  max-width: 58ch;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.56;
+  color: var(--color-graphite);
+}
+.upd-movers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.upd-movers li {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 14rem) minmax(0, 1fr);
+  gap: 8px 20px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-faint);
+  font-size: var(--text-body-sm);
+}
+.upd-movers a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+.upd-movers a:hover b { border-bottom: 1px solid var(--border-hairline); }
+.upd-movers b { font-weight: 600; color: var(--ink-95); }
+.upd-delta {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-slate);
+}
+.upd-delta.is-up { color: var(--color-blue-deep); }
+.upd-delta.is-down { color: var(--color-coral); }
+.upd-because { color: var(--color-slate); }
+
+@media (max-width: 860px) {
+  .upd-lede { grid-template-columns: minmax(0, 1fr); }
+  .upd-year { max-width: 30rem; }
+  .upd-movers li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
