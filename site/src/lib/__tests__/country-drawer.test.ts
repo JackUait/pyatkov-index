@@ -3,6 +3,7 @@ import {
   countryPath,
   createPrefetcher,
   createScrollPin,
+  createScrollTuck,
   isPlainLeftClick,
   parseMs,
   shouldPrefetch,
@@ -172,5 +173,52 @@ describe('createScrollPin', () => {
     page.top += 25;
     pin();
     expect(page.top).toBe(90);
+  });
+});
+
+describe('createScrollTuck', () => {
+  it('tucks the island away once the reader is scrolling down the page', () => {
+    const tuck = createScrollTuck();
+    expect(tuck(0)).toBe(false);
+    expect(tuck(400)).toBe(true);
+    expect(tuck(800)).toBe(true);
+  });
+
+  it('brings it back the moment they scroll up, without waiting for the top', () => {
+    const tuck = createScrollTuck();
+    tuck(0);
+    tuck(900);
+    expect(tuck(860)).toBe(false);
+  });
+
+  it('holds its state through jitter smaller than the threshold', () => {
+    const tuck = createScrollTuck();
+    tuck(0);
+    tuck(600);
+    // A trackpad's settling wobble is not a change of direction.
+    expect(tuck(597)).toBe(true);
+    expect(tuck(600)).toBe(true);
+    expect(tuck(603)).toBe(true);
+  });
+
+  it('always shows near the top, where there is nothing to get out of the way of', () => {
+    const tuck = createScrollTuck();
+    tuck(0);
+    tuck(500);
+    expect(tuck(10)).toBe(false);
+    // Still down at the top even though this frame scrolled *down*.
+    expect(tuck(20)).toBe(false);
+  });
+
+  it('takes a known starting offset, so the first scroll of a gesture already counts', () => {
+    const tuck = createScrollTuck({ from: 0 });
+    expect(tuck(400)).toBe(true);
+  });
+
+  it('keeps a fresh watcher visible whatever offset it first sees', () => {
+    // The drawer swaps countries without unmounting; a re-armed watcher must
+    // not read the reset to 0 as an upward scroll from the old page's depth.
+    const tuck = createScrollTuck();
+    expect(tuck(1200)).toBe(false);
   });
 });

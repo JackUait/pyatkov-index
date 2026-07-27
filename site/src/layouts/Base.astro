@@ -230,12 +230,17 @@ const nav = [
     <div class="drawer-root" id="country-drawer" hidden>
       <div class="drawer-scrim"></div>
       <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Country details">
-        <div class="drawer-bar">
+        {/* The controls float over the pulled-out page rather than sitting in a
+            bar above it: the sheet is already framed, and a second horizontal
+            rule inside it only stole a line from the page it exists to show.
+            They stay first in the DOM so a tab reaches the escape hatches
+            before the page; z-index, not source order, keeps them on top. */}
+        <div class="drawer-island">
           <button class="drawer-back" id="drawer-back" type="button" hidden>
             <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M10.5 2.5 5 8l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
             Back
           </button>
-          <a class="drawer-full" id="drawer-full" href={base} aria-label="Open full page" data-drawer-bypass>
+          <a class="drawer-full" id="drawer-full" href={base} data-drawer-bypass>
             <span>Open full page</span>
             <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M5 3h8v8M13 3 3.5 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </a>

@@ -2994,16 +2994,44 @@ footer {
   }
 }
 
-/* Chrome bar: back, then the escape hatches on the far edge. The kind chip
-   is gone — the pulled-out page's own h1 already says what it is. */
-.drawer-bar {
+/* The controls, as an island floating over the page instead of a bar above it:
+   back, then the escape hatches. The kind chip is gone — the pulled-out page's
+   own h1 already says what it is. The island is the sheet's own material one
+   step up: same white, same hairline, a shadow deep enough to sit clear of the
+   text passing under it. It rides the panel's bottom edge rather than the top,
+   where the sheet's own sticky table headers live and would spend the whole
+   scroll half-covered.
+
+   Reading down the page is the one gesture it has nothing to add to, so it
+   drops out through the panel's clipped bottom edge and comes back on the first
+   movement upward; country-drawer.ts owns that decision (createScrollTuck) and
+   this only draws the two states. */
+.drawer-island {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px 10px 16px;
-  border-bottom: 1px solid var(--border-hairline);
+  gap: 2px;
+  padding: 4px;
+  background: var(--color-white);
+  border: 1px solid var(--border-hairline);
+  border-radius: calc(var(--radius-btn) + 4px);
+  box-shadow: 0 8px 28px rgba(2, 9, 58, 0.18);
+  transform: translateX(-50%);
 }
-.drawer-bar button {
+.drawer-island.is-tucked {
+  /* Past the panel's own overflow: clip, so it is gone rather than faded. */
+  transform: translateX(-50%) translateY(calc(100% + 12px));
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .drawer-island { transition: transform var(--drawer-move) var(--drawer-ease), opacity 160ms ease; }
+}
+.drawer-island button,
+.drawer-island a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -3018,36 +3046,27 @@ footer {
   cursor: pointer;
   transition: color 200ms ease, background-color 200ms ease;
 }
-.drawer-bar button:hover {
+.drawer-island button:hover,
+.drawer-island a:hover {
   color: var(--ink-95);
   background: rgba(0, 0, 0, 0.05);
+  text-decoration: none;
 }
-.drawer-bar button:focus-visible {
+.drawer-island button:focus-visible,
+.drawer-island a:focus-visible {
   outline: 2px solid var(--color-notion-blue);
   outline-offset: 1px;
 }
-.drawer-back { padding: 6px 12px 6px 8px; }
+.drawer-back { padding: 6px 10px 6px 6px; }
 /* display: inline-flex above would otherwise defeat the hidden attribute. */
 .drawer-back[hidden] { display: none; }
-.drawer-close { padding: 8px; }
-/* The reference's outlined text button: the compact mid-priority action. */
+.drawer-close { padding: 7px; }
+/* The island supplies the frame, so the mid-priority action drops its own
+   outline and reads as a text item beside the two icons. */
 .drawer-full {
-  margin-left: auto;
-  display: inline-flex;
-  align-items: center;
   gap: 7px;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: var(--radius-btn);
-  padding: 5px 12px;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 6px 10px;
   color: var(--ink-95);
-  transition: border-color 200ms ease, background-color 200ms ease;
-}
-.drawer-full:hover {
-  text-decoration: none;
-  border-color: rgba(0, 0, 0, 0.32);
-  background: rgba(0, 0, 0, 0.02);
 }
 
 /* The pulled-out page itself. */
@@ -3179,7 +3198,11 @@ footer {
     transform: translateX(100%);
   }
   .drawer-content { padding: 0 var(--pad) 48px; }
-  .drawer-full span { display: none; }
+  /* The label stays: the island is a free-floating cluster with room to spare,
+     unlike the bar it replaced, and a bare arrow names nothing. The sheet goes
+     full-bleed here, so the island clears the home indicator instead of the
+     panel's gutter. */
+  .drawer-island { bottom: max(16px, env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ---- The shared page transition ----

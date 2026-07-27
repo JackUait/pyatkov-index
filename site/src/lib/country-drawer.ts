@@ -143,6 +143,37 @@ export function createScrollPin(readTop: () => number, scrollBy: (dy: number) =>
   };
 }
 
+/** Whether the island should be tucked out of sight, decided from successive
+ *  scroll offsets. Reading down the page is the one gesture the controls have
+ *  nothing to add to, so they drop away; the first hint of scrolling back up is
+ *  a reader looking for something, and they return before being asked for.
+ *
+ *  `jitter` is the movement too small to be a direction — a trackpad settling,
+ *  a sticky header's own reflow — and leaves the state alone. Near the top the
+ *  island always shows: there is nothing up there for it to be in the way of,
+ *  and it is where a freshly opened sheet starts. Absent a `from`, the first
+ *  call only arms the watcher — re-arming on a country swap must not read the
+ *  reset to the top as an upward scroll from the last page's depth. A caller
+ *  that already knows where the scrollport stands passes it and spends nothing:
+ *  the first event of the reader's first gesture then counts like any other. */
+export function createScrollTuck({
+  jitter = 6,
+  home = 32,
+  from = null,
+}: { jitter?: number; home?: number; from?: number | null } = {}): (top: number) => boolean {
+  let last: number | null = from;
+  let tucked = false;
+  return (top) => {
+    const previous = last;
+    last = top;
+    if (top <= home) return (tucked = false);
+    if (previous === null) return tucked;
+    const dy = top - previous;
+    if (Math.abs(dy) < jitter) return tucked;
+    return (tucked = dy > 0);
+  };
+}
+
 /** Read a CSS duration as a number of milliseconds, falling back when the token
  *  is absent or in units we did not expect — a timing that lands on NaN would
  *  make the move never finish, which is worse than a stale constant. */
@@ -280,7 +311,33 @@ function render(url: string, page: CountryPage): void {
   // And the door ledgers' pointer-steered row tips.
   initRankTip({ root: content });
   content.scrollTop = 0;
+  resetTuck();
   content.focus({ preventScroll: true });
+}
+
+/** The island's watcher, re-armed whenever a country lands so the scroll reset
+ *  that comes with it is not read as the reader shooting back to the top. */
+let tuck = createScrollTuck();
+let tuckQueued = false;
+
+/** Show the island and forget which way the last page was going. */
+function resetTuck(): void {
+  tuck = createScrollTuck({ from: $('#drawer-content')?.scrollTop ?? 0 });
+  $('.drawer-island')?.classList.remove('is-tucked');
+}
+
+/** Scroll fires far faster than the compositor can use, so the class is settled
+ *  once per frame; the handler itself only reads scrollTop, which is cheap. */
+function onDrawerScroll(e: Event): void {
+  if (!(e.target instanceof HTMLElement) || e.target.id !== 'drawer-content') return;
+  if (tuckQueued) return;
+  tuckQueued = true;
+  requestAnimationFrame(() => {
+    tuckQueued = false;
+    const content = $('#drawer-content');
+    const island = $('.drawer-island');
+    if (content && island) island.classList.toggle('is-tucked', tuck(content.scrollTop));
+  });
 }
 
 /** The requests still on the wire, so a hover and the click that follows it share
@@ -367,6 +424,9 @@ function open(url: string): void {
     // before is-open lands, or the slide-in plays as a pop.
     requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-open')));
   }
+  // Every landing country also resets it, but the failure path never renders —
+  // and a sheet that opens with its only escape hatch tucked away is a trap.
+  resetTuck();
   stack.push(url);
   void load(url);
 }
@@ -405,7 +465,7 @@ function onClick(e: MouseEvent): void {
   if (a.hasAttribute('data-drawer-bypass') || a.target === '_blank' || a.hasAttribute('download')) return;
   if (a.origin !== location.origin) return;
   if (!isPlainLeftClick(e)) return;
-  if (a.closest('#country-drawer') && a.closest('.drawer-bar')) {
+  if (a.closest('#country-drawer') && a.closest('.drawer-island')) {
     // Drawer chrome: back/close are buttons, the full-page link bypasses above.
     return;
   }
@@ -483,6 +543,9 @@ export function initCountryDrawer(): void {
   // listener has to serve 199 rows that the drawer itself keeps replacing.
   document.addEventListener('pointerover', onHover);
   document.addEventListener('focusin', onHover);
+  // Capture, because scroll does not bubble — and bound on the document rather
+  // than the scrollport so it outlives the router swapping the body.
+  document.addEventListener('scroll', onDrawerScroll, { capture: true, passive: true });
   document.addEventListener('click', (e) => {
     const el = root();
     if (!el || el.hidden) return;
