@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { countryPath, createScrollPin, isPlainLeftClick, parseMs } from '../country-drawer.ts';
+import {
+  countryPath,
+  createPrefetcher,
+  createScrollPin,
+  isPlainLeftClick,
+  parseMs,
+  shouldPrefetch,
+} from '../country-drawer.ts';
 
 describe('countryPath', () => {
   it('classifies passport and destination pages under a root base', () => {
@@ -57,6 +64,45 @@ describe('parseMs', () => {
     expect(parseMs('', 240)).toBe(240);
     expect(parseMs('fast', 240)).toBe(240);
     expect(parseMs('240', 240)).toBe(240);
+  });
+});
+
+describe('shouldPrefetch', () => {
+  it('prefetches when the browser tells us nothing about the connection', () => {
+    expect(shouldPrefetch(undefined)).toBe(true);
+    expect(shouldPrefetch({})).toBe(true);
+  });
+
+  it('respects Data Saver — a speculative page is exactly what that setting forbids', () => {
+    expect(shouldPrefetch({ saveData: true })).toBe(false);
+    expect(shouldPrefetch({ saveData: true, effectiveType: '4g' })).toBe(false);
+  });
+
+  it('holds off on the slow connections, where the guess costs more than it saves', () => {
+    expect(shouldPrefetch({ effectiveType: 'slow-2g' })).toBe(false);
+    expect(shouldPrefetch({ effectiveType: '2g' })).toBe(false);
+    expect(shouldPrefetch({ effectiveType: '3g' })).toBe(true);
+    expect(shouldPrefetch({ effectiveType: '4g' })).toBe(true);
+  });
+});
+
+describe('createPrefetcher', () => {
+  it('warms a url once, however many times the pointer crosses the row', () => {
+    const asked: string[] = [];
+    const prefetch = createPrefetcher((url) => asked.push(url));
+    prefetch('/passport/usa/');
+    prefetch('/passport/usa/');
+    prefetch('/passport/usa/');
+    expect(asked).toEqual(['/passport/usa/']);
+  });
+
+  it('keeps each url on its own, so a second row still warms', () => {
+    const asked: string[] = [];
+    const prefetch = createPrefetcher((url) => asked.push(url));
+    prefetch('/passport/usa/');
+    prefetch('/destination/fra/');
+    prefetch('/passport/usa/');
+    expect(asked).toEqual(['/passport/usa/', '/destination/fra/']);
   });
 });
 

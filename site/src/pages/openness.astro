@@ -140,7 +140,7 @@ const itemList = {
         {dests.map((d, i) => (
           <a
             class:list={['door', d.score > 50 && 'd-half', d.score >= 99.95 && 'd-all', d.score < 0.05 && 'd-none']}
-            href={`${base}destination/${d.iso3.toLowerCase()}/`}
+            href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"
             data-tip={tipFor(d)}
             style={`--i:${i};--h:${d.score.toFixed(2)}%`}
           >
@@ -171,7 +171,7 @@ const itemList = {
       {dests.map((d) => (
         <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score} style={`--w:${d.score}%`}>
           <td>{ties.has(d.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{d.rank}</td>
-          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
+          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
           <td class="score-cell">{fmt(d.score)}</td>
         </tr>
       ))}

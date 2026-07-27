@@ -101,7 +101,7 @@ const itemList = {
         {dests.map((d, i) => (
           <a
             class:list={['wcol', d.weight > 1 && 'w-above']}
-            href={`${base}destination/${d.iso3.toLowerCase()}/`}
+            href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"
             data-tip={tipFor(d, i)}
             style={`--i:${i};--hgt:${((d.weight / heaviest.weight) * 100).toFixed(3)}%`}
           >
@@ -154,7 +154,7 @@ const itemList = {
           data-migrants={d.normalized.migrants ?? -9}
         >
           <td>{i + 1}</td>
-          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
+          <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
           <td class="score-cell" style={tint(impliedZ(d.weight))}>{d.weight.toFixed(2)}</td>
           {SIGNALS.map((k) => {
             const v = d.normalized[k];

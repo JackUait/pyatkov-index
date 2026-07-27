@@ -32,6 +32,32 @@ export function isPlainLeftClick(e: {
   return e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
 }
 
+/** Whether a guess at the reader's next click is worth the bytes. A prefetch is
+ *  a page they may never ask for, so Data Saver — which is the reader saying
+ *  exactly "don't fetch what I didn't ask for" — vetoes it outright, and so do
+ *  the connections where a speculative page would compete with the one they are
+ *  actually reading. Everything else, including a browser that reports no
+ *  connection at all, gets the warm path. */
+export function shouldPrefetch(conn?: { saveData?: boolean; effectiveType?: string }): boolean {
+  if (!conn) return true;
+  if (conn.saveData) return false;
+  return conn.effectiveType !== 'slow-2g' && conn.effectiveType !== '2g';
+}
+
+/** Warm a url at most once for the session. The pointer crosses a table row many
+ *  times on its way down the ranking and each crossing raises the same intent, so
+ *  the request is asked for once and the answer kept. Failures are not retried
+ *  here on purpose: a click still fetches for itself, and a hover that missed
+ *  should not keep re-missing every time the pointer passes. */
+export function createPrefetcher(warm: (url: string) => void): (url: string) => void {
+  const asked = new Set<string>();
+  return (url) => {
+    if (asked.has(url)) return;
+    asked.add(url);
+    warm(url);
+  };
+}
+
 interface CountryPage {
   title: string;
   /** The page's <main>, detached and ready to adopt. */
@@ -119,7 +145,7 @@ export function createScrollPin(readTop: () => number, scrollBy: (dy: number) =>
 
 /** Read a CSS duration as a number of milliseconds, falling back when the token
  *  is absent or in units we did not expect — a timing that lands on NaN would
- *  end the pin loop on its first frame, which is worse than a stale constant. */
+ *  make the move never finish, which is worse than a stale constant. */
 export function parseMs(value: string, fallback: number): number {
   const match = /^\s*(-?[\d.]+)(ms|s)\s*$/.exec(value);
   if (!match) return fallback;
@@ -127,32 +153,56 @@ export function parseMs(value: string, fallback: number): number {
   return Number.isFinite(n) ? n * (match[2] === 's' ? 1000 : 1) : fallback;
 }
 
-/** How long the page takes to reflow out from under the sheet. The panel's slide
- *  and the column's move are one gesture, so both read the duration from the
- *  same `--drawer-move` token in global.css rather than each keeping a copy. */
-function shiftMs(): number {
-  return parseMs(getComputedStyle(document.documentElement).getPropertyValue('--drawer-move'), 240);
+/** The sheet's slide and the column's are one gesture, so both take their timing
+ *  from the same tokens in global.css rather than each keeping a copy. */
+function moveTiming(): { duration: number; easing: string } {
+  const root = getComputedStyle(document.documentElement);
+  const easing = root.getPropertyValue('--drawer-ease').trim();
+  return {
+    duration: parseMs(root.getPropertyValue('--drawer-move'), 240),
+    easing: easing || 'cubic-bezier(0.2, 0.7, 0.3, 1)',
+  };
 }
 
-/** Cancels the pin loop of a shift still in flight, so an open-then-close in
- *  quick succession leaves one loop running, not two fighting over the scroll. */
-let unpin: (() => void) | null = null;
+/** The columns the shift moves. The masthead's inner bar rides with <main> so the
+ *  logo stays over the text it belongs to. */
+function shiftedColumns(): HTMLElement[] {
+  return [...document.querySelectorAll<HTMLElement>('main, .nav-inner')];
+}
 
-/** Slide the host page left to clear the sheet (or restore it), re-pinning the
- *  scroll so the reflow — the column narrows, so everything above the fold grows
- *  taller — never moves what the reader is looking at. The margin animates
- *  alongside the sheet, so the anchor drifts across every frame of the
- *  transition rather than once: we correct on each of them until the reflow
- *  settles. The scroll is forced `instant` because the page sets
- *  `scroll-behavior: smooth`, which would otherwise animate each correction a
- *  beat behind the frame that caused it and surface exactly the drift we mean to
- *  hide. The CSS shift is gated to wide viewports; below that this toggles a
- *  class that does nothing, every drift is zero, and the call stays a safe
- *  no-op. */
+/** The glides currently in flight, cancelled when a new shift starts so an
+ *  open-then-close leaves one animation running, not two fighting over the same
+ *  transform. */
+let glides: Animation[] = [];
+
+/** Move the host page left to clear the sheet (or restore it).
+ *
+ *  The layout change itself is one step — the class toggles, the column narrows,
+ *  every paragraph re-wraps exactly once — and the *gliding* is a FLIP on top of
+ *  it: measure where the columns sat before, measure where they sit after, then
+ *  animate the difference away as a transform. Transforms run on the compositor,
+ *  so the move costs no style, layout or paint per frame. Interpolating the
+ *  margins instead would animate layout over a 199-row table, which is what made
+ *  this move visibly step.
+ *
+ *  Narrowing makes the content above the fold taller, which would slide the table
+ *  down at a fixed scroll offset — so the scroll is re-pinned in the same
+ *  synchronous pass, landing with the reflow in a single paint. It is forced
+ *  `instant` because the page sets `scroll-behavior: smooth`, which would
+ *  otherwise animate the correction a beat behind and surface exactly the jump we
+ *  mean to hide. Scrolling is vertical, so it cannot disturb the horizontal
+ *  deltas measured around it.
+ *
+ *  The CSS shift is gated to wide viewports; below that this toggles a class that
+ *  does nothing, every delta is zero, and the call stays a safe no-op. */
 function shiftPage(on: boolean): void {
   const body = document.body;
   if (body.classList.contains('drawer-shifted') === on) return;
-  unpin?.();
+
+  for (const glide of glides) glide.cancel();
+  glides = [];
+
+  const columns = shiftedColumns();
   const anchor = topVisibleSection();
   const pin = anchor
     ? createScrollPin(
@@ -160,21 +210,26 @@ function shiftPage(on: boolean): void {
         (dy) => window.scrollBy({ top: dy, behavior: 'instant' }),
       )
     : null;
+  const before = columns.map((el) => el.getBoundingClientRect().left);
+
   body.classList.toggle('drawer-shifted', on);
-  if (!pin) return;
-  // The first correction is synchronous with the class toggle: under reduced
-  // motion there is no transition, so this one pass is the whole job.
-  pin();
-  const deadline = performance.now() + shiftMs();
-  let frame = requestAnimationFrame(function step(now) {
-    pin();
-    if (now < deadline) frame = requestAnimationFrame(step);
-    else unpin = null;
+  pin?.();
+
+  // Every other gesture on this site is gated on the media query in CSS; a
+  // scripted animation has to ask for itself. Under reduce the layout change
+  // above is the whole move, which is the treatment reduce should get anyway.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const { duration, easing } = moveTiming();
+  columns.forEach((el, i) => {
+    const dx = before[i] - el.getBoundingClientRect().left;
+    // Sub-pixel deltas are not worth a composited layer, and a zero delta is the
+    // narrow-viewport no-op.
+    if (Math.abs(dx) < 1) return;
+    glides.push(
+      el.animate({ transform: [`translateX(${dx}px)`, 'none'] }, { duration, easing }),
+    );
   });
-  unpin = () => {
-    cancelAnimationFrame(frame);
-    unpin = null;
-  };
 }
 
 function setModal(open: boolean): void {
@@ -228,6 +283,36 @@ function render(url: string, page: CountryPage): void {
   content.focus({ preventScroll: true });
 }
 
+/** The requests still on the wire, so a hover and the click that follows it share
+ *  one fetch. Without this the click would start its own and the head start would
+ *  be spent; with it, clicking mid-flight simply awaits the answer already coming. */
+const inflight = new Map<string, Promise<CountryPage | null>>();
+
+/** Fetch and parse a country page into the session cache, once per url. Resolves
+ *  null on any failure — the caller decides whether that is worth showing. */
+function fetchPage(url: string): Promise<CountryPage | null> {
+  const cached = pages.get(url);
+  if (cached) return Promise.resolve(cached);
+  const pending = inflight.get(url);
+  if (pending) return pending;
+  const req = (async () => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`${res.status}`);
+      const page = parsePage(await res.text());
+      if (!page) throw new Error('no <main> in response');
+      pages.set(url, page);
+      return page;
+    } catch {
+      return null;
+    } finally {
+      inflight.delete(url);
+    }
+  })();
+  inflight.set(url, req);
+  return req;
+}
+
 async function load(url: string): Promise<void> {
   const seq = ++loadSeq;
   const content = $('#drawer-content');
@@ -237,16 +322,10 @@ async function load(url: string): Promise<void> {
     return;
   }
   content?.replaceChildren(skeleton());
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`${res.status}`);
-    const page = parsePage(await res.text());
-    if (!page) throw new Error('no <main> in response');
-    pages.set(url, page);
-    if (seq === loadSeq) render(url, page);
-  } catch {
-    if (seq === loadSeq) content?.replaceChildren(failure(url));
-  }
+  const page = await fetchPage(url);
+  if (seq !== loadSeq) return;
+  if (page) render(url, page);
+  else content?.replaceChildren(failure(url));
 }
 
 function skeleton(): HTMLElement {
@@ -338,6 +417,44 @@ function onClick(e: MouseEvent): void {
   open(a.href);
 }
 
+/** Which country page a pointer or focus event is aimed at, if any — the same
+ *  test the click handler applies, minus the questions only a click can answer
+ *  (which button, which modifiers). Hovering is not committing, so a link that
+ *  bypasses the drawer or opens a tab is still worth warming: the reader is
+ *  going to that page either way, and the browser cache is shared. */
+function hoveredCountryUrl(e: Event): string | null {
+  const a = (e.target as Element | null)?.closest?.('a[href]');
+  if (!(a instanceof HTMLAnchorElement)) return null;
+  if (a.origin !== location.origin) return null;
+  if (!countryPath(a.pathname, import.meta.env.BASE_URL)) return null;
+  return a.href;
+}
+
+const prefetch = createPrefetcher((url) => void fetchPage(url));
+
+// Every country link in the templates carries `data-astro-prefetch="false"`, and
+// a new one must too. The ClientRouter would otherwise prefetch the same url on
+// the same hover, and its copy is the wrong one to keep: it stops at the HTTP
+// cache, while the fetch below keeps the *parsed* page, which is what the panel
+// needs — and the click it prefetches for never navigates anyway, because the
+// drawer intercepts it. The attribute has to be in the markup rather than set
+// from here: the router binds a mouseenter listener per anchor at page load and
+// that listener never re-reads the attribute, so anything marked afterwards is
+// already on its list.
+
+/** A cold drawer waits on the network before it has anything to show, and that
+ *  wait is longer than the whole opening gesture — so the row the pointer is
+ *  resting on gets fetched before it is clicked. By the time the click lands the
+ *  page is usually parsed and in the cache, and the drawer renders in the same
+ *  frame it opens. `focusin` covers the keyboard: tabbing to a row is the same
+ *  declaration of intent as hovering it. */
+function onHover(e: Event): void {
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  if (!shouldPrefetch(conn)) return;
+  const url = hoveredCountryUrl(e);
+  if (url) prefetch(url);
+}
+
 function onKeydown(e: KeyboardEvent): void {
   if (e.key !== 'Escape') return;
   const el = root();
@@ -362,6 +479,10 @@ export function initCountryDrawer(): void {
   // the live DOM, so they survive the client router swapping the body.
   document.addEventListener('click', onClick, true);
   document.addEventListener('keydown', onKeydown);
+  // pointerover, not pointerenter: enter does not bubble, and one delegated
+  // listener has to serve 199 rows that the drawer itself keeps replacing.
+  document.addEventListener('pointerover', onHover);
+  document.addEventListener('focusin', onHover);
   document.addEventListener('click', (e) => {
     const el = root();
     if (!el || el.hidden) return;

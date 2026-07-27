@@ -62,6 +62,7 @@
      reader has finished reaching for the next row. One token carries the move
      so the panel, the column and country-drawer.ts's scroll pin agree. */
   --drawer-move: 240ms;
+  --drawer-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
   /* Shape — rounded past the reference's 12px card cap, by request. The
      ramp orders the surfaces: buttons, then cards (the tables' shells),
@@ -2989,7 +2990,7 @@ footer {
 }
 .drawer-root.is-open .drawer-panel { transform: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .drawer-panel { transition: transform var(--drawer-move) cubic-bezier(0.2, 0.7, 0.3, 1); }
+  .drawer-panel { transition: transform var(--drawer-move) var(--drawer-ease); }
 }
 
 /* When the drawer opens, the page reflows left out from under the sheet so the
@@ -2997,38 +2998,25 @@ footer {
    (its width, its 12px right gutter, and a breathing gap) as right margin; the
    column keeps its left edge and narrows to fill the strip that remains. Narrowing
    makes the content above the fold taller, which would slide the table down at a
-   fixed scroll offset — so country-drawer.ts re-pins the scroll on every frame of
-   the move, and the vertical drift stays invisible while the horizontal one
-   plays. The margin rides the sheet's own duration and curve so the column and
-   the panel read as one gesture: the page gives way as the sheet arrives, rather
-   than snapping aside a beat before it. Below 1280px the free strip is too narrow
-   to seat a usable table, so the sheet just overlays as before (drawer-shifted is
-   a no-op there).
+   fixed scroll offset — so country-drawer.ts re-pins the scroll the instant the
+   class toggles, and the change is invisible. Below 1280px the free strip is too
+   narrow to seat a usable table, so the sheet just overlays as before
+   (drawer-shifted is a no-op there).
 
-   An `auto` margin cannot be interpolated, so the move rides a registered number
-   instead of the margins themselves: --drawer-shift runs 0 → 1, and the two
-   margins are written as calc()s of it. At 0 the left margin is the centering
-   half-gap and the right one collapses to nothing (over-constrained, so the
-   remainder fills it) — plain centering. At 1 the left margin is zero and the
-   right reserves the sheet's footprint, which is the shifted layout exactly.
-   Every value between is a real intermediate width, so the column narrows as it
-   travels. Browsers without @property skip to the endpoints, which is the old
-   one-step behaviour. */
-@property --drawer-shift {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
-}
-body { --drawer-shift: 0; }
-body.drawer-shifted { --drawer-shift: 1; }
-@media (prefers-reduced-motion: no-preference) {
-  body { transition: --drawer-shift var(--drawer-move) cubic-bezier(0.2, 0.7, 0.3, 1); }
-}
+   The move lands here in one step on purpose, and the gliding is done elsewhere:
+   country-drawer.ts FLIPs it, measuring the column before and after this class
+   toggles and animating the difference as a transform. Interpolating the margins
+   instead — which is the obvious way to write it — animates *layout*, and this
+   page cannot afford that: every frame would re-run style, layout and paint over
+   a 199-row table and a 199-column figure, which drops the move to roughly half
+   the frames it asks for and reads as stepping. It also re-wraps every paragraph
+   at a dozen different widths on the way. One layout pass, then a compositor
+   transform, is both smoother and cheaper. */
 @media (min-width: 1280px) {
-  main,
-  .nav-inner {
-    margin-left: calc((1 - var(--drawer-shift)) * max(0px, (100% - var(--content-width)) / 2));
-    margin-right: calc(var(--drawer-shift) * (min(620px, 100vw - 24px) + 36px));
+  body.drawer-shifted main,
+  body.drawer-shifted .nav-inner {
+    margin-left: 0;
+    margin-right: calc(min(620px, 100vw - 24px) + 36px);
   }
 }
 
@@ -3447,7 +3435,6 @@ body.drawer-shifted { --drawer-shift: 1; }
     mix-blend-mode: normal;
   }
 }
-
 
 /* ==========================================================================
    The changelog. Its device is a dated ledger: a month rule, then one card

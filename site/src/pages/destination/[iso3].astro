@@ -144,7 +144,7 @@ const withheld = Math.max(0, 100 - d.score);
       {ordered.map((p) => (
         <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-credit={ladder(p.category)} data-rank={p.rank} data-score={p.score}>
           <td><span class={`tier-key tier-${p.category}`}>{LABEL[p.category]}</span></td>
-          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`}><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a></td>
+          <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a></td>
           <td>{p.rank}</td>
           <td>{fmt(p.score)}</td>
         </tr>

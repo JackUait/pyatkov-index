@@ -198,7 +198,7 @@ const hundred = hundredCells(p.score);
     {best && (
       <div class="hl-card hl-open">
         <span class="hl-label">Best open door</span>
-        <a class="hl-name" href={`${base}destination/${best.iso3.toLowerCase()}/`}><Flag iso2={best.iso2} /> {displayName(best.iso3, best.name)}</a>
+        <a class="hl-name" href={`${base}destination/${best.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={best.iso2} /> {displayName(best.iso3, best.name)}</a>
         <span class={`tier-key tier-${best.category}`}>{LABEL[best.category]}</span>
         <span class="hl-pts"><b>{sharePoints(best.weight)}</b> points of the score</span>
       </div>
@@ -207,7 +207,7 @@ const hundred = hundredCells(p.score);
       {gap ? (
         <Fragment>
           <span class="hl-label">Costliest closed door</span>
-          <a class="hl-name" href={`${base}destination/${gap.iso3.toLowerCase()}/`}><Flag iso2={gap.iso2} /> {displayName(gap.iso3, gap.name)}</a>
+          <a class="hl-name" href={`${base}destination/${gap.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={gap.iso2} /> {displayName(gap.iso3, gap.name)}</a>
           <span class={`tier-key tier-${gap.category}`}>{LABEL[gap.category]}</span>
           <span class="hl-pts"><b>+{sharePoints(gap.weight)}</b> points if it opened</span>
         </Fragment>
@@ -226,7 +226,7 @@ const hundred = hundredCells(p.score);
       <ol class="rank-list">
         {topOpen.map((d) => (
           <li class={`tier-${d.category}`}>
-            <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}<i class="door-how" aria-hidden="true"></i></a>
+            <a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}<i class="door-how" aria-hidden="true"></i></a>
             <b class="wt-val"><span class="sr-only">{LABEL[d.category]}, </span>{sharePoints(d.weight)}</b>
             <span class="rank-tip" aria-hidden="true"><i class="door-how"></i><span><b>{LABEL[d.category]}</b> — {ACCESS_NOTE[d.category]}</span></span>
           </li>
@@ -247,7 +247,7 @@ const hundred = hundredCells(p.score);
           <ol class="rank-list">
             {topMissing.map((d) => (
               <li class={`tier-${d.category}`}>
-                <a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
+                <a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
                 <b class="wt-val">+{sharePoints(d.weight)}</b>
                 <span class="rank-tip" aria-hidden="true"><span><b>{LABEL[d.category]}</b> — {ACCESS_NOTE[d.category]}</span></span>
               </li>
@@ -286,7 +286,7 @@ const hundred = hundredCells(p.score);
             </header>
             <ul class={`dest-flow tier-${cat}${CREDIT[cat] > 0 ? '' : ' is-locked'}`}>
               {items.map((d) => (
-                <li data-search={searchIndex(d)}><a href={`${base}destination/${d.iso3.toLowerCase()}/`}><Flag iso2={d.iso2} /> {d.label}</a></li>
+                <li data-search={searchIndex(d)}><a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {d.label}</a></li>
               ))}
             </ul>
           </section>
@@ -303,7 +303,7 @@ const hundred = hundredCells(p.score);
         <div><strong>#{weightRank(p.iso3)}</strong> <span>heaviest in the index · weight {ownWeight.toFixed(3)}</span></div>
         <div><strong>#{ownDest.rank}</strong> <span>most open of {openness.destinations.length}</span></div>
         <div><strong>{fmt(ownDest.score)}</strong> <span>openness score / 100</span></div>
-        <div class="stat-end"><a href={`${base}destination/${p.iso3.toLowerCase()}/`}>Who can enter {theName} →</a></div>
+        <div class="stat-end"><a href={`${base}destination/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false">Who can enter {theName} →</a></div>
       </div>
     </Fragment>
   )}
