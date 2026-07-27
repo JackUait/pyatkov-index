@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareValues, countLabel, nextAscending, sortValue } from '../table-ui.ts';
+import { compareValues, nextAscending, sortValue } from '../table-ui.ts';
 
 describe('sortValue', () => {
   it('reads numeric attributes as numbers so 10 sorts after 9, not before', () => {
@@ -45,16 +45,5 @@ describe('nextAscending', () => {
 
   it('falls back to ascending for a column with no declared default', () => {
     expect(nextAscending('mystery', 'rank', true, defaults)).toBe(true);
-  });
-});
-
-describe('countLabel', () => {
-  it('states the full roster plainly when nothing is filtered out', () => {
-    expect(countLabel(199, 199, 'passports')).toBe('199 passports');
-  });
-
-  it('reports the narrowed count against the whole while filtering', () => {
-    expect(countLabel(12, 199, 'passports')).toBe('12 of 199 passports');
-    expect(countLabel(0, 199, 'passports')).toBe('0 of 199 passports');
   });
 });

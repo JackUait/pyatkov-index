@@ -6,8 +6,6 @@ import {
   TAIL_DEEP,
   TAIL_FAINT,
   TAIL_STEPS,
-  rowBar,
-  rowBarHover,
   tailShade,
   weightShade,
 } from './weight-shade.ts';
@@ -102,39 +100,5 @@ describe('tailShade', () => {
 
   it('always returns a six-digit hex', () => {
     for (let i = 0; i <= 40; i++) expect(tailShade(i / 40)).toMatch(/^#[0-9a-f]{6}$/);
-  });
-});
-
-// The ranking rows draw their score as a thin saturated bar, colored on the
-// ribbon's own amber ramp so the table restates the strip vertically: deep
-// amber at the podium, marigold mid-table, pale straw at the tail.
-describe('rowBar', () => {
-  it('rides the ribbon ramp end to end: a perfect score is the deep stop, zero the faint one', () => {
-    expect(rowBar(100)).toBe(weightShade(1));
-    expect(rowBar(0)).toBe(weightShade(0));
-  });
-
-  it('deepens strictly with score', () => {
-    for (let s = 5; s <= 100; s += 5) {
-      expect(luminance(rowBar(s))).toBeLessThan(luminance(rowBar(s - 5)));
-    }
-  });
-
-  it('clamps out-of-range scores instead of extrapolating', () => {
-    expect(rowBar(120)).toBe(rowBar(100));
-    expect(rowBar(-5)).toBe(rowBar(0));
-  });
-
-  it('hover presses the bar strictly darker at every score, the deep stop included', () => {
-    for (let s = 0; s <= 100; s += 10) {
-      expect(luminance(rowBarHover(s))).toBeLessThan(luminance(rowBar(s)));
-    }
-  });
-
-  it('always returns a six-digit hex', () => {
-    for (let s = 0; s <= 100; s += 4) {
-      expect(rowBar(s)).toMatch(/^#[0-9a-f]{6}$/);
-      expect(rowBarHover(s)).toMatch(/^#[0-9a-f]{6}$/);
-    }
   });
 });

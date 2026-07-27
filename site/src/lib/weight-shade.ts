@@ -98,29 +98,3 @@ export const tailShade = (t: number): string => {
   const band = Math.round(c * (TAIL_STEPS - 1)) / (TAIL_STEPS - 1);
   return oklabToHex(mix(TAIL_FAINT_LAB, TAIL_DEEP_LAB, band));
 };
-
-// The ranking rows draw their score as a thin saturated bar on the ribbon's
-// own amber ramp, so the table restates the strip vertically: deep amber at
-// the podium, marigold mid-table, pale straw at the tail. Full saturation is
-// what earns the small mark its clarity — the washed-out full-row tint this
-// replaces read as spreadsheet highlighting, not as a chart. No ink ever sits
-// on the bar, so the ramp owes nothing to text contrast. Build-time hex, as
-// everywhere on this ramp.
-const HOVER_PRESS = 0.12;
-
-const pressed = (hex: string, k: number): string => {
-  const n = parseInt(hex.slice(1), 16);
-  const ch = (c: number) =>
-    Math.round(c * (1 - k))
-      .toString(16)
-      .padStart(2, '0');
-  return '#' + ch((n >> 16) & 255) + ch((n >> 8) & 255) + ch(n & 255);
-};
-
-/** Bar color for a ranking row at score in [0, 100]: the ribbon ramp read at
- *  score/100. Out-of-range scores clamp to the ramp's ends. */
-export const rowBar = (score: number): string => weightShade(score / 100);
-
-/** The same bar under the pointer: pressed strictly darker, so even the deep
- *  stop still answers the hover. */
-export const rowBarHover = (score: number): string => pressed(rowBar(score), HOVER_PRESS);

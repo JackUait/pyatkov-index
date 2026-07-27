@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import openness from '../data/openness.json';
 import { displayName, flagEmoji, fmt, scoreParts, searchIndex, tiedRanks } from '../lib/format.ts';
 import { averageOpenness, openToAllCount, openToHalfCount, openToNoneCount } from '../lib/doors.ts';
-import { rowBar, rowBarHover } from '../lib/weight-shade.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
@@ -170,7 +169,7 @@ const itemList = {
     </thead>
     <tbody>
       {dests.map((d) => (
-        <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score} style={`--bar:${rowBar(d.score)};--bar-h:${rowBarHover(d.score)}`}>
+        <tr data-name={displayName(d.iso3, d.name).toLowerCase()} data-search={searchIndex(d)} data-rank={d.rank} data-score={d.score}>
           <td>{ties.has(d.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{d.rank}</td>
           <td><a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a><span class="code" aria-hidden="true">{d.iso3}</span></td>
           <td class="score-cell">{scoreParts(d.score).int}<span class="dec">.{scoreParts(d.score).dec}</span></td>
@@ -195,7 +194,6 @@ const itemList = {
         table: '#openness-table',
         filter: '#filter',
         noResults: '#no-results',
-        count: { el: '.card-header .count', noun: 'destinations' },
         initialSort: 'rank',
         defaultAsc: { rank: true, name: true, score: false },
       });

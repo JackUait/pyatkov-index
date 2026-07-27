@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
 import { displayName, flagEmoji, scoreParts, searchIndex, tiedRanks } from '../lib/format.ts';
-import { RIBBON_FAINT, TAIL_FAINT, rowBar, rowBarHover, tailShade, weightShade } from '../lib/weight-shade.ts';
+import { RIBBON_FAINT, TAIL_FAINT, tailShade, weightShade } from '../lib/weight-shade.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
 const base = import.meta.env.BASE_URL;
@@ -132,7 +132,6 @@ const itemList = {
   <div class="card card-mockup" id="rankings-card">
   <div class="card-header">
     <h2>Passport ranking</h2>
-    <span class="count">{rankings.passports.length} passports</span>
     <input type="search" id="filter" placeholder="Filter countries" aria-label="Filter countries" />
   </div>
   <div class="table-scroll">
@@ -146,14 +145,8 @@ const itemList = {
     </thead>
     <tbody>
       {rankings.passports.map((p) => (
-        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score} style={`--bar:${rowBar(p.score)};--bar-h:${rowBarHover(p.score)}`}>
-          <td>
-            {p.rank <= 3 ? (
-              <span class={`medal medal-${p.rank}`}>{p.rank}</span>
-            ) : (
-              <>{ties.has(p.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{p.rank}</>
-            )}
-          </td>
+        <tr data-name={displayName(p.iso3, p.name).toLowerCase()} data-search={searchIndex(p)} data-rank={p.rank} data-score={p.score}>
+          <td>{ties.has(p.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{p.rank}</td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a><span class="code" aria-hidden="true">{p.iso3}</span></td>
           <td class="score-cell">{scoreParts(p.score).int}<span class="dec">.{scoreParts(p.score).dec}</span></td>
         </tr>
@@ -179,7 +172,6 @@ const itemList = {
         table: '#rankings',
         filter: '#filter',
         noResults: '#no-results',
-        count: { el: '#rankings-card .count', noun: 'passports' },
         initialSort: 'rank',
         defaultAsc: { rank: true, name: true, score: false },
       });

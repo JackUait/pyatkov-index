@@ -29,12 +29,6 @@ export function compareValues(a: string | null, b: string | null, asc: boolean):
   return raw === 0 ? 0 : raw * dir;
 }
 
-/** The card header's roster line: the full count when nothing is filtered,
- *  "n of total" while a filter is narrowing it. */
-export function countLabel(visible: number, total: number, noun: string): string {
-  return visible === total ? `${total} ${noun}` : `${visible} of ${total} ${noun}`;
-}
-
 /** Clicking a new column adopts its declared default direction; re-clicking flips. */
 export function nextAscending(
   clickedKey: string,
@@ -50,9 +44,6 @@ export interface SortableTableOptions {
   table: string;
   filter?: string;
   noResults?: string;
-  /** The header's roster line, kept honest while the filter narrows the table:
-   *  el is its selector, noun the plural it counts ("passports"). */
-  count?: { el: string; noun: string };
   initialSort: string;
   defaultAsc: Record<string, boolean>;
   /** Scope for the selectors. The country drawer injects a copy of a page whose
@@ -70,7 +61,6 @@ export function initSortableTable(opts: SortableTableOptions): void {
 
   const input = opts.filter ? (scope.querySelector(opts.filter) as HTMLInputElement | null) : null;
   const noResults = opts.noResults ? scope.querySelector(opts.noResults) : null;
-  const count = opts.count ? scope.querySelector(opts.count.el) : null;
 
   if (input) {
     input.addEventListener('input', () => {
@@ -84,7 +74,6 @@ export function initSortableTable(opts: SortableTableOptions): void {
         if (!hide) visible++;
       }
       if (noResults) (noResults as HTMLElement).hidden = visible > 0;
-      if (count) count.textContent = countLabel(visible, rows.length, opts.count!.noun);
     });
   }
 
