@@ -2,10 +2,11 @@
 import Base from '../layouts/Base.astro';
 import rankings from '../data/rankings.json';
 import weights from '../data/weights.json';
-import { displayName, flagEmoji, scoreParts, searchIndex, tiedRanks } from '../lib/format.ts';
+import { displayName, flagEmoji, scoreParts, searchIndex, tiedRanks, withArticle } from '../lib/format.ts';
 import { RIBBON_FAINT, TAIL_FAINT, tailShade, weightShade } from '../lib/weight-shade.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
+import RowActions from '../components/RowActions.astro';
 const base = import.meta.env.BASE_URL;
 
 // The hero graphic is the argument: every destination drawn to scale by its
@@ -141,6 +142,7 @@ const itemList = {
         <th scope="col" data-sort="rank" aria-sort="ascending" tabindex="0">#</th>
         <th scope="col" data-sort="name" tabindex="0">Passport</th>
         <th scope="col" data-sort="score" tabindex="0">Score</th>
+        <th scope="col"><span class="sr-only">Actions</span></th>
       </tr>
     </thead>
     <tbody>
@@ -149,6 +151,17 @@ const itemList = {
           <td>{ties.has(p.rank) && <span class="tie-mark" aria-hidden="true">=</span>}{p.rank}</td>
           <td><a href={`${base}passport/${p.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={p.iso2} /> {displayName(p.iso3, p.name)}</a><span class="code" aria-hidden="true">{p.iso3}</span></td>
           <td class="score-cell">{scoreParts(p.score).int}<span class="dec">.{scoreParts(p.score).dec}</span></td>
+          <RowActions
+            kind="passport"
+            iso3={p.iso3}
+            iso2={p.iso2}
+            name={displayName(p.iso3, p.name)}
+            article={withArticle(p.iso3, p.name)}
+            rank={p.rank}
+            score={p.score}
+            tied={ties.has(p.rank)}
+            href={`${base}passport/${p.iso3.toLowerCase()}/`}
+          />
         </tr>
       ))}
     </tbody>
@@ -159,6 +172,7 @@ const itemList = {
 
   <script>
     import { initSortableTable } from '../lib/table-ui.ts';
+    import { initTableActions } from '../lib/table-actions.ts';
     import { initRibbonTip } from '../lib/ribbon-tip.ts';
     import { initCountScramble } from '../lib/count-scramble.ts';
 
@@ -175,6 +189,7 @@ const itemList = {
         initialSort: 'rank',
         defaultAsc: { rank: true, name: true, score: false },
       });
+      initTableActions({ table: '#rankings', card: '#rankings-card', kind: 'passport' });
     });
   </script>
 

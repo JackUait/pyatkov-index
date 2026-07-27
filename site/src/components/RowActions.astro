@@ -1,0 +1,62 @@
+---
+// The actions cell shared by the two ranking tables: hand this country to
+// someone, or hold it against a second one. Both buttons carry everything the
+// behavior needs, so table-actions.ts never parses the rendered row back out.
+//
+// Buttons, not links: neither action navigates on click, and a real <button>
+// inside the row's stretched name link keeps the row's own click honest.
+interface Props {
+  kind: 'passport' | 'destination';
+  iso3: string;
+  iso2: string;
+  /** Display name, already resolved through displayName — the label form,
+   *  used for the buttons' own accessible names. */
+  name: string;
+  /** The same name with its definite article, for the share sentence and the
+   *  pick bar, both of which set it in prose. */
+  article: string;
+  rank: number;
+  score: number;
+  /** True when other rows share this rank — the table marks those with "=". */
+  tied?: boolean;
+  /** Base-relative path to this country's page. */
+  href: string;
+}
+const { kind, iso3, iso2, name, article, rank, score, tied = false, href } = Astro.props;
+const noun = kind === 'passport' ? 'passport' : 'destination';
+---
+<td class="row-actions">
+  <button
+    type="button"
+    class="row-act"
+    data-act="share"
+    data-iso3={iso3}
+    data-iso2={iso2}
+    data-name={article}
+    data-rank={rank}
+    data-score={score}
+    data-tied={String(tied)}
+    data-href={href}
+    aria-label={`Share the ${name} ${noun}`}
+  >
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M8 10.5V2.5M8 2.5 5 5.5M8 2.5l3 3" />
+      <path d="M3.5 9v3.5a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V9" />
+    </svg>
+  </button>
+  <button
+    type="button"
+    class="row-act"
+    data-act="compare"
+    data-iso3={iso3}
+    data-iso2={iso2}
+    data-name={article}
+    aria-pressed="false"
+    aria-label={`Compare the ${name} ${noun} with another`}
+  >
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M2.5 5.5h11M11 3l2.5 2.5L11 8" />
+      <path d="M13.5 11.5h-11M5 9l-2.5 2.5L5 14" />
+    </svg>
+  </button>
+</td>

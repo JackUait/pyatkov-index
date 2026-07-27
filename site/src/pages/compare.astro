@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import rankings from '../data/rankings.json';
+import openness from '../data/openness.json';
+import weightsData from '../data/weights.json';
+import matrix from '../data/matrix.json';
+import { displayName, withArticle } from '../lib/format.ts';
+import { encodeAccessRow } from '../lib/compare-payload.ts';
+import type { ComparePayload } from '../lib/compare-view.ts';
+
+const base = import.meta.env.BASE_URL;
+
+// 199 countries make 19,701 pairs per kind — near 40,000 static pages if every
+// one were prerendered. The pair travels in the query string instead, and the
+// whole index rides along in one snapshot below.
+//
+// matrix.json is 775KB of four repeated tier names; encoded one character per
+// cell it is ~40KB, small enough to inline rather than fetch.
+const order = weightsData.destinations.map((d) => d.iso3);
+const access = matrix as Record<string, Record<string, string>>;
+
+const stats = (c: { score: number; rank: number; equalScore: number; equalRank: number; counts: Record<string, number> }) => ({
+  score: c.score,
+  rank: c.rank,
+  equalScore: c.equalScore,
+  equalRank: c.equalRank,
+  counts: c.counts,
+});
+
+const payload: ComparePayload = {
+  order,
+  countries: Object.fromEntries(
+    weightsData.destinations.map((d) => [
+      d.iso3,
+      {
+        name: displayName(d.iso3, d.name),
+        article: withArticle(d.iso3, d.name),
+        iso2: d.iso2,
+        weight: d.weight,
+      },
+    ]),
+  ),
+  passports: Object.fromEntries(rankings.passports.map((p) => [p.iso3, stats(p)])),
+  destinations: Object.fromEntries(openness.destinations.map((d) => [d.iso3, stats(d)])),
+  access: Object.fromEntries(
+    Object.keys(access).map((holder) => [holder, encodeAccessRow(order, access[holder])]),
+  ),
+};
+---
+<Base
+  title="Compare - Pyatkov Index"
+  description="Two passports or two destinations held against each other: score, rank, access mix, and every door they treat differently."
+  noindex
+>
+  <div id="vs-root" class="vs">
+    <!-- The pair is named by the query string, so there is nothing to render
+         at build time. Without JavaScript this note is the whole page, which
+         is more use than an empty shell. -->
+    <noscript>
+      <section class="vs-problem">
+        <h1>Comparison needs JavaScript</h1>
+        <p>
+          This page reads the two countries out of its own address, which takes a
+          script. Open each country's own page instead — both carry the same
+          scores, ranks, and door lists.
+        </p>
+        <a class="vs-back" href={base}>Back to the ranking</a>
+      </section>
+    </noscript>
+  </div>
+
+  <script is:inline type="application/json" id="vs-payload" set:html={JSON.stringify(payload)}></script>
+
+  <script>
+    import { renderComparison } from '../lib/compare-render.ts';
+    import type { ComparePayload } from '../lib/compare-view.ts';
+
+    document.addEventListener('astro:page-load', () => {
+      const root = document.getElementById('vs-root');
+      const raw = document.getElementById('vs-payload');
+      if (!root || !raw) return;
+      const payload = JSON.parse(raw.textContent!) as ComparePayload;
+      renderComparison(root, payload, location.search, import.meta.env.BASE_URL);
+    });
+  </script>
+</Base>

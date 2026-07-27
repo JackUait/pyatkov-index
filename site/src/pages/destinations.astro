@@ -5,6 +5,7 @@ import { displayName, flagEmoji, searchIndex, withArticle } from '../lib/format.
 import { SIGMA_MULTIPLIER, aboveUnitCount, counterweightCount, impliedZ, zTint } from '../lib/weigh.ts';
 import { absUrl, pageId, ID } from '../lib/seo.ts';
 import Flag from '../components/Flag.astro';
+import RowActions from '../components/RowActions.astro';
 const base = import.meta.env.BASE_URL;
 
 // weightsData.destinations arrives weight-sorted, so the row index is the position.
@@ -121,7 +122,7 @@ const itemList = {
     migrant stock. This table is the entire recipe: nothing is hidden.
   </p>
 
-  <div class="card card-mockup">
+  <div class="card card-mockup" id="weights-card">
   <div class="card-header">
     <h2>Every destination, weighted</h2>
     <span class="count">{dests.length} destinations</span>
@@ -139,6 +140,7 @@ const itemList = {
         <th scope="col" data-sort="arrivals" tabindex="0">Arrivals</th>
         <th scope="col" data-sort="hdi" tabindex="0">HDI</th>
         <th scope="col" data-sort="migrants" tabindex="0">Migrants</th>
+        <th scope="col"><span class="sr-only">Actions</span></th>
       </tr>
     </thead>
     <tbody>
@@ -164,6 +166,16 @@ const itemList = {
               <td style={tint(v)}>{zText(v)}</td>
             );
           })}
+          <RowActions
+            kind="destination"
+            iso3={d.iso3}
+            iso2={d.iso2}
+            name={displayName(d.iso3, d.name)}
+            article={withArticle(d.iso3, d.name)}
+            rank={i + 1}
+            score={d.weight}
+            href={`${base}destination/${d.iso3.toLowerCase()}/`}
+          />
         </tr>
       ))}
     </tbody>
@@ -174,6 +186,7 @@ const itemList = {
 
   <script>
     import { initSortableTable } from '../lib/table-ui.ts';
+    import { initTableActions } from '../lib/table-actions.ts';
     import { initRibbonTip } from '../lib/ribbon-tip.ts';
 
     // Module scripts run once per session under the client router; page-load
@@ -188,6 +201,7 @@ const itemList = {
         initialSort: 'rank',
         defaultAsc: { rank: true, name: true, weight: false, gdp: false, arrivals: false, hdi: false, migrants: false },
       });
+      initTableActions({ table: '#weights-table', card: '#weights-card', kind: 'destination' });
     });
   </script>
 

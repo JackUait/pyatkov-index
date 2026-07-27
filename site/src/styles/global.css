@@ -2883,34 +2883,162 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .eq-line { font-size: 13.5px; }
 }
 
-/* ---- Footer: flat, typographic, hairline-structured ---- */
+/* ---- Footer: the colophon ----
+   The site signs off the way it signed on. Its top rule is the logotype's
+   own law at full measure — eight slats, heaviest first, the amber ramp
+   decaying into ink washes with the warm-to-neutral boundary at exactly
+   50% — so the last thing on every page is the argument, drawn. Below it
+   the back page reads as a manifest, not a paragraph: wordmark and
+   tagline on the left, the sections and the sources as columns, the
+   reproducibility promise as the closing line. */
 footer {
-  border-top: 1px solid var(--border-hairline);
   background: var(--color-paper);
+}
+/* The band replaces the hairline: stop positions are the brand mark's rect
+   edges (x of 32), so the strip is the 32×14 mark stretched to the page. */
+footer::before {
+  content: '';
+  display: block;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    var(--color-saffron) 0 18.75%,
+    var(--color-marigold) 18.75% 32.5%,
+    rgba(255, 177, 16, 0.66) 32.5% 42.5%,
+    rgba(255, 177, 16, 0.38) 42.5% 50%,
+    rgba(0, 0, 0, 0.2) 50% 66.25%,
+    rgba(0, 0, 0, 0.15) 66.25% 80%,
+    rgba(0, 0, 0, 0.11) 80% 91.25%,
+    rgba(0, 0, 0, 0.08) 91.25% 100%
+  );
 }
 .footer-inner {
   max-width: var(--content-width);
   margin: 0 auto;
-  padding: 24px var(--pad) 32px;
+  padding: 44px var(--pad) 36px;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  /* Slate on the paper canvas for AA at small sizes. */
+  color: var(--color-slate);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) auto auto;
+  gap: 32px 64px;
+  align-items: start;
+}
+.foot-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  max-width: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  color: var(--color-ink);
+}
+.foot-tagline {
+  margin: 0;
+  max-width: 40ch;
+  color: var(--color-slate);
+  text-wrap: pretty;
+}
+/* The hero's verbs keep their voices in the small print — the same
+   quotation the nav already makes with its peach current-page block.
+   Chrome may quote the headline; only another hero may not. Fresh rules,
+   not shared ones: the originals are scoped under .hero, and with them
+   the choreography this static line must never inherit. */
+footer .count-word {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+footer .block-word {
+  display: inline-block;
+  vertical-align: -0.055em;
+  background: var(--color-peach);
+  border-radius: 0.14em;
+  padding: 0.02em 0.3em 0.06em;
+  color: var(--ink-95);
+}
+/* Column heads follow the updates page's month heads — the one uppercase
+   voice this site allows — minus the ink rule: the band above and the
+   baseline hairline below are all the ruling the colophon needs. */
+.foot-head {
+  margin: 0 0 12px;
+  max-width: none;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-95);
+}
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  list-style: none;
+}
+.footer-links li { margin: 0; }
+.footer-links a {
+  color: var(--color-slate);
+  transition: color 200ms ease;
+}
+.footer-links a:hover { color: var(--color-ink); }
+/* In the sources column one line is a page and three are names: the link
+   wears a quiet underline full-time so it never passes for a citation.
+   The element selector is the scope — the sections column is a <nav>,
+   and every line of it is a link, which is affordance enough. */
+div.footer-col a {
+  text-decoration: underline;
+  text-decoration-color: var(--ink-40);
+  text-underline-offset: 3px;
+}
+div.footer-col a:hover { text-decoration-color: var(--color-ink); }
+.footer-base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-hairline);
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  /* Slate on the paper canvas for AA at caption size. */
+}
+.footer-base p {
+  margin: 0;
+  max-width: none;
   color: var(--color-slate);
 }
-.footer-inner p { margin: 0 0 8px; max-width: none; color: var(--color-slate); }
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  margin: 0 0 16px;
-  padding: 0 0 16px;
-  max-width: none;
-  list-style: none;
-  border-bottom: 1px solid var(--border-hairline);
+.foot-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--color-slate);
+  transition: color 200ms ease;
 }
-.footer-links a { color: var(--color-slate); }
-.footer-links a:hover { color: var(--color-ink); }
+.foot-repo:hover {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+@media (max-width: 860px) {
+  /* The brand block takes the full measure; the two columns share a row. */
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 40px; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 460px) {
+  /* One column: the source names will not halve a phone with the sections. */
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+}
 
 @media (max-width: 640px) {
   /* The ranking must read without horizontal scrolling: the rank rail and
@@ -3841,4 +3969,264 @@ a.cnews-line:hover { border-bottom-color: var(--border-hairline); }
     gap: 4px;
   }
   .cnews-src { margin-top: 8px; }
+}
+
+/* ---- Row actions: the ranking tables' right rail of verbs ----
+   Two bare glyph buttons per row, always drawn rather than revealed on hover —
+   a touch reader has no hover to give. They rest at ink-40, the same quiet as
+   the tie mark, and ink up to full black on hover or focus, so the column
+   reads as texture until it is wanted. No pill, no chip, no label: the row is
+   already carrying a name, a rank and a score.
+
+   z-index 2 lifts the cell over the stretched row link (z-index 1), which
+   otherwise covers every cell and would swallow both clicks. */
+.row-actions {
+  position: relative;
+  z-index: 2;
+  width: 76px;
+  text-align: right;
+  white-space: nowrap;
+}
+.row-act {
+  padding: 4px;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-40);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+.row-act + .row-act { margin-left: 2px; }
+.row-act svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.row-act:hover { color: var(--color-ink); background: rgba(0, 0, 0, 0.05); }
+.row-act:focus-visible {
+  outline: none;
+  color: var(--color-notion-blue);
+  box-shadow: 0 0 0 3px var(--color-sky-tint);
+}
+/* Held for comparison: the button stops being a verb and becomes a state. */
+.row-act[aria-pressed='true'] { color: var(--color-notion-blue); }
+/* The confirmation is a beat of blue on the glyph, not a toast over the table. */
+.row-act.did-share { color: var(--color-notion-blue); }
+
+/* The row held for comparison keeps its place in the sort and says so in the
+   selection grammar already on the site — the drawer's open row wears the same
+   sky fill and blue rail. The rail matters more than the fill here: the weights
+   table inks its own cells from the data, and an inline background outranks a
+   class, so on that table the rail is the whole mark. */
+tbody tr.is-picked td { background: var(--color-sky-tint); }
+tbody tr.is-picked td:first-child { box-shadow: inset 3px 0 0 var(--color-notion-blue); }
+
+/* ---- Pick bar: what the table says while it waits for a second country ----
+   Docked inside the card so it travels with the table rather than floating
+   over the page, and out of the scroll container so a sideways-scrolled
+   weights table cannot carry it off-screen. */
+.pick-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: var(--text-body-sm);
+  color: var(--ink-95);
+  background: var(--color-sky-tint);
+  border-top: 1px solid var(--border-hairline);
+}
+/* A class-level `display` outranks the UA sheet's [hidden] rule, so the bar has
+   to hide itself explicitly or it lingers as an empty strip once cancelled. */
+.pick-bar[hidden] { display: none; }
+.pick-bar:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--color-notion-blue); }
+.pick-bar b { font-weight: 600; }
+.pick-cancel {
+  margin-left: auto;
+  padding: 2px 6px;
+  border: 0;
+  background: none;
+  color: var(--ink-60);
+  font-size: 14px;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.pick-cancel:hover { color: var(--color-ink); }
+.pick-cancel:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-notion-blue); }
+
+/* Announcements for the share action, and the hand-copy field that appears
+   only where neither the share sheet nor the clipboard is allowed. */
+.action-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.share-fallback {
+  position: absolute;
+  z-index: 4;
+  width: 240px;
+  font-size: var(--text-caption);
+  padding: 4px 6px;
+  border: 1px solid var(--color-notion-blue);
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 560px) {
+  .row-actions { width: 68px; }
+}
+
+/* ---- Compare: two countries held against each other ----
+   This page's own device is the split: both sides face a centre line, and
+   every measure on the page is read across it rather than down a column. */
+.vs { max-width: var(--content-width); margin: 0 auto; padding: 0 var(--pad) 64px; }
+.vs-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 32px 0 28px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+.vs-kicker {
+  grid-column: 1 / -1;
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  color: var(--ink-54);
+}
+.vs-side { min-width: 0; }
+/* The two sides lean away from the centre mark, so the pairing reads before
+   either name does. */
+.vs-a { text-align: right; }
+.vs-b { text-align: left; }
+.vs-name {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--text-heading-sm);
+  letter-spacing: var(--tracking-heading-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.vs-name:hover { text-decoration: underline; }
+.vs-flag { font-size: 1em; }
+.vs-score {
+  margin: 6px 0 2px;
+  font-size: var(--text-display-sm);
+  line-height: var(--leading-display-sm);
+  letter-spacing: var(--tracking-display-sm);
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+.vs-meta {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  font-size: var(--text-caption);
+  color: var(--ink-60);
+  font-variant-numeric: tabular-nums;
+}
+.vs-a .vs-meta { justify-content: flex-end; }
+.vs-equal { color: var(--ink-40); }
+/* The centre mark is the page's one piece of ink that belongs to neither side. */
+.vs-mark {
+  align-self: center;
+  padding: 4px 10px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-54);
+  background: var(--color-peach);
+}
+
+.vs-mix { padding: 32px 0; border-bottom: 1px solid var(--border-hairline); }
+.vs-mix h2 { margin: 0 0 20px; font-size: var(--text-heading-sm); letter-spacing: var(--tracking-heading-sm); }
+.mix-row {
+  display: grid;
+  grid-template-columns: 1fr 200px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+}
+.mix-bar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+/* Flat-topped, frameless blocks growing out from the centre — the site's data
+   glyph, not an outlined meter. */
+.mix-bar i {
+  display: block;
+  height: 14px;
+  width: var(--fill, 0%);
+  background: var(--color-marigold);
+}
+.mix-bar b { font-size: var(--text-caption); font-variant-numeric: tabular-nums; font-weight: 600; }
+.mix-left { flex-direction: row-reverse; }
+.mix-right i { background: var(--color-sky-wash); }
+.mix-label {
+  text-align: center;
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--ink-60);
+}
+
+.vs-edges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  padding: 32px 0 0;
+}
+.vs-edge h3 { margin: 0 0 12px; font-size: 15px; letter-spacing: -0.1px; }
+.edge-list { list-style: none; margin: 0; padding: 0; }
+.edge-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-faint);
+  font-size: var(--text-body-sm);
+}
+.edge-list a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--color-ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+.edge-list a:hover { text-decoration: underline; }
+.edge-tiers { font-size: var(--text-caption); color: var(--ink-60); white-space: nowrap; }
+.edge-vs { margin: 0 6px; color: var(--ink-40); }
+.vs-empty, .vs-more { margin: 8px 0 0; font-size: var(--text-body-sm); color: var(--ink-54); }
+
+.vs-problem { padding: 64px 0; max-width: 52ch; }
+.vs-problem h1 { font-size: var(--text-heading); line-height: var(--leading-heading); margin: 0 0 12px; }
+.vs-back { color: var(--color-notion-blue); text-decoration: none; font-size: var(--text-body-sm); }
+.vs-back:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  /* Stacked, the centre line is gone, so both sides read left and the mark
+     becomes a divider between them. */
+  .vs-head { grid-template-columns: minmax(0, 1fr); }
+  .vs-a, .vs-b { text-align: left; }
+  .vs-a .vs-meta { justify-content: flex-start; }
+  .vs-mark { justify-self: start; }
+  .vs-score { font-size: var(--text-heading); letter-spacing: -1px; }
+  .mix-row { grid-template-columns: 1fr 120px 1fr; }
+  .vs-edges { grid-template-columns: minmax(0, 1fr); gap: 24px; }
 }

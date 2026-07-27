@@ -7,7 +7,10 @@ export default defineConfig({
   // site + base, so the two must stay split.
   site: 'https://jackuait.github.io',
   base: process.env.BASE_PATH ?? '/',
-  integrations: [sitemap()],
+  // The compare page is noindex: its content is whatever pair the query string
+  // names, so the bare URL has nothing to index. Listing it in the sitemap
+  // would ask crawlers to fetch a page that tells them not to keep it.
+  integrations: [sitemap({ filter: (page) => !page.includes('/compare/') })],
   server: {
     // never let the browser cache a dev response — reloads always show the latest UI
     headers: {
