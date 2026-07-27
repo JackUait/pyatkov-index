@@ -1858,15 +1858,39 @@ td.down::before { content: '\25BC'; } /* down triangle */
   font-weight: 400;
   color: rgba(255, 255, 255, 0.75);
   opacity: 0;
-  transform: translate(-50%, -3px);
-  transition: opacity 140ms ease, transform 140ms ease;
+  transform: translate(-50%, 0);
   pointer-events: none;
 }
 .rank-tip b { font-weight: 600; color: var(--color-white); }
+/* The waiting beat is paid once per visit, not once per row. The first tip
+   holds back 800ms — long enough that a pointer merely crossing the ledger
+   raises nothing — and from then on the list is warm (rank-tip.ts sets the
+   class once a tip is genuinely out), so every row the pointer walks to opens
+   at once, however fast the walk. The beat survives reduced motion as a delay
+   with no animation under it; only the fade is a matter of taste. */
 .rank-list li:hover .rank-tip {
   opacity: 1;
   transform: translate(-50%, 0);
-  transition-delay: 100ms;
+  transition: opacity 1ms linear 800ms;
+}
+.rank-list.is-warm li:hover .rank-tip { transition-delay: 0ms; }
+/* Its arrival, as light as the tip is transient: a 2px settle under a fade
+   barely long enough to see, out of a curve that lands rather than eases to
+   a stop. The exit carries no transition at all — each row owns its own tip,
+   so a fading one would hang over the row the pointer has already reached,
+   which is the whole of what reads as lag. */
+@media (prefers-reduced-motion: no-preference) {
+  .rank-tip {
+    transform: translate(-50%, -2px);
+  }
+  .rank-list li:hover .rank-tip {
+    transition: opacity 100ms cubic-bezier(0.22, 1, 0.36, 1) 800ms,
+      transform 100ms cubic-bezier(0.22, 1, 0.36, 1) 800ms;
+  }
+  .rank-list.is-warm li:hover .rank-tip {
+    transition-duration: 70ms;
+    transition-delay: 0ms;
+  }
 }
 /* The locked page's inks: numerals in gray, rules dashed — a shade denser
    than the open page's solid hairlines, which dashing would halve. */

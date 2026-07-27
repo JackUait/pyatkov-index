@@ -272,10 +272,11 @@ const hundred = hundredCells(p.score);
   </div>
   <div class="dest-map">
     {TIERS.map((cat) => {
+      // Heaviest first, not A–Z: within a tier the order then says which doors
+      // carry the score. foreignDests inherits weights.json's weight-desc order.
       const items = foreignDests
         .filter((d) => d.category === cat)
-        .map((d) => ({ ...d, label: displayName(d.iso3, d.name) }))
-        .sort((a, b) => a.label.localeCompare(b.label, 'en'));
+        .map((d) => ({ ...d, label: displayName(d.iso3, d.name) }));
       const points = tierContribution.find((t) => t.cat === cat)?.points ?? 0;
       return (
         items.length > 0 && (
