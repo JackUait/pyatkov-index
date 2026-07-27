@@ -19,7 +19,7 @@ export const WB_ARRIVALS =
 // deliberately not SM.POP.TOTL (international migrant stock), which is a weight signal.
 export const WB_POPULATION_SERIES = 'SP.POP.TOTL';
 
-// D1: maintained successor of the archived ilyankou dataset (default branch `main`).
+// D1: maintained successor of the dormant ilyankou dataset (default branch `main`).
 export const MATRIX_URL =
   'https://raw.githubusercontent.com/imorte/passport-index-data/main/passport-index-matrix-iso3.csv';
 

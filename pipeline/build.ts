@@ -184,7 +184,7 @@ export function buildMetadata(opts: {
     vintages: {
       matrix: {
         source: 'imorte/passport-index-data (main)',
-        note: 'maintained successor to the archived ilyankou/passport-index-dataset',
+        note: 'maintained successor to the dormant ilyankou/passport-index-dataset',
       },
       gdp: {
         series: 'NY.GDP.MKTP.CD',

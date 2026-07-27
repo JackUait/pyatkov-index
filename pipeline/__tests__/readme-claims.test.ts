@@ -29,7 +29,7 @@ function realWeights() {
     },
     overrides,
   );
-  return { signals, weights: computeWeights(signals, names) };
+  return { matrix, signals, weights: computeWeights(signals, names) };
 }
 
 const WORD: Record<number, string> = { 4: 'four', 5: 'five', 6: 'six', 7: 'seven' };
@@ -100,12 +100,33 @@ describe('README claims match the real data + the current pipeline (docs subsyst
     expect(README).toMatch(/2017.?2019|2019/);
   });
 
-  it('B10: README qualifies the "destination value" scope (sovereign states + SARs; dependent territories out of scope)', () => {
+  it('B10: README qualifies the "destination value" scope (roster composition; dependent territories out of scope)', () => {
     // The headline "share of the world's destination value" must not be stated
     // without disclosing that the 199-destination denominator excludes dependent
     // territories with their own visa regimes (inherited from the upstream dataset).
-    expect(README).toMatch(/sovereign[- ]state[\s\S]{0,40}SAR/i);
-    expect(README).toMatch(/dependent territor(y|ies)[\s\S]{0,120}(out of scope|excluded)/i);
+    expect(README).toMatch(/dependent territor(y|ies)[\s\S]{0,160}(out of scope|excluded)/i);
+    // The roster is NOT 199 sovereign states + SARs: Kosovo, Palestine and Taiwan are
+    // none of the three. The prose must name the composition instead of mislabelling it.
+    expect(README).not.toMatch(/199 sovereign[- ]state/i);
+    expect(README).toMatch(/193 UN member states/);
+    for (const entity of ['Holy See', 'Kosovo', 'Palestine', 'Taiwan', 'Hong Kong', 'Macao']) {
+      expect(README, `scope paragraph must name ${entity}`).toMatch(new RegExp(entity));
+    }
+  });
+
+  it('B10: the README\'s destination count is the shipped roster\'s, and Puerto Rico is not miscited', () => {
+    // The symmetric twin of the openness-side assertion below: pin the number to data.
+    const { matrix } = realWeights();
+    expect(README).toContain(`the ${matrix.countries.length} destinations`);
+    // Puerto Rico follows standard US visa policy — it is not an instance of the
+    // "dependent territory with its own visa regime" category the sentence claims.
+    expect(README).not.toMatch(/Puerto Rico/);
+  });
+
+  it('D1: the historical ilyankou dataset is called dormant, not archived', () => {
+    // The GitHub API reports `"archived": false` for ilyankou/passport-index-dataset.
+    // It is dormant (no push since 2026-02-18) and superseded, which is not the same claim.
+    expect(README).not.toMatch(/archived/i);
   });
 
   it('D3: README labels the arrivals series accurately and keeps the mixed-construct caveat', () => {

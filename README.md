@@ -11,11 +11,14 @@ small islands, and here it does.
 Each destination earns a weight from four public signals: GDP, international arrivals,
 HDI, and international migrant stock. Every passport is then scored 0-100 by the share of
 the reachable world's total destination *value* it can reach, counting visa on arrival and
-eTA as fully open and eVisas as closed. "The world" here means the 199 sovereign-state
-and SAR destinations in the upstream matrix; dependent territories with their own visa
-regimes (Puerto Rico, Gibraltar, the Faroes, and ~17 others) are out of scope, inherited
-from the upstream dataset, so the "share of the world's value" is measured over that
-denominator rather than every visa-issuing entity on earth. Each passport's page also carries the
+eTA as fully open and eVisas as closed. "The world" here means the 199 destinations in the
+upstream matrix — the 193 UN member states plus the Holy See, Kosovo, Palestine, Taiwan,
+and the Hong Kong and Macao SARs — so not every entry is a sovereign state. Roughly forty
+dependent territories that run their own entry regimes (Gibraltar, the Faroes, Greenland,
+the Crown Dependencies, the French overseas collectivities, and the rest) are out of scope.
+That exclusion is inherited from the upstream dataset, which documents no inclusion policy
+of its own, so the "share of the world's value" is measured over that denominator rather
+than every visa-issuing entity on earth. Each passport's page also carries the
 **Δ from weighting**: how far it rises or falls versus its **Count rank** — a naive ranking that treats
 every destination as worth one, i.e. a plain "how many places can you go" count. That delta is the whole
 argument of the index made visible in a single number.
@@ -169,8 +172,11 @@ site is type-checked separately with `cd site && yarn typecheck` (which runs `as
 check`); `yarn typecheck-all` from the repo root runs both. `yarn test` (Vitest) runs the
 pipeline unit tests *and* the site's `src/lib/` unit tests — one root Vitest run covers
 both trees. `yarn check-data-drift` re-derives the index and fails if the committed
-`site/src/data/*.json` differs from a fresh pipeline run (the `builtAt` date aside), so
-stale or hand-edited numbers can never ship. `yarn verify` is the single pre-push gate:
+`site/src/data/*.json` differs from a fresh pipeline run over the committed `data/raw`
+snapshot (the `builtAt` date aside), so hand-edited or formula-corrupted numbers can never
+ship. It never touches the network, so it cannot tell you that `data/raw` itself has gone
+stale or that upstream's roster has moved — nothing in the repo or in CI compares
+`data/raw` against live upstream. `yarn verify` is the single pre-push gate:
 `typecheck-all` + `test` + `pipeline` + `check-data-drift`, exactly what CI runs.
 
 `yarn serve` (from the repo root) starts the Astro dev server with hot reloading — edits
@@ -190,7 +196,7 @@ downloads, from live sources:
 
 - the **visa matrix** from the maintained
   [`imorte/passport-index-data`](https://github.com/imorte/passport-index-data) dataset
-  (the successor to the archived `ilyankou/passport-index-dataset`);
+  (the successor to the dormant `ilyankou/passport-index-dataset`);
 - **GDP** (`NY.GDP.MKTP.CD`) and **migrant stock** (`SM.POP.TOTL`) from the World Bank API
   at each country's latest available year;
 - **international arrivals** (`ST.INT.ARVL`) from the World Bank API over a fixed
@@ -272,7 +278,7 @@ This project is only possible because of open data. Credit and thanks to:
 
 - **[passport-index-data](https://github.com/imorte/passport-index-data)** — the
   visa/travel-access matrix (PassportIndex.org data), the maintained successor to Ilya
-  Ilyankou's archived [`passport-index-dataset`](https://github.com/ilyankou/passport-index-dataset).
+  Ilyankou's dormant [`passport-index-dataset`](https://github.com/ilyankou/passport-index-dataset).
   Licensed **MIT**.
 - **[World Bank Open Data](https://data.worldbank.org/)** - GDP, international tourism
   (number of arrivals), and international migrant stock indicators. Licensed **CC BY 4.0**.
