@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { countryPath, isPlainLeftClick } from '../country-drawer.ts';
+import { countryPath, createScrollPin, isPlainLeftClick, parseMs } from '../country-drawer.ts';
 
 describe('countryPath', () => {
   it('classifies passport and destination pages under a root base', () => {
@@ -43,5 +43,88 @@ describe('isPlainLeftClick', () => {
     expect(isPlainLeftClick({ ...plain, ctrlKey: true })).toBe(false);
     expect(isPlainLeftClick({ ...plain, shiftKey: true })).toBe(false);
     expect(isPlainLeftClick({ ...plain, altKey: true })).toBe(false);
+  });
+});
+
+describe('parseMs', () => {
+  it('reads the units a computed CSS duration comes back in', () => {
+    expect(parseMs('240ms', 999)).toBe(240);
+    expect(parseMs('0.24s', 999)).toBe(240);
+    expect(parseMs('  240ms  ', 999)).toBe(240);
+  });
+
+  it('falls back when the token is missing or unreadable, so timing never lands on NaN', () => {
+    expect(parseMs('', 240)).toBe(240);
+    expect(parseMs('fast', 240)).toBe(240);
+    expect(parseMs('240', 240)).toBe(240);
+  });
+});
+
+describe('createScrollPin', () => {
+  /** A stand-in page: the anchor sits at `top`, and scrolling by `dy` lifts it
+   *  by the same amount, exactly as the viewport does. */
+  function fakePage(top: number) {
+    const page = {
+      top,
+      scrolled: 0,
+      scrollBy(dy: number) {
+        page.top -= dy;
+        page.scrolled += dy;
+      },
+    };
+    return page;
+  }
+
+  it('leaves the page alone while the anchor has not drifted', () => {
+    const page = fakePage(120);
+    const pin = createScrollPin(
+      () => page.top,
+      (dy) => page.scrollBy(dy),
+    );
+    pin();
+    pin();
+    expect(page.scrolled).toBe(0);
+    expect(page.top).toBe(120);
+  });
+
+  it('holds the anchor still across a reflow that keeps growing', () => {
+    const page = fakePage(120);
+    const pin = createScrollPin(
+      () => page.top,
+      (dy) => page.scrollBy(dy),
+    );
+    // Each frame of the transition pushes the anchor further down the page.
+    for (const growth of [8, 14, 9, 3]) {
+      page.top += growth;
+      pin();
+      expect(page.top).toBe(120);
+    }
+    expect(page.scrolled).toBe(34);
+  });
+
+  it('corrects upward drift too, so closing the drawer holds the same line', () => {
+    const page = fakePage(200);
+    const pin = createScrollPin(
+      () => page.top,
+      (dy) => page.scrollBy(dy),
+    );
+    page.top -= 40;
+    pin();
+    expect(page.top).toBe(200);
+    expect(page.scrolled).toBe(-40);
+  });
+
+  it('pins to where the anchor stood when the pin was made, not to each frame', () => {
+    const page = fakePage(90);
+    const pin = createScrollPin(
+      () => page.top,
+      (dy) => page.scrollBy(dy),
+    );
+    page.top += 25;
+    pin();
+    // A frame the browser could not fully correct must not become the new target.
+    page.top += 25;
+    pin();
+    expect(page.top).toBe(90);
   });
 });

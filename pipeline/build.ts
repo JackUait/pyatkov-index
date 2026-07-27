@@ -124,7 +124,16 @@ export function opennessGuards(openness: DestinationOpenness[]): void {
 // vintage; publish each signal's own observation year(s) instead of one label.
 // ---------------------------------------------------------------------------
 export interface SignalVintages {
-  matrix: { source: string; note: string };
+  matrix: {
+    source: string;
+    note: string;
+    /** Vintage of the upstream baseline we forked — frozen, so it is not the build date. */
+    baselineVintage: string;
+    /** When we last re-verified the matrix against live sources. */
+    verifiedAsOf: string;
+    /** How many cells our own override layer corrects on top of the baseline. */
+    overridesApplied: number;
+  };
   gdp: { series: string; label: string; selection: string; years: string; modalYear: number };
   arrivals: { series: string; label: string; window: string; preferredYear: number; yearsUsed: string };
   migrants: { series: string; label: string; selection: string; years: string; modalYear: number };
@@ -170,6 +179,7 @@ export function buildMetadata(opts: {
   populationBody: string;
   hdiCsv: string;
   arrivalsByIso: Map<string, { value: number; year: number }>;
+  matrixOverrides: { baselineVintage: string; verifiedAsOf: string; applied: number };
 }): BuildMetadata {
   const gdp = wbYearSummary(opts.gdpBody);
   const migrants = wbYearSummary(opts.migrantsBody);
@@ -183,8 +193,11 @@ export function buildMetadata(opts: {
     totalDestinations: opts.totalDestinations,
     vintages: {
       matrix: {
-        source: 'imorte/passport-index-data (main)',
-        note: 'maintained successor to the dormant ilyankou/passport-index-dataset',
+        source: 'imorte/passport-index-data (main), corrected by data/visa-overrides.json',
+        note: 'upstream baseline is frozen; corrections are our own, each sourced and dated',
+        baselineVintage: opts.matrixOverrides.baselineVintage,
+        verifiedAsOf: opts.matrixOverrides.verifiedAsOf,
+        overridesApplied: opts.matrixOverrides.applied,
       },
       gdp: {
         series: 'NY.GDP.MKTP.CD',
@@ -231,7 +244,18 @@ export function buildMetadata(opts: {
 function main(): void {
   const read = (f: string) => readFileSync(join(RAW, f), 'utf8');
 
-  const matrix = parseVisaMatrix(read('passport-index-matrix-iso3.csv'));
+  // Our fork: the upstream CSV is the frozen baseline, data/visa-overrides.json is the
+  // sourced correction layer on top of it. The baseline file is never hand-edited, so
+  // `yarn fetch-data` stays a clean refresh and every edit keeps its reason and its date.
+  const overrideFile = JSON.parse(
+    readFileSync(join(import.meta.dirname, '..', 'data', 'visa-overrides.json'), 'utf8'),
+  ) as VisaOverrideFile;
+  const corrected = applyVisaOverrides(
+    read('passport-index-matrix-iso3.csv'),
+    overrideFile.overrides,
+    overrideFile.verifiedAsOf,
+  );
+  const matrix = parseVisaMatrix(corrected.csv);
   const overrides = JSON.parse(read('manual-overrides.json')) as Record<string, Override>;
   const countries = JSON.parse(read('countries.json')) as Record<string, { name: string; iso2: string }>;
 

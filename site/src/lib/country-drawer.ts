@@ -104,24 +104,77 @@ function topVisibleSection(): HTMLElement | null {
   return main instanceof HTMLElement ? main : null;
 }
 
+/** Hold one element's line on screen while the layout under it keeps moving.
+ *  Reads where the anchor sits now, and each call scrolls off however far it has
+ *  drifted from where it stood when the pin was made. The target is fixed at
+ *  creation, never re-read from a frame — a frame the correction could not fully
+ *  cover must not ratchet the goal along with it. */
+export function createScrollPin(readTop: () => number, scrollBy: (dy: number) => void): () => void {
+  const target = readTop();
+  return () => {
+    const drift = readTop() - target;
+    if (drift) scrollBy(drift);
+  };
+}
+
+/** Read a CSS duration as a number of milliseconds, falling back when the token
+ *  is absent or in units we did not expect — a timing that lands on NaN would
+ *  end the pin loop on its first frame, which is worse than a stale constant. */
+export function parseMs(value: string, fallback: number): number {
+  const match = /^\s*(-?[\d.]+)(ms|s)\s*$/.exec(value);
+  if (!match) return fallback;
+  const n = Number(match[1]);
+  return Number.isFinite(n) ? n * (match[2] === 's' ? 1000 : 1) : fallback;
+}
+
+/** How long the page takes to reflow out from under the sheet. The panel's slide
+ *  and the column's move are one gesture, so both read the duration from the
+ *  same `--drawer-move` token in global.css rather than each keeping a copy. */
+function shiftMs(): number {
+  return parseMs(getComputedStyle(document.documentElement).getPropertyValue('--drawer-move'), 240);
+}
+
+/** Cancels the pin loop of a shift still in flight, so an open-then-close in
+ *  quick succession leaves one loop running, not two fighting over the scroll. */
+let unpin: (() => void) | null = null;
+
 /** Slide the host page left to clear the sheet (or restore it), re-pinning the
  *  scroll so the reflow — the column narrows, so everything above the fold grows
- *  taller — never moves what the reader is looking at. The reflow and the
- *  correcting scroll are measured and applied in one synchronous pass, so they
- *  land in a single paint; the scroll is forced `instant` because the page sets
- *  `scroll-behavior: smooth`, which would otherwise animate the correction a
- *  beat behind the reflow and surface exactly the jump we mean to hide. The CSS
- *  shift is gated to wide viewports; below that this toggles a class that does
- *  nothing, the delta is zero, and the call stays a safe no-op. */
+ *  taller — never moves what the reader is looking at. The margin animates
+ *  alongside the sheet, so the anchor drifts across every frame of the
+ *  transition rather than once: we correct on each of them until the reflow
+ *  settles. The scroll is forced `instant` because the page sets
+ *  `scroll-behavior: smooth`, which would otherwise animate each correction a
+ *  beat behind the frame that caused it and surface exactly the drift we mean to
+ *  hide. The CSS shift is gated to wide viewports; below that this toggles a
+ *  class that does nothing, every drift is zero, and the call stays a safe
+ *  no-op. */
 function shiftPage(on: boolean): void {
   const body = document.body;
   if (body.classList.contains('drawer-shifted') === on) return;
+  unpin?.();
   const anchor = topVisibleSection();
-  const before = anchor ? anchor.getBoundingClientRect().top : 0;
+  const pin = anchor
+    ? createScrollPin(
+        () => anchor.getBoundingClientRect().top,
+        (dy) => window.scrollBy({ top: dy, behavior: 'instant' }),
+      )
+    : null;
   body.classList.toggle('drawer-shifted', on);
-  if (!anchor) return;
-  const delta = anchor.getBoundingClientRect().top - before;
-  if (delta) window.scrollBy({ top: delta, behavior: 'instant' });
+  if (!pin) return;
+  // The first correction is synchronous with the class toggle: under reduced
+  // motion there is no transition, so this one pass is the whole job.
+  pin();
+  const deadline = performance.now() + shiftMs();
+  let frame = requestAnimationFrame(function step(now) {
+    pin();
+    if (now < deadline) frame = requestAnimationFrame(step);
+    else unpin = null;
+  });
+  unpin = () => {
+    cancelAnimationFrame(frame);
+    unpin = null;
+  };
 }
 
 function setModal(open: boolean): void {

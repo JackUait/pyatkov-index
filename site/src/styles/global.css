@@ -57,6 +57,12 @@
   --pad: clamp(16px, 4vw, 40px);
   --nav-h: 64px;
 
+  /* Motion. The drawer is a lookup, not an arrival: the sheet, the page it
+     pushes aside and the content it lands with all have to be done before the
+     reader has finished reaching for the next row. One token carries the move
+     so the panel, the column and country-drawer.ts's scroll pin agree. */
+  --drawer-move: 240ms;
+
   /* Shape — rounded past the reference's 12px card cap, by request. The
      ramp orders the surfaces: buttons, then cards (the tables' shells),
      then the stat plates, then the drawer sheet floating over it all.
@@ -331,29 +337,11 @@ li { margin: 6px 0; }
 }
 .btn:hover { text-decoration: none; }
 .btn:active { transform: scale(0.98); }
-/* Hero-scale variant of the same family: same radius, same colors, more air.
-   18px sides, not 20: with the primary's arrow the pair measures 336px, and
-   the deck column is 338 — one step more air and the actions wrap. */
-.btn-lg { padding: 10px 18px; font-size: var(--text-body); }
-.btn-primary {
-  background: var(--color-notion-blue);
-  color: var(--color-white);
-}
-.btn-primary:hover { background: color-mix(in srgb, var(--color-notion-blue) 88%, #000); }
 .btn-ghost {
   background: var(--color-sky-tint);
   color: var(--color-blue-deep);
 }
 .btn-ghost:hover { background: color-mix(in srgb, var(--color-sky-tint) 92%, var(--color-notion-blue)); }
-/* The primary action points down the page, where it goes, and its arrow
-   nudges that way on hover — the reference's springy character-mark timing.
-   Only the primary gets the gesture: two pointing buttons would split it. */
-.btn-arrow {
-  display: inline-block;
-  margin-left: 7px;
-  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.btn:hover .btn-arrow { transform: translateY(2px); }
 
 /* ---- Hero: an editorial front page ----
    The claim is about method, not about places: other indexes count doors,
@@ -512,57 +500,25 @@ li { margin: 6px 0; }
   max-width: 52ch;
   margin: 0 0 28px;
 }
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-/* Split masthead (rankings page). align-items: start hangs both columns from
-   one top line, so the headline and the deck's first serif line read off the
-   same shelf. */
+/* Front-page masthead: the couplet at full display scale, the serif deck
+   directly beneath it, the strip chart following — no side column, no
+   actions, nothing competing with the claim. One sentence per line; the
+   <br> owns the breaks, so the base hero's 16ch cap is lifted. */
 .hero-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  column-gap: 56px;
-  align-items: start;
-  padding: 64px 0 44px;
+  padding: 64px 0 40px;
 }
-/* The couplet: one sentence per line, so the longest line is now
-   "Most rankings count." — 54px is the widest it fits in the column; one
-   notch more and the sentence folds mid-line. The base hero's 16ch cap is
-   lifted: the column and the <br> own the breaks here. */
 .hero-split h1 {
-  margin: 0;
-  font-size: clamp(38px, 5.5vw, 54px);
+  margin: 0 0 26px;
+  font-size: clamp(38px, 7.2vw, var(--text-display));
   line-height: 1.06;
   max-width: none;
 }
-/* The shell stops growing at 980px, so the columns — and the deck's height —
-   are fixed from there up. The type must be too, or a vw-sized headline runs
-   short of the deck until the vw curve catches up. */
-@media (min-width: 980px) {
-  .hero-split h1 { font-size: 54px; }
-}
-.hero-deck {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-}
-.hero-deck .tagline {
+.hero-split .tagline {
   margin: 0;
   text-wrap: pretty;
 }
-/* One wider step before the actions than after the serif block, so the
-   deck reads say → do, not two even items. */
-.hero-deck .actions { margin-top: 14px; }
 @media (max-width: 860px) {
-  .hero-split {
-    grid-template-columns: 1fr;
-    row-gap: 28px;
-    padding: 48px 0 36px;
-  }
+  .hero-split { padding: 48px 0 36px; }
 }
 
 /* ---- Weight ribbon: the argument, drawn ----
@@ -733,7 +689,10 @@ li { margin: 6px 0; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
   gap: 32px 64px;
-  align-items: start;
+  /* The lede rides the wall's vertical center, matching the passport
+     spread: the wall is the taller column, so headline and rail sit level
+     with its middle courses. */
+  align-items: center;
   padding-top: 48px;
   margin: 0 0 64px;
   /* The spread opts out of the shell's load rise. That 12px lift is a
@@ -745,23 +704,20 @@ li { margin: 6px 0; }
   animation: none;
 }
 /* The lede column is the page's hero; the spread supplies the rhythm, so
-   the hero's own padding comes off and the headline steps down a size to
-   hold a column, not a stage. */
+   the hero's own padding comes off. The headline is a drawn figure, not
+   set type, so it takes display scale the old text size never earned. */
 .doors .doors-lede { padding: 0; }
-.doors-lede h1 { font-size: clamp(36px, 3.4vw, 46px); }
-/* The headline's device: "in" spells itself with a door for an i. The
-   first try put the whole word inside a slab and died of it — cropped the
-   word, jumped the line — so now no letter wears anything and no glyph is
-   framed: one letter simply IS a door of the wall. The bar's box is fixed
-   and empty, so nothing can crop; only the paint pours, so the line
-   cannot jump. The whole phrase is drawn in the i's own hand — a
-   wordmark, not set type. Every letter is built from the same two shapes
-   the door-i is: flat bars wearing the wall's 3px corner, and true
-   circles for the bowls and the tittle. The words stay ink; the i alone
-   carries color — its stem the wall's 5:9 door poured to a clean half,
-   marigold below, straw above (a clip keeps the tide line square inside
-   the rounded slab): a door ajar as emblem, not datum — the tagline
-   alone says the measured average. The dot rides dry above the tide. An
+.doors-lede h1 { font-size: clamp(44px, 4.8vw, 68px); }
+/* The headline's device: the phrase itself is the door. The first try
+   put one word inside a slab and died of it — cropped the word, jumped
+   the line — so nothing wears a frame: the letters are drawn from the
+   wall's two shapes, flat bars wearing the 3px corner and true circles
+   for the bowls and the tittle, and the wall's pour runs through all of
+   them at once. The glyphs are painted twice — straw, then marigold
+   below one waterline at the bowls' shared center (y=46) — so the
+   phrase stands half poured, half dry, ink nowhere — and the pour is a
+   sea, its waterline always in motion: a door ajar as emblem, not
+   datum — the tagline alone says the measured average. An
    sr-only twin holds the real words, the same arrangement as the front
    page's counted letters; the drawing scales with the type it replaced:
    100 viewBox units to the em, baseline at 72, so the cap line lands
@@ -771,25 +727,23 @@ li { margin: 6px 0; }
   height: 0.97em; /* viewBox is 97 tall: cap 72 + the g's descender */
   vertical-align: -0.25em; /* sinks the descender; baseline back on the line */
 }
-.who-mark .bar { fill: currentColor; }
-.who-mark .bowl {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 11;
-  stroke-linejoin: round;
-}
-.who-mark .straw { fill: var(--straw); }
-.doorway {
-  fill: var(--color-marigold);
-  transform-box: fill-box;
-  transform-origin: bottom;
-}
+/* Color rides the coats: fill and stroke are inherited properties, so
+   they cross into the cloned glyphs — where class-matched rules on the
+   shapes themselves never would. The poured coat is the sea itself: a
+   slab whose top edge waves around the old waterline (46 of the
+   viewBox's 97 units, the bowls' shared center, swelling seven units
+   either way), masked to the glyphs and forever adrift. */
+.who-mark .mark-dry { fill: var(--straw); stroke: var(--straw); }
+.who-mark .mark-poured { fill: var(--color-marigold); }
 .doors-figure { position: relative; }
 .doors-wall {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(24px, 1fr));
-  /* Rows breathe wider than columns so the wall reads in courses of
-     doors, not in vertical stripes of straw. */
+  /* Eighteen doors to a course, at every width: the row is a counted
+     unit — 199 destinations lay eleven full courses and a last door
+     alone — instead of however many the viewport happened to fit. Rows
+     breathe wider than columns so the wall reads in courses of doors,
+     not in vertical stripes of straw. */
+  grid-template-columns: repeat(18, 1fr);
   gap: 9px 5px;
 }
 /* The pour: --open scales every fill from the sill up, registered so the
@@ -916,8 +870,9 @@ li { margin: 6px 0; }
    rise; each door takes the load reveal's small lift while its marigold
    pours up from the sill. The three plates fill in reading order while the
    wall is still rising. The headline itself never moves — the old jump is
-   not invited back — but the door-drawn i pours with the wall's first
-   course: paint only, inside a box that never changes size. */
+   not invited back — but the door-drawn phrase floods with the wall's first
+   course, and its sea keeps drifting after the wall has settled: paint
+   only, inside a box that never changes size. */
 @media (prefers-reduced-motion: no-preference) {
   .door {
     animation:
@@ -926,6 +881,7 @@ li { margin: 6px 0; }
     animation-delay: calc(0.25s + var(--i) * 3ms);
   }
   .doorway { animation: pour-rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) 0.25s backwards; }
+  .who-mark .mark-poured { animation: sea-drift 6s linear infinite; }
   .ds-plate { animation: door-open 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
   .ds-all .ds-plate { animation-delay: 0.35s; }
   .ds-half .ds-plate { animation-delay: 0.45s; }
@@ -933,17 +889,25 @@ li { margin: 6px 0; }
 @keyframes door-open {
   from { --open: 0; }
 }
-/* The wordmark's pour is a transform, not a gradient sweep: the marigold
-   rect rises from the sill inside its clip — same tide, drawn in SVG. */
+/* The wordmark's pour is the sea coming in: the slab starts sunk past
+   the descender's floor (60 user units — px means user units inside
+   SVG — clears the deepest crest) and rises to the waterline, its waves
+   already running as it comes. */
 @keyframes pour-rise {
-  from { transform: scaleY(0); }
+  from { transform: translateY(60px); }
+}
+/* The drift travels exactly one wavelength before repeating, so the
+   loop closes on its own shape and the sea never shows a seam. */
+@keyframes sea-drift {
+  from { transform: translateX(-125.25px); }
 }
 @media (max-width: 860px) {
   /* The rail will not sit beside a readable wall: stack them, lede then
-     wall, and let the doors tighten a step so a phone row still holds a
-     dozen. The caption travels with the wall, so nothing points offscreen. */
+     wall, and tighten the gaps so the eighteen-door course still fits a
+     phone. The caption travels with the wall, so nothing points
+     offscreen. */
   .doors { grid-template-columns: 1fr; gap: 20px; }
-  .doors-wall { grid-template-columns: repeat(auto-fill, minmax(20px, 1fr)); gap: 5px; }
+  .doors-wall { gap: 4px 3px; }
   .doors-read { gap: 12px; margin-top: 24px; }
   .ds { gap: 14px; }
   .ds-plate { width: 40px; height: 70px; }
@@ -1530,101 +1494,120 @@ td.down::before { content: '\25BC'; } /* down triangle */
   flex: none;
 }
 
-/* ---- Character mark: circular flag badge, used on the passport pages ---- */
-.mark {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-round);
-  background: var(--color-white);
-  border: 2px solid var(--mark-color, var(--color-signal-blue));
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  line-height: 1;
-}
-/* The flag fills the badge: the 7:5 card is scaled until its short side covers
-   the circle, then the circle itself clips the overhang. The ring stays on the
-   .mark so the accent colour reads over the flag's own edge. Sizing by
-   aspect-ratio rather than object-fit because an inline <svg> honours its
-   viewBox, not object-fit: match the box to the card's 7:5 and nothing
-   letterboxes; the surplus width overflows and the circle trims it. */
-.mark .flag-mark {
-  height: 100%;
-  width: auto;
-  aspect-ratio: 7 / 5;
-  border-radius: 0;
-  vertical-align: baseline;
-}
 @keyframes pop {
   from { opacity: 0; transform: scale(0.4); }
 }
 
-/* ---- Passport page ---- */
-.passport-hero {
-  text-align: center;
-  padding: 48px 0 8px;
-}
-.passport-hero .mark {
-  width: 76px;
-  height: 76px;
-  margin-bottom: 20px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .passport-hero .mark { animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-}
-.passport-hero h1 {
-  margin: 0 0 8px;
-  font-size: clamp(34px, 5vw, 48px);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-}
-
-/* Stat plate: the ribbon's argument folded into three accent tiles
-   (DESIGN.md's colored panel: flat fill, no border). The headline pair
-   wears the warm cast — peach, the signature pill, for where the passport
-   lands; marigold, the weight color, for the score built from it — and
-   the plain count sits quiet on the ribbon's neutral tail wash. Three
-   tiles hold one row at every width, drawer and phone included. */
-.stats {
+/* ---- The country spread: identity left, the hundred right ----
+   The country pages' shared device — passport and destination are the two
+   halves of one lookup. No hero band over a void and no labeled
+   stat plates: the flag, the name and the two numerals hold the left column
+   — rank and score spoken as sentences, the clause where a chrome label
+   would have been — and on the right the score itself is drawn as one
+   hundred point-squares. One square is one point of a possible 100, one
+   hundredth of the weighted world: the earned mass in marigold sitting on
+   the floor of the grid, the fraction square two-tone at the waterline, and
+   everything withheld hanging over it in the locked wash. The two inks are
+   the ledger's own law — earning ink against locked gray — so the figure
+   needs no legend, no caption, no meter. */
+.pass-spread {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: 12px;
-  margin: 24px 0 16px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 32px 64px;
+  /* The lede rides the grid's vertical center: the field is the taller
+     column, so name and numerals sit level with its middle courses. */
+  align-items: center;
+  padding-top: 44px;
+  margin-bottom: 8px;
+  /* Opts out of the shell's load rise like the other spreads: the grid
+     builds itself square by square; a 12px jump under it is just a jump. */
+  animation: none;
 }
-.stats > div {
-  background: var(--tile, var(--color-white));
-  border-radius: var(--radius-plate);
-  padding: 20px 20px 22px;
-  text-align: center;
+/* The flag flies whole: the hand-drawn 21x15 card at hero scale, no circle
+   crop eating the corners of the art and no rank-colored ring arguing with
+   the flag's own palette. The card carries its own baked-in rounding and
+   soft edge, and width: auto lets the two odd cards (Nepal's pennant, the
+   Vatican's square) keep their honest shape instead of letterboxing. */
+.pass-flag {
+  display: block;
+  width: auto;
+  height: 60px;
 }
-.stats > div:nth-child(1) { --tile: var(--color-peach); }
-.stats > div:nth-child(2) { --tile: var(--color-marigold); }
-.stats > div:nth-child(3) { --tile: rgba(0, 0, 0, 0.05); }
-.stats dt {
-  margin: 0 0 6px;
+.pass-lede h1 {
+  margin: 18px 0 0;
+  font-size: clamp(36px, 3.4vw, 46px);
+}
+/* The numerals answer at display scale, bare on the paper. Each is a
+   sentence — "#1 of 199 passports", "94.4 of 100 points" — so a screen
+   reader gets prose while the eye gets the figure and its clause. */
+.pass-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 56px;
+  margin-top: 34px;
+}
+.pass-figures p {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  max-width: none;
+}
+.pass-figures strong {
+  font-size: clamp(38px, 4.6vw, 50px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pass-figures span {
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  /* 75% ink: stone fails AA on the marigold fill. */
-  color: rgba(0, 0, 0, 0.75);
+  color: var(--color-slate);
 }
-/* Blue one step deep: the tinted fills eat the standard blue's AA margin. */
-.stats dt a { color: var(--color-blue-deep); }
-.stats dd {
-  margin: 0;
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(28px, 4vw, var(--text-heading));
-  line-height: var(--leading-heading);
-  letter-spacing: -0.02em;
-  font-weight: 650;
+/* The hundred: a fixed ten-by-ten field of flat squares, flush with the
+   content edge. Cells are fluid so the drawer and the phone shrink the
+   whole figure instead of clipping it. */
+.pass-hundred {
+  justify-self: end;
+  width: 100%;
+  max-width: 372px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
 }
-/* The tiles deal themselves onto the plate left to right, behind the page
-   rise; the plate element itself is a bare grid, so only the tiles show. */
+.pass-hundred i {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--color-marigold);
+}
+/* The waterline square: marigold up to the score's fraction, wash above —
+   the door grammar's two-tone cut at point scale. */
+.pass-hundred .hc-part {
+  background: linear-gradient(
+    to top,
+    var(--color-marigold) 0 calc(var(--part) * 100%),
+    rgba(0, 0, 0, 0.11) calc(var(--part) * 100%)
+  );
+}
+.pass-hundred .hc-lock { background: rgba(0, 0, 0, 0.11); }
+/* The pour: squares rise into place bottom row first, left to right — --i
+   is the pour order, not the DOM order — so the score builds from the
+   floor and the locked ceiling arrives last. */
 @media (prefers-reduced-motion: no-preference) {
-  .stats > div { animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) 0.12s backwards; }
-  .stats > div:nth-child(2) { animation-delay: 0.19s; }
-  .stats > div:nth-child(3) { animation-delay: 0.26s; }
+  .pass-flag { animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .pass-hundred i {
+    animation: rise 0.3s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: calc(0.15s + var(--i) * 4ms);
+  }
+}
+@media (max-width: 860px) {
+  /* The figure will not sit beside a readable headline: stack them, name
+     and numerals first, and the field narrows to phone scale. */
+  .pass-spread { grid-template-columns: 1fr; gap: 28px; }
+  .pass-figures { margin-top: 26px; }
+  .pass-hundred { justify-self: start; max-width: 330px; gap: 5px; }
 }
 
 /* ---- Tier color keys: the whole site speaks tiers in squared swatches,
@@ -3006,7 +2989,7 @@ footer {
 }
 .drawer-root.is-open .drawer-panel { transform: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .drawer-panel { transition: transform 380ms cubic-bezier(0.2, 0.7, 0.3, 1); }
+  .drawer-panel { transition: transform var(--drawer-move) cubic-bezier(0.2, 0.7, 0.3, 1); }
 }
 
 /* When the drawer opens, the page reflows left out from under the sheet so the
@@ -3014,16 +2997,38 @@ footer {
    (its width, its 12px right gutter, and a breathing gap) as right margin; the
    column keeps its left edge and narrows to fill the strip that remains. Narrowing
    makes the content above the fold taller, which would slide the table down at a
-   fixed scroll offset — so country-drawer.ts re-pins the scroll the instant the
-   class toggles, and the change is invisible. The move is deliberately un-animated:
-   the reflow (and its scroll re-pin) must land in one step, not drift across a
-   transition. Below 1280px the free strip is too narrow to seat a usable table,
-   so the sheet just overlays as before (drawer-shifted is a no-op there). */
+   fixed scroll offset — so country-drawer.ts re-pins the scroll on every frame of
+   the move, and the vertical drift stays invisible while the horizontal one
+   plays. The margin rides the sheet's own duration and curve so the column and
+   the panel read as one gesture: the page gives way as the sheet arrives, rather
+   than snapping aside a beat before it. Below 1280px the free strip is too narrow
+   to seat a usable table, so the sheet just overlays as before (drawer-shifted is
+   a no-op there).
+
+   An `auto` margin cannot be interpolated, so the move rides a registered number
+   instead of the margins themselves: --drawer-shift runs 0 → 1, and the two
+   margins are written as calc()s of it. At 0 the left margin is the centering
+   half-gap and the right one collapses to nothing (over-constrained, so the
+   remainder fills it) — plain centering. At 1 the left margin is zero and the
+   right reserves the sheet's footprint, which is the shifted layout exactly.
+   Every value between is a real intermediate width, so the column narrows as it
+   travels. Browsers without @property skip to the endpoints, which is the old
+   one-step behaviour. */
+@property --drawer-shift {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+body { --drawer-shift: 0; }
+body.drawer-shifted { --drawer-shift: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  body { transition: --drawer-shift var(--drawer-move) cubic-bezier(0.2, 0.7, 0.3, 1); }
+}
 @media (min-width: 1280px) {
-  body.drawer-shifted main,
-  body.drawer-shifted .nav-inner {
-    margin-left: 0;
-    margin-right: calc(min(620px, 100vw - 24px) + 36px);
+  main,
+  .nav-inner {
+    margin-left: calc((1 - var(--drawer-shift)) * max(0px, (100% - var(--content-width)) / 2));
+    margin-right: calc(var(--drawer-shift) * (min(620px, 100vw - 24px) + 36px));
   }
 }
 
@@ -3095,15 +3100,19 @@ footer {
 .drawer-content:focus { outline: none; }
 /* The drawer supplies the context a standalone page needs breadcrumbs for. */
 .drawer-content .crumbs { display: none; }
-.drawer-content .passport-hero { padding: 26px 0 4px; }
-.drawer-content .passport-hero .mark { width: 64px; height: 64px; margin-bottom: 14px; }
-.drawer-content .passport-hero h1 { font-size: clamp(26px, 5vw, 32px); }
 .drawer-content h2 { margin-top: 40px; }
 /* Page grids assume the page column; at drawer width they re-rack. The
    overrides must out-rank the viewport media queries, which still see a wide
-   window: the drawer is narrow at any viewport. */
-.drawer-content .stats { gap: 10px; }
-.drawer-content .stats dd { font-size: 26px; }
+   window: the drawer is narrow at any viewport. The country spread reads one
+   column, name over numerals over the hundred, everything a step smaller. */
+.drawer-content .pass-spread { display: block; padding-top: 24px; }
+.drawer-content .pass-flag { height: 46px; }
+.drawer-content .pass-lede h1 { margin-top: 12px; font-size: clamp(26px, 5vw, 32px); }
+.drawer-content .pass-figures { margin-top: 18px; gap: 12px 40px; }
+.drawer-content .pass-figures strong { font-size: 32px; }
+/* justify-self reaches block children in modern Chrome, so the field must
+   hand back its end-alignment along with the columns. */
+.drawer-content .pass-hundred { margin-top: 24px; max-width: 300px; gap: 5px; justify-self: start; }
 /* The drawer reads one page at a time: no fold, no shared baseline. */
 .drawer-content .rank-cols { grid-template-columns: 1fr; }
 .drawer-content .rank-cols::before { content: none; }
@@ -3128,18 +3137,39 @@ footer {
   max-width: none;
   margin-left: 0;
 }
-/* Load reveal, quoted from the page: the pulled-out page rises like one. */
+/* Load reveal, quoted from the page but compressed — the same call the country
+   view transition makes, and for the same reason: a lookup should be readable
+   the moment it stops moving. A standalone page load is an arrival and can take
+   its time; the drawer is a glance at a row, and the reader is already reaching
+   for the next one. So the block rise, the flag's pop, the hundred's pour and
+   the score bar's ink all land inside the same ~0.45s window here, where on the
+   page they run out past a second. Every duration below is the page's own value
+   scaled down, not a different gesture: the drawer reads as the page, hurried. */
 @media (prefers-reduced-motion: no-preference) {
-  .drawer-content > * { animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
-  .drawer-content > :nth-child(2) { animation-delay: 0.05s; }
-  .drawer-content > :nth-child(3) { animation-delay: 0.1s; }
-  .drawer-content > :nth-child(4) { animation-delay: 0.15s; }
-  .drawer-content > :nth-child(n + 5) { animation-delay: 0.2s; }
+  .drawer-content > * { animation: rise 0.28s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+  .drawer-content > :nth-child(2) { animation-delay: 0.04s; }
+  .drawer-content > :nth-child(3) { animation-delay: 0.07s; }
+  .drawer-content > :nth-child(4) { animation-delay: 0.1s; }
+  .drawer-content > :nth-child(n + 5) { animation-delay: 0.12s; }
+
+  .drawer-content .pass-flag { animation-duration: 0.32s; }
+  /* The hundred keeps its pour — it is how the score reads — but the last
+     square lands by 0.42s instead of 0.85s. */
+  .drawer-content .pass-hundred i {
+    animation-duration: 0.24s;
+    animation-delay: calc(0.02s + var(--i) * 1.6ms);
+  }
+  .drawer-content .score-bar i { animation-duration: 0.32s; }
+  .drawer-content .score-bar i:nth-child(1) { animation-delay: 0.04s; }
+  .drawer-content .score-bar i:nth-child(2) { animation-delay: 0.07s; }
+  .drawer-content .score-bar i:nth-child(3) { animation-delay: 0.1s; }
+  .drawer-content .score-bar i:nth-child(4) { animation-delay: 0.13s; }
 }
 
-/* Loading: the page's silhouette — mark, title, prose bars — pulsing flat. */
+/* Loading: the page's silhouette — flag card, title, numerals, prose bars —
+   pulsing flat, ragged left like the spread it stands in for. */
 .drawer-skel {
-  padding: 40px 0;
+  padding: 28px 0;
   display: grid;
   gap: 16px;
 }
@@ -3151,12 +3181,11 @@ footer {
 }
 .drawer-skel i:nth-child(1) {
   width: 64px;
-  height: 64px;
-  border-radius: var(--radius-round);
-  justify-self: center;
+  height: 46px;
+  border-radius: 6px;
 }
-.drawer-skel i:nth-child(2) { width: 62%; height: 24px; justify-self: center; margin-bottom: 12px; }
-.drawer-skel i:nth-child(3) { width: 100%; height: 72px; border-radius: var(--radius-plate); margin-bottom: 12px; }
+.drawer-skel i:nth-child(2) { width: 62%; height: 24px; margin-bottom: 12px; }
+.drawer-skel i:nth-child(3) { width: 46%; height: 44px; margin-bottom: 12px; }
 .drawer-skel i:nth-child(5) { width: 92%; }
 .drawer-skel i:nth-child(6) { width: 96%; }
 .drawer-skel i:nth-child(7) { width: 60%; }
@@ -3399,10 +3428,9 @@ footer {
      reaches them; they only need to start with it rather than after it. */
   :root[data-to='rule'] .wx-bar { animation-delay: calc(0.12s + var(--i, 0) * 70ms); }
 
-  /* country — a lookup should be readable the moment it stops moving. */
-  :root[data-to='country'] .stats > div { animation-delay: 0.04s; }
-  :root[data-to='country'] .stats > div:nth-child(2) { animation-delay: 0.09s; }
-  :root[data-to='country'] .stats > div:nth-child(3) { animation-delay: 0.14s; }
+  /* country — a lookup should be readable the moment it stops moving. The
+     hundred keeps its pour but compresses it: last square down by 0.24s. */
+  :root[data-to='country'] .pass-hundred i { animation-delay: calc(0.03s + var(--i) * 2ms); }
   :root[data-to='country'] .score-bar i:nth-child(1) { animation-delay: 0.12s; }
   :root[data-to='country'] .score-bar i:nth-child(2) { animation-delay: 0.19s; }
   :root[data-to='country'] .score-bar i:nth-child(3) { animation-delay: 0.25s; }

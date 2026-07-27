@@ -6,6 +6,7 @@ import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
 import { bareName, displayName, fmt, reconcilePoints, searchIndex, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
+import { hundredCells } from '../../lib/hundred.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
 import Flag from '../../components/Flag.astro';
@@ -123,9 +124,9 @@ const country = countryNode({
   ],
 });
 
-// Character-mark border: rotate through the reference's accent cast by rank.
-const MARK_COLORS = ['var(--color-signal-blue)', 'var(--color-coral)', 'var(--color-marigold)', 'var(--color-sky-wash)'];
-const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
+// The spread's figure: the score as 100 point-squares, one per hundredth of
+// the weighted world — earned marigold from the floor up, locked gray ceiling.
+const hundred = hundredCells(p.score);
 ---
 <Base
   title={`${name} passport - Pyatkov Index`}
@@ -140,15 +141,28 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
     <a href={base}>Passports</a> <span aria-hidden="true">/</span> <span aria-current="page">{name} passport</span>
   </nav>
 
-  <section class="passport-hero">
-    <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true"><Flag iso2={p.iso2} class="flag-mark" /></span>
-    <h1>The {bare} passport</h1>
+  {/* The passport spread: identity and the two numerals on the left, the
+      hundred — the score drawn as point-squares — rising on the right. A
+      <section>, not <header>: the global header rule is sticky chrome. */}
+  <section class="pass-spread">
+    <div class="pass-lede">
+      <Flag iso2={p.iso2} class="pass-flag" />
+      <h1>The {bare} passport</h1>
+      <div class="pass-figures">
+        <p><strong>#{p.rank}</strong> <span>of {total} passports</span></p>
+        <p><strong>{fmt(p.score)}</strong> <span>of 100 points</span></p>
+      </div>
+    </div>
+    <div
+      class="pass-hundred"
+      role="img"
+      aria-label={`The score as 100 squares: ${fmt(p.score)} earned, ${fmt(locked)} locked.`}
+    >
+      {hundred.map((c) => (
+        <i class={c.kind === 'gold' ? undefined : `hc-${c.kind}`} style={`--i:${c.i}${c.kind === 'part' ? `;--part:${c.part}` : ''}`} />
+      ))}
+    </div>
   </section>
-
-  <dl class="stats">
-    <div><dt>Rank</dt><dd>#{p.rank}</dd></div>
-    <div><dt>Score</dt><dd>{fmt(p.score)}</dd></div>
-  </dl>
 
   <h2>Where the score comes from</h2>
   <div class="card">

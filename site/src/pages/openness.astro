@@ -16,14 +16,9 @@ const scores = dests.map((d) => d.score);
 const allCount = openToAllCount(scores);
 const halfCount = openToHalfCount(scores);
 const noneCount = openToNoneCount(scores);
-// The world's average share; the tagline alone says the number.
+// The world's average share; the tagline alone says the number. The
+// headline carries no datum — the whole phrase is the door, half poured.
 const avgOpen = Math.round(averageOpenness(scores));
-// The wordmark's door-i: stem geometry in viewBox units (baseline y=72,
-// stem 24×43 like the wall's 5:9). The pour splits the slab clean in
-// half — marigold below, straw above — a door ajar as emblem, not datum.
-const stemH = 43;
-const pourH = stemH / 2;
-const pourY = 72 - pourH;
 const tipFor = (d: (typeof dests)[number]) =>
   `${flagEmoji(d.iso2)} ${displayName(d.iso3, d.name)} · openness ${fmt(d.score)} · ${ties.has(d.rank) ? '=' : ''}#${d.rank} of ${dests.length}`;
 
@@ -58,28 +53,73 @@ const itemList = {
         <span class="sr-only">Who gets in</span>
         {/* The headline drawn, not set: every letter built from the i's own
             vocabulary — bars with the door's corner, true circles for the
-            bowls — ink throughout, the poured door-i the only color. */}
-        <svg class="who-mark" viewBox="0 0 501 97" aria-hidden="true">
-          <path class="bowl" d="M 5.5,5.5 L 19.5,66.5 L 37,23 L 54.5,66.5 L 68.5,5.5" />
-          <rect class="bar" x="81" y="0" width="11" height="72" rx="3" />
-          <path class="bowl" d="M 86.5,40 A 14.5 14.5 0 0 1 115.5,40" />
-          <rect class="bar" x="110" y="40" width="11" height="32" rx="3" />
-          <circle class="bowl" cx="154" cy="46" r="20.5" />
-          <circle class="bowl" cx="232" cy="46" r="20.5" />
-          <rect class="bar" x="247" y="20" width="11" height="56" rx="3" />
-          <path class="bowl" d="M 252.5,75.5 A 16 16 0 0 1 236.5,91.5" />
-          <circle class="bowl" cx="291" cy="46" r="20.5" />
-          <rect class="bar" x="270.5" y="40.5" width="41" height="11" rx="3" />
-          <rect class="bar" x="333" y="6" width="11" height="66" rx="3" />
-          <rect class="bar" x="324" y="20" width="29" height="11" rx="3" />
-          <path class="bowl" d="M 391.2,29.4 A 12.9 12.9 0 0 0 371.6,46 A 12.9 12.9 0 1 1 372.8,62.6" />
-          <clipPath id="door-stem"><rect x="430" y="29" width="24" height="43" rx="3" /></clipPath>
-          <rect class="straw" x="430" y="29" width="24" height="43" rx="3" />
-          <rect class="doorway" clip-path="url(#door-stem)" x="430" y={pourY} width="24" height={pourH} />
-          <circle class="straw" cx="442" cy="12" r="12" />
-          <rect class="bar" x="461" y="20" width="11" height="52" rx="3" />
-          <path class="bowl" d="M 466.5,40 A 14.5 14.5 0 0 1 495.5,40" />
-          <rect class="bar" x="490" y="40" width="11" height="32" rx="3" />
+            bowls — and the whole phrase is the door: the glyphs drawn once
+            in defs, painted twice — straw, then marigold clipped below one
+            waterline through every bowl's center. Half poured, half dry. */}
+        <svg class="who-mark" viewBox="0 0 488 97" aria-hidden="true">
+          <defs>
+            {/* Attributes, not classes, dress the shapes: <use> clones carry
+                attributes and inherited properties across, but class-matched
+                CSS never reaches the clones. The dry coat's color rides its
+                <use> as fill+stroke; a layer is one color, so paint order
+                inside it cannot matter. Bars fill; bowls stroke. The poured
+                coat is a sea: a wave-topped marigold slab masked to the
+                glyphs, forever adrift. A mask, not a clipPath — a mask
+                catches the bowls' strokes, and the masked group stays
+                rendered, so the slab inside it can animate. */}
+            <g id="who-glyphs">
+              <g stroke="none">
+                <rect x="81" y="0" width="11" height="72" rx="3" />
+                <rect x="110" y="40" width="11" height="32" rx="3" />
+                <rect x="247" y="20" width="11" height="60" rx="3" />
+                {/* The g's crotch, filled flat: the shoulder runs straight
+                    from the bowl's top to the stem, so no crack opens where
+                    the arc would cross the stem's edge. The stem itself runs
+                    long into the hook's stroke for the same reason. */}
+                <path d="M 232 20 H 253 V 27 Z" />
+                <rect x="270.5" y="40.5" width="41" height="11" />
+                <rect x="333" y="6" width="11" height="66" rx="3" />
+                <rect x="324" y="20" width="29" height="11" rx="3" />
+                <rect x="430" y="20" width="11" height="52" rx="3" />
+                <circle cx="435.5" cy="7" r="7" />
+                <rect x="448" y="20" width="11" height="52" rx="3" />
+                {/* The n's crotch, filled like the g's: stem top and arch
+                    apex share y=20, so the dip between them read as a chip,
+                    not a shoulder. */}
+                <path d="M 451 20 H 468 V 27 Z" />
+                <rect x="477" y="40" width="11" height="32" rx="3" />
+              </g>
+              {/* Round caps: every stroke terminal closes in a half-disc, so
+                  arches sit flush on the bars' rounded shoulders, the e's
+                  bowl melts into its crossbar, and the open ends — W tips,
+                  s, the g's hook — wear the same rounding as the bars. */}
+              <g fill="none" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M 5.5,5.5 L 19.5,66.5 L 37,23 L 54.5,66.5 L 68.5,5.5" />
+                <path d="M 86.5,40 A 14.5 14.5 0 0 1 115.5,40" />
+                <circle cx="154" cy="46" r="20.5" />
+                <circle cx="232" cy="46" r="20.5" />
+                <path d="M 252.5,75.5 A 16 16 0 0 1 236.5,91.5" />
+                <path d="M 311.5,46 A 20.5 20.5 0 1 0 305.5,60.5" />
+                <path d="M 391.2,29.4 A 12.9 12.9 0 0 0 371.6,46 A 12.9 12.9 0 1 1 372.8,62.6" />
+                <path d="M 453.5,40 A 14.5 14.5 0 0 1 482.5,40" />
+              </g>
+            </g>
+            <mask id="who-ink" maskUnits="userSpaceOnUse" x="0" y="0" width="488" height="97">
+              <use href="#who-glyphs" fill="#fff" stroke="#fff" />
+            </mask>
+          </defs>
+          <use class="mark-dry" href="#who-glyphs" />
+          {/* Five wavelengths of sea, one viewport plus one wavelength wide:
+              a chain of reflected quadratics swells seven units either side
+              of the waterline — deep enough that the crest clears y=40, the
+              shelf where arches sit on bars, so no straw hairline ever opens
+              at a joint. The drift slides exactly two half-waves, so the
+              loop lands on its own shape and never shows a seam. */}
+          <g class="who-sea" mask="url(#who-ink)">
+            <g class="doorway">
+              <path class="mark-poured" d="M 0 46 q 31.3125 -14 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 t 62.625 0 V 105 H 0 Z" />
+            </g>
+          </g>
         </svg>
       </h1>
       <p class="tagline">

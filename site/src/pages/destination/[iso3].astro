@@ -2,10 +2,10 @@
 import Base from '../../layouts/Base.astro';
 import openness from '../../data/openness.json';
 import rankings from '../../data/rankings.json';
-import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
 import { displayName, fmt, reconcilePoints, searchIndex, verbFor, withArticle } from '../../lib/format.ts';
-import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
+import { LABEL, TIERS, type Tier } from '../../lib/credit.ts';
+import { hundredCells } from '../../lib/hundred.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
 import Flag from '../../components/Flag.astro';
@@ -43,62 +43,11 @@ const tierRows = TIERS.map((t, i) => ({
   count: d.counts[t as keyof typeof d.counts],
 }));
 
-// This destination's own weight in the passport index, and where that ranks.
-const weightIdx = weightsData.destinations.findIndex((w) => w.iso3 === d.iso3);
-const weight = weightsData.destinations[weightIdx];
-const ordinal = (n: number) => {
-  const rem100 = n % 100;
-  if (rem100 >= 11 && rem100 <= 13) return `${n}th`;
-  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
-};
-const places = (n: number) => `${n} ${n === 1 ? 'place' : 'places'}`;
-// Its own passport's row, for the cross-link.
-const ownPassport = rankings.passports.find((p) => p.iso3 === d.iso3);
-
 const name = displayName(d.iso3, d.name);
 // Every use on this page is a sentence subject or the object of a preposition ("outside
 // {name}", "who can enter {name}"), so the article-bearing form is the default here.
 const theName = withArticle(d.iso3, d.name);
 const totalDests = openness.destinations.length;
-
-// The "wide spread of nationalities" reading of a negative delta only holds if there IS a
-// spread: eighteen destinations with delta < 0 admit fewer than ten passports openly, and
-// three admit none at all, where the old sentence followed "0 enter visa-free" with a
-// claim that the place lets in a wide spread. A shift of one or two places is likewise
-// inside the noise of a densely tied count rank and gets no causal story.
-const openHolders = d.counts['visa-free'] + d.counts['visa-on-arrival'];
-const NEAR_TIE = 2;
-const FEW_OPEN = 10;
-const deltaWords =
-  openHolders === 0
-    ? `No foreign passport enters ${theName} without prior permission, so weighting the passports by the populations behind them has nothing left to reorder: the headcount rank of #${d.equalRank} and the weighted #${d.rank} are both simply the floor of the table.`
-    : d.delta === 0
-      ? `Counting passports and weighting them by the populations behind them both put ${theName} at #${d.equalRank}, so its openness is not an artefact of which particular nationalities it lets in.`
-      : Math.abs(d.delta) <= NEAR_TIE
-        ? `Weighting each passport by the population behind it moves ${theName} ${places(Math.abs(d.delta))} ${d.delta > 0 ? 'above' : 'below'} its plain headcount rank of #${d.equalRank} — close enough that the two orderings agree about it.`
-        : d.delta > 0
-          ? `Weighting each passport by the population behind it lifts ${theName} ${places(d.delta)} above its plain headcount rank of #${d.equalRank}: the nationalities it admits are unusually populous ones.`
-          : openHolders < FEW_OPEN
-            ? `Weighting each passport by the population behind it costs ${theName} ${places(-d.delta)} against its plain headcount rank of #${d.equalRank}: the few nationalities it does admit are comparatively small ones.`
-            : `Weighting each passport by the population behind it costs ${theName} ${places(-d.delta)} against its plain headcount rank of #${d.equalRank}: it admits a wide spread of nationalities, but comparatively small ones.`;
-
-// "Still needs permission before departure" spans both the eVisa and visa-required tiers:
-// an eVisa must clear before you fly just as a consular visa must. Filtering on
-// 'visa-required' alone named a weaker passport than the strongest such one on 29 pages
-// (Myanmar named Liechtenstein #12 while Spain #4 needs an eVisa). Sorted by the passport's
-// own score, not by tier, so "strongest" spans both apply-ahead tiers.
-const strongestClosed = holders
-  .filter((p) => CREDIT[p.category] < 1)
-  .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))[0];
-
-// Assembled here, not inline: the template drops the whitespace between an expression
-// and the text on the next line, and this sentence wraps. Only what no tile or table on
-// the page already shows earns a sentence: the score, rank, and tier counts live in the
-// stats and the tier table, so the prose carries just the weighting insight, the
-// strongest apply-ahead passport, and this cross-reference into the passport index.
-const weightLine =
-  `As a destination in the passport index, ${theName} carries a weight of ${weight.weight.toFixed(3)}, ` +
-  `${weightIdx === 0 ? 'the highest of them all' : `the ${ordinal(weightIdx + 1)} highest of ${weightsData.destinations.length}`}.`;
 
 const countryId = pageId(Astro.url.pathname, 'country');
 const country = countryNode({
@@ -117,8 +66,11 @@ const country = countryNode({
   ],
 });
 
-const MARK_COLORS = ['var(--color-signal-blue)', 'var(--color-coral)', 'var(--color-marigold)', 'var(--color-sky-wash)'];
-const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
+// The spread's figure, shared with the passport pages: openness is also
+// points out of 100 — here each square is a hundredth of the weighted world
+// this destination lets in at (or before) the border.
+const hundred = hundredCells(d.score);
+const withheld = Math.max(0, 100 - d.score);
 ---
 <Base
   title={`Who can enter ${theName} - Pyatkov Index`}
@@ -133,33 +85,27 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
     <a href={`${base}openness/`}>Who gets in</a> <span aria-hidden="true">/</span> <span aria-current="page">Who can enter {theName}</span>
   </nav>
 
-  <section class="passport-hero">
-    <span class="mark" style={`--mark-color:${markColor}`} aria-hidden="true"><Flag iso2={d.iso2} class="flag-mark" /></span>
-    <h1>Who can enter {theName}</h1>
+  {/* The same spread the passport pages fly: identity and numerals left,
+      the hundred right — one square per point of openness. */}
+  <section class="pass-spread">
+    <div class="pass-lede">
+      <Flag iso2={d.iso2} class="pass-flag" />
+      <h1>Who can enter {theName}</h1>
+      <div class="pass-figures">
+        <p><strong>#{d.rank}</strong> <span>of {totalDests} destinations</span></p>
+        <p><strong>{fmt(d.score)}</strong> <span>of 100 points</span></p>
+      </div>
+    </div>
+    <div
+      class="pass-hundred"
+      role="img"
+      aria-label={`The openness score as 100 squares: ${fmt(d.score)} admitted, ${fmt(withheld)} locked.`}
+    >
+      {hundred.map((c) => (
+        <i class={c.kind === 'gold' ? undefined : `hc-${c.kind}`} style={`--i:${c.i}${c.kind === 'part' ? `;--part:${c.part}` : ''}`} />
+      ))}
+    </div>
   </section>
-
-  <dl class="stats">
-    <div><dt>Openness</dt><dd>{fmt(d.score)}</dd></div>
-    <div><dt>Rank</dt><dd>#{d.rank}</dd></div>
-  </dl>
-
-  <p class="lede">
-    {deltaWords}
-    {/* Muted when nothing enters openly: "the strongest passport that still needs
-        permission" is every passport there, and deltaWords already says so. */}
-    {openHolders > 0 && (strongestClosed ? (
-      <Fragment> The strongest passport that still needs permission before departure is <a href={`${base}passport/${strongestClosed.iso3.toLowerCase()}/`}>{withArticle(strongestClosed.iso3, strongestClosed.name)}</a>{`, ranked #${strongestClosed.rank} with a score of ${fmt(strongestClosed.score)}.`}</Fragment>
-    ) : (
-      <Fragment>{` No passport needs permission before departure: ${theName} admits every one of them at the border.`}</Fragment>
-    ))}
-  </p>
-
-  <p>
-    {weightLine}
-    {ownPassport && (
-      <Fragment> Its own passport ranks <a href={`${base}passport/${d.iso3.toLowerCase()}/`}>#{ownPassport.rank}</a>.</Fragment>
-    )}
-  </p>
 
   <h2>Where the openness comes from</h2>
   <div class="card">
@@ -178,8 +124,6 @@ const markColor = MARK_COLORS[d.rank % MARK_COLORS.length];
   </table>
   </div>
   </div>
-
-  <p class="table-intro">Its own passport is not listed: every country admits its own citizens.</p>
 
   <div class="card card-mockup">
   <div class="card-header">

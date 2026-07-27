@@ -111,6 +111,7 @@ describe('shipped invariants snapshot (B3)', () => {
 describe('buildMetadata (B9 — honest labels + per-signal vintages)', () => {
   const meta = buildMetadata({
     totalDestinations: matrix.countries.length,
+    matrixOverrides: { baselineVintage: '2026-02-17', verifiedAsOf: '2026-07-27', applied: 3 },
     gdpBody,
     migrantsBody,
     populationBody: read('population.json'),
@@ -139,6 +140,14 @@ describe('buildMetadata (B9 — honest labels + per-signal vintages)', () => {
     expect(meta.vintages.migrants.modalYear).toBe(2024);
     // The matrix vintage names the successor source, not the archived repo.
     expect(meta.vintages.matrix.source).toMatch(/imorte/);
+  });
+
+  it('discloses the matrix vintage — the one signal that used to publish no date at all', () => {
+    // The upstream baseline is frozen at 2026-02-17, so the honest disclosure is the
+    // baseline's date plus the date WE last verified it, plus how much we corrected.
+    expect(meta.vintages.matrix.baselineVintage).toBe('2026-02-17');
+    expect(meta.vintages.matrix.verifiedAsOf).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(meta.vintages.matrix.overridesApplied).toBe(3);
   });
 
   it('carries totalDestinations through unchanged', () => {
