@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 import { initSortableTable } from './table-ui.ts';
 import { initDestSearch } from './dest-search.ts';
+import { initRankTip } from './rank-tip.ts';
 
 export type CountryKind = 'passport' | 'destination';
 
@@ -168,6 +169,8 @@ function render(url: string, page: CountryPage): void {
   // The passport page's destination-map search, same deal: its own script
   // arrived inert with the fetched page, so the drawer wires the clone here.
   initDestSearch({ root: content });
+  // And the door ledgers' pointer-steered row tips.
+  initRankTip({ root: content });
   content.scrollTop = 0;
   content.focus({ preventScroll: true });
 }

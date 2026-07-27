@@ -1775,7 +1775,8 @@ td.down::before { content: '\25BC'; } /* down triangle */
    one tier fills it — and its rules run dashed like the map's closed-door
    chips, so the spread reads earning ink against locked gray before any
    label does. The name is the row's only link, stretched across the row as
-   in the tables; the row answers in its tier's wash. */
+   in the tables, and the row answers hover in the tables' quiet gray — the
+   tier's own wash at any legible strength reads as a stuck highlight. */
 .rank-cols {
   position: relative;
   display: grid;
@@ -1846,10 +1847,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
   position: absolute;
   inset: 0;
 }
-.rank-list li:hover { background: color-mix(in srgb, var(--tier) 15%, transparent); }
-/* The locked tier's 18% black all but vanishes at that mix; it answers in
-   plain gray instead. */
-.rank-list li.tier-visa-required:hover { background: rgba(0, 0, 0, 0.04); }
+.rank-list li:hover { background: rgba(0, 0, 0, 0.024); }
 /* How the door opens, worn after the name — the numeral stands alone. */
 .door-how {
   width: 9px;
@@ -1861,6 +1859,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .rank-list .wt-val {
   justify-self: end;
   min-width: 38px;
+  padding-right: 10px;
   text-align: right;
   font-size: 15px;
   font-weight: 650;
@@ -1875,12 +1874,15 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .rank-list .rank-blank::before { content: ''; }
 /* The row's hover tip: how this door opens, in the methodology's words —
    the dark floating chrome the reference reserves for transient layers. It
-   waits 300ms so a pointer passing through the list doesn't strobe, and it
+   drops below the row, centered on the pointer (rank-tip.ts steers --tip-x,
+   ribbon-tip's grammar; without JS it centers on the row), so it never sits
+   on the ledger's title and never blankets a row edge to edge. It waits
+   a beat so a pointer passing through the list doesn't strobe, and it
    ignores the pointer so it never traps the row's own hover. */
 .rank-tip {
   position: absolute;
-  left: 30px;
-  bottom: calc(100% - 4px);
+  left: var(--tip-x, 50%);
+  top: calc(100% + 5px);
   z-index: 5;
   display: inline-flex;
   align-items: center;
@@ -1895,15 +1897,15 @@ td.down::before { content: '\25BC'; } /* down triangle */
   font-weight: 400;
   color: rgba(255, 255, 255, 0.75);
   opacity: 0;
-  transform: translateY(3px);
+  transform: translate(-50%, -3px);
   transition: opacity 140ms ease, transform 140ms ease;
   pointer-events: none;
 }
 .rank-tip b { font-weight: 600; color: var(--color-white); }
 .rank-list li:hover .rank-tip {
   opacity: 1;
-  transform: none;
-  transition-delay: 300ms;
+  transform: translate(-50%, 0);
+  transition-delay: 100ms;
 }
 /* The locked page's inks: numerals in gray, rules dashed — a shade denser
    than the open page's solid hairlines, which dashing would halve. */

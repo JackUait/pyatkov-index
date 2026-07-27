@@ -326,6 +326,10 @@ const markColor = MARK_COLORS[p.rank % MARK_COLORS.length];
       page's scripts arrive inert; country-drawer.ts re-runs the init there. */}
   <script>
     import { initDestSearch } from '../../lib/dest-search.ts';
-    document.addEventListener('astro:page-load', () => initDestSearch());
+    import { initRankTip } from '../../lib/rank-tip.ts';
+    document.addEventListener('astro:page-load', () => {
+      initDestSearch();
+      initRankTip();
+    });
   </script>
 </Base>
