@@ -1487,10 +1487,8 @@ td.down::before { content: '\25BC'; } /* down triangle */
    needs no legend, no caption, no meter. */
 .pass-spread {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 32px 64px;
-  /* The lede rides the grid's vertical center: the field is the taller
-     column, so name and numerals sit level with its middle courses. */
+  grid-template-columns: auto minmax(0, 1fr) minmax(180px, 372px);
+  gap: 36px 24px;
   align-items: center;
   padding-top: 44px;
   margin-bottom: 8px;
@@ -1498,28 +1496,35 @@ td.down::before { content: '\25BC'; } /* down triangle */
      builds itself square by square; a 12px jump under it is just a jump. */
   animation: none;
 }
+/* The lede dissolves so flag, name and numerals take grid areas of their
+   own: flag and name share the first line at full measure, then the
+   numerals stand beside the hundred — side by side at desk width, level
+   with the field's middle courses. Two columns of one spread. */
+.pass-lede { display: contents; }
 /* The flag flies whole: the hand-drawn 21x15 card at hero scale, no circle
    crop eating the corners of the art and no rank-colored ring arguing with
    the flag's own palette. The card carries its own baked-in rounding and
    soft edge, and width: auto lets the two odd cards (Nepal's pennant, the
    Vatican's square) keep their honest shape instead of letterboxing. */
 .pass-flag {
+  grid-area: 1 / 1;
   display: block;
   width: auto;
   height: 60px;
 }
 .pass-lede h1 {
-  margin: 18px 0 0;
+  grid-area: 1 / 2 / 2 / 4;
+  margin: 0;
   font-size: clamp(36px, 3.4vw, 46px);
 }
 /* The numerals answer at display scale, bare on the paper. Each is a
    sentence — "#1 of 199 passports", "94.4 of 100 points" — so a screen
    reader gets prose while the eye gets the figure and its clause. */
 .pass-figures {
+  grid-area: 2 / 1 / 3 / 3;
   display: flex;
   flex-wrap: wrap;
   gap: 16px 56px;
-  margin-top: 34px;
 }
 .pass-figures p {
   display: flex;
@@ -1529,7 +1534,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
   max-width: none;
 }
 .pass-figures strong {
-  font-size: clamp(38px, 4.6vw, 50px);
+  font-size: clamp(56px, 7vw, 96px);
   font-weight: 650;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -1545,9 +1550,8 @@ td.down::before { content: '\25BC'; } /* down triangle */
    content edge. Cells are fluid so the drawer and the phone shrink the
    whole figure instead of clipping it. */
 .pass-hundred {
-  justify-self: end;
+  grid-area: 2 / 3;
   width: 100%;
-  max-width: 372px;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 6px;
@@ -1578,11 +1582,20 @@ td.down::before { content: '\25BC'; } /* down triangle */
   }
 }
 @media (max-width: 860px) {
-  /* The figure will not sit beside a readable headline: stack them, name
-     and numerals first, and the field narrows to phone scale. */
-  .pass-spread { grid-template-columns: 1fr; gap: 28px; }
-  .pass-figures { margin-top: 26px; }
-  .pass-hundred { justify-self: start; max-width: 330px; gap: 5px; }
+  /* Everything a step smaller: the field narrows to phone scale, the flag
+     drops to headline height, and the numerals — too cramped to sit side by
+     side — stack and take the field's own extent instead: rank flush with
+     the hundred's top course, score flush with its floor. */
+  .pass-spread { grid-template-columns: auto minmax(0, 1fr) minmax(150px, 240px); gap: 24px 18px; }
+  .pass-flag { height: 46px; }
+  .pass-figures {
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: stretch;
+    gap: 16px;
+  }
+  .pass-figures strong { font-size: 38px; }
+  .pass-hundred { gap: 5px; }
 }
 
 /* ---- Tier color keys: the whole site speaks tiers in squared swatches,
@@ -3108,16 +3121,24 @@ footer {
 .drawer-content h2 { margin-top: 40px; }
 /* Page grids assume the page column; at drawer width they re-rack. The
    overrides must out-rank the viewport media queries, which still see a wide
-   window: the drawer is narrow at any viewport. The country spread reads one
-   column, name over numerals over the hundred, everything a step smaller. */
-.drawer-content .pass-spread { display: block; padding-top: 24px; }
-.drawer-content .pass-flag { height: 46px; }
-.drawer-content .pass-lede h1 { margin-top: 12px; font-size: clamp(26px, 5vw, 32px); }
-.drawer-content .pass-figures { margin-top: 18px; gap: 12px 40px; }
-.drawer-content .pass-figures strong { font-size: 32px; }
-/* justify-self reaches block children in modern Chrome, so the field must
-   hand back its end-alignment along with the columns. */
-.drawer-content .pass-hundred { margin-top: 24px; max-width: 300px; gap: 5px; justify-self: start; }
+   window: the drawer is narrow at any viewport. The country spread keeps
+   the page's grammar — flag and name on one line, numerals anchored to the
+   hundred's extent — everything a step smaller. */
+.drawer-content .pass-spread {
+  grid-template-columns: auto minmax(0, 1fr) minmax(150px, 216px);
+  gap: 22px 20px;
+  padding-top: 24px;
+}
+.drawer-content .pass-flag { height: 40px; }
+.drawer-content .pass-lede h1 { font-size: clamp(26px, 5vw, 32px); }
+.drawer-content .pass-figures {
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: 16px;
+}
+.drawer-content .pass-figures strong { font-size: 42px; }
+.drawer-content .pass-hundred { gap: 4px; }
 /* The drawer reads one page at a time: no fold, no shared baseline. */
 .drawer-content .rank-cols { grid-template-columns: 1fr; }
 .drawer-content .rank-cols::before { content: none; }
@@ -3695,4 +3716,129 @@ footer {
   .upd-lede { grid-template-columns: minmax(0, 1fr); }
   .upd-year { max-width: 30rem; }
   .upd-movers li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* ---- The country log: the changelog's slice for one passport or one border.
+   Not the updates feed's cards — a handful of ruled lines with the date in the
+   margin, and a flat block on the spine in the direction's colour, the same
+   marks the year strip stands up. Runs at the foot of both country pages. ---- */
+.cnews {
+  margin-top: var(--section-gap);
+}
+.cnews h2 { margin-bottom: 10px; }
+.cnews-lede {
+  margin: 0 0 22px;
+  max-width: 62ch;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.56;
+  color: var(--color-graphite);
+}
+.cnews-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-ink);
+}
+.cnews-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) auto;
+  gap: 6px 24px;
+  align-items: baseline;
+  padding: 16px 0 16px 16px;
+  border-bottom: 1px solid var(--border-faint);
+}
+/* The one chromatic tell, flat and frameless: which way the door swung. */
+.cnews-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 21px;
+  width: 6px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.18);
+}
+.cnews-row.is-opened::before { background: var(--color-sky-wash); }
+.cnews-row.is-closed::before { background: var(--color-coral); }
+.cnews-row time {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-slate);
+}
+.cnews-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--ink-95);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-fast, 160ms) ease;
+}
+a.cnews-line:hover { border-bottom-color: var(--border-hairline); }
+.cnews-shift {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 8px 0 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-graphite);
+}
+.cnews-arrow { color: var(--ink-40); }
+.cnews-sunset {
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-saffron);
+}
+.cnews-who {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: var(--text-body-sm);
+}
+.cnews-who a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-graphite);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast, 160ms) ease, border-color var(--dur-fast, 160ms) ease;
+}
+.cnews-who a:hover {
+  color: var(--ink-95);
+  border-bottom-color: var(--border-hairline);
+}
+.cnews-rest a { color: var(--color-slate); }
+.cnews-src {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-notion-blue);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cnews-src:hover { text-decoration: underline; }
+.cnews-all {
+  margin: 18px 0 0;
+  font-size: var(--text-body-sm);
+}
+.cnews-all a { color: var(--color-notion-blue); text-decoration: none; }
+.cnews-all a:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  .cnews-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .cnews-src { margin-top: 8px; }
 }
