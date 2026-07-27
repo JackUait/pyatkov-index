@@ -263,6 +263,31 @@ function shiftPage(on: boolean): void {
   });
 }
 
+/** Whether a url is the country the sheet is already showing — the top of the
+ *  stack, not merely somewhere in its history. Clicking the highlighted row
+ *  again is a reader confirming where they are, not asking for anything, so the
+ *  drawer holds still rather than re-rendering and throwing away their scroll. */
+export function isShowing(url: string, history: readonly string[]): boolean {
+  return history.length > 0 && history[history.length - 1] === url;
+}
+
+/** What a click made while the sheet is open should do, from which of the
+ *  drawer's regions the target sits in.
+ *
+ *  Anything landing outside the panel dismisses. A click on another country is
+ *  the one exception, and it never reaches this decision: the capture handler
+ *  swaps the sheet and stops the event, so a reader walking down the ranking
+ *  keeps the drawer while a reader reaching past it puts the drawer away. */
+export function drawerClickAction(hit: {
+  back: boolean;
+  close: boolean;
+  inPanel: boolean;
+}): 'back' | 'close' | 'none' {
+  if (hit.back) return 'back';
+  if (hit.close) return 'close';
+  return hit.inPanel ? 'none' : 'close';
+}
+
 function setModal(open: boolean): void {
   // Header and footer go inert so focus and pointer stay on the sheet and the
   // ranking — no focus-trap arithmetic. <main> is left live on purpose: the
@@ -471,9 +496,12 @@ function onClick(e: MouseEvent): void {
   }
   if (!countryPath(a.pathname, import.meta.env.BASE_URL)) return;
   // Capture phase, before the view-transition router's own click listener:
-  // stopPropagation keeps this navigation out of its hands entirely.
+  // stopPropagation keeps this navigation out of its hands entirely. It is
+  // stopped even for the country already showing — that click asks for nothing,
+  // but it must not fall through to a navigation or to the backdrop dismissal.
   e.preventDefault();
   e.stopPropagation();
+  if (isShowing(a.href, stack)) return;
   open(a.href);
 }
 
@@ -550,14 +578,13 @@ export function initCountryDrawer(): void {
     const el = root();
     if (!el || el.hidden) return;
     const t = e.target as Element | null;
-    if (t?.closest?.('#drawer-back')) return void back();
-    if (t?.closest?.('#drawer-close')) return void close();
-    // A country link — a table row or an in-panel link — is caught in the
-    // capture handler, which swaps the sheet and stops the event before it
-    // reaches here. Anything else inside the sheet or the live page is left
-    // alone; only a click on the bare backdrop dismisses.
-    if (t?.closest?.('.drawer-panel') || t?.closest?.('main')) return;
-    close();
+    const action = drawerClickAction({
+      back: !!t?.closest?.('#drawer-back'),
+      close: !!t?.closest?.('#drawer-close'),
+      inPanel: !!t?.closest?.('.drawer-panel'),
+    });
+    if (action === 'back') back();
+    else if (action === 'close') close();
   });
   // A real navigation replaces the body: release the scroll lock and the inert
   // header/footer (both persist across swaps) before the new page lands.

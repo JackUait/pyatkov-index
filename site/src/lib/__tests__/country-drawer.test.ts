@@ -4,7 +4,9 @@ import {
   createPrefetcher,
   createScrollPin,
   createScrollTuck,
+  drawerClickAction,
   isPlainLeftClick,
+  isShowing,
   parseMs,
   shouldPrefetch,
 } from '../country-drawer.ts';
@@ -51,6 +53,42 @@ describe('isPlainLeftClick', () => {
     expect(isPlainLeftClick({ ...plain, ctrlKey: true })).toBe(false);
     expect(isPlainLeftClick({ ...plain, shiftKey: true })).toBe(false);
     expect(isPlainLeftClick({ ...plain, altKey: true })).toBe(false);
+  });
+});
+
+describe('drawerClickAction', () => {
+  const nowhere = { back: false, close: false, inPanel: false };
+
+  it('reads the two buttons on the island', () => {
+    expect(drawerClickAction({ ...nowhere, back: true, inPanel: true })).toBe('back');
+    expect(drawerClickAction({ ...nowhere, close: true, inPanel: true })).toBe('close');
+  });
+
+  it('leaves the sheet alone for anything else inside it', () => {
+    expect(drawerClickAction({ ...nowhere, inPanel: true })).toBe('none');
+  });
+
+  it('dismisses on any click outside the sheet, the live ranking included', () => {
+    // A country link never reaches here — the capture handler swaps the sheet
+    // and stops the event — so everything that does get here is the reader
+    // reaching past the drawer for the page behind it.
+    expect(drawerClickAction(nowhere)).toBe('close');
+  });
+});
+
+describe('isShowing', () => {
+  it('knows the country the sheet is already on', () => {
+    expect(isShowing('https://x.dev/passport/kor/', ['https://x.dev/passport/kor/'])).toBe(true);
+  });
+
+  it('only counts the top of the stack — a country further back is a fresh push', () => {
+    const stack = ['https://x.dev/passport/kor/', 'https://x.dev/destination/usa/'];
+    expect(isShowing('https://x.dev/destination/usa/', stack)).toBe(true);
+    expect(isShowing('https://x.dev/passport/kor/', stack)).toBe(false);
+  });
+
+  it('is false for a closed sheet, whatever the link', () => {
+    expect(isShowing('https://x.dev/passport/kor/', [])).toBe(false);
   });
 });
 
