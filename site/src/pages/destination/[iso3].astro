@@ -84,15 +84,10 @@ const NAMED = 6;
   title={`Who can enter ${theName} - Pyatkov Index`}
   description={`${name}: openness rank #${d.rank} of ${totalDests}, score ${fmt(d.score)}/100. Of ${holders.length} foreign passports, ${d.counts['visa-free']} ${verbFor(d.counts['visa-free'], 'enter')} visa-free and ${d.counts['visa-on-arrival']} on arrival; ${d.counts['e-visa'] + d.counts['visa-required']} must apply first.`}
   ogType="article"
-  breadcrumb={[{ name: 'Who gets in', href: `${base}openness/` }, { name: `Who can enter ${theName}` }]}
   mainEntityId={countryId}
   basedOnId={ID.dataset}
   jsonld={country}
 >
-  <nav class="crumbs" aria-label="Breadcrumb">
-    <a href={`${base}openness/`}>Who gets in</a> <span aria-hidden="true">/</span> <span aria-current="page">Who can enter {theName}</span>
-  </nav>
-
   {/* The same spread the passport pages fly: identity and numerals left,
       the hundred right — one square per point of openness. */}
   <section class="pass-spread">
@@ -213,13 +208,6 @@ const NAMED = 6;
   </section>
 
   <style>
-    .crumbs {
-      font-size: 13px;
-      color: var(--color-graphite);
-      margin-bottom: 12px;
-    }
-    .crumbs span { margin: 0 6px; }
-    .crumbs [aria-current] { margin: 0; }
     /* Captions are indexable text, but the tables are already titled by their h2. */
     .sr-only {
       position: absolute;

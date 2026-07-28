@@ -139,15 +139,10 @@ const news = passportNews(updates, p.iso3);
   title={`${name} passport - Pyatkov Index`}
   description={`${name} passport: rank #${p.rank} of ${total}, score ${fmt(p.score)}/100. Visa-free to ${p.counts['visa-free']}, on arrival to ${p.counts['visa-on-arrival']}; ${p.counts['e-visa']} eVisa count a fifth and ${p.counts['visa-required']} visa-required count as closed.`}
   ogType="article"
-  breadcrumb={[{ name: 'Passports', href: base }, { name: `${name} passport` }]}
   mainEntityId={countryId}
   basedOnId={ID.dataset}
   jsonld={country}
 >
-  <nav class="crumbs" aria-label="Breadcrumb">
-    <a href={base}>Passports</a> <span aria-hidden="true">/</span> <span aria-current="page">{name} passport</span>
-  </nav>
-
   {/* The passport spread: identity and the two numerals on the left, the
       hundred — the score drawn as point-squares — rising on the right. A
       <section>, not <header>: the global header rule is sticky chrome. */}
@@ -354,13 +349,6 @@ const news = passportNews(updates, p.iso3);
   </section>
 
   <style>
-    .crumbs {
-      font-size: 13px;
-      color: var(--color-graphite);
-      margin-bottom: 12px;
-    }
-    .crumbs span { margin: 0 6px; }
-    .crumbs [aria-current] { margin: 0; }
     .list-intro {
       font-size: 14px;
       color: var(--color-graphite);

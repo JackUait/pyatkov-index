@@ -3277,8 +3277,6 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 .drawer-content:focus { outline: none; }
-/* The drawer supplies the context a standalone page needs breadcrumbs for. */
-.drawer-content .crumbs { display: none; }
 .drawer-content h2 { margin-top: 40px; }
 /* Page grids assume the page column; at drawer width they re-rack. The
    overrides must out-rank the viewport media queries, which still see a wide
@@ -3490,7 +3488,7 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
   }
 
   /* down / up — the hierarchy step. Down steps into a country page, a level
-     below the map; up — breadcrumb or back out of one — runs the pair
+     below the map; up — leaving a country page for a section — runs the pair
      reversed. Down under a popstate reverses too: back is an undo. Fast,
      because these pages are lookups. */
   :root[data-move='down']::view-transition-old(root),
