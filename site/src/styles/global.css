@@ -133,15 +133,39 @@ header {
   position: sticky;
   top: 0;
   z-index: 20;
+}
+/* The scrolled bar is a pill, not a full-bleed band: the white fill lives on a
+   pseudo-element so it can be a capsule while the header stays full-width and
+   sticks edge to edge. It hangs off .nav-inner, not <header>, because that is
+   the box the drawer narrows — pinned to the header instead, the capsule kept
+   the viewport's width while the words inside it slid left, and a squeezed page
+   got a lozenge with a hundred empty pixels on its right.
+
+   Its width is the whole nav-inner box, padding included, so the brand and the
+   last nav item sit a full --pad inside the round ends instead of grazing them,
+   and the capsule runs a gutter wider than the content column it floats over.
+   The fill has to live at z -1 so the current-page peach block (also -1, later
+   in tree order) still paints above it. */
+.nav-inner::before {
+  content: '';
+  position: absolute;
+  inset: 6px 0;
+  z-index: -1;
+  border-radius: var(--radius-round);
   background: var(--color-white);
   box-shadow: var(--shadow-nav);
-  transition: background-color 200ms ease, box-shadow 200ms ease;
+  transition: opacity 200ms ease, transform 200ms ease;
 }
-:root[data-top] header {
-  background: transparent;
-  box-shadow: none;
+/* At rest the capsule is gone entirely and the masthead shares the hero's
+   canvas; it drops back into place on the first scroll. A short slide, not a
+   scale — stretching a capsule open distorts the very ends that make it one.
+   Both properties are compositor-side, so the bar never re-lays-out. */
+:root[data-top] .nav-inner::before {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 .nav-inner {
+  position: relative;
   max-width: var(--content-width);
   margin: 0 auto;
   min-height: var(--nav-h);
@@ -3092,9 +3116,9 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
      hundred pixels of a small screen. */
   header {
     position: static;
-    background: transparent;
-    box-shadow: none;
   }
+  /* Nothing scrolls under a static bar, so there is no capsule to drop in. */
+  .nav-inner::before { display: none; }
   html { scroll-padding-top: 16px; }
   .nav-inner {
     flex-direction: column;
@@ -3190,6 +3214,10 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
     margin-left: 0;
     margin-right: calc(min(620px, 100vw - 24px) + 36px);
   }
+  /* The squeezed column keeps its left edge, which puts the capsule's round end
+     flush against the viewport. Held off by the same 12px the sheet floats on
+     the other side, so both ends of the masthead read as deliberate. */
+  body.drawer-shifted .nav-inner::before { left: 12px; }
 }
 
 /* The controls, as an island floating over the page instead of a bar above it:
