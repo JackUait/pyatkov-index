@@ -1930,25 +1930,24 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .door-pts {
   grid-area: pts;
   justify-self: end;
-  /* Seated on the lead's floor: the numeral block closes the entry at the
-     squares' own line, not hung from the name above. */
+  /* One line seated on the lead's floor: numeral and unit share a baseline
+     level with the squares' row, the name standing alone above. */
   align-self: end;
   margin: 0;
   padding-right: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  align-items: baseline;
+  gap: 8px;
 }
 .door-pts b {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 650;
   line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   color: var(--ink-95);
 }
-.door-pts .dec { font-size: 17px; }
+.door-pts .dec { font-size: 15px; }
 .door-unit {
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
