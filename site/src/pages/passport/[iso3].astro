@@ -6,7 +6,7 @@ import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
 import { bareName, displayName, fmt, reconcilePoints, scoreParts, searchIndex, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
-import { hundredCells } from '../../lib/hundred.ts';
+import { hundredCells, pointRun } from '../../lib/hundred.ts';
 import { stripTicks } from '../../lib/strip.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
@@ -73,10 +73,8 @@ const total = rankings.passports.length;
 const weightRank = (iso3: string) => weightsData.destinations.findIndex((w) => w.iso3 === iso3) + 1;
 // Weight as points: a border-open destination's share of the total weight is exactly what
 // it pays into the score — or, for a closed door, what it would pay if it opened.
-const sharePoints = (weight: number) => fmt((100 * weight) / denom);
-// The spread rules both pages to one baseline: the shorter list keeps blank
-// ledger rows until the columns stand equally tall.
-const blankRows = (n: number) => Math.max(topOpen.length, topMissing.length) - n;
+const shareOf = (weight: number) => (100 * weight) / denom;
+const sharePoints = (weight: number) => fmt(shareOf(weight));
 // The gloss per tier, in the methodology's words — spoken by the doors
 // spread's row tooltips, where it runs mid-sentence after the label's dash.
 const ACCESS_NOTE: Record<Tier, string> = {
@@ -121,9 +119,19 @@ const barLabel = [
   ...(locked > 0.05 ? [`locked: ${fmt(locked)} points`] : []),
 ].join(', ');
 
-// The doors that matter most, pulled out as cards.
+// The doors that matter most, set as the ledger's lead entries: each page of
+// the spread opens on its own rank 1, a double-height row that draws the
+// door's points in the page's currency — the hundred's point-squares, a
+// short run at plate scale — and the ruled rows continue at 2.
 const best = topOpen[0];
 const gap = topMissing[0];
+const openRest = topOpen.slice(1);
+const missingRest = topMissing.slice(1);
+const bestRun = best ? pointRun(shareOf(best.weight)) : { full: 0, part: 0 };
+const gapRun = gap ? pointRun(shareOf(gap.weight)) : { full: 0, part: 0 };
+// The spread rules both pages to one baseline: the shorter list keeps blank
+// ledger rows until the columns stand equally tall.
+const blankRows = (n: number) => Math.max(openRest.length, missingRest.length) - n;
 
 // The mirror view: how the country does as a destination. On near-identical
 // passports (the Schengen pairs) this is where the numbers actually diverge.
@@ -240,67 +248,79 @@ const news = passportNews(updates, p.iso3);
     </div>
   </div>
 
-  <div class="hl-grid">
-    {best && (
-      <div class="hl-card hl-open">
-        <span class="hl-label">Best open door</span>
-        <a class="hl-name" href={`${base}destination/${best.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={best.iso2} /> {displayName(best.iso3, best.name)}</a>
-        <span class={`tier-key tier-${best.category}`}>{LABEL[best.category]}</span>
-        <span class="hl-pts"><b>{sharePoints(best.weight)}</b> points of the score</span>
-      </div>
-    )}
-    <div class="hl-card hl-locked">
-      {gap ? (
-        <Fragment>
-          <span class="hl-label">Costliest closed door</span>
-          <a class="hl-name" href={`${base}destination/${gap.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={gap.iso2} /> {displayName(gap.iso3, gap.name)}</a>
-          <span class={`tier-key tier-${gap.category}`}>{LABEL[gap.category]}</span>
-          <span class="hl-pts"><b>+{sharePoints(gap.weight)}</b> points if it opened</span>
-        </Fragment>
-      ) : (
-        <Fragment>
-          <span class="hl-label">Nothing closed</span>
-          <p class="hl-none">Every weighted destination admits {name} holders without prior permission.</p>
-        </Fragment>
-      )}
-    </div>
-  </div>
-
   <div class="rank-cols">
     <section class="ledger-page">
       <h2>The biggest open doors</h2>
-      <ol class="rank-list">
-        {topOpen.map((d) => (
+      {/* The page's lead: rank 1 set double-height, its points said twice —
+          the numeral on the rows' own right rail, and beneath the name the
+          same value drawn in point-squares, the hundred quoted at plate
+          scale. Four marigold squares and a waterline: this door alone
+          pays four and a bit of the passport's hundred. */}
+      {best && (
+        <div class={`door-lead tier-${best.category}`}>
+          <span class="door-rank" aria-hidden="true">1</span>
+          <a class="door-name" href={`${base}destination/${best.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={best.iso2} /> {displayName(best.iso3, best.name)}</a>
+          <span class={`tier-key tier-${best.category}`}>{LABEL[best.category]}</span>
+          {(bestRun.full > 0 || bestRun.part > 0) && (
+            <div class="door-run" aria-hidden="true">
+              {Array.from({ length: bestRun.full }).map((_, i) => <i style={`--i:${i}`} />)}
+              {bestRun.part > 0 && <i class="dr-part" style={`--i:${bestRun.full};--part:${bestRun.part}`} />}
+            </div>
+          )}
+          <p class="door-pts">
+            <b>{scoreParts(shareOf(best.weight)).int}<span class="dec">.{scoreParts(shareOf(best.weight)).dec}</span></b>
+            <span class="door-unit">points of the score</span>
+          </p>
+        </div>
+      )}
+      <ol class={`rank-list${best ? ' rank-cont' : ''}`}>
+        {openRest.map((d) => (
           <li class={`tier-${d.category}`}>
             <a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}<i class="door-how" aria-hidden="true"></i></a>
             <b class="wt-val"><span class="sr-only">{LABEL[d.category]}, </span>{sharePoints(d.weight)}</b>
             <span class="rank-tip" aria-hidden="true"><i class="door-how"></i><span><b>{LABEL[d.category]}</b> — {ACCESS_NOTE[d.category]}</span></span>
           </li>
         ))}
-        {Array.from({ length: blankRows(topOpen.length) }).map(() => <li class="rank-blank" aria-hidden="true"><span class="wt-val">&nbsp;</span></li>)}
+        {Array.from({ length: blankRows(openRest.length) }).map(() => <li class="rank-blank" aria-hidden="true"><span class="wt-val">&nbsp;</span></li>)}
       </ol>
     </section>
     <section class="ledger-page ledger-locked">
       <h2>The biggest closed doors</h2>
-      {topMissing.length === 0 ? (
-        <p class="list-intro">None — this passport reaches every weighted destination.</p>
+      {/* One tier fills this whole page of the ledger — the rows carry no
+          swatches, their rules run dashed like the map's closed-door chips,
+          and the column reads locked-gray against the open page's inks. The
+          lead's squares pool in the locked wash: what the costliest door
+          would pay, not yet a color. */}
+      {gap ? (
+        <div class={`door-lead tier-${gap.category}`}>
+          <span class="door-rank" aria-hidden="true">1</span>
+          <a class="door-name" href={`${base}destination/${gap.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={gap.iso2} /> {displayName(gap.iso3, gap.name)}</a>
+          <span class={`tier-key tier-${gap.category}`}>{LABEL[gap.category]}</span>
+          {(gapRun.full > 0 || gapRun.part > 0) && (
+            <div class="door-run" aria-hidden="true">
+              {Array.from({ length: gapRun.full }).map((_, i) => <i style={`--i:${i}`} />)}
+              {gapRun.part > 0 && <i class="dr-part" style={`--i:${gapRun.full};--part:${gapRun.part}`} />}
+            </div>
+          )}
+          <p class="door-pts">
+            <b>+{scoreParts(shareOf(gap.weight)).int}<span class="dec">.{scoreParts(shareOf(gap.weight)).dec}</span></b>
+            <span class="door-unit">points if it opened</span>
+          </p>
+        </div>
       ) : (
-        <Fragment>
-          {/* One tier fills this whole page of the ledger — the rows carry
-              no swatches, their rules run dashed like the map's closed-door
-              chips, and the column reads locked-gray against the open
-              page's inks. */}
-          <ol class="rank-list">
-            {topMissing.map((d) => (
-              <li class={`tier-${d.category}`}>
-                <a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
-                <b class="wt-val">+{sharePoints(d.weight)}</b>
-                <span class="rank-tip" aria-hidden="true"><span><b>{LABEL[d.category]}</b> — {ACCESS_NOTE[d.category]}</span></span>
-              </li>
-            ))}
-            {Array.from({ length: blankRows(topMissing.length) }).map(() => <li class="rank-blank" aria-hidden="true"><span class="wt-val">&nbsp;</span></li>)}
-          </ol>
-        </Fragment>
+        <p class="door-none">Every weighted destination admits {name} holders without prior permission.</p>
+      )}
+      {gap && (
+        <ol class="rank-list rank-cont">
+          {missingRest.map((d) => (
+            <li class={`tier-${d.category}`}>
+              <a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {displayName(d.iso3, d.name)}</a>
+              <b class="wt-val">+{sharePoints(d.weight)}</b>
+              <span class="rank-tip" aria-hidden="true"><span><b>{LABEL[d.category]}</b> — {ACCESS_NOTE[d.category]}</span></span>
+            </li>
+          ))}
+          {Array.from({ length: blankRows(missingRest.length) }).map(() => <li class="rank-blank" aria-hidden="true"><span class="wt-val">&nbsp;</span></li>)}
+        </ol>
       )}
     </section>
   </div>
@@ -393,11 +413,6 @@ const news = passportNews(updates, p.iso3);
   </section>
 
   <style>
-    .list-intro {
-      font-size: 14px;
-      color: var(--color-graphite);
-      max-width: 46ch;
-    }
     /* Captions are indexable text, but the tables are already titled by their h2. */
     .sr-only {
       position: absolute;

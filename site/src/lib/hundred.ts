@@ -13,6 +13,18 @@ export type HundredCell = { kind: 'gold' | 'part' | 'lock'; i: number; part?: nu
 
 const SIDE = 10;
 
+/** A single door's points as a short run of the same squares: `full` whole
+ *  point-squares plus, when the displayed tenth is nonzero, one waterline
+ *  square filled to `part`. Split from the DISPLAYED value (fmt = toFixed(1))
+ *  for the same reason as the grid: the run beside "4.3 points" must draw
+ *  exactly four and three tenths, whatever the raw float says. */
+export function pointRun(points: number): { full: number; part: number } {
+  const tenth = Math.max(0, Math.round(points * 10) / 10);
+  const full = Math.floor(tenth);
+  const part = Math.round((tenth - full) * 10) / 10;
+  return { full, part };
+}
+
 export function hundredCells(score: number): HundredCell[] {
   const tenth = Math.min(100, Math.max(0, Math.round(score * 10) / 10));
   const gold = Math.floor(tenth);

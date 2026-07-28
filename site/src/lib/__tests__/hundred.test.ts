@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { hundredCells, type HundredCell } from '../hundred.ts';
+import { hundredCells, pointRun, type HundredCell } from '../hundred.ts';
 
 // The grid is emitted in DOM order (top-left → bottom-right) while the pour
 // index `i` runs bottom-left → top-right, so the marigold mass sits on the
@@ -67,5 +67,30 @@ describe('hundredCells (the passport spread: score drawn as 100 point-squares)',
       if (c.kind === 'part') expect(c.part).toBeGreaterThan(0);
       else expect(c.part).toBeUndefined();
     });
+  });
+});
+
+describe('pointRun (a door\'s points as a short run of squares)', () => {
+  it('splits 4.3 points into four whole squares and a 0.3 waterline', () => {
+    expect(pointRun(4.3)).toEqual({ full: 4, part: 0.3 });
+  });
+
+  it('draws a sub-point door as a lone waterline square', () => {
+    expect(pointRun(0.4)).toEqual({ full: 0, part: 0.4 });
+  });
+
+  it('draws a whole-point door without a phantom sliver', () => {
+    expect(pointRun(2.0)).toEqual({ full: 2, part: 0 });
+  });
+
+  it('agrees with the displayed one-decimal value, not the raw float', () => {
+    // fmt() shows 0.96 as "1.0": one whole square, no sliver.
+    expect(pointRun(0.96)).toEqual({ full: 1, part: 0 });
+    // fmt() shows 0.04 as "0.0": nothing to draw.
+    expect(pointRun(0.04)).toEqual({ full: 0, part: 0 });
+  });
+
+  it('never emits squares for a negative value', () => {
+    expect(pointRun(-1.2)).toEqual({ full: 0, part: 0 });
   });
 });

@@ -1801,76 +1801,6 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .tier-table th, .tier-table td { padding-inline: 12px; }
 }
 
-/* ---- Door cards: the two destinations that move the score most, as the
-   reference's accent panels — sky for the open door, the neutral wash for
-   the closed one. ---- */
-.hl-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: 12px 0 0;
-}
-.hl-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 20px 22px;
-  border-radius: var(--radius-plate);
-}
-.hl-open { background: var(--color-sky-tint); }
-.hl-locked { background: rgba(0, 0, 0, 0.05); }
-.hl-label {
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  letter-spacing: var(--tracking-caption);
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.75);
-}
-.hl-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 19px;
-  font-weight: 650;
-  letter-spacing: -0.25px;
-  color: var(--color-ink);
-}
-.hl-name:hover { color: var(--color-blue-deep); text-decoration: none; }
-.hl-card .tier-key {
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  letter-spacing: var(--tracking-caption);
-  color: rgba(0, 0, 0, 0.75);
-}
-.hl-pts {
-  margin-top: auto;
-  padding-top: 6px;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  font-size: var(--text-caption);
-  letter-spacing: var(--tracking-caption);
-  color: rgba(0, 0, 0, 0.75);
-}
-.hl-pts b {
-  font-size: 28px;
-  font-weight: 650;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-ink);
-}
-.hl-none {
-  margin: 0;
-  font-size: var(--text-body-sm);
-  line-height: var(--leading-body-sm);
-  color: rgba(0, 0, 0, 0.75);
-}
-@media (max-width: 640px) {
-  .hl-grid { grid-template-columns: 1fr; }
-}
-
 /* ---- The biggest doors: the score's own ledger ----
    Two facing pages set bare on the paper — the doors that pay the score in,
    and the doors that withhold it — ruled like a spread: a hairline fold down
@@ -1886,7 +1816,10 @@ td.down::before { content: '\25BC'; } /* down triangle */
    chips, so the spread reads earning ink against locked gray before any
    label does. The name is the row's only link, stretched across the row as
    in the tables, and the row answers hover in the tables' quiet gray — the
-   tier's own wash at any legible strength reads as a stuck highlight. */
+   tier's own wash at any legible strength reads as a stuck highlight.
+   Each page opens on its lead — rank 1 as a double-height entry, the old
+   door cards folded into the ledger itself — and the ruled rows continue
+   at 2 beneath it. */
 .rank-cols {
   position: relative;
   display: grid;
@@ -1905,13 +1838,139 @@ td.down::before { content: '\25BC'; } /* down triangle */
     width: 1px;
     background: var(--border-hairline);
   }
-  /* Facing pages share their ruling: title and list sit on the same two
-     subgrid rows, so the columns' tops always meet. */
+  /* Facing pages share their ruling: title, lead and list sit on the same
+     three subgrid rows, so the columns' tops always meet and the two leads
+     stand equally tall. */
   .ledger-page {
     display: grid;
     grid-template-rows: subgrid;
-    grid-row: span 2;
+    grid-row: span 3;
   }
+}
+
+/* ---- The leads: each page's rank 1, set as the entry the spread opens on.
+   A double-height row on the rows' own rails — the "1" in the rank column,
+   the numeral one step up on the same right rail, in the score-cell grammar
+   — and under the name the door's points drawn in the page's currency: a
+   short run of the hundred's point-squares, full squares in the tier's ink,
+   the tenths a waterline square in the hc-part cut. The open lead's run is
+   earning color; the closed lead's pools in the locked wash — priced, not
+   yet a color. No card shell: the lead is the paper itself, ruled like the
+   rows it heads. */
+.door-lead {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'rank name pts'
+    '.    key  pts'
+    '.    run  run';
+  align-content: start;
+  align-items: start;
+  column-gap: 12px;
+  padding: 14px 0 18px;
+  border-top: 1px solid var(--border-hairline);
+  transition: background-color 150ms ease;
+}
+.door-lead:hover { background: rgba(0, 0, 0, 0.024); }
+.door-rank {
+  grid-area: rank;
+  justify-self: end;
+  padding-top: 7px;
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-40);
+}
+.door-name {
+  grid-area: name;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.25px;
+  color: var(--ink-95);
+}
+.door-name:hover { text-decoration: none; }
+/* Whole-lead click, the rows' overlay quoted. */
+.door-name::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.door-lead .tier-key {
+  grid-area: key;
+  margin-top: 5px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: rgba(0, 0, 0, 0.75);
+}
+.door-run {
+  grid-area: run;
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+}
+.door-run i {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background: var(--tier);
+}
+/* The waterline square: tier ink up to the door's tenths, the remainder
+   the hundred's quiet wash — hc-part quoted at plate scale. */
+.door-run .dr-part {
+  background: linear-gradient(
+    to top,
+    var(--tier) 0 calc(var(--part) * 100%),
+    rgba(0, 0, 0, 0.11) calc(var(--part) * 100%)
+  );
+}
+/* The run lands in the pour's own rise, square by square. */
+@media (prefers-reduced-motion: no-preference) {
+  .door-run i {
+    animation: rise 0.3s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: calc(0.2s + var(--i) * 40ms);
+  }
+}
+.door-pts {
+  grid-area: pts;
+  justify-self: end;
+  margin: 0;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.door-pts b {
+  font-size: 24px;
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-95);
+}
+.door-pts .dec { font-size: 14px; }
+.door-unit {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
+  text-align: right;
+}
+/* Nothing closed: the page holds its dashed rule and says so in a line. */
+.door-none {
+  margin: 0 0 16px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.16);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-graphite);
+  max-width: 40ch;
 }
 .rank-list {
   list-style: none;
@@ -1920,6 +1979,8 @@ td.down::before { content: '\25BC'; } /* down triangle */
   counter-reset: rankrow;
   border-top: 1px solid var(--border-hairline);
 }
+/* A list that continues its page's lead: the lead is rank 1, rows open at 2. */
+.rank-list.rank-cont { counter-reset: rankrow 1; }
 .rank-list li {
   counter-increment: rankrow;
   position: relative;
@@ -2046,6 +2107,8 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .ledger-locked .rank-list { border-top: 1px dashed rgba(0, 0, 0, 0.16); }
 .ledger-locked .rank-list li { border-bottom: 1px dashed rgba(0, 0, 0, 0.12); }
 .ledger-locked .wt-val { color: var(--color-slate); }
+.ledger-locked .door-lead { border-top: 1px dashed rgba(0, 0, 0, 0.16); }
+.ledger-locked .door-pts b { color: var(--color-slate); }
 
 /* ---- Full destination map: the score bar, unpacked ----
    Every foreign destination, tier by tier — each tier a plate washed in its
