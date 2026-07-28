@@ -1930,6 +1930,9 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .door-pts {
   grid-area: pts;
   justify-self: end;
+  /* Centered on the lead's full height, not hung from the name line: the
+     numeral block balances the name-over-squares stack beside it. */
+  align-self: center;
   margin: 0;
   padding-right: 10px;
   display: flex;
