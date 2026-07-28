@@ -251,16 +251,16 @@ const news = passportNews(updates, p.iso3);
   <div class="rank-cols">
     <section class="ledger-page">
       <h2>The biggest open doors</h2>
-      {/* The page's lead: rank 1 set double-height, its points said twice —
-          the numeral on the rows' own right rail, and beneath the name the
-          same value drawn in point-squares, the hundred quoted at plate
-          scale. Four marigold squares and a waterline: this door alone
-          pays four and a bit of the passport's hundred. */}
+      {/* The page's lead: rank 1 set double-height, two lines and no more —
+          the name over the door's points drawn as point-squares (the hundred
+          quoted at plate scale), the numeral on the rows' own right rail.
+          The run's ink is the only tier mark the lead wears: four marigold
+          squares and a waterline say "on arrival" and "four and a bit of
+          the hundred" in one stroke; the sr-only text says it in words. */}
       {best && (
         <div class={`door-lead tier-${best.category}`}>
           <span class="door-rank" aria-hidden="true">1</span>
           <a class="door-name" href={`${base}destination/${best.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={best.iso2} /> {displayName(best.iso3, best.name)}</a>
-          <span class={`tier-key tier-${best.category}`}>{LABEL[best.category]}</span>
           {(bestRun.full > 0 || bestRun.part > 0) && (
             <div class="door-run" aria-hidden="true">
               {Array.from({ length: bestRun.full }).map((_, i) => <i style={`--i:${i}`} />)}
@@ -268,7 +268,7 @@ const news = passportNews(updates, p.iso3);
             </div>
           )}
           <p class="door-pts">
-            <b>{scoreParts(shareOf(best.weight)).int}<span class="dec">.{scoreParts(shareOf(best.weight)).dec}</span></b>
+            <b><span class="sr-only">{LABEL[best.category]}, </span>{scoreParts(shareOf(best.weight)).int}<span class="dec">.{scoreParts(shareOf(best.weight)).dec}</span></b>
             <span class="door-unit">points of the score</span>
           </p>
         </div>
@@ -295,7 +295,6 @@ const news = passportNews(updates, p.iso3);
         <div class={`door-lead tier-${gap.category}`}>
           <span class="door-rank" aria-hidden="true">1</span>
           <a class="door-name" href={`${base}destination/${gap.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={gap.iso2} /> {displayName(gap.iso3, gap.name)}</a>
-          <span class={`tier-key tier-${gap.category}`}>{LABEL[gap.category]}</span>
           {(gapRun.full > 0 || gapRun.part > 0) && (
             <div class="door-run" aria-hidden="true">
               {Array.from({ length: gapRun.full }).map((_, i) => <i style={`--i:${i}`} />)}

@@ -1863,12 +1863,11 @@ td.down::before { content: '\25BC'; } /* down triangle */
   grid-template-columns: 18px minmax(0, 1fr) auto;
   grid-template-areas:
     'rank name pts'
-    '.    key  pts'
-    '.    run  run';
+    '.    run  pts';
   align-content: start;
   align-items: start;
   column-gap: 12px;
-  padding: 14px 0 18px;
+  padding: 14px 0 16px;
   border-top: 1px solid var(--border-hairline);
   transition: background-color 150ms ease;
 }
@@ -1900,19 +1899,11 @@ td.down::before { content: '\25BC'; } /* down triangle */
   position: absolute;
   inset: 0;
 }
-.door-lead .tier-key {
-  grid-area: key;
-  margin-top: 5px;
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  letter-spacing: var(--tracking-caption);
-  color: rgba(0, 0, 0, 0.75);
-}
 .door-run {
   grid-area: run;
   display: flex;
   gap: 4px;
-  margin-top: 12px;
+  margin-top: 9px;
 }
 .door-run i {
   width: 22px;
