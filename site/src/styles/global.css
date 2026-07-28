@@ -1938,14 +1938,14 @@ td.down::before { content: '\25BC'; } /* down triangle */
   gap: 4px;
 }
 .door-pts b {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 650;
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   color: var(--ink-95);
 }
-.door-pts .dec { font-size: 14px; }
+.door-pts .dec { font-size: 17px; }
 .door-unit {
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
