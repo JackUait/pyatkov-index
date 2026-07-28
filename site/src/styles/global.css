@@ -1680,30 +1680,50 @@ td.down::before { content: '\25BC'; } /* down triangle */
 
 /* ---- Score anatomy: one bar spanning 0-100, the earning tiers at their
    points, the closed tiers at the points they withhold. Sits above the tier
-   table inside the same card, so the table is its legend. ---- */
+   table inside the same card, so the table is its legend.
+   The annotation speaks in the ledger's figure-and-clause grammar — three
+   verdicts, not four tiers: what the border pays, what eVisa adds, what
+   stays withheld. The earned figures hold the strip's start in earning ink;
+   the locked figure stands alone at its end in gray — the two-ink law at
+   caption scale. */
 .score-anatomy {
-  padding: 18px 20px 20px;
+  padding: 22px 20px 24px;
   border-bottom: 1px solid var(--border-hairline);
 }
-.bar-annot {
+.score-figs {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 32px;
+  margin-bottom: 14px;
+}
+.score-figs p {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0;
+  max-width: none;
+}
+.score-figs b {
+  font-size: 24px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.score-figs span {
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
   color: var(--color-slate);
 }
-.bar-annot b {
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-95);
-}
+/* The withheld figure keeps the strip's far end and wears the locked ink. */
+.score-figs .sf-locked { margin-left: auto; }
+.score-figs .sf-locked b { color: var(--ink-60); }
 .score-bar {
   display: flex;
   gap: 2px;
-  height: 24px;
+  height: 28px;
 }
 .score-bar i {
   flex-grow: var(--share);
@@ -1713,6 +1733,11 @@ td.down::before { content: '\25BC'; } /* down triangle */
   border-radius: 3px;
   background: var(--tier);
 }
+/* The waterline seam: a wider cut of paper where earning stops and the
+   locked block begins. It marks the score's edge on the strip, and it is
+   what keeps the pale eVisa sliver readable beside the locked wash — the
+   two fills sit too close in color to meet at a 2px gap. */
+.score-bar .seg-locked { margin-left: 6px; }
 /* The segments ink in left to right, quoting the ribbon's sweep. */
 @media (prefers-reduced-motion: no-preference) {
   .score-bar i { transform-origin: left; animation: meter-ink 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
@@ -1720,6 +1745,47 @@ td.down::before { content: '\25BC'; } /* down triangle */
   .score-bar i:nth-child(2) { animation-delay: 0.48s; }
   .score-bar i:nth-child(3) { animation-delay: 0.58s; }
   .score-bar i:nth-child(4) { animation-delay: 0.65s; }
+}
+
+/* The tier table: the anatomy's legend, four rows that explain themselves.
+   Cells align to the strip's own 20px rail; each tier label anchors its row
+   at medium weight and carries the methodology's gloss as a quiet second
+   line — the same words the doors spread prices its swatches with — so the
+   eVisa row's destinations paying a fifth of their weight needs no footnote.
+   Points speak in the score-cell grammar (the number is the datum, the
+   decimal a whisper), the closed row's zero steps back to gray ink — it
+   earns nothing, and its figure says so — and the total sets the score one
+   step up, level with the verdict figures above. */
+.tier-table th, .tier-table td { padding-inline: 20px; }
+.tier-table td { vertical-align: baseline; }
+.tier-table tbody td { padding-block: 12px; }
+.tier-table .tier-key { font-weight: 500; }
+.tier-note {
+  display: block;
+  /* Clears the 10px swatch and its 9px gap: the gloss ranges under the
+     label's own text, not under the color. */
+  margin-left: 19px;
+  margin-top: 3px;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  font-weight: 400;
+  color: var(--color-slate);
+  /* The gloss folds rather than widening its column: on a phone the row's
+     nowrap would shove Destinations and Points off the card's edge. */
+  white-space: normal;
+  max-width: 40ch;
+}
+.tier-table .row-locked .score-cell,
+.tier-table .row-locked .score-cell .dec { color: var(--ink-40); }
+.tier-table tfoot th, .tier-table tfoot td { padding-block: 12px; }
+.tier-table tfoot .score-cell { font-size: 17px; font-weight: 650; }
+/* The phone keeps all three columns on the card: the rail steps in to 12px
+   — anatomy and table together, one left edge — which is exactly the room
+   the numeric columns need to stop sliding under the cut. */
+@media (max-width: 720px) {
+  .score-anatomy { padding-inline: 12px; }
+  .tier-table th, .tier-table td { padding-inline: 12px; }
 }
 
 /* ---- Door cards: the two destinations that move the score most, as the
@@ -3305,6 +3371,8 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 .drawer-content:focus { outline: none; }
+/* The drawer supplies the context a standalone page needs breadcrumbs for. */
+.drawer-content .crumbs { display: none; }
 .drawer-content h2 { margin-top: 40px; }
 /* Page grids assume the page column; at drawer width they re-rack. The
    overrides must out-rank the viewport media queries, which still see a wide
@@ -3516,7 +3584,7 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
   }
 
   /* down / up — the hierarchy step. Down steps into a country page, a level
-     below the map; up — leaving a country page for a section — runs the pair
+     below the map; up — breadcrumb or back out of one — runs the pair
      reversed. Down under a popstate reverses too: back is an undo. Fast,
      because these pages are lookups. */
   :root[data-move='down']::view-transition-old(root),

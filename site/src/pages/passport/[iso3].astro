@@ -4,7 +4,7 @@ import rankings from '../../data/rankings.json';
 import openness from '../../data/openness.json';
 import weightsData from '../../data/weights.json';
 import matrix from '../../data/matrix.json';
-import { bareName, displayName, fmt, reconcilePoints, searchIndex, withArticle } from '../../lib/format.ts';
+import { bareName, displayName, fmt, reconcilePoints, scoreParts, searchIndex, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { hundredCells } from '../../lib/hundred.ts';
 import { ID, pageId } from '../../lib/seo.ts';
@@ -76,8 +76,9 @@ const sharePoints = (weight: number) => fmt((100 * weight) / denom);
 // The spread rules both pages to one baseline: the shorter list keeps blank
 // ledger rows until the columns stand equally tall.
 const blankRows = (n: number) => Math.max(topOpen.length, topMissing.length) - n;
-// The row tooltip's gloss per tier, in the methodology's words — the only
-// place the spread explains its swatches now that the legend is gone.
+// The gloss per tier, in the methodology's words — the tier table's second
+// line and the doors spread's row tooltip both speak it, so the swatches
+// are priced the same wherever they appear.
 const ACCESS_NOTE: Record<Tier, string> = {
   'visa-free': 'entry decided at the border',
   'visa-on-arrival': 'no approval needed before you fly',
@@ -92,8 +93,8 @@ const borderPoints = tierContribution.filter((t) => isBorder(t.cat)).reduce((a, 
 const conditionalPoints = tierContribution.filter((t) => isConditional(t.cat)).reduce((a, t) => a + t.points, 0);
 const locked = Math.max(0, 100 - p.score);
 const segments = [
-  ...tierContribution.filter((t) => CREDIT[t.cat] > 0).map((t) => ({ cat: t.cat, share: t.points })),
-  { cat: 'visa-required' as Tier, share: locked },
+  ...tierContribution.filter((t) => CREDIT[t.cat] > 0).map((t) => ({ cat: t.cat, share: t.points, locked: false })),
+  { cat: 'visa-required' as Tier, share: locked, locked: true },
 ].filter((s) => s.share > 0.05);
 const barLabel = [
   `at the border: ${fmt(borderPoints)} points`,
@@ -167,16 +168,23 @@ const news = passportNews(updates, p.iso3);
   </section>
 
   <h2>Where the score comes from</h2>
+  {/* The anatomy plate: three verdict figures in the ledger's figure-and-clause
+      grammar — the earned figures in ink at the strip's start, the locked figure
+      in gray ink at its end — over one flat strip spanning 0–100. The strip
+      breaks with a paper seam where earning stops: the score's own waterline,
+      and the gap that keeps the pale eVisa sliver legible beside the locked
+      wash. The tier table below is the figure's legend, each row glossed in
+      the methodology's words. */}
   <div class="card">
     <div class="score-anatomy">
-      <div class="bar-annot">
-        <span><b>{fmt(borderPoints)}</b> at the border</span>
-        {conditionalPoints > 0.05 && <span><b>+{fmt(conditionalPoints)}</b> by eVisa</span>}
-        {locked > 0.05 && <span><b>{fmt(locked)}</b> locked</span>}
+      <div class="score-figs">
+        <p><b>{fmt(borderPoints)}</b> <span>at the border</span></p>
+        {conditionalPoints > 0.05 && <p><b>+{fmt(conditionalPoints)}</b> <span>by eVisa</span></p>}
+        {locked > 0.05 && <p class="sf-locked"><b>{fmt(locked)}</b> <span>locked</span></p>}
       </div>
       <div class="score-bar" role="img" aria-label={barLabel}>
         {segments.map((s) => (
-          <i class={`tier-${s.cat}`} style={`--share:${s.share.toFixed(2)}`} />
+          <i class={`tier-${s.cat}${s.locked ? ' seg-locked' : ''}`} style={`--share:${s.share.toFixed(2)}`} />
         ))}
       </div>
     </div>
@@ -186,11 +194,22 @@ const news = passportNews(updates, p.iso3);
         <thead><tr><th scope="col">Access tier</th><th scope="col">Destinations</th><th scope="col">Points</th></tr></thead>
         <tbody>
           {tierContribution.map((t) => (
-            <tr><td><span class={`tier-key tier-${t.cat}`}>{LABEL[t.cat]}</span></td><td>{t.count}</td><td>{fmt(t.points)}</td></tr>
+            <tr class={CREDIT[t.cat] === 0 ? 'row-locked' : undefined}>
+              <td>
+                <span class={`tier-key tier-${t.cat}`}>{LABEL[t.cat]}</span>
+                <span class="tier-note">{ACCESS_NOTE[t.cat]}</span>
+              </td>
+              <td>{t.count}</td>
+              <td class="score-cell">{scoreParts(t.points).int}<span class="dec">.{scoreParts(t.points).dec}</span></td>
+            </tr>
           ))}
         </tbody>
         <tfoot>
-          <tr><th scope="row">Total (Score)</th><td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa'] + p.counts['visa-required']}</td><td>{fmt(p.score)}</td></tr>
+          <tr>
+            <th scope="row">Total (Score)</th>
+            <td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa'] + p.counts['visa-required']}</td>
+            <td class="score-cell">{scoreParts(p.score).int}<span class="dec">.{scoreParts(p.score).dec}</span></td>
+          </tr>
         </tfoot>
       </table>
     </div>
