@@ -1303,7 +1303,9 @@ table {
 thead th {
   position: sticky;
   top: var(--nav-h);
-  z-index: 1;
+  /* Above the stretched row link (1) and the row-actions cell that lifts over
+     it (2), or the action glyphs scroll straight through the header. */
+  z-index: 3;
   background: var(--color-white);
   color: var(--ink-60);
   font-weight: 500;
@@ -1371,6 +1373,37 @@ th[data-sort]::after {
 th[aria-sort='ascending']::after { content: '\2191'; color: var(--color-ink); }
 th[aria-sort='descending']::after { content: '\2193'; color: var(--color-ink); }
 th[aria-sort] { color: var(--color-ink); }
+
+/* Numeric headers carry the arrow slot on their left. Reserved after the
+   word, the empty slot eats the column's right padding and the label floats
+   a glyph-width inside the digits it labels — "Score" no longer sits over
+   the score. Ahead of the word, the label's right edge lands flush with the
+   figures below, sorted or not. */
+:is(.rank-table th:nth-child(1), .rank-table th:nth-child(3),
+    .access-table th:nth-child(3), .access-table th:nth-child(4),
+    .weights-table th:nth-child(1), .weights-table th:nth-child(n+3))[data-sort]::after {
+  content: none;
+}
+:is(.rank-table th:nth-child(1), .rank-table th:nth-child(3),
+    .access-table th:nth-child(3), .access-table th:nth-child(4),
+    .weights-table th:nth-child(1), .weights-table th:nth-child(n+3))[data-sort]::before {
+  content: '';
+  display: inline-block;
+  width: 0.7em;
+  margin-right: 0.25em;
+}
+:is(.rank-table th:nth-child(1), .rank-table th:nth-child(3),
+    .access-table th:nth-child(3), .access-table th:nth-child(4),
+    .weights-table th:nth-child(1), .weights-table th:nth-child(n+3))[aria-sort='ascending']::before {
+  content: '\2191';
+  color: var(--color-ink);
+}
+:is(.rank-table th:nth-child(1), .rank-table th:nth-child(3),
+    .access-table th:nth-child(3), .access-table th:nth-child(4),
+    .weights-table th:nth-child(1), .weights-table th:nth-child(n+3))[aria-sort='descending']::before {
+  content: '\2193';
+  color: var(--color-ink);
+}
 
 /* Numeric cells: tabular figures, right-aligned */
 .rank-table td:nth-child(1), .rank-table th:nth-child(1),
