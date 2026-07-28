@@ -7,6 +7,7 @@ import matrix from '../../data/matrix.json';
 import { bareName, displayName, fmt, reconcilePoints, scoreParts, searchIndex, withArticle } from '../../lib/format.ts';
 import { CREDIT, LABEL, TIERS, type Tier } from '../../lib/credit.ts';
 import { hundredCells } from '../../lib/hundred.ts';
+import { stripTicks } from '../../lib/strip.ts';
 import { ID, pageId } from '../../lib/seo.ts';
 import { countryNode } from '../../lib/schema.ts';
 import updates from '../../data/updates.json';
@@ -76,26 +77,44 @@ const sharePoints = (weight: number) => fmt((100 * weight) / denom);
 // The spread rules both pages to one baseline: the shorter list keeps blank
 // ledger rows until the columns stand equally tall.
 const blankRows = (n: number) => Math.max(topOpen.length, topMissing.length) - n;
-// The gloss per tier, in the methodology's words — the tier table's second
-// line and the doors spread's row tooltip both speak it, so the swatches
-// are priced the same wherever they appear.
+// The gloss per tier, in the methodology's words — spoken by the doors
+// spread's row tooltips, where it runs mid-sentence after the label's dash.
 const ACCESS_NOTE: Record<Tier, string> = {
   'visa-free': 'entry decided at the border',
   'visa-on-arrival': 'no approval needed before you fly',
   'e-visa': 'approval clears before you fly, a fifth of credit',
   'visa-required': 'arranged in advance, earns no credit',
 };
+// The legend's second line: the same gloss standing as its own sentence, so
+// it opens on a capital — and the eVisa row drops the "a fifth of credit"
+// clause, because the figures beside it (21 destinations, 0.9 points)
+// already price the fifth.
+const TIER_NOTE: Record<Tier, string> = {
+  'visa-free': 'Entry decided at the border',
+  'visa-on-arrival': 'No approval needed before you fly',
+  'e-visa': 'Approval clears before you fly',
+  'visa-required': 'Arranged in advance, earns no credit',
+};
 
-// Score anatomy bar spanning 100: each earning tier at its (reconciled) points, then one
-// locked segment for everything withheld (100 − score). The eVisa tier shows only the
-// fifth it earns; its withheld four-fifths fold into the locked block.
+// The anatomy strip: the hero's hundred unrolled into one line — one tick per
+// point, inked by the tier that earned it. The earning tiers lay their
+// (reconciled) points end to end; everything withheld — the closed doors and
+// the eVisa's four-fifths alike — pools in the locked tail. The tail has no
+// row in the legend: the legend lists only what earns, and the closed doors
+// keep their own spread further down the page. Spans under the displayed
+// precision are dropped; stripTicks folds them into the tail.
 const borderPoints = tierContribution.filter((t) => isBorder(t.cat)).reduce((a, t) => a + t.points, 0);
 const conditionalPoints = tierContribution.filter((t) => isConditional(t.cat)).reduce((a, t) => a + t.points, 0);
 const locked = Math.max(0, 100 - p.score);
-const segments = [
-  ...tierContribution.filter((t) => CREDIT[t.cat] > 0).map((t) => ({ cat: t.cat, share: t.points, locked: false })),
-  { cat: 'visa-required' as Tier, share: locked, locked: true },
-].filter((s) => s.share > 0.05);
+const ticks = stripTicks([
+  ...tierContribution.filter((t) => CREDIT[t.cat] > 0 && t.points > 0.05).map((t) => ({ tier: t.cat, points: t.points })),
+  { tier: 'locked', points: locked },
+]);
+// A split tick's piece widths, as percentages of the tick: the span `to`
+// fractions turned into per-piece extents, so each sliver can stand as its
+// own element and dim independently of its neighbor across the cut.
+const pieceWidth = (spans: { tier: string; to: number }[], j: number) =>
+  ((spans[j].to - (j === 0 ? 0 : spans[j - 1].to)) * 100).toFixed(1);
 const barLabel = [
   `at the border: ${fmt(borderPoints)} points`,
   ...(conditionalPoints > 0.05 ? [`by eVisa: ${fmt(conditionalPoints)} points`] : []),
@@ -168,36 +187,42 @@ const news = passportNews(updates, p.iso3);
   </section>
 
   <h2>Where the score comes from</h2>
-  {/* The anatomy plate: three verdict figures in the ledger's figure-and-clause
-      grammar — the earned figures in ink at the strip's start, the locked figure
-      in gray ink at its end — over one flat strip spanning 0–100. The strip
-      breaks with a paper seam where earning stops: the score's own waterline,
-      and the gap that keeps the pale eVisa sliver legible beside the locked
-      wash. The tier table below is the figure's legend, each row glossed in
-      the methodology's words. */}
+  {/* The anatomy plate: the hero's hundred unrolled. The same 100 point-squares
+      that pour into the spread's field stand here in one line, each tick inked
+      by the tier that earned it — the eVisa's fifth lands as a lone peach tick,
+      the withheld remainder a gray tail. The strip carries no figures of its
+      own: the tier table below is its legend and its numbers — resting on a
+      row holds that tier's ticks and steps the rest back. */}
   <div class="card">
     <div class="score-anatomy">
-      <div class="score-figs">
-        <p><b>{fmt(borderPoints)}</b> <span>at the border</span></p>
-        {conditionalPoints > 0.05 && <p><b>+{fmt(conditionalPoints)}</b> <span>by eVisa</span></p>}
-        {locked > 0.05 && <p class="sf-locked"><b>{fmt(locked)}</b> <span>locked</span></p>}
-      </div>
       <div class="score-bar" role="img" aria-label={barLabel}>
-        {segments.map((s) => (
-          <i class={`tier-${s.cat}${s.locked ? ' seg-locked' : ''}`} style={`--share:${s.share.toFixed(2)}`} />
-        ))}
+        {ticks.map((t) =>
+          t.spans.length === 1 ? (
+            <i class={`tier-${t.spans[0].tier}`} style={`--i:${t.i}`} />
+          ) : (
+            <i class="tick-split" style={`--i:${t.i}`}>
+              {t.spans.map((s, j) => (
+                <b class={`tier-${s.tier}`} style={`--w:${pieceWidth(t.spans, j)}`} />
+              ))}
+            </i>
+          )
+        )}
       </div>
     </div>
     <div class="table-scroll">
       <table class="tier-table">
-        <caption class="sr-only">How {name}'s score of {fmt(p.score)} splits across the four access tiers</caption>
+        <caption class="sr-only">How {name}'s score of {fmt(p.score)} splits across the three earning access tiers</caption>
         <thead><tr><th scope="col">Access tier</th><th scope="col">Destinations</th><th scope="col">Points</th></tr></thead>
         <tbody>
-          {tierContribution.map((t) => (
-            <tr class={CREDIT[t.cat] === 0 ? 'row-locked' : undefined}>
+          {/* Earning tiers only: the legend prices what pays. The closed
+              doors have no row here — a 0.0 line only restated the locked
+              tail's gray, and their side of the ledger gets its own spread
+              below. The total counts the same three rows it sums. */}
+          {tierContribution.filter((t) => CREDIT[t.cat] > 0).map((t) => (
+            <tr class={`tier-${t.cat}`}>
               <td>
                 <span class={`tier-key tier-${t.cat}`}>{LABEL[t.cat]}</span>
-                <span class="tier-note">{ACCESS_NOTE[t.cat]}</span>
+                <span class="tier-note">{TIER_NOTE[t.cat]}</span>
               </td>
               <td>{t.count}</td>
               <td class="score-cell">{scoreParts(t.points).int}<span class="dec">.{scoreParts(t.points).dec}</span></td>
@@ -207,7 +232,7 @@ const news = passportNews(updates, p.iso3);
         <tfoot>
           <tr>
             <th scope="row">Total (Score)</th>
-            <td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa'] + p.counts['visa-required']}</td>
+            <td>{p.counts['visa-free'] + p.counts['visa-on-arrival'] + p.counts['e-visa']}</td>
             <td class="score-cell">{scoreParts(p.score).int}<span class="dec">.{scoreParts(p.score).dec}</span></td>
           </tr>
         </tfoot>

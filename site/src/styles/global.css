@@ -1488,10 +1488,6 @@ th[aria-sort] { color: var(--color-ink); }
   font-weight: 500;
   color: var(--ink-60);
 }
-@keyframes meter-ink {
-  from { transform: scaleX(0); }
-}
-
 /* Tied ranks say so: "=5", with the mark kept quiet. The podium gets no
    mark of its own — medals in two cuts both read as UI controls beside
    this much type, and rank 1 needs no help from a circle. */
@@ -1678,87 +1674,100 @@ td.down::before { content: '\25BC'; } /* down triangle */
   flex: none;
 }
 
-/* ---- Score anatomy: one bar spanning 0-100, the earning tiers at their
-   points, the closed tiers at the points they withhold. Sits above the tier
-   table inside the same card, so the table is its legend.
-   The annotation speaks in the ledger's figure-and-clause grammar — three
-   verdicts, not four tiers: what the border pays, what eVisa adds, what
-   stays withheld. The earned figures hold the strip's start in earning ink;
-   the locked figure stands alone at its end in gray — the two-ink law at
-   caption scale. */
+/* ---- Score anatomy: the strip alone in its band at the top of the card,
+   the tier table beneath as its legend and its numbers. The strip states
+   no figure of its own — the hero already said the score, and the rows
+   below price each ink. ---- */
 .score-anatomy {
-  padding: 22px 20px 24px;
+  padding: 24px 20px;
   border-bottom: 1px solid var(--border-hairline);
 }
-.score-figs {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 32px;
-  margin-bottom: 14px;
-}
-.score-figs p {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  margin: 0;
-  max-width: none;
-}
-.score-figs b {
-  font-size: 24px;
-  font-weight: 650;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-.score-figs span {
-  font-size: var(--text-caption);
-  line-height: var(--leading-caption);
-  letter-spacing: var(--tracking-caption);
-  color: var(--color-slate);
-}
-/* The withheld figure keeps the strip's far end and wears the locked ink. */
-.score-figs .sf-locked { margin-left: auto; }
-.score-figs .sf-locked b { color: var(--ink-60); }
+/* The strip is the hero's hundred, unrolled: one tick per point of the
+   weighted world, laid 0–100 and inked by the tier that earned it — the
+   eVisa fifth lands as a lone peach tick, the withheld remainder a gray
+   tail. The 2px paper gaps do the old seam's work everywhere at once —
+   every tick stands off its neighbors, so the pale peach never meets the
+   locked wash edge to edge. */
 .score-bar {
   display: flex;
   gap: 2px;
-  height: 28px;
+  height: 32px;
 }
 .score-bar i {
-  flex-grow: var(--share);
-  flex-shrink: 1;
-  flex-basis: 0%;
-  min-width: 3px;
-  border-radius: 3px;
+  flex: 1 1 0%;
+  min-width: 0;
+  border-radius: 2px;
   background: var(--tier);
 }
-/* The waterline seam: a wider cut of paper where earning stops and the
-   locked block begins. It marks the score's edge on the strip, and it is
-   what keeps the pale eVisa sliver readable beside the locked wash — the
-   two fills sit too close in color to meet at a 2px gap. */
-.score-bar .seg-locked { margin-left: 6px; }
-/* The segments ink in left to right, quoting the ribbon's sweep. */
+/* The locked tail wears the wash but belongs to no tier: the withheld
+   eVisa credit pools here beside the closed doors' weight, so no legend
+   row may claim it as its own. */
+.score-bar .tier-locked { --tier: rgba(0, 0, 0, 0.18); }
+/* A point split between tiers is a tick of true pieces, not a painted
+   gradient — the hc-part waterline turned on its side, with each sliver
+   carrying its own tier so the hover can dim one side of the cut while
+   the other holds. The tick's radius clips the pieces at its own edge;
+   the last piece absorbs the percent-rounding crumb. */
+.score-bar .tick-split {
+  display: flex;
+  overflow: hidden;
+  background: none;
+}
+.score-bar .tick-split b {
+  flex: 0 0 calc(var(--w) * 1%);
+  background: var(--tier);
+}
+.score-bar .tick-split b:last-child { flex: 1 1 auto; }
+/* Resting on a legend row holds that tier's ink and steps the rest back
+   to a wash — the strip answers the table, sliver by sliver: the far side
+   of a split tick dims while the near side holds. The locked tail answers
+   to no row: the legend lists only what earns. Opacity only: nothing
+   moves. */
+@media (hover: hover) {
+  .score-bar :is(i, b) { transition: opacity 0.15s ease; }
+  /* :where keeps the dim at zero element specificity so the per-tier hold
+     rules below always outrank it; the split-tick container is excluded —
+     dimming it would drag its held slivers down with it. */
+  .card:has(.tier-table tbody tr:hover) .score-bar :where(i:not(.tick-split), .tick-split b) { opacity: 0.18; }
+  .card:has(tr.tier-visa-free:hover) .score-bar .tier-visa-free,
+  .card:has(tr.tier-visa-on-arrival:hover) .score-bar .tier-visa-on-arrival,
+  .card:has(tr.tier-e-visa:hover) .score-bar .tier-e-visa { opacity: 1; }
+  .tier-table tbody tr:hover td { background: rgba(0, 0, 0, 0.02); }
+}
+/* The ticks land left to right in the hundred's own rise — the pour,
+   turned on its side, starting once the field above has mostly settled. */
 @media (prefers-reduced-motion: no-preference) {
-  .score-bar i { transform-origin: left; animation: meter-ink 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
-  .score-bar i:nth-child(1) { animation-delay: 0.35s; }
-  .score-bar i:nth-child(2) { animation-delay: 0.48s; }
-  .score-bar i:nth-child(3) { animation-delay: 0.58s; }
-  .score-bar i:nth-child(4) { animation-delay: 0.65s; }
+  .score-bar i {
+    animation: rise 0.3s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: calc(0.3s + var(--i) * 4ms);
+  }
+}
+/* The phone narrows each tick below its own radius: the cut steps down
+   and the gaps thin so 100 ticks still read as a ruled line. */
+@media (max-width: 720px) {
+  .score-bar { gap: 1px; height: 26px; }
+  .score-bar i { border-radius: 1px; }
 }
 
-/* The tier table: the anatomy's legend, four rows that explain themselves.
-   Cells align to the strip's own 20px rail; each tier label anchors its row
-   at medium weight and carries the methodology's gloss as a quiet second
-   line — the same words the doors spread prices its swatches with — so the
-   eVisa row's destinations paying a fifth of their weight needs no footnote.
-   Points speak in the score-cell grammar (the number is the datum, the
-   decimal a whisper), the closed row's zero steps back to gray ink — it
-   earns nothing, and its figure says so — and the total sets the score one
-   step up, level with the verdict figures above. */
+/* The tier table: the anatomy's legend, three earning rows that explain
+   themselves — the closed doors have no row here, only the strip's gray
+   tail and their own spread further down the page. Cells align to the
+   strip's own 20px rail; each tier label anchors its row at medium weight
+   and carries the methodology's gloss as a quiet second line — the same
+   words the doors spread prices its swatches with — so the eVisa row's
+   destinations paying a fifth of their weight needs no footnote. Points
+   speak in the score-cell grammar (the number is the datum, the decimal a
+   whisper), and the total counts the same three rows it sums. */
 .tier-table th, .tier-table td { padding-inline: 20px; }
 .tier-table td { vertical-align: baseline; }
 .tier-table tbody td { padding-block: 12px; }
+/* Fixed gutters in the rank table's grammar: the numeric columns hold a
+   tight right rail instead of drifting wherever the label column lets
+   them, and the counts step back to ink-60 — the points are the datum,
+   the destination counts their context. */
+.tier-table th:nth-child(2) { width: 130px; }
+.tier-table th:nth-child(3) { width: 100px; }
+.tier-table tbody td:nth-child(2) { color: var(--ink-60); }
 .tier-table .tier-key { font-weight: 500; }
 .tier-note {
   display: block;
@@ -1776,10 +1785,14 @@ td.down::before { content: '\25BC'; } /* down triangle */
   white-space: normal;
   max-width: 40ch;
 }
-.tier-table .row-locked .score-cell,
-.tier-table .row-locked .score-cell .dec { color: var(--ink-40); }
-.tier-table tfoot th, .tier-table tfoot td { padding-block: 12px; }
-.tier-table tfoot .score-cell { font-size: 17px; font-weight: 650; }
+/* The points speak one size up from the ledger tables — in a four-row
+   legend they are the payoff, not a rail — and the total closes the plate
+   a step up again: the score, said once, at the plate's largest ink. */
+.tier-table .score-cell { font-size: 19px; }
+.tier-table .score-cell .dec { font-size: 13px; }
+.tier-table tfoot th, .tier-table tfoot td { padding-block: 14px; }
+.tier-table tfoot .score-cell { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; }
+.tier-table tfoot .score-cell .dec { font-size: 14px; }
 /* The phone keeps all three columns on the card: the rail steps in to 12px
    — anatomy and table together, one left edge — which is exactly the room
    the numeric columns need to stop sliding under the cut. */
@@ -3394,6 +3407,10 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
 }
 .drawer-content .pass-figures strong { font-size: 42px; }
 .drawer-content .pass-hundred { gap: 4px; }
+/* 100 ticks across the sheet's width: the gaps thin and the cut steps down,
+   the same law the phone applies to the strip. */
+.drawer-content .score-bar { gap: 1px; height: 26px; }
+.drawer-content .score-bar i { border-radius: 1px; }
 /* The drawer reads one page at a time: no fold, no shared baseline. */
 .drawer-content .rank-cols { grid-template-columns: 1fr; }
 .drawer-content .rank-cols::before { content: none; }
@@ -3440,11 +3457,12 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
     animation-duration: 0.24s;
     animation-delay: calc(0.02s + var(--i) * 1.6ms);
   }
-  .drawer-content .score-bar i { animation-duration: 0.32s; }
-  .drawer-content .score-bar i:nth-child(1) { animation-delay: 0.04s; }
-  .drawer-content .score-bar i:nth-child(2) { animation-delay: 0.07s; }
-  .drawer-content .score-bar i:nth-child(3) { animation-delay: 0.1s; }
-  .drawer-content .score-bar i:nth-child(4) { animation-delay: 0.13s; }
+  /* The strip sweeps in the hundred's hurried cadence: last tick down
+     inside the drawer's ~0.45s window. */
+  .drawer-content .score-bar i {
+    animation-duration: 0.24s;
+    animation-delay: calc(0.06s + var(--i) * 1.6ms);
+  }
 }
 
 /* Loading: the page's silhouette — flag card, title, numerals, prose bars —
@@ -3703,10 +3721,7 @@ div.footer-col a:hover { text-decoration-color: var(--color-ink); }
   /* country — a lookup should be readable the moment it stops moving. The
      hundred keeps its pour but compresses it: last square down by 0.24s. */
   :root[data-to='country'] .pass-hundred i { animation-delay: calc(0.03s + var(--i) * 2ms); }
-  :root[data-to='country'] .score-bar i:nth-child(1) { animation-delay: 0.12s; }
-  :root[data-to='country'] .score-bar i:nth-child(2) { animation-delay: 0.19s; }
-  :root[data-to='country'] .score-bar i:nth-child(3) { animation-delay: 0.25s; }
-  :root[data-to='country'] .score-bar i:nth-child(4) { animation-delay: 0.31s; }
+  :root[data-to='country'] .score-bar i { animation-delay: calc(0.08s + var(--i) * 2ms); }
 }
 
 /* Motion off: the gestures do not exist, and the UA's own cross-fade is
