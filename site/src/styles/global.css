@@ -2104,15 +2104,23 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .ledger-locked .door-pts b { color: var(--color-slate); }
 
 /* ---- Full destination map: the score bar, unpacked ----
-   Every foreign destination, tier by tier — each tier a plate washed in its
-   own hue, headed by the points it pays in: the anatomy bar at the top of
-   the page exploded into its chips, proportions stated once up there and
-   only priced down here. The single color-mix keeps the site's law by
-   itself — the earning tiers come out plainly colored, peach barely there —
-   and the locked tier overrides to the gray wash of the closed door card,
-   its zero muted. Chips sit white on the wash; closed doors are dashed
-   outlines that preview open on hover. */
-.dest-map { margin: 8px 0 48px; }
+   Every foreign destination, tier by tier — the page's closing inventory
+   set as a gazetteer, not a chip cloud: each tier is a ruled spread on the
+   paper, a priced rail on the left and the destinations running down ruled
+   newsprint columns on the right, the heaviest door first down each column.
+   The rail speaks the page's own grammar — the tier-key swatch, the door
+   count as its caption, the points in the leads' numeral cut — and the
+   proportions stay stated once by the anatomy strip up top: down here every
+   tier is only priced. Color rests in the swatches and answers on hover,
+   each row washing in its tier's ink; the closed tier keeps the locked
+   page's language end to end — dashed rules, stepped-back ink, flags not
+   yet a color — and hovering a closed door previews it open. */
+.dest-map {
+  margin: 8px 0 48px;
+  /* The drawer is narrow at any viewport: the rail folds on the section's
+     own width, not the window's. */
+  container-type: inline-size;
+}
 .dest-map-head {
   display: flex;
   flex-wrap: wrap;
@@ -2124,7 +2132,7 @@ td.down::before { content: '\25BC'; } /* down triangle */
 .dest-map-head h2 { margin: 0; }
 /* The table pages' search input (its shared cut lives with #filter), re-cut
    at the button radius: this page retired its pills, and the squared field
-   matches the chips it filters. */
+   matches the index it filters. */
 .dest-search {
   width: min(280px, 100%);
   border-radius: var(--radius-btn);
@@ -2138,27 +2146,28 @@ td.down::before { content: '\25BC'; } /* down triangle */
   font-size: var(--text-body-sm);
   color: var(--color-slate);
 }
+/* One spread per tier, ruled apart like the ledger's pages: the earning
+   tiers open on a solid hairline, the closed tier on the locked page's
+   dashed rule — a shade denser, which dashing then halves. */
 .dest-group {
-  margin: 0 0 14px;
-  padding: 18px 22px 22px;
-  border-radius: var(--radius-plate);
-  background: color-mix(in srgb, var(--tier) 16%, var(--color-white));
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 20px 44px;
+  align-items: start;
+  padding: 26px 0 34px;
+  border-top: 1px solid var(--border-hairline);
 }
-.dest-group.tier-visa-required { background: rgba(0, 0, 0, 0.05); }
-/* A <header> inside the plate, so it sheds the site nav's element styles:
-   the bare `header` rule would otherwise pin it sticky, white and shadowed
-   mid-plate. */
-.dest-head {
-  position: static;
-  z-index: auto;
-  background: none;
-  box-shadow: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 6px 16px;
-  margin: 0 0 14px;
+/* display: grid would otherwise defeat the hidden attribute dest-search
+   sets on a group whose every door the query filtered out. */
+.dest-group[hidden] { display: none; }
+.dest-group.tier-visa-required { border-top: 1px dashed rgba(0, 0, 0, 0.16); }
+/* The rail rides its group's scroll, so the visa-free column never outruns
+   its own pricing. Label, caption and numeral share one left edge under the
+   label's text — the tier-note law: prose ranges under the words, not under
+   the color. */
+.dest-rail {
+  position: sticky;
+  top: calc(var(--nav-h) + 20px);
 }
 .dest-group h3 {
   margin: 0;
@@ -2168,76 +2177,116 @@ td.down::before { content: '\25BC'; } /* down triangle */
   letter-spacing: -0.2px;
 }
 .dest-group h3::before { width: 12px; height: 12px; }
-.dest-group h3 .count {
-  margin-left: 2px;
-  font-size: 13px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-54);
-}
-.dest-pts {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
+.dest-count {
+  margin: 5px 0 0 21px;
+  max-width: none;
   font-size: var(--text-caption);
+  line-height: var(--leading-caption);
   letter-spacing: var(--tracking-caption);
-  color: rgba(0, 0, 0, 0.75);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-slate);
+}
+/* The tier priced in the leads' cut: the integer is the datum, the decimal
+   a whisper, the unit a caption clause seated under it. */
+.dest-pts {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 22px 0 0 21px;
+  max-width: none;
 }
 .dest-pts b {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 650;
   line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  color: var(--color-ink);
+  color: var(--ink-95);
+}
+.dest-pts .dec { font-size: 17px; }
+.dest-unit {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-slate);
 }
 /* The locked tier's zero whispers, as on the methodology credit ladder. */
 .dest-group.tier-visa-required .dest-pts b { color: var(--ink-40); }
-@media (max-width: 640px) {
-  .dest-group { padding: 14px 16px 18px; }
-}
+/* The gazetteer: ruled index rows in as many columns as the measure seats,
+   rank order folding down one column into the top of the next. */
 .dest-flow {
   list-style: none;
   margin: 0;
   padding: 0;
   max-width: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  columns: 9.5rem;
+  column-gap: 28px;
 }
-.dest-flow li { margin: 0; padding: 0; }
+.dest-flow li {
+  margin: 0;
+  padding: 0;
+  break-inside: avoid;
+  border-bottom: 1px solid var(--border-faint);
+}
 .dest-flow a {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px 5px 9px;
+  gap: 9px;
+  padding: 7px 4px;
   font-size: 13px;
   line-height: 1.4;
+  font-weight: 500;
   color: var(--ink-95);
-  background: var(--color-white);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--radius-btn);
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition: background-color 150ms ease, color 150ms ease;
 }
-/* Deeper than the plate's own wash, so the hovered chip visibly takes the
-   tier's hue instead of dissolving into it. */
+/* Resting on a row washes it in its tier's ink — deep enough to read as an
+   answer on the paper, not a tint dissolving into it. */
 .dest-flow a:hover {
   text-decoration: none;
-  border-color: var(--tier);
-  background: color-mix(in srgb, var(--tier) 26%, var(--color-white));
+  background: color-mix(in srgb, var(--tier) 22%, var(--color-white));
 }
-.dest-flow.is-locked a {
-  background: transparent;
-  border-style: dashed;
-  border-color: rgba(0, 0, 0, 0.16);
-  color: var(--ink-60);
+/* The locked page's inks, row by row: rules dashed, names stepped back,
+   flags printing in the locked wash — a door that earns nothing is not yet
+   a color. Hovering previews it open: the row fills white like its open
+   siblings, and the flag's ink comes back with the name's. */
+.dest-flow.is-locked li { border-bottom: 1px dashed rgba(0, 0, 0, 0.12); }
+.dest-flow.is-locked a { color: var(--ink-60); }
+.dest-flow.is-locked .flag {
+  filter: grayscale(1) opacity(0.55);
+  transition: filter 150ms ease;
 }
-/* Hovering a closed door previews it open: the chip fills white like its
-   open siblings, and the ink comes back. */
 .dest-flow.is-locked a:hover {
   background: var(--color-white);
-  border-color: var(--tier);
   color: var(--ink-95);
+}
+.dest-flow.is-locked a:hover .flag { filter: none; }
+/* The narrow cut — the phone and the drawer alike: the rail folds into a
+   head line, label and count left, the numeral holding the right rail at
+   the tables' scale, and the spread continues below. */
+@container (max-width: 40rem) {
+  .dest-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 20px 0 26px;
+  }
+  .dest-rail {
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    align-items: baseline;
+  }
+  .dest-count { margin-top: 3px; }
+  .dest-pts {
+    grid-area: 1 / 2 / 3 / 3;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+    justify-self: end;
+  }
+  .dest-pts b { font-size: 22px; }
+  .dest-pts .dec { font-size: 14px; }
 }
 
 /* ---- Methodology: the worked example, the signal ledger, the credit

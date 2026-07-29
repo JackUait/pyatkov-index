@@ -346,10 +346,18 @@ const news = passportNews(updates, p.iso3);
       return (
         items.length > 0 && (
           <section class={`dest-group tier-${cat}`}>
-            <header class="dest-head">
-              <h3 class={`tier-key tier-${cat}`}>{LABEL[cat]} <span class="count">{items.length}</span></h3>
-              <span class="dest-pts"><b>{fmt(points)}</b> points</span>
-            </header>
+            {/* The spread's rail: what the tier is, how many doors, what they
+                pay — the swatch names it, the count captions it, and the
+                points speak in the leads' numeral cut. A div, not <header>:
+                the bare header rule is sticky chrome. */}
+            <div class="dest-rail">
+              <h3 class={`tier-key tier-${cat}`}>{LABEL[cat]}</h3>
+              <p class="dest-count"><span class="count">{items.length}</span> destinations</p>
+              <p class="dest-pts">
+                <b>{scoreParts(points).int}<span class="dec">.{scoreParts(points).dec}</span></b>
+                <span class="dest-unit">points of the score</span>
+              </p>
+            </div>
             <ul class={`dest-flow tier-${cat}${CREDIT[cat] > 0 ? '' : ' is-locked'}`}>
               {items.map((d) => (
                 <li data-search={searchIndex(d)}><a href={`${base}destination/${d.iso3.toLowerCase()}/`} data-astro-prefetch="false"><Flag iso2={d.iso2} /> {d.label}</a></li>
